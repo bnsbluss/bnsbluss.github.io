@@ -1,0 +1,1137 @@
+```html
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>About Me — Independent Developer</title>
+
+    <style>
+        :root {
+            --bg: #0d1117;
+            --card: #161b22;
+            --card-hover: #1c2128;
+            --border: #30363d;
+            --text: #e6edf3;
+            --muted: #8b949e;
+            --accent: #58a6ff;
+            --accent-2: #a371f7;
+            --code: #0b0f14;
+            --quote: #79c0ff;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            font-family:
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                Helvetica,
+                Arial,
+                sans-serif;
+
+            background:
+                radial-gradient(
+                    circle at 50% -20%,
+                    rgba(88, 166, 255, 0.12),
+                    transparent 40%
+                ),
+                var(--bg);
+
+            color: var(--text);
+            line-height: 1.7;
+        }
+
+        a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .container {
+            width: min(1150px, calc(100% - 32px));
+            margin: auto;
+        }
+
+        /* HERO */
+
+        .hero {
+            padding: 90px 0 60px;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .avatar {
+            width: 90px;
+            height: 90px;
+            margin: 0 auto 25px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 22px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--accent),
+                    var(--accent-2)
+                );
+
+            font-size: 42px;
+
+            box-shadow:
+                0 15px 50px rgba(88, 166, 255, 0.18);
+        }
+
+        .hero h1 {
+            margin: 0;
+
+            font-size: clamp(36px, 6vw, 58px);
+            letter-spacing: -2px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #ffffff,
+                    #79c0ff,
+                    #d2a8ff
+                );
+
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            margin: 14px auto 0;
+
+            color: var(--muted);
+
+            font-size: 18px;
+            max-width: 850px;
+        }
+
+        .badges {
+            margin-top: 25px;
+
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .badge {
+            padding: 6px 12px;
+
+            border: 1px solid var(--border);
+            border-radius: 999px;
+
+            background: rgba(255,255,255,0.03);
+
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        /* NAV */
+
+        .nav {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+
+            backdrop-filter: blur(12px);
+
+            background: rgba(13, 17, 23, 0.82);
+
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-inner {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 6px;
+
+            padding: 10px;
+        }
+
+        .nav a {
+            padding: 7px 12px;
+
+            border-radius: 7px;
+
+            color: var(--muted);
+
+            font-size: 14px;
+        }
+
+        .nav a:hover {
+            background: var(--card);
+            color: var(--text);
+            text-decoration: none;
+        }
+
+        /* CONTENT */
+
+        main {
+            padding: 55px 0;
+        }
+
+        section {
+            margin-bottom: 70px;
+            scroll-margin-top: 80px;
+        }
+
+        h2 {
+            margin-bottom: 25px;
+
+            font-size: 30px;
+            letter-spacing: -0.8px;
+        }
+
+        h2::before {
+            content: "#";
+            margin-right: 10px;
+
+            color: var(--accent);
+        }
+
+        h3 {
+            font-size: 20px;
+            margin-top: 35px;
+        }
+
+        p {
+            color: #c9d1d9;
+        }
+
+        strong {
+            color: #ffffff;
+        }
+
+        blockquote {
+            margin: 25px 0;
+            padding: 18px 22px;
+
+            border-left: 4px solid var(--accent);
+
+            background: rgba(88,166,255,0.06);
+
+            color: #c9d1d9;
+            border-radius: 0 8px 8px 0;
+        }
+
+        /* SKILLS */
+
+        .skills {
+            display: grid;
+            grid-template-columns:
+                repeat(auto-fit, minmax(240px, 1fr));
+
+            gap: 12px;
+        }
+
+        .skill {
+            padding: 15px 18px;
+
+            border: 1px solid var(--border);
+            border-radius: 10px;
+
+            background: var(--card);
+
+            transition:
+                transform .2s ease,
+                border-color .2s ease,
+                background .2s ease;
+        }
+
+        .skill:hover {
+            transform: translateY(-3px);
+            border-color: #58a6ff66;
+            background: var(--card-hover);
+        }
+
+        /* PROJECTS */
+
+        .project-wrapper {
+            overflow-x: auto;
+
+            border: 1px solid var(--border);
+            border-radius: 12px;
+
+            background: var(--card);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 850px;
+        }
+
+        th,
+        td {
+            padding: 16px;
+
+            text-align: left;
+
+            border-bottom: 1px solid var(--border);
+
+            vertical-align: top;
+        }
+
+        th {
+            background: #1c2128;
+
+            color: #ffffff;
+
+            font-size: 14px;
+        }
+
+        td {
+            color: #c9d1d9;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background: rgba(255,255,255,0.025);
+        }
+
+        .project-name {
+            color: #ffffff;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .project-type {
+            color: var(--accent);
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        /* PIPELINE */
+
+        .pipeline {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 8px;
+
+            margin: 30px 0;
+        }
+
+        .pipeline-item {
+            padding: 12px 16px;
+
+            border: 1px solid var(--border);
+            border-radius: 8px;
+
+            background: var(--card);
+
+            font-size: 14px;
+            white-space: nowrap;
+        }
+
+        .arrow {
+            color: var(--accent);
+            font-size: 20px;
+        }
+
+        /* CODE */
+
+        pre {
+            margin: 25px 0;
+            padding: 22px;
+
+            overflow-x: auto;
+
+            border: 1px solid var(--border);
+            border-radius: 10px;
+
+            background: var(--code);
+
+            color: #c9d1d9;
+
+            font-family:
+                "Cascadia Code",
+                "JetBrains Mono",
+                Consolas,
+                monospace;
+
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        code {
+            font-family:
+                "Cascadia Code",
+                "JetBrains Mono",
+                Consolas,
+                monospace;
+        }
+
+        /* TECH STACK */
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns:
+                repeat(auto-fit, minmax(260px, 1fr));
+
+            gap: 18px;
+        }
+
+        .tech-card {
+            padding: 22px;
+
+            border: 1px solid var(--border);
+            border-radius: 12px;
+
+            background: var(--card);
+        }
+
+        .tech-card h3 {
+            margin-top: 0;
+        }
+
+        .tech-card ul {
+            margin: 0;
+            padding-left: 20px;
+
+            color: var(--muted);
+        }
+
+        /* AI */
+
+        .ai-card {
+            padding: 30px;
+
+            border: 1px solid #58a6ff33;
+            border-radius: 14px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(88,166,255,0.08),
+                    rgba(163,113,247,0.05)
+                );
+        }
+
+        .ai-list {
+            display: grid;
+
+            grid-template-columns:
+                repeat(auto-fit, minmax(250px, 1fr));
+
+            gap: 8px;
+
+            padding: 0;
+
+            list-style: none;
+        }
+
+        .ai-list li {
+            padding: 10px 14px;
+
+            border: 1px solid var(--border);
+            border-radius: 8px;
+
+            background: rgba(0,0,0,0.15);
+        }
+
+        /* FOOTER */
+
+        footer {
+            padding: 45px 0;
+
+            border-top: 1px solid var(--border);
+
+            text-align: center;
+
+            color: var(--muted);
+        }
+
+        .footer-title {
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 700px) {
+
+            .hero {
+                padding: 65px 0 45px;
+            }
+
+            .hero h1 {
+                font-size: 40px;
+            }
+
+            .subtitle {
+                font-size: 16px;
+            }
+
+            main {
+                padding-top: 40px;
+            }
+
+            h2 {
+                font-size: 26px;
+            }
+
+            .pipeline {
+                flex-direction: column;
+            }
+
+            .arrow {
+                transform: rotate(90deg);
+            }
+
+            .ai-card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- HERO -->
+
+<header class="hero">
+    <div class="container">
+
+        <div class="avatar">
+            👨‍💻
+        </div>
+
+        <h1>About Me</h1>
+
+        <p class="subtitle">
+            Independent Developer • Game Tools Builder •
+            Point Blank Server Administrator •
+            Computer & Laptop Enthusiast
+        </p>
+
+        <div class="badges">
+            <span class="badge">🎮 Game Tools</span>
+            <span class="badge">🔬 Reverse Engineering</span>
+            <span class="badge">🐍 Python</span>
+            <span class="badge">💻 Windows</span>
+            <span class="badge">🌐 PHP + PostgreSQL</span>
+            <span class="badge">🧩 I3 Engine</span>
+        </div>
+
+    </div>
+</header>
+
+
+<!-- NAV -->
+
+<nav class="nav">
+    <div class="nav-inner">
+
+        <a href="#about">About</a>
+        <a href="#skills">Skills</a>
+        <a href="#projects">Projects</a>
+        <a href="#workflow">Workflow</a>
+        <a href="#technology">Technology</a>
+        <a href="#ai">AI Assisted</a>
+
+    </div>
+</nav>
+
+
+<main>
+
+<div class="container">
+
+
+<!-- ABOUT -->
+
+<section id="about">
+
+    <h2>About Me</h2>
+
+    <p>
+        Saya adalah developer yang banyak mengerjakan
+        <strong>tools, server, modding, rekayasa file game,
+        dan otomasi</strong>—terutama di ekosistem
+        <strong>Point Blank</strong>.
+    </p>
+
+    <p>
+        Saya lebih suka membangun tool yang benar-benar
+        menyelesaikan masalah daripada sekadar membuat prototype.
+    </p>
+
+    <p>
+        Saya tertarik membongkar cara kerja sebuah sistem dari
+        level data/file hingga menjadi tool yang mudah digunakan.
+        Dari format binary seperti
+        <strong>.I3S, .I3CHR, .i3Pack, .RSC</strong>,
+        dan <strong>.i3AnimPack</strong>, sampai server game,
+        web panel, database, pembayaran, dan watchdog Windows.
+    </p>
+
+    <p>
+        Saya mengerjakan project-project ini secara mandiri,
+        dengan sebagian proses pengembangan dibantu oleh
+        <strong>AI Claude</strong>—terutama saat menghadapi kode,
+        struktur file, algoritma, debugging, atau masalah teknis
+        yang sangat sulit.
+    </p>
+
+    <p>
+        AI saya gunakan sebagai partner untuk analisis,
+        eksplorasi solusi, dan memecahkan masalah;
+        proses pengujian, validasi, eksperimen, dan keputusan akhir
+        tetap saya lakukan sendiri.
+    </p>
+
+</section>
+
+
+<!-- SKILLS -->
+
+<section id="skills">
+
+    <h2>Fokus & Keahlian</h2>
+
+    <div class="skills">
+
+        <div class="skill">
+            🎮 Point Blank / Game Modding & Development Tools
+        </div>
+
+        <div class="skill">
+            🔬 Binary File Format Analysis
+        </div>
+
+        <div class="skill">
+            🧩 I3 Engine / I3S / I3CHR / i3Pack / RSC / Animation
+        </div>
+
+        <div class="skill">
+            🐍 Python Tooling & CLI
+        </div>
+
+        <div class="skill">
+            💻 Windows / PowerShell / C#
+        </div>
+
+        <div class="skill">
+            🌐 PHP Native + PostgreSQL
+        </div>
+
+        <div class="skill">
+            🎨 3D Model, Skin, Texture & Game Asset Pipeline
+        </div>
+
+        <div class="skill">
+            💻 Teknik Komputer & Laptop
+        </div>
+
+        <div class="skill">
+            🛠️ Membangun utility dari kebutuhan nyata
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- PROJECTS -->
+
+<section id="projects">
+
+    <h2>Project Showcase</h2>
+
+    <p>
+        Berikut beberapa project dan sistem yang saya kerjakan
+        atau kembangkan.
+    </p>
+
+    <div class="project-wrapper">
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>Project</th>
+                    <th>Fokus</th>
+                    <th>Deskripsi</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <tr>
+                    <td class="project-name">
+                        🎮 I3 Engine Editor V3
+                    </td>
+
+                    <td class="project-type">
+                        Game Tools / Reverse Engineering
+                    </td>
+
+                    <td>
+                        Suite tools untuk membaca, mengedit,
+                        mengonversi, dan membangun berbagai format
+                        data Point Blank berbasis I3 Engine.
+                        Project ini merupakan fokus utama repository ini.
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td class="project-name">
+                        🧰 I3 Engine Tools V3
+                    </td>
+
+                    <td class="project-type">
+                        Tool Suite
+                    </td>
+
+                    <td>
+                        Launcher terpadu yang mengumpulkan berbagai
+                        editor dan converter I3 Engine dalam satu aplikasi
+                        dengan pencarian, kategori, serta tema dark/light.
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td class="project-name">
+                        🧍 I3 Character Pipeline
+                    </td>
+
+                    <td class="project-type">
+                        Character / Skeleton
+                    </td>
+
+                    <td>
+                        Konversi skin Avatar V2 agar dapat menggunakan
+                        skeleton, ragdoll, weapon point, dan helmet point
+                        karakter V1 tanpa kehilangan mesh dan tekstur aslinya.
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td class="project-name">
+                        🔫 I3 Weapon Pipeline
+                    </td>
+
+                    <td class="project-type">
+                        Weapon / Animation
+                    </td>
+
+                    <td>
+                        Eksperimen dan tools untuk membuat, memperbaiki,
+                        mengonversi, serta mengatur state, animasi,
+                        suara, dan resource senjata Point Blank.
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td class="project-name">
+                        🗺️ I3 Map Tools
+                    </td>
+
+                    <td class="project-type">
+                        Map Editing
+                    </td>
+
+                    <td>
+                        Editor i3Path, i3INS, collision, serta viewer
+                        untuk membantu mengedit jalur AI, objek map,
+                        collision, dan model dalam scene Point Blank.
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td class="project-name">
+                        📦 I3Pack / RSC Tools
+                    </td>
+
+                    <td class="project-type">
+                        Resource / Archive
+                    </td>
+
+                    <td>
+                        Editor dan library untuk membaca, mengubah,
+                        mengekstrak, memasukkan kembali, dan memeriksa
+                        resource .i3Pack serta .RSC.
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td class="project-name">
+                        🎞️ I3 Animation Tools
+                    </td>
+
+                    <td class="project-type">
+                        Animation
+                    </td>
+
+                    <td>
+                        Editor .i3AnimPack dan workflow animasi untuk
+                        membaca track, keyframe, durasi, serta memindahkan
+                        gerakan antar paket animasi.
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td class="project-name">
+                        🖥️ Point Blank Server Ecosystem
+                    </td>
+
+                    <td class="project-type">
+                        Game Server
+                    </td>
+
+                    <td>
+                        Pengembangan dan administrasi ekosistem private
+                        server Point Blank, termasuk server, database,
+                        web account system, voucher, inbox, dan berbagai
+                        utility pendukung.
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td class="project-name">
+                        🌐 Web System
+                    </td>
+
+                    <td class="project-type">
+                        PHP / PostgreSQL
+                    </td>
+
+                    <td>
+                        Sistem web pendukung server dengan account,
+                        inbox, redeem voucher, package, dan integrasi
+                        pembayaran untuk distribusi item/game package.
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td class="project-name">
+                        🎨 Point Blank Asset / Texture Workflow
+                    </td>
+
+                    <td class="project-type">
+                        3D / Texture
+                    </td>
+
+                    <td>
+                        Workflow pengolahan model, skin, texture, bone,
+                        LOD, material, dan asset game untuk kebutuhan
+                        modding serta pengembangan content.
+                    </td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <blockquote>
+        <strong>Catatan:</strong>
+        Tidak semua project di atas merupakan repository publik.
+        Sebagian adalah project pribadi, eksperimen, atau sistem yang
+        digunakan dalam pengembangan server dan tooling.
+    </blockquote>
+
+</section>
+
+
+<!-- WORKFLOW -->
+
+<section id="workflow">
+
+    <h2>Cara Saya Mengerjakan Project</h2>
+
+    <p>
+        Saya biasanya memulai dari <strong>masalah nyata</strong>,
+        kemudian membongkar struktur sistemnya sampai ditemukan cara
+        kerja yang dapat direproduksi.
+    </p>
+
+
+    <div class="pipeline">
+
+        <div class="pipeline-item">
+            Problem
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div class="pipeline-item">
+            Analisis
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div class="pipeline-item">
+            Eksperimen
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div class="pipeline-item">
+            Tool
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div class="pipeline-item">
+            Validasi
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div class="pipeline-item">
+            Otomasi
+        </div>
+
+    </div>
+
+
+    <h3>Contoh — I3 Engine Editor V3</h3>
+
+<pre><code>Game File
+   ↓
+Analisis struktur binary
+   ↓
+Identifikasi object / node / bone / material
+   ↓
+Reverse engineering format
+   ↓
+Python parser / writer
+   ↓
+Editor GUI
+   ↓
+Verifikasi otomatis
+   ↓
+Testing di i3Viewer2 / Client
+   ↓
+Tool siap digunakan</code></pre>
+
+
+    <p>
+        Saya juga sangat memperhatikan
+        <strong>data integrity</strong>.
+        Banyak tool di project ini tidak sekadar "bisa membuka file",
+        tetapi berusaha menjaga struktur file asli, melakukan
+        read-back verification setelah penyimpanan, dan menghindari
+        perubahan yang tidak diperlukan.
+    </p>
+
+</section>
+
+
+<!-- TECHNOLOGY -->
+
+<section id="technology">
+
+    <h2>Teknologi yang Sering Saya Gunakan</h2>
+
+    <div class="tech-grid">
+
+        <div class="tech-card">
+
+            <h3>💻 Languages</h3>
+
+            <ul>
+                <li>Python</li>
+                <li>PHP</li>
+                <li>C#</li>
+                <li>PowerShell</li>
+                <li>SQL</li>
+            </ul>
+
+        </div>
+
+
+        <div class="tech-card">
+
+            <h3>🎮 Game / 3D</h3>
+
+            <ul>
+                <li>Point Blank / I3 Engine</li>
+                <li>I3S</li>
+                <li>I3CHR</li>
+                <li>I3AnimPack</li>
+                <li>I3Pack</li>
+                <li>RSC</li>
+                <li>OBJ</li>
+                <li>Texture / LOD / Skeleton / Animation</li>
+            </ul>
+
+        </div>
+
+
+        <div class="tech-card">
+
+            <h3>🌐 Backend</h3>
+
+            <ul>
+                <li>PostgreSQL</li>
+                <li>PHP Native</li>
+                <li>Web Server</li>
+                <li>Payment / Webhook</li>
+                <li>Server Automation</li>
+            </ul>
+
+        </div>
+
+
+        <div class="tech-card">
+
+            <h3>🪟 Windows</h3>
+
+            <ul>
+                <li>PowerShell</li>
+                <li>C#</li>
+                <li>Executable Tooling</li>
+                <li>Process Monitoring</li>
+                <li>Crash / Restart Automation</li>
+            </ul>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- AI -->
+
+<section id="ai">
+
+    <h2>AI-Assisted Development</h2>
+
+    <div class="ai-card">
+
+        <p>
+            Beberapa bagian dari project ini dikembangkan dengan
+            bantuan <strong>AI Claude</strong> sebagai technical assistant.
+        </p>
+
+        <p>
+            Bantuan tersebut terutama digunakan ketika menemukan masalah
+            yang kompleks, kode yang sulit dipahami, reverse engineering
+            yang membutuhkan banyak eksperimen, debugging yang panjang,
+            atau ketika diperlukan pendekatan alternatif untuk memecahkan
+            suatu masalah.
+        </p>
+
+
+        <ul class="ai-list">
+
+            <li>
+                🔎 Menganalisis kode dan struktur data yang kompleks
+            </li>
+
+            <li>
+                🧩 Mencari kemungkinan solusi untuk masalah yang sulit
+            </li>
+
+            <li>
+                🐛 Membantu debugging dan menemukan sumber error
+            </li>
+
+            <li>
+                🧠 Mengeksplorasi algoritma dan pendekatan teknis
+            </li>
+
+            <li>
+                🧪 Membantu merancang eksperimen dan validasi
+            </li>
+
+            <li>
+                ⚙️ Mengembangkan atau menyempurnakan utility dan tooling
+            </li>
+
+        </ul>
+
+
+        <p>
+            Namun, <strong>AI bukan pengganti proses pengembangan</strong>.
+            Setiap solusi tetap saya pelajari, uji, verifikasi, dan
+            sesuaikan dengan perilaku sebenarnya dari file, engine,
+            client, server, atau sistem yang sedang dikerjakan.
+        </p>
+
+
+        <blockquote>
+            <strong>
+                AI membantu mempercepat pemecahan masalah.
+                Saya tetap bertanggung jawab atas implementasi,
+                pengujian, dan hasil akhirnya.
+            </strong>
+        </blockquote>
+
+    </div>
+
+</section>
+
+
+</div>
+
+</main>
+
+
+<!-- FOOTER -->
+
+<footer>
+
+    <div class="container">
+
+        <div class="footer-title">
+            👋 Thanks for visiting my project.
+        </div>
+
+        <div>
+            Built with curiosity, experimentation, and lots of debugging.
+        </div>
+
+        <br>
+
+        <div>
+            © 2026 Independent Developer
+        </div>
+
+    </div>
+
+</footer>
+
+
+</body>
+</html>
+```
