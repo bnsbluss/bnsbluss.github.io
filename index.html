@@ -4,7 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>About Me — Independent Developer</title>
+    <title>Ziky Andeska — HeavyRain</title>
+
+    <meta
+        name="description"
+        content="Ziky Andeska AKA HeavyRain — Independent Developer, Game Tools Builder, Point Blank Server Administrator and Computer Enthusiast."
+    >
 
     <style>
         :root {
@@ -17,7 +22,6 @@
             --accent: #58a6ff;
             --accent-2: #a371f7;
             --code: #0b0f14;
-            --quote: #79c0ff;
         }
 
         * {
@@ -30,6 +34,7 @@
 
         body {
             margin: 0;
+
             font-family:
                 -apple-system,
                 BlinkMacSystemFont,
@@ -64,17 +69,22 @@
             margin: auto;
         }
 
-        /* HERO */
+
+        /* =========================
+           HERO
+        ========================= */
 
         .hero {
             padding: 90px 0 60px;
             text-align: center;
+
             border-bottom: 1px solid var(--border);
         }
 
         .avatar {
             width: 90px;
             height: 90px;
+
             margin: 0 auto 25px;
 
             display: flex;
@@ -96,10 +106,33 @@
                 0 15px 50px rgba(88, 166, 255, 0.18);
         }
 
+
+        /* NAME */
+
+        .intro-name {
+            margin-bottom: 10px;
+
+            color: var(--muted);
+
+            font-size: 20px;
+        }
+
+        .intro-name strong {
+            color: #ffffff;
+        }
+
+        .aka {
+            color: var(--accent);
+
+            font-weight: 600;
+        }
+
+
         .hero h1 {
             margin: 0;
 
             font-size: clamp(36px, 6vw, 58px);
+
             letter-spacing: -2px;
 
             background:
@@ -120,8 +153,10 @@
             color: var(--muted);
 
             font-size: 18px;
+
             max-width: 850px;
         }
+
 
         .badges {
             margin-top: 25px;
@@ -129,6 +164,7 @@
             display: flex;
             justify-content: center;
             flex-wrap: wrap;
+
             gap: 8px;
         }
 
@@ -141,10 +177,14 @@
             background: rgba(255,255,255,0.03);
 
             color: var(--muted);
+
             font-size: 13px;
         }
 
-        /* NAV */
+
+        /* =========================
+           NAVIGATION
+        ========================= */
 
         .nav {
             position: sticky;
@@ -162,6 +202,7 @@
             display: flex;
             justify-content: center;
             flex-wrap: wrap;
+
             gap: 6px;
 
             padding: 10px;
@@ -179,11 +220,16 @@
 
         .nav a:hover {
             background: var(--card);
+
             color: var(--text);
+
             text-decoration: none;
         }
 
-        /* CONTENT */
+
+        /* =========================
+           CONTENT
+        ========================= */
 
         main {
             padding: 55px 0;
@@ -191,6 +237,7 @@
 
         section {
             margin-bottom: 70px;
+
             scroll-margin-top: 80px;
         }
 
@@ -198,11 +245,13 @@
             margin-bottom: 25px;
 
             font-size: 30px;
+
             letter-spacing: -0.8px;
         }
 
         h2::before {
             content: "#";
+
             margin-right: 10px;
 
             color: var(--accent);
@@ -210,6 +259,7 @@
 
         h3 {
             font-size: 20px;
+
             margin-top: 35px;
         }
 
@@ -221,8 +271,14 @@
             color: #ffffff;
         }
 
+
+        /* =========================
+           BLOCKQUOTE
+        ========================= */
+
         blockquote {
             margin: 25px 0;
+
             padding: 18px 22px;
 
             border-left: 4px solid var(--accent);
@@ -230,13 +286,18 @@
             background: rgba(88,166,255,0.06);
 
             color: #c9d1d9;
+
             border-radius: 0 8px 8px 0;
         }
 
-        /* SKILLS */
+
+        /* =========================
+           SKILLS
+        ========================= */
 
         .skills {
             display: grid;
+
             grid-template-columns:
                 repeat(auto-fit, minmax(240px, 1fr));
 
@@ -247,6 +308,7 @@
             padding: 15px 18px;
 
             border: 1px solid var(--border);
+
             border-radius: 10px;
 
             background: var(--card);
@@ -259,16 +321,22 @@
 
         .skill:hover {
             transform: translateY(-3px);
+
             border-color: #58a6ff66;
+
             background: var(--card-hover);
         }
 
-        /* PROJECTS */
+
+        /* =========================
+           PROJECTS
+        ========================= */
 
         .project-wrapper {
             overflow-x: auto;
 
             border: 1px solid var(--border);
+
             border-radius: 12px;
 
             background: var(--card);
@@ -276,7 +344,9 @@
 
         table {
             width: 100%;
+
             border-collapse: collapse;
+
             min-width: 850px;
         }
 
@@ -313,23 +383,33 @@
 
         .project-name {
             color: #ffffff;
+
             font-weight: 600;
+
             white-space: nowrap;
         }
 
         .project-type {
             color: var(--accent);
+
             font-size: 13px;
+
             font-weight: 600;
         }
 
-        /* PIPELINE */
+
+        /* =========================
+           PIPELINE
+        ========================= */
 
         .pipeline {
             display: flex;
+
             align-items: center;
             justify-content: center;
+
             flex-wrap: wrap;
+
             gap: 8px;
 
             margin: 30px 0;
@@ -339,28 +419,36 @@
             padding: 12px 16px;
 
             border: 1px solid var(--border);
+
             border-radius: 8px;
 
             background: var(--card);
 
             font-size: 14px;
+
             white-space: nowrap;
         }
 
         .arrow {
             color: var(--accent);
+
             font-size: 20px;
         }
 
-        /* CODE */
+
+        /* =========================
+           CODE
+        ========================= */
 
         pre {
             margin: 25px 0;
+
             padding: 22px;
 
             overflow-x: auto;
 
             border: 1px solid var(--border);
+
             border-radius: 10px;
 
             background: var(--code);
@@ -374,6 +462,7 @@
                 monospace;
 
             font-size: 14px;
+
             line-height: 1.6;
         }
 
@@ -385,10 +474,14 @@
                 monospace;
         }
 
-        /* TECH STACK */
+
+        /* =========================
+           TECHNOLOGY
+        ========================= */
 
         .tech-grid {
             display: grid;
+
             grid-template-columns:
                 repeat(auto-fit, minmax(260px, 1fr));
 
@@ -399,6 +492,7 @@
             padding: 22px;
 
             border: 1px solid var(--border);
+
             border-radius: 12px;
 
             background: var(--card);
@@ -410,17 +504,22 @@
 
         .tech-card ul {
             margin: 0;
+
             padding-left: 20px;
 
             color: var(--muted);
         }
 
-        /* AI */
+
+        /* =========================
+           AI
+        ========================= */
 
         .ai-card {
             padding: 30px;
 
             border: 1px solid #58a6ff33;
+
             border-radius: 14px;
 
             background:
@@ -448,12 +547,16 @@
             padding: 10px 14px;
 
             border: 1px solid var(--border);
+
             border-radius: 8px;
 
             background: rgba(0,0,0,0.15);
         }
 
-        /* FOOTER */
+
+        /* =========================
+           FOOTER
+        ========================= */
 
         footer {
             padding: 45px 0;
@@ -467,10 +570,14 @@
 
         .footer-title {
             color: var(--text);
+
             font-weight: 600;
         }
 
-        /* RESPONSIVE */
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
 
         @media (max-width: 700px) {
 
@@ -480,6 +587,10 @@
 
             .hero h1 {
                 font-size: 40px;
+            }
+
+            .intro-name {
+                font-size: 17px;
             }
 
             .subtitle {
@@ -509,18 +620,34 @@
     </style>
 </head>
 
+
 <body>
 
-<!-- HERO -->
+
+<!-- =========================
+     HERO
+========================= -->
 
 <header class="hero">
+
     <div class="container">
 
         <div class="avatar">
             👨‍💻
         </div>
 
+
+        <!-- NAME -->
+
+        <div class="intro-name">
+            Hey there! 👋 My name is
+            <strong>Ziky Andeska</strong>
+            <span class="aka">AKA HeavyRain</span>
+        </div>
+
+
         <h1>About Me</h1>
+
 
         <p class="subtitle">
             Independent Developer • Game Tools Builder •
@@ -528,32 +655,74 @@
             Computer & Laptop Enthusiast
         </p>
 
+
         <div class="badges">
-            <span class="badge">🎮 Game Tools</span>
-            <span class="badge">🔬 Reverse Engineering</span>
-            <span class="badge">🐍 Python</span>
-            <span class="badge">💻 Windows</span>
-            <span class="badge">🌐 PHP + PostgreSQL</span>
-            <span class="badge">🧩 I3 Engine</span>
+
+            <span class="badge">
+                🎮 Game Tools
+            </span>
+
+            <span class="badge">
+                🔬 Reverse Engineering
+            </span>
+
+            <span class="badge">
+                🐍 Python
+            </span>
+
+            <span class="badge">
+                💻 Windows
+            </span>
+
+            <span class="badge">
+                🌐 PHP + PostgreSQL
+            </span>
+
+            <span class="badge">
+                🧩 I3 Engine
+            </span>
+
         </div>
 
     </div>
+
 </header>
 
 
-<!-- NAV -->
+<!-- =========================
+     NAVIGATION
+========================= -->
 
 <nav class="nav">
+
     <div class="nav-inner">
 
-        <a href="#about">About</a>
-        <a href="#skills">Skills</a>
-        <a href="#projects">Projects</a>
-        <a href="#workflow">Workflow</a>
-        <a href="#technology">Technology</a>
-        <a href="#ai">AI Assisted</a>
+        <a href="#about">
+            About
+        </a>
+
+        <a href="#skills">
+            Skills
+        </a>
+
+        <a href="#projects">
+            Projects
+        </a>
+
+        <a href="#workflow">
+            Workflow
+        </a>
+
+        <a href="#technology">
+            Technology
+        </a>
+
+        <a href="#ai">
+            AI Assisted
+        </a>
 
     </div>
+
 </nav>
 
 
@@ -562,32 +731,45 @@
 <div class="container">
 
 
-<!-- ABOUT -->
+<!-- =========================
+     ABOUT
+========================= -->
 
 <section id="about">
 
     <h2>About Me</h2>
 
+
     <p>
         Saya adalah developer yang banyak mengerjakan
-        <strong>tools, server, modding, rekayasa file game,
-        dan otomasi</strong>—terutama di ekosistem
+        <strong>
+            tools, server, modding, rekayasa file game,
+            dan otomasi
+        </strong>
+        —terutama di ekosistem
         <strong>Point Blank</strong>.
     </p>
+
 
     <p>
         Saya lebih suka membangun tool yang benar-benar
         menyelesaikan masalah daripada sekadar membuat prototype.
     </p>
 
+
     <p>
         Saya tertarik membongkar cara kerja sebuah sistem dari
         level data/file hingga menjadi tool yang mudah digunakan.
         Dari format binary seperti
-        <strong>.I3S, .I3CHR, .i3Pack, .RSC</strong>,
-        dan <strong>.i3AnimPack</strong>, sampai server game,
-        web panel, database, pembayaran, dan watchdog Windows.
+        <strong>
+            .I3S, .I3CHR, .i3Pack, .RSC
+        </strong>
+        dan
+        <strong>.i3AnimPack</strong>,
+        sampai server game, web panel, database,
+        pembayaran, dan watchdog Windows.
     </p>
+
 
     <p>
         Saya mengerjakan project-project ini secara mandiri,
@@ -596,6 +778,7 @@
         struktur file, algoritma, debugging, atau masalah teknis
         yang sangat sulit.
     </p>
+
 
     <p>
         AI saya gunakan sebagai partner untuk analisis,
@@ -607,11 +790,14 @@
 </section>
 
 
-<!-- SKILLS -->
+<!-- =========================
+     SKILLS
+========================= -->
 
 <section id="skills">
 
     <h2>Fokus & Keahlian</h2>
+
 
     <div class="skills">
 
@@ -656,32 +842,54 @@
 </section>
 
 
-<!-- PROJECTS -->
+<!-- =========================
+     PROJECTS
+========================= -->
 
 <section id="projects">
 
     <h2>Project Showcase</h2>
 
+
     <p>
         Berikut beberapa project dan sistem yang saya kerjakan
-        atau kembangkan.
+        atau kembangkan. Sebagian merupakan project publik,
+        sebagian lainnya adalah project personal/private yang
+        menjadi bagian dari eksperimen dan pengembangan sistem
+        Point Blank.
     </p>
+
 
     <div class="project-wrapper">
 
         <table>
 
             <thead>
+
                 <tr>
-                    <th>Project</th>
-                    <th>Fokus</th>
-                    <th>Deskripsi</th>
+
+                    <th>
+                        Project
+                    </th>
+
+                    <th>
+                        Fokus
+                    </th>
+
+                    <th>
+                        Deskripsi
+                    </th>
+
                 </tr>
+
             </thead>
+
 
             <tbody>
 
+
                 <tr>
+
                     <td class="project-name">
                         🎮 I3 Engine Editor V3
                     </td>
@@ -696,10 +904,12 @@
                         data Point Blank berbasis I3 Engine.
                         Project ini merupakan fokus utama repository ini.
                     </td>
+
                 </tr>
 
 
                 <tr>
+
                     <td class="project-name">
                         🧰 I3 Engine Tools V3
                     </td>
@@ -713,10 +923,12 @@
                         editor dan converter I3 Engine dalam satu aplikasi
                         dengan pencarian, kategori, serta tema dark/light.
                     </td>
+
                 </tr>
 
 
                 <tr>
+
                     <td class="project-name">
                         🧍 I3 Character Pipeline
                     </td>
@@ -730,10 +942,12 @@
                         skeleton, ragdoll, weapon point, dan helmet point
                         karakter V1 tanpa kehilangan mesh dan tekstur aslinya.
                     </td>
+
                 </tr>
 
 
                 <tr>
+
                     <td class="project-name">
                         🔫 I3 Weapon Pipeline
                     </td>
@@ -747,10 +961,12 @@
                         mengonversi, serta mengatur state, animasi,
                         suara, dan resource senjata Point Blank.
                     </td>
+
                 </tr>
 
 
                 <tr>
+
                     <td class="project-name">
                         🗺️ I3 Map Tools
                     </td>
@@ -764,10 +980,12 @@
                         untuk membantu mengedit jalur AI, objek map,
                         collision, dan model dalam scene Point Blank.
                     </td>
+
                 </tr>
 
 
                 <tr>
+
                     <td class="project-name">
                         📦 I3Pack / RSC Tools
                     </td>
@@ -781,10 +999,12 @@
                         mengekstrak, memasukkan kembali, dan memeriksa
                         resource .i3Pack serta .RSC.
                     </td>
+
                 </tr>
 
 
                 <tr>
+
                     <td class="project-name">
                         🎞️ I3 Animation Tools
                     </td>
@@ -798,10 +1018,12 @@
                         membaca track, keyframe, durasi, serta memindahkan
                         gerakan antar paket animasi.
                     </td>
+
                 </tr>
 
 
                 <tr>
+
                     <td class="project-name">
                         🖥️ Point Blank Server Ecosystem
                     </td>
@@ -816,10 +1038,12 @@
                         web account system, voucher, inbox, dan berbagai
                         utility pendukung.
                     </td>
+
                 </tr>
 
 
                 <tr>
+
                     <td class="project-name">
                         🌐 Web System
                     </td>
@@ -833,10 +1057,12 @@
                         inbox, redeem voucher, package, dan integrasi
                         pembayaran untuk distribusi item/game package.
                     </td>
+
                 </tr>
 
 
                 <tr>
+
                     <td class="project-name">
                         🎨 Point Blank Asset / Texture Workflow
                     </td>
@@ -850,7 +1076,9 @@
                         LOD, material, dan asset game untuk kebutuhan
                         modding serta pengembangan content.
                     </td>
+
                 </tr>
+
 
             </tbody>
 
@@ -860,23 +1088,30 @@
 
 
     <blockquote>
+
         <strong>Catatan:</strong>
+
         Tidak semua project di atas merupakan repository publik.
         Sebagian adalah project pribadi, eksperimen, atau sistem yang
         digunakan dalam pengembangan server dan tooling.
+
     </blockquote>
 
 </section>
 
 
-<!-- WORKFLOW -->
+<!-- =========================
+     WORKFLOW
+========================= -->
 
 <section id="workflow">
 
     <h2>Cara Saya Mengerjakan Project</h2>
 
+
     <p>
-        Saya biasanya memulai dari <strong>masalah nyata</strong>,
+        Saya biasanya memulai dari
+        <strong>masalah nyata</strong>,
         kemudian membongkar struktur sistemnya sampai ditemukan cara
         kerja yang dapat direproduksi.
     </p>
@@ -888,31 +1123,41 @@
             Problem
         </div>
 
-        <div class="arrow">→</div>
+        <div class="arrow">
+            →
+        </div>
 
         <div class="pipeline-item">
             Analisis
         </div>
 
-        <div class="arrow">→</div>
+        <div class="arrow">
+            →
+        </div>
 
         <div class="pipeline-item">
             Eksperimen
         </div>
 
-        <div class="arrow">→</div>
+        <div class="arrow">
+            →
+        </div>
 
         <div class="pipeline-item">
             Tool
         </div>
 
-        <div class="arrow">→</div>
+        <div class="arrow">
+            →
+        </div>
 
         <div class="pipeline-item">
             Validasi
         </div>
 
-        <div class="arrow">→</div>
+        <div class="arrow">
+            →
+        </div>
 
         <div class="pipeline-item">
             Otomasi
@@ -921,7 +1166,10 @@
     </div>
 
 
-    <h3>Contoh — I3 Engine Editor V3</h3>
+    <h3>
+        Contoh — I3 Engine Editor V3
+    </h3>
+
 
 <pre><code>Game File
    ↓
@@ -954,24 +1202,48 @@ Tool siap digunakan</code></pre>
 </section>
 
 
-<!-- TECHNOLOGY -->
+<!-- =========================
+     TECHNOLOGY
+========================= -->
 
 <section id="technology">
 
-    <h2>Teknologi yang Sering Saya Gunakan</h2>
+    <h2>
+        Teknologi yang Sering Saya Gunakan
+    </h2>
+
 
     <div class="tech-grid">
 
+
         <div class="tech-card">
 
-            <h3>💻 Languages</h3>
+            <h3>
+                💻 Languages
+            </h3>
 
             <ul>
-                <li>Python</li>
-                <li>PHP</li>
-                <li>C#</li>
-                <li>PowerShell</li>
-                <li>SQL</li>
+
+                <li>
+                    Python
+                </li>
+
+                <li>
+                    PHP
+                </li>
+
+                <li>
+                    C#
+                </li>
+
+                <li>
+                    PowerShell
+                </li>
+
+                <li>
+                    SQL
+                </li>
+
             </ul>
 
         </div>
@@ -979,17 +1251,44 @@ Tool siap digunakan</code></pre>
 
         <div class="tech-card">
 
-            <h3>🎮 Game / 3D</h3>
+            <h3>
+                🎮 Game / 3D
+            </h3>
 
             <ul>
-                <li>Point Blank / I3 Engine</li>
-                <li>I3S</li>
-                <li>I3CHR</li>
-                <li>I3AnimPack</li>
-                <li>I3Pack</li>
-                <li>RSC</li>
-                <li>OBJ</li>
-                <li>Texture / LOD / Skeleton / Animation</li>
+
+                <li>
+                    Point Blank / I3 Engine
+                </li>
+
+                <li>
+                    I3S
+                </li>
+
+                <li>
+                    I3CHR
+                </li>
+
+                <li>
+                    I3AnimPack
+                </li>
+
+                <li>
+                    I3Pack
+                </li>
+
+                <li>
+                    RSC
+                </li>
+
+                <li>
+                    OBJ
+                </li>
+
+                <li>
+                    Texture / LOD / Skeleton / Animation
+                </li>
+
             </ul>
 
         </div>
@@ -997,14 +1296,32 @@ Tool siap digunakan</code></pre>
 
         <div class="tech-card">
 
-            <h3>🌐 Backend</h3>
+            <h3>
+                🌐 Backend
+            </h3>
 
             <ul>
-                <li>PostgreSQL</li>
-                <li>PHP Native</li>
-                <li>Web Server</li>
-                <li>Payment / Webhook</li>
-                <li>Server Automation</li>
+
+                <li>
+                    PostgreSQL
+                </li>
+
+                <li>
+                    PHP Native
+                </li>
+
+                <li>
+                    Web Server
+                </li>
+
+                <li>
+                    Payment / Webhook
+                </li>
+
+                <li>
+                    Server Automation
+                </li>
+
             </ul>
 
         </div>
@@ -1012,28 +1329,52 @@ Tool siap digunakan</code></pre>
 
         <div class="tech-card">
 
-            <h3>🪟 Windows</h3>
+            <h3>
+                🪟 Windows
+            </h3>
 
             <ul>
-                <li>PowerShell</li>
-                <li>C#</li>
-                <li>Executable Tooling</li>
-                <li>Process Monitoring</li>
-                <li>Crash / Restart Automation</li>
+
+                <li>
+                    PowerShell
+                </li>
+
+                <li>
+                    C#
+                </li>
+
+                <li>
+                    Executable Tooling
+                </li>
+
+                <li>
+                    Process Monitoring
+                </li>
+
+                <li>
+                    Crash / Restart Automation
+                </li>
+
             </ul>
 
         </div>
+
 
     </div>
 
 </section>
 
 
-<!-- AI -->
+<!-- =========================
+     AI
+========================= -->
 
 <section id="ai">
 
-    <h2>AI-Assisted Development</h2>
+    <h2>
+        AI-Assisted Development
+    </h2>
+
 
     <div class="ai-card">
 
@@ -1041,6 +1382,7 @@ Tool siap digunakan</code></pre>
             Beberapa bagian dari project ini dikembangkan dengan
             bantuan <strong>AI Claude</strong> sebagai technical assistant.
         </p>
+
 
         <p>
             Bantuan tersebut terutama digunakan ketika menemukan masalah
@@ -1081,7 +1423,8 @@ Tool siap digunakan</code></pre>
 
 
         <p>
-            Namun, <strong>AI bukan pengganti proses pengembangan</strong>.
+            Namun,
+            <strong>AI bukan pengganti proses pengembangan</strong>.
             Setiap solusi tetap saya pelajari, uji, verifikasi, dan
             sesuaikan dengan perilaku sebenarnya dari file, engine,
             client, server, atau sistem yang sedang dikerjakan.
@@ -1089,11 +1432,13 @@ Tool siap digunakan</code></pre>
 
 
         <blockquote>
+
             <strong>
                 AI membantu mempercepat pemecahan masalah.
                 Saya tetap bertanggung jawab atas implementasi,
                 pengujian, dan hasil akhirnya.
             </strong>
+
         </blockquote>
 
     </div>
@@ -1106,7 +1451,9 @@ Tool siap digunakan</code></pre>
 </main>
 
 
-<!-- FOOTER -->
+<!-- =========================
+     FOOTER
+========================= -->
 
 <footer>
 
@@ -1117,13 +1464,17 @@ Tool siap digunakan</code></pre>
         </div>
 
         <div>
-            Built with curiosity, experimentation, and lots of debugging.
+            Built with curiosity, experimentation,
+            and lots of debugging.
         </div>
 
         <br>
 
         <div>
-            © 2026 Independent Developer
+            © 2026 Ziky Andeska
+            <span style="color:#58a6ff;">
+                AKA HeavyRain
+            </span>
         </div>
 
     </div>
