@@ -1,5 +1,5 @@
-/* Kota Mati — service worker (PWA). Versi: 20261027-001526 */
-const C='kotamati-20261027-001526',CORE=["kotamati.html", "kotamati/css/style.css?v=20261027-001526", "kotamati/js/game.js?v=20261027-001526", "kotamati/js/akun.js?v=20261027-001526", "kotamati/js/config.js?v=20261027-001526", "kotamati/icon-192.png", "kotamati/manifest.webmanifest", "kotamati/js/three.min.js?v=r128"];
+/* Kota Mati — service worker (PWA). Versi: 20261027-004013 */
+const C='kotamati-20261027-004013',CORE=["kotamati.html", "kotamati/css/style.css?v=20261027-004013", "kotamati/js/game.js?v=20261027-004013", "kotamati/js/akun.js?v=20261027-004013", "kotamati/js/config.js?v=20261027-004013", "kotamati/icon-192.png", "kotamati/manifest.webmanifest", "kotamati/js/three.min.js?v=r128"];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(C).then(c=>c.addAll(CORE)).catch(()=>{}).then(()=>self.skipWaiting()));});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k.startsWith('kotamati-')&&k!==C).map(k=>caches.delete(k)))).then(()=>self.clients.claim()));});
 self.addEventListener('fetch',e=>{const r=e.request;if(r.method!=='GET')return;const u=new URL(r.url);

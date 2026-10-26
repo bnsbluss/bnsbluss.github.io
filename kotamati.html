@@ -4,12 +4,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#120c16">
-<meta name="description" content="Kota Mati — FPS zombie pixel art di browser. Main solo, co-op, atau PvP bareng teman.">
+<meta name="description" content="Kota Mati — FPS zombie pixel art di browser. Main solo, co-op, atau PvP bareng teman. Dibuat oleh HeavyRain.">
 <title>Kota Mati</title>
+<meta name="author" content="HeavyRain">
+<meta property="og:title" content="Kota Mati — FPS Zombi Pixel Art">
+<meta property="og:description" content="Bertahan dari gelombang zombi di browser. Solo, co-op & PvP. Game buatan HeavyRain.">
+<meta property="og:image" content="https://bnsbluss.github.io/kotamati/icon-512.png">
+<meta property="og:url" content="https://bnsbluss.github.io/kotamati.html">
+<meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Chakra+Petch:wght@400;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="kotamati/css/style.css?v=20261027-001526">
+<link rel="stylesheet" href="kotamati/css/style.css?v=20261027-004013">
 <link rel="manifest" href="kotamati/manifest.webmanifest">
 <link rel="icon" type="image/png" href="kotamati/icon-192.png">
 <link rel="apple-touch-icon" href="kotamati/icon-192.png">
@@ -33,6 +39,7 @@
     <div class="brand">
       <span class="logo">KOTA MATI</span>
       <span class="tag">FPS zombi · arcade piksel · solo, co-op, PvP</span>
+      <span class="by">Dibuat oleh <b>HeavyRain</b></span>
     </div>
     <div class="actions">
       <button class="btn" id="btnExit" type="button" hidden>KELUAR KE MENU</button>
@@ -43,6 +50,7 @@
 
   <div class="cab" id="cab">
     <canvas id="screen" width="384" height="216" tabindex="0" aria-label="Layar game Kota Mati"></canvas>
+    <div class="oshare share" id="oShare" hidden><span>BAGIKAN SKOR</span><button class="btn sm fb" id="oShFb" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 8V6c0-.9.6-1 1-1h3V1h-4c-3.3 0-4.5 2.4-4.5 5v2H7v4h2.5v11H14V12h3.4l.6-4z"/></svg>FACEBOOK</button><button class="btn sm ig" id="oShIg" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm0 8.2a3.2 3.2 0 1 1 0-6.4 3.2 3.2 0 0 1 0 6.4zM17.3 5.4a1.2 1.2 0 1 0 0 2.4 1.2 1.2 0 0 0 0-2.4zM12 2c-2.7 0-3 0-4.1.1C4.3 2.2 2.2 4.3 2.1 7.9 2 9 2 9.3 2 12s0 3 .1 4.1c.1 3.6 2.2 5.7 5.8 5.8 1.1.1 1.4.1 4.1.1s3 0 4.1-.1c3.6-.1 5.7-2.2 5.8-5.8.1-1.1.1-1.4.1-4.1s0-3-.1-4.1C21.8 4.3 19.7 2.2 16.1 2.1 15 2 14.7 2 12 2zm0 1.8c2.7 0 3 0 4 .1 2.6.1 3.9 1.4 4 4 .1 1 .1 1.3.1 4s0 3-.1 4c-.1 2.6-1.4 3.9-4 4-1 .1-1.3.1-4 .1s-3 0-4-.1c-2.6-.1-3.9-1.4-4-4C3.9 15 3.8 14.7 3.8 12s0-3 .1-4c.1-2.6 1.4-3.9 4-4 1-.1 1.3-.1 4.1-.1z"/></svg>INSTAGRAM</button></div>
     <div class="menu" id="menu">
       <div class="mview" id="vMain">
         <div class="pcard"><canvas id="pcCv" width="40" height="48"></canvas><div class="pinfo"><span class="pname" id="pcName">PEMAIN</span>
@@ -59,6 +67,9 @@
         <div class="maps" id="maps"></div>
         <div class="row"><button class="btn sm" id="bNight" type="button">MODE MALAM: MATI</button><button class="btn sm" id="bSet" type="button">PENGATURAN</button><button class="btn sm" id="bLb" type="button">PERINGKAT</button><button class="btn sm" id="bBots" type="button">TEMAN BOT: 0</button><button class="btn sm go" id="bInstall" type="button" hidden>PASANG DI HP</button></div>
         <p class="mnote" id="netNote">Memeriksa koneksi online…</p>
+        <h2 class="mh">BAGIKAN GAME</h2>
+        <div class="row share"><button class="btn sm fb" id="bShFb" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 8V6c0-.9.6-1 1-1h3V1h-4c-3.3 0-4.5 2.4-4.5 5v2H7v4h2.5v11H14V12h3.4l.6-4z"/></svg>FACEBOOK</button><button class="btn sm ig" id="bShIg" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm0 8.2a3.2 3.2 0 1 1 0-6.4 3.2 3.2 0 0 1 0 6.4zM17.3 5.4a1.2 1.2 0 1 0 0 2.4 1.2 1.2 0 0 0 0-2.4zM12 2c-2.7 0-3 0-4.1.1C4.3 2.2 2.2 4.3 2.1 7.9 2 9 2 9.3 2 12s0 3 .1 4.1c.1 3.6 2.2 5.7 5.8 5.8 1.1.1 1.4.1 4.1.1s3 0 4.1-.1c3.6-.1 5.7-2.2 5.8-5.8.1-1.1.1-1.4.1-4.1s0-3-.1-4.1C21.8 4.3 19.7 2.2 16.1 2.1 15 2 14.7 2 12 2zm0 1.8c2.7 0 3 0 4 .1 2.6.1 3.9 1.4 4 4 .1 1 .1 1.3.1 4s0 3-.1 4c-.1 2.6-1.4 3.9-4 4-1 .1-1.3.1-4 .1s-3 0-4-.1c-2.6-.1-3.9-1.4-4-4C3.9 15 3.8 14.7 3.8 12s0-3 .1-4c.1-2.6 1.4-3.9 4-4 1-.1 1.3-.1 4.1-.1z"/></svg>INSTAGRAM</button></div>
+        <p class="mnote">Kota Mati · dibuat oleh HeavyRain</p>
       </div>
       <div class="mview" id="vRooms" hidden>
         <h2 class="mh" id="rTitle">DAFTAR ROOM</h2>
@@ -213,18 +224,19 @@
       </ul>
     </div>
   </section>
+  <p class="mnote" style="margin:14px 0 0">Kota Mati © HeavyRain · Game ini dibuat oleh <b style="color:var(--toxic)">HeavyRain</b>.</p>
   <p class="mnote" style="margin:14px 0 0">Musik pertarungan: “Upbeat RPG Battle” oleh Vespidaze.</p>
 </div>
-<script>window.KM_VER="20261027-001526";window.KM_VERURL="kotamati/version.json";window.KM_PWA={sw:"kotamati-sw.js",scope:"./kotamati"};window.KM_THREE="kotamati/js/three.min.js?v=r128";</script>
-<script src="kotamati/js/config.js?v=20261027-001526"></script>
+<script>window.KM_VER="20261027-004013";window.KM_VERURL="kotamati/version.json";window.KM_PWA={sw:"kotamati-sw.js",scope:"./kotamati"};window.KM_THREE="kotamati/js/three.min.js?v=r128";</script>
+<script src="kotamati/js/config.js?v=20261027-004013"></script>
 <script>
 /* Library Firebase hanya dimuat kalau kotamati/js/config.js sudah diisi. */
 if(window.KM_FIREBASE&&KM_FIREBASE.apiKey&&!/^ISI/i.test(KM_FIREBASE.apiKey)){
   document.write('<script src="https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-app-compat.js"><\/script><script src="https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-auth-compat.js"><\/script><script src="https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-firestore-compat.js"><\/script>');
 }
 </script>
-<script src="kotamati/js/akun.js?v=20261027-001526"></script>
+<script src="kotamati/js/akun.js?v=20261027-004013"></script>
 <script>window.KM_TRACK='kotamati/sound/battle.mp3';</script>
-<script src="kotamati/js/game.js?v=20261027-001526"></script>
+<script src="kotamati/js/game.js?v=20261027-004013"></script>
 </body>
 </html>

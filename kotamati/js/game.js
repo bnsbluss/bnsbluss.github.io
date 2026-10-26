@@ -2484,6 +2484,23 @@ async function doShare(){const url=shareLink(),txt0='Ayo main Kota Mati bareng! 
   try{if(navigator.share){await navigator.share({title:'Kota Mati',text:txt0,url});return;}}catch(e){if(e&&e.name==='AbortError')return;}
   let ok=false;try{await navigator.clipboard.writeText(txt0+'\n'+url);ok=true;}catch(e){}
   lMsg.textContent=ok?'Link disalin! Tempel di WhatsApp atau Discord: '+url:'Salin link ini ke temanmu: '+url;}
+/* ================= bagikan ke Facebook / Instagram ================= */
+const GAME_URL='https://bnsbluss.github.io/kotamati.html';
+function gameUrl(){try{if(/^https?:$/.test(location.protocol)&&!/claude|anthropic|localhost|127\.0\.0\.1/.test(location.host))return location.href.split('#')[0].split('?')[0];}catch(e){}return GAME_URL;}
+function shareText(sc){return sc>0?('Aku dapat skor '+sc+' di Kota Mati! Berani lawan gelombang zombi juga? Game buatan HeavyRain.'):'Main Kota Mati — FPS zombi pixel art di browser, gratis! Solo, co-op & PvP. Game buatan HeavyRain.';}
+let shT=0;function shToast(m){let t=document.getElementById('shToast');if(!t){t=document.createElement('div');t.id='shToast';t.className='shtoast';t.setAttribute('role','status');document.body.appendChild(t);}
+  t.textContent=m;t.hidden=false;clearTimeout(shT);shT=setTimeout(()=>{t.hidden=true;},4500);}
+function shareFB(sc){const u=gameUrl(),link='https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(u)+'&quote='+encodeURIComponent(shareText(sc));let w=null;
+  try{w=window.open(link,'_blank','noopener,width=640,height=580');}catch(e){}if(!w){try{navigator.clipboard.writeText(u);}catch(e){}shToast('Jendela Facebook diblokir browser. Link sudah disalin, tempel di Facebook: '+u);}}
+async function shareIG(sc){const u=gameUrl(),t=shareText(sc);
+  if(navigator.share&&isTouch){try{await navigator.share({title:'Kota Mati',text:t,url:u});return;}catch(e){if(e&&e.name==='AbortError')return;}}
+  let ok=false;try{await navigator.clipboard.writeText(t+' '+u);ok=true;}catch(e){}
+  shToast(ok?'Teks & link disalin! Tempel di Story, DM, atau bio Instagram-mu.':'Salin link ini ke Instagram: '+u);
+  try{window.open('https://www.instagram.com/','_blank','noopener');}catch(e){}}
+for(const[id,fn,sc]of[['bShFb',shareFB,0],['bShIg',shareIG,0],['oShFb',shareFB,1],['oShIg',shareIG,1]]){const b=document.getElementById(id);
+  b.addEventListener('pointerdown',e=>e.stopPropagation());b.addEventListener('click',e=>{e.stopPropagation();fn(sc?pl.score:0);});}
+const oShare=document.getElementById('oShare');
+function syncOShare(){const on=G.state==='over'&&G.overT>0.9&&!G.hudEdit;if(oShare.hidden===on)oShare.hidden=!on;}
 G.updAvail=false;
 function verCheck(){if(!window.KM_VER||!window.KM_VERURL)return;fetch(KM_VERURL+'?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(j=>{if(j&&j.v&&String(j.v)!==String(KM_VER))G.updAvail=true;}).catch(()=>{});}
 if(window.KM_VER){setTimeout(verCheck,4000);setInterval(verCheck,120000);document.addEventListener('visibilitychange',()=>{if(!document.hidden)verCheck();});}
@@ -2991,6 +3008,7 @@ function render(){
   if(MAP.rain)drawRain();
   if(isDark())drawNight();
   if(MAP.rain)drawLightning();
+  syncOShare();
   if(G.state==='showroom'){drawShowroom();return;}
   if(G.hudEdit&&G.state!=='play'){ctx.fillStyle='rgba(10,6,12,0.55)';ctx.fillRect(0,0,W,H);return;}
   if(G.state==='title'||G.state==='lobby'){drawTitle();return;}
@@ -3173,9 +3191,9 @@ function drawShowroom(){ctx.fillStyle='rgba(10,6,12,0.72)';ctx.fillRect(0,0,W,H)
 function drawTitle(){ctx.fillStyle='rgba(18,10,16,0.45)';ctx.fillRect(0,0,W,H);
   const side=!menuEl.hidden&&getComputedStyle(menuEl).position==='absolute';
   if(side){const x=W*0.26;big('KOTA',32,'fire',x,58+Math.sin(G.t*2)*2);big('MATI',32,'blood',x,96+Math.sin(G.t*2+0.5)*2);
-    txt('SOLO · CO-OP · PVP',x,124,'#9be05a','center');txt('REKOR '+String(G.best).padStart(8,'0'),x,140,'#ffb23e','center');txt('MAP: '+MAP.name,x,156,'#d8c9d4','center');}
+    txt('SOLO · CO-OP · PVP',x,124,'#9be05a','center');txt('REKOR '+String(G.best).padStart(8,'0'),x,140,'#ffb23e','center');txt('MAP: '+MAP.name,x,156,'#d8c9d4','center');txt('DIBUAT OLEH HEAVYRAIN',x,H-14,'#a8939f','center');}
   else{big('KOTA MATI',32,'fire',HW,62+Math.sin(G.t*2)*2);txt('BERTAHAN DARI GELOMBANG ZOMBI',HW,96,'#9be05a','center');
-    txt('PILIH MODE DI BAWAH LAYAR',HW,124,'#fff6e0','center');txt('MAP: '+MAP.name,HW,138,'#d8c9d4','center');txt('REKOR '+String(G.best).padStart(8,'0'),HW,150,'#ffb23e','center');}}
+    txt('PILIH MODE DI BAWAH LAYAR',HW,124,'#fff6e0','center');txt('MAP: '+MAP.name,HW,138,'#d8c9d4','center');txt('REKOR '+String(G.best).padStart(8,'0'),HW,150,'#ffb23e','center');txt('DIBUAT OLEH HEAVYRAIN',HW,H-14,'#a8939f','center');}}
 function drawPause(){ctx.fillStyle='rgba(18,10,16,0.55)';ctx.fillRect(0,0,W,H);
   big(G.paused?'JEDA':'SIAP?',24,'bone',HW,84);
   if(((G.t*2)|0)%2===0)txt(isTouch?'SENTUH UNTUK LANJUT':'KLIK LAYAR UNTUK MAIN',HW,112,'#fff6e0','center');
