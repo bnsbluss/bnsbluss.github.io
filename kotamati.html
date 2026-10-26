@@ -9,7 +9,12 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Chakra+Petch:wght@400;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="kotamati/css/style.css">
+<link rel="stylesheet" href="kotamati/css/style.css?v=20261027-001526">
+<link rel="manifest" href="kotamati/manifest.webmanifest">
+<link rel="icon" type="image/png" href="kotamati/icon-192.png">
+<link rel="apple-touch-icon" href="kotamati/icon-192.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
 </head>
 <body>
 <div class="gate" id="gate" hidden><div class="gatebox" role="dialog" aria-labelledby="gTitle"><h2 id="gTitle">SELAMAT DATANG DI KOTA MATI</h2>
@@ -23,6 +28,7 @@
   <p class="gerr" id="gErr" role="alert"></p><p class="mnote" id="gNote">Nama ini terlihat oleh pemain lain saat mabar.</p>
   <button class="btn sm" id="gClose" type="button" hidden>TUTUP</button></div></div>
 <div class="wrap">
+  <button class="upd" id="upd" type="button" hidden>VERSI BARU TERSEDIA · KETUK UNTUK MEMPERBARUI</button>
   <header class="top">
     <div class="brand">
       <span class="logo">KOTA MATI</span>
@@ -41,16 +47,17 @@
       <div class="mview" id="vMain">
         <div class="pcard"><canvas id="pcCv" width="40" height="48"></canvas><div class="pinfo"><span class="pname" id="pcName">PEMAIN</span>
           <span class="prank"><canvas id="pcRank" width="12" height="12"></canvas><span id="pcRankN">PRAJURIT DUA</span></span><span class="pexp" title="EXP"><i id="pcExp"></i></span><span class="pskin" id="pcSkin">TENTARA</span></div>
-          <div class="pbtn"><button class="btn sm" id="bShow" type="button">SHOWROOM</button><button class="btn sm" id="bAcc" type="button">AKUN</button></div></div>
+          <div class="pbtn"><button class="btn sm" id="bShow" type="button">SHOWROOM</button><button class="btn sm" id="bAcc" type="button">AKUN</button><button class="btn sm" id="bMisi" type="button">MISI</button></div></div>
         <h2 class="mh">PILIH MODE</h2>
         <div class="modes">
           <button class="mode" id="mSolo" type="button"><span class="mt">SOLO</span><span class="md">Bertahan sendirian dari gelombang zombi</span></button>
+          <button class="mode" id="mDef" type="button"><span class="mt">BERTAHAN</span><span class="md">Jaga generator selama 8 gelombang · tahan E untuk memperbaiki</span></button>
           <button class="mode" id="mCoop" type="button" disabled><span class="mt">CO-OP ONLINE</span><span class="md">2–4 pemain melawan zombi bersama</span></button>
           <button class="mode" id="mPvp" type="button" disabled><span class="mt">PVP 1 LAWAN 1</span><span class="md">5 menit · kill terbanyak menang</span></button>
         </div>
         <h2 class="mh">PILIH MAP</h2>
         <div class="maps" id="maps"></div>
-        <div class="row"><button class="btn sm" id="bNight" type="button">MODE MALAM: MATI</button><button class="btn sm" id="bSet" type="button">PENGATURAN</button><button class="btn sm" id="bLb" type="button">PERINGKAT</button></div>
+        <div class="row"><button class="btn sm" id="bNight" type="button">MODE MALAM: MATI</button><button class="btn sm" id="bSet" type="button">PENGATURAN</button><button class="btn sm" id="bLb" type="button">PERINGKAT</button><button class="btn sm" id="bBots" type="button">TEMAN BOT: 0</button><button class="btn sm go" id="bInstall" type="button" hidden>PASANG DI HP</button></div>
         <p class="mnote" id="netNote">Memeriksa koneksi online…</p>
       </div>
       <div class="mview" id="vRooms" hidden>
@@ -78,9 +85,14 @@
         <p class="gerr" id="aErr"></p>
         <div class="row"><button class="btn go sm" id="aLogin" type="button">MASUK / DAFTAR</button><button class="btn sm" id="aLogout" type="button">KELUAR AKUN</button><button class="btn sm" id="aBack" type="button">KEMBALI</button></div>
       </div>
+      <div class="mview" id="vMisi" hidden>
+        <h2 class="mh">MISI HARIAN</h2>
+        <ul class="misi" id="misiList"></ul><p class="mnote" id="misiMsg"></p>
+        <div class="row"><button class="btn sm" id="misiBack" type="button">KEMBALI</button></div>
+      </div>
       <div class="mview" id="vLb" hidden>
         <h2 class="mh">PAPAN PERINGKAT</h2>
-        <div class="seg" id="lbTabs"><button type="button" data-f="exp">EXP</button><button type="button" data-f="best">SKOR</button><button type="button" data-f="kills">KILL</button></div>
+        <div class="seg" id="lbTabs"><button type="button" data-f="exp">EXP</button><button type="button" data-f="best">SKOR</button><button type="button" data-f="kills">KILL</button><button type="button" data-f="week">MINGGUAN</button></div>
         <ol class="lb" id="lbList"></ol><p class="mnote" id="lbMsg"></p>
         <div class="row"><button class="btn sm" id="lbRefresh" type="button">MUAT ULANG</button><button class="btn sm" id="lbBack" type="button">KEMBALI</button></div>
       </div>
@@ -91,15 +103,19 @@
         <div class="rng"><label for="sSfx">Volume efek suara <b id="vSfx">80</b></label><input type="range" id="sSfx" min="0" max="100" step="5"></div>
         <h2 class="mh">KUALITAS GRAFIS</h2>
         <div class="seg" id="sQ"><button type="button" data-q="0">RENDAH</button><button type="button" data-q="1">SEDANG</button><button type="button" data-q="2">TINGGI</button></div>
+        <h2 class="mh">UKURAN HUD</h2>
+        <div class="seg" id="sHud"><button type="button" data-h="2">KECIL</button><button type="button" data-h="1">SEDANG</button><button type="button" data-h="0">BESAR</button></div>
         <div class="rng" id="gsRow" hidden><label for="sGs">Ukuran semua tombol HP <b id="vGs">100%</b></label><input type="range" id="sGs" min="0.5" max="1.2" step="0.05"></div>
         <div class="row" id="hudRow" hidden><button class="btn sm" id="bHud" type="button">ATUR TOMBOL HP</button><span class="mnote">Geser dan ubah ukuran tiap tombol.</span></div>
+        <div class="row"><button class="btn sm" id="bG3D" type="button">GRAFIK 3D: NYALA</button><span class="mnote" id="g3dNote">Dunia 3D bergaya piksel. Matikan kalau HP terasa berat.</span></div>
         <div class="row"><button class="btn sm" id="bAutoFs" type="button">LAYAR PENUH OTOMATIS: NYALA</button></div>
         <p class="mnote">Pilih RENDAH kalau game terasa patah-patah di HP. Lantai digambar lebih sederhana dan efek partikel dikurangi.</p>
         <div class="row"><button class="btn" id="bBackSet" type="button">KEMBALI</button></div>
       </div>
       <div class="mview" id="vLobby" hidden>
         <h2 class="mh" id="lTitle">RUANGAN</h2>
-        <div class="row"><span class="mnote">Kode:</span><span class="code" id="lCode"></span></div>
+        <div class="row"><span class="mnote">Kode:</span><span class="code" id="lCode"></span><button class="btn sm go" id="bShare" type="button" hidden>BAGIKAN LINK</button></div>
+        <div class="row" id="lDefRow"><span class="mnote">Mode:</span><span class="code" id="lDef">GELOMBANG</span><button class="btn sm" id="bDefL" type="button">GANTI</button></div>
         <div class="row"><span class="mnote">Map:</span><span class="code" id="lMap"></span><button class="btn sm" id="bMap" type="button">GANTI MAP</button></div>
         <div class="row"><span class="mnote">Malam:</span><span class="code" id="lNight">MATI</span><button class="btn sm" id="bNightL" type="button">GANTI</button></div>
         <ul class="plist" id="lList"></ul>
@@ -155,7 +171,7 @@
         <li><span class="caps"><kbd>X</kbd></span><span>Lempar molotov, membakar area selama 7 detik</span></li>
         <li><span class="caps"><kbd>V</kbd></span><span>Tebas parang cepat tanpa ganti senjata</span></li>
         <li><span class="caps"><kbd>B</kbd></span><span>Buka toko di jeda antar gelombang, lalu pilih 1–9, 0, -. Tiap barang ada batas beli per jeda</span></li>
-        <li><span class="caps"><kbd>E</kbd></span><span>Tahan di dekat teman yang terjatuh untuk menolongnya (co-op)</span></li>
+        <li><span class="caps"><kbd>E</kbd></span><span>Tahan untuk menolong teman atau bot yang terjatuh, atau memperbaiki generator di mode Bertahan</span></li>
         <li><span class="caps"><kbd>Q</kbd><kbd>Klik tengah</kbd></span><span>Tandai lokasi, zombi, atau peti untuk tim (co-op)</span></li>
         <li><span class="caps"><kbd>Klik kanan</kbd><kbd>Z</kbd></span><span>Teropong AWP (sekali 3x, dua kali 6x, tiga kali lepas). Saat pegang KRISS: aktifkan DUAL KRISS</span></li>
         <li><span class="caps"><kbd>1</kbd>–<kbd>7</kbd><kbd>Scroll</kbd></span><span>Ganti senjata. 6 parang, 7 KRISS</span></li>
@@ -184,6 +200,7 @@
       <h2>DAFTAR ZOMBI</h2>
       <ul class="zlist">
         <li><b>ZOMBI &amp; TENTARA</b>Gerombolan utama. Tentara berlari lebih cepat.</li>
+        <li><b>ZOMBI MERANGKAK</b>Zombi yang tumbang bisa bangkit lagi dan merangkak mengejarmu. Tembak kepala, ledakkan, atau tebas supaya benar-benar mati. Lompati untuk menghindar.</li>
         <li><b>GENDUT</b>Meludahkan racun dan meledak saat mati. Jangan habisi dari dekat.</li>
         <li><b>PEMBURU</b>Merunduk lalu menerkam dari jauh dan menahanmu. Tembak sebelum ia melompat.</li>
         <li><b>LIDAH</b>Menjerat lalu menarikmu dari jauh. Tembak tubuhnya untuk memutus lidahnya.</li>
@@ -198,15 +215,16 @@
   </section>
   <p class="mnote" style="margin:14px 0 0">Musik pertarungan: “Upbeat RPG Battle” oleh Vespidaze.</p>
 </div>
-<script src="kotamati/js/config.js"></script>
+<script>window.KM_VER="20261027-001526";window.KM_VERURL="kotamati/version.json";window.KM_PWA={sw:"kotamati-sw.js",scope:"./kotamati"};window.KM_THREE="kotamati/js/three.min.js?v=r128";</script>
+<script src="kotamati/js/config.js?v=20261027-001526"></script>
 <script>
 /* Library Firebase hanya dimuat kalau kotamati/js/config.js sudah diisi. */
 if(window.KM_FIREBASE&&KM_FIREBASE.apiKey&&!/^ISI/i.test(KM_FIREBASE.apiKey)){
   document.write('<script src="https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-app-compat.js"><\/script><script src="https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-auth-compat.js"><\/script><script src="https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-firestore-compat.js"><\/script>');
 }
 </script>
-<script src="kotamati/js/akun.js"></script>
+<script src="kotamati/js/akun.js?v=20261027-001526"></script>
 <script>window.KM_TRACK='kotamati/sound/battle.mp3';</script>
-<script src="kotamati/js/game.js"></script>
+<script src="kotamati/js/game.js?v=20261027-001526"></script>
 </body>
 </html>

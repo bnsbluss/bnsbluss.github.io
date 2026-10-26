@@ -7,6 +7,10 @@ const LS='kotamati-profil';
 const RANKS=[['PRAJURIT DUA',0],['PRAJURIT SATU',500],['PRAJURIT KEPALA',1500],['KOPRAL',3000],['SERSAN DUA',5000],['SERSAN SATU',8000],['SERSAN KEPALA',12000],
   ['LETNAN DUA',17000],['LETNAN SATU',23000],['KAPTEN',30000],['MAYOR',38000],['LETNAN KOLONEL',47000],['KOLONEL',57000],['BRIGJEN',68000],['MAYJEN',80000],['LETJEN',95000],['JENDERAL',120000]];
 const STATS=['exp','kills','hs','games','best','boss','revives','wins','waves'];
+/* minggu berjalan (WIB, mulai Senin 00:00) untuk papan peringkat mingguan */
+function weekKey(){const d=new Date(Date.now()+7*3600e3),day=(d.getUTCDay()+6)%7,th=new Date(Date.UTC(d.getUTCFullYear(),d.getUTCMonth(),d.getUTCDate()-day+3)),y=th.getUTCFullYear(),
+  j4=new Date(Date.UTC(y,0,4)),wk=1+Math.round(((th-j4)/864e5-3+((j4.getUTCDay()+6)%7))/7);return y+'_'+String(wk).padStart(2,'0');}
+const WF=()=>'w'+weekKey();
 const n0=v=>(typeof v==='number'&&Number.isFinite(v))?Math.max(0,Math.floor(v)):0;
 function rankOf(exp){exp=n0(exp);let i=0;while(i+1<RANKS.length&&exp>=RANKS[i+1][1])i++;const cur=RANKS[i][1],nx=i+1<RANKS.length?RANKS[i+1][1]:null;
   return{lv:i+1,name:RANKS[i][0],exp,cur,next:nx,prog:nx?(exp-cur)/(nx-cur):1};}
@@ -25,10 +29,11 @@ function drawRank(g,lv,x,y,s){s=s||1;lv=Math.max(1,Math.min(RANKS.length,lv|0));
     for(const[cx,cy]of pos){P(cx+1,cy,1,3,'#e8ecf4');P(cx,cy+1,3,1,'#e8ecf4');P(cx+1,cy+1,1,1,'#ffffff');}}}
 function calcExp(st){st=st||{};let e=20;
   if(st.mode==='pvp')e+=n0(st.kills)*10+(st.win?100:0);
-  else e+=n0(st.kills)*2+n0(st.hs)*1+Math.max(0,n0(st.wave)-1)*15+n0(st.boss)*150+n0(st.revives)*30;
+  else e+=n0(st.kills)*2+n0(st.hs)*1+Math.max(0,n0(st.wave)-1)*15+n0(st.boss)*150+n0(st.revives)*30+(st.defend?250:0);
   return Math.min(5000,Math.round(e));}
-function blank(){return{nick:'',exp:0,kills:0,hs:0,games:0,best:0,boss:0,revives:0,wins:0,waves:0};}
-function loadLocal(){const b=blank();try{const o=JSON.parse(localStorage.getItem(LS)||'{}');if(o&&typeof o==='object'){for(const k of STATS)b[k]=n0(o[k]);if(typeof o.nick==='string')b.nick=o.nick;}}catch(e){}
+function blank(){return{nick:'',exp:0,kills:0,hs:0,games:0,best:0,boss:0,revives:0,wins:0,waves:0,wk:'',wexp:0};}
+function addWeek(p,n){const k=weekKey();if(p.wk!==k){p.wk=k;p.wexp=0;}p.wexp=n0(p.wexp)+n;}
+function loadLocal(){const b=blank();try{const o=JSON.parse(localStorage.getItem(LS)||'{}');if(o&&typeof o==='object'){for(const k of STATS)b[k]=n0(o[k]);if(typeof o.nick==='string')b.nick=o.nick;if(typeof o.wk==='string'){b.wk=o.wk;b.wexp=n0(o.wexp);}}}catch(e){}
   try{if(!b.nick)b.nick=localStorage.getItem('kotamati-nick')||'';const best=n0(+localStorage.getItem('kotamati-best'));if(best>b.best)b.best=best;}catch(e){}return b;}
 function saveLocal(p){try{localStorage.setItem(LS,JSON.stringify(p));}catch(e){}}
 const validNick=n=>/^[A-Za-z0-9_]{3,10}$/.test(String(n||''));
@@ -48,7 +53,7 @@ const subs=[];
 function emit(){const s=api.state();for(const f of subs){try{f(s);}catch(e){}}}
 function cur(){return user&&prof?prof:local;}
 async function fetchProfile(u){const ref=db.collection('users').doc(u.uid);const snap=await ref.get();
-  if(snap.exists){const d=snap.data()||{},p=blank();for(const k of STATS)p[k]=n0(d[k]);p.nick=String(d.nick||'').slice(0,10);return p;}
+  if(snap.exists){const d=snap.data()||{},p=blank();for(const k of STATS)p[k]=n0(d[k]);p.nick=String(d.nick||'').slice(0,10);p.wk=weekKey();p.wexp=n0(d[WF()]);return p;}
   const nick=String((u.email||'').split('@')[0]||'pemain').slice(0,10),p=Object.assign(blank(),{nick});
   await ref.set(Object.assign({},p,{nickLower:nick.toLowerCase(),createdAt:firebase.firestore.FieldValue.serverTimestamp(),updatedAt:firebase.firestore.FieldValue.serverTimestamp()}));return p;}
 let readyRes;const ready=new Promise(r=>{readyRes=r;});
@@ -79,16 +84,21 @@ const api={
   async logout(){if(auth)try{await auth.signOut();}catch(e){}user=null;prof=null;emit();},
   async addMatch(st){const gained=calcExp(st),p=cur(),before=rankOf(p.exp);
     const inc={exp:gained,kills:n0(st.kills),hs:n0(st.hs),games:1,boss:n0(st.boss),revives:n0(st.revives),wins:st.win?1:0};
-    for(const k in inc)p[k]=n0(p[k])+inc[k];const nb=n0(st.score)>p.best;if(nb)p.best=n0(st.score);if(n0(st.wave)>p.waves)p.waves=n0(st.wave);
+    for(const k in inc)p[k]=n0(p[k])+inc[k];addWeek(p,gained);const nb=n0(st.score)>p.best;if(nb)p.best=n0(st.score);if(n0(st.wave)>p.waves)p.waves=n0(st.wave);
     const after=rankOf(p.exp);let synced=!user;
-    if(user&&prof){try{const F=firebase.firestore.FieldValue,u={updatedAt:F.serverTimestamp()};for(const k in inc)if(inc[k])u[k]=F.increment(inc[k]);
+    if(user&&prof){try{const F=firebase.firestore.FieldValue,u={updatedAt:F.serverTimestamp()};for(const k in inc)if(inc[k])u[k]=F.increment(inc[k]);u[WF()]=F.increment(gained);
         if(nb)u.best=p.best;u.waves=p.waves;await db.collection('users').doc(user.uid).update(u);synced=true;}catch(e){initErr=errMsg(e);synced=false;}}
     else saveLocal(local);
     emit();return{gained,before,after,up:after.lv>before.lv,synced};},
-  async leaderboard(field,n){field=['exp','best','kills'].includes(field)?field:'exp';n=Math.max(5,Math.min(100,n|0||50));
-    if(!online){const p=cur();return{online:false,rows:p.nick?[{nick:p.nick,exp:p.exp,best:p.best,kills:p.kills,me:true}]:[]};}
-    const q=await db.collection('users').orderBy(field,'desc').limit(n).get();const rows=[];
-    q.forEach(d=>{const x=d.data()||{};rows.push({nick:String(x.nick||'?').slice(0,10),exp:n0(x.exp),best:n0(x.best),kills:n0(x.kills),me:!!(user&&d.id===user.uid)});});
+  async addBonus(n){n=Math.max(0,Math.min(1000,n|0));const p=cur(),before=rankOf(p.exp);p.exp=n0(p.exp)+n;addWeek(p,n);const after=rankOf(p.exp);let synced=!user;
+    if(user&&prof){try{const F=firebase.firestore.FieldValue,u={updatedAt:F.serverTimestamp(),exp:F.increment(n)};u[WF()]=F.increment(n);await db.collection('users').doc(user.uid).update(u);synced=true;}catch(e){initErr=errMsg(e);synced=false;}}
+    else saveLocal(local);
+    emit();return{gained:n,before,after,up:after.lv>before.lv,synced};},
+  weekKey,
+  async leaderboard(field,n){field=['exp','best','kills','week'].includes(field)?field:'exp';n=Math.max(5,Math.min(100,n|0||50));const wf=WF(),k=weekKey();
+    if(!online){const p=cur();return{online:false,rows:p.nick?[{nick:p.nick,exp:p.exp,best:p.best,kills:p.kills,week:p.wk===k?n0(p.wexp):0,me:true}]:[]};}
+    const q=await db.collection('users').orderBy(field==='week'?wf:field,'desc').limit(n).get();const rows=[];
+    q.forEach(d=>{const x=d.data()||{};rows.push({nick:String(x.nick||'?').slice(0,10),exp:n0(x.exp),best:n0(x.best),kills:n0(x.kills),week:n0(x[wf]),me:!!(user&&d.id===user.uid)});});
     return{online:true,rows};},
   errMsg,
 };

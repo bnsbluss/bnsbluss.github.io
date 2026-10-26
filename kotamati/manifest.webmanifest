@@ -1,0 +1,35 @@
+{
+ "name": "Kota Mati",
+ "short_name": "Kota Mati",
+ "description": "FPS zombi pixel art. Main solo, co-op, atau PvP bareng teman.",
+ "id": "../kotamati.html",
+ "start_url": "../kotamati.html",
+ "scope": "../kotamati",
+ "display": "fullscreen",
+ "display_override": [
+  "fullscreen",
+  "standalone"
+ ],
+ "orientation": "any",
+ "background_color": "#120c16",
+ "theme_color": "#120c16",
+ "lang": "id",
+ "icons": [
+  {
+   "src": "icon-192.png",
+   "sizes": "192x192",
+   "type": "image/png"
+  },
+  {
+   "src": "icon-512.png",
+   "sizes": "512x512",
+   "type": "image/png"
+  },
+  {
+   "src": "icon-maskable-512.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  }
+ ]
+}
