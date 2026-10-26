@@ -195,6 +195,12 @@ WT[19]=makeSprite(32,32,P=>{const r=rng(119);P(0,0,'#1e1a18',32,32);
   P(14,13,'#2a1e1a',1,7);for(const cx of[7,24]){disc(P,cx,24,5,'#141212');disc(P,cx,24,2.4,'#3a3634');P(cx-1,23,'#5a5654',2,1);}
   P(0,21,'#2a1e1a',32,1);});
 /* lantai & langit-langit tiap tema (3 jenis lantai: utama, kedua, berdarah) */
+const TREESPR=[0,1].map(v=>makeSprite(56,72,P=>{const r=rng(400+v*17);
+  for(let y=34;y<72;y++){const w=5+((y-34)/14|0);P(28-(w>>1),y,'#4a3424',w,1);P(28-(w>>1),y,'#6a4a32',1,1);P(28+(w>>1)-1,y,'#2e2016',1,1);if(r()<0.3)P(26+((r()*4)|0),y,'#2e2016',1,2);}
+  P(20,70,'#3a2a1c',16,2);for(const s of[-1,1]){for(let k=0;k<8;k++)P(28+s*(3+k),40-k,'#4a3424',2,2);}
+  const C=['#1e3414','#2a4a1c','#365e22','#24401a','#41702a'];for(let i=0;i<70;i++){const a=r()*6.283,d=Math.sqrt(r()),x=28+Math.cos(a)*d*24,y=(v?20:22)+Math.sin(a)*d*17;disc(P,x,y,2+r()*3,C[(r()*C.length)|0]);}
+  for(let i=0;i<40;i++){const a=r()*6.283,d=Math.sqrt(r()),x=28+Math.cos(a)*d*20,y=16+Math.sin(a)*d*12;P(x,y,'#5e8e38',1,1);}
+  for(let i=0;i<14;i++){const x=6+((r()*44)|0),y=26+((r()*12)|0);P(x,y,'#14240e',2,2);}},'#0a1208'));
 function texPx(seed,base,spots,fn){return makeSprite(32,32,P=>{const r=rng(seed);P(0,0,base,32,32);for(let i=0;i<200;i++)P((r()*32)|0,(r()*32)|0,spots[(r()*spots.length)|0]);if(fn)fn(P,r);}).px;}
 const bloodOn=(P,r)=>{disc(P,16,16,6,'#4e1416');disc(P,14,15,4,'#6a1a1a');for(let i=0;i<7;i++)P((r()*30)|0,(r()*30)|0,'#5a1818',2,2);};
 const FTS={city:null,
@@ -1146,9 +1152,17 @@ const MAPS=[
 ];
 const MW=24,MH=24,WCH={'#':0,S:1,C:2,P:3,W:4,X:5,G:6,T:7,R:8,B:9,H:10,D:11,K:12,Q:13,U:14,V:15,N:16,A:17,L:18,J:19};
 const map=new Int8Array(MW*MH),fkind=new Uint8Array(MW*MH),openCells=[];
+/* pohon hutan: petaknya bisa dilewati, yang menghalangi hanya batangnya (lingkaran kecil) */
+const TREES=[],TREEC=new Int16Array(MW*MH).fill(-1),TRUNK_R=0.11;
+function treeIn(cx,cy){if(cx<0||cy<0||cx>=MW||cy>=MH)return null;const i=TREEC[cy*MW+cx];return i>=0?TREES[i]:null;}
+function treeHit(x,y,r){const cx=Math.floor(x),cy=Math.floor(y),R=TRUNK_R+r;for(let oy=-1;oy<=1;oy++)for(let ox=-1;ox<=1;ox++){const t=treeIn(cx+ox,cy+oy);if(t&&(x-t.x)*(x-t.x)+(y-t.y)*(y-t.y)<R*R)return true;}return false;}
+function rayTree(t,ox,oy,dx,dy){const fx=ox-t.x,fy=oy-t.y,b=fx*dx+fy*dy,c=fx*fx+fy*fy-TRUNK_R*TRUNK_R;if(c<0)return 0;const h=b*b-c;if(h<0)return Infinity;const s=-b-Math.sqrt(h);return s>=0?s:Infinity;}
 let MAP=MAPS[0];
 function loadMap(i){i=Math.max(0,Math.min(MAPS.length-1,i|0));MAP=MAPS[i];G.mapIdx=i;const r=rng(MAP.seed);openCells.length=0;
-  for(let y=0;y<MH;y++)for(let x=0;x<MW;x++){const ch=MAP.rows[y][x];const v=ch==='.'?-1:WCH[ch];map[y*MW+x]=v;if(v<0)openCells.push([x,y]);
+  TREES.length=0;TREEC.fill(-1);const rT=rng(MAP.seed*7+3);
+  for(let y=0;y<MH;y++)for(let x=0;x<MW;x++){const ch=MAP.rows[y][x];let v=ch==='.'?-1:WCH[ch];
+    if(ch==='R'){v=-1;const a=rT()*6.2832,d=0.06+rT()*0.08;TREEC[y*MW+x]=TREES.length;TREES.push({x:x+0.5+Math.cos(a)*d,y:y+0.5+Math.sin(a)*d,s:0.85+rT()*0.35,v:(rT()*2)|0});}
+    map[y*MW+x]=v;if(v<0&&ch!=='R')openCells.push([x,y]);
     const q=r();fkind[y*MW+x]=q<MAP.mix[0]?2:q<MAP.mix[0]+MAP.mix[1]?1:0;}
   FT=FTS[MAP.th]||FT_CITY;const sk=skyGet(MAP.sky||'dusk');SKY=sk.d;SKYN=sk.n;CT=MAP.ceil?CTS[MAP.ceil]:null;
   applyFog();
@@ -1159,11 +1173,13 @@ function loadMap(i){i=Math.max(0,Math.min(MAPS.length-1,i|0));MAP=MAPS[i];G.mapI
   try{localStorage.setItem('kotamati-map',String(i));}catch(e){}
 }
 function applyFog(){const dk=isDark(),f=hex(dk?(MAP.dark?'#020203':'#05040b'):MAP.fog);FRc=f[0];FGc=f[1];FBc=f[2];FOGA=dk?(MAP.dark?0.4:0.6):(MAP.ceil?1.0:1.5);FOGB=dk?(MAP.dark?6.5:8):(MAP.ceil?10:13);}
-function solid(x,y){const cx=Math.floor(x),cy=Math.floor(y);if(cx<0||cy<0||cx>=MW||cy>=MH)return true;return map[cy*MW+cx]>=0;}
+function solid(x,y){const cx=Math.floor(x),cy=Math.floor(y);if(cx<0||cy<0||cx>=MW||cy>=MH)return true;if(map[cy*MW+cx]>=0)return true;return TREES.length>0&&treeHit(x,y,0);}
 function blocked(cx,cy){return cx<0||cy<0||cx>=MW||cy>=MH||map[cy*MW+cx]>=0;}
 function castT(ox,oy,dx,dy){let mx=Math.floor(ox),my=Math.floor(oy);const ddx=dx===0?1e30:Math.abs(1/dx),ddy=dy===0?1e30:Math.abs(1/dy);
   let sx,sy,sdx,sdy;if(dx<0){sx=-1;sdx=(ox-mx)*ddx}else{sx=1;sdx=(mx+1-ox)*ddx}if(dy<0){sy=-1;sdy=(oy-my)*ddy}else{sy=1;sdy=(my+1-oy)*ddy}
-  let t=0;for(let i=0;i<80;i++){if(sdx<sdy){t=sdx;sdx+=ddx;mx+=sx}else{t=sdy;sdy+=ddy;my+=sy}if(blocked(mx,my))return t;}return t;}
+  let t=0;if(TREES.length){const tr=treeIn(mx,my);if(tr){const h=rayTree(tr,ox,oy,dx,dy);if(h<Infinity)return h;}}
+  for(let i=0;i<80;i++){if(sdx<sdy){t=sdx;sdx+=ddx;mx+=sx}else{t=sdy;sdy+=ddy;my+=sy}if(blocked(mx,my))return t;
+    if(TREES.length){const tr=treeIn(mx,my);if(tr){const h=rayTree(tr,ox,oy,dx,dy);if(h<Infinity)return h;}}}return t;}
 function los(x0,y0,x1,y1){const dx=x1-x0,dy=y1-y0,d=Math.hypot(dx,dy);if(d<0.01)return true;return castT(x0,y0,dx/d,dy/d)>=d;}
 const flow=new Int16Array(MW*MH),FLOW0=flow,flowG=new Int16Array(MW*MH);
 function buildFlow(srcs,flow=FLOW0){flow.fill(9999);const q=[];for(const[px,py]of srcs){if(blocked(px,py))continue;const s=py*MW+px;if(flow[s]){flow[s]=0;q.push(s);}}let h=0;
@@ -1173,7 +1189,9 @@ const DIR8=[[1,0],[-1,0],[0,1],[0,-1],[1,1],[1,-1],[-1,1],[-1,-1]];
 function flowTarget(z,tg,flow=FLOW0){const cx=Math.floor(z.x),cy=Math.floor(z.y);let best=flow[cy*MW+cx],bx=cx,by=cy;
   for(const[ox,oy]of DIR8){const nx=cx+ox,ny=cy+oy;if(blocked(nx,ny))continue;if(ox&&oy&&(blocked(cx+ox,cy)||blocked(cx,cy+oy)))continue;
     const v=flow[ny*MW+nx];if(v<best){best=v;bx=nx;by=ny;}}
-  if(bx===cx&&by===cy)return[tg.x,tg.y];return[bx+0.5,by+0.5];}
+  if(bx===cx&&by===cy)return[tg.x,tg.y];const tr=TREES.length?treeIn(bx,by):null;
+  if(tr){let vx=bx+0.5-tr.x,vy=by+0.5-tr.y,l=Math.hypot(vx,vy);if(l<0.01){vx=-(by-cy);vy=bx-cx;l=Math.hypot(vx,vy)||1;}return[tr.x+vx/l*0.44,tr.y+vy/l*0.44];}
+  return[bx+0.5,by+0.5];}
 
 /* ================= renderer ================= */
 let FRc=52,FGc=32,FBc=58,FOGA=1.5,FOGB=13;
@@ -1325,9 +1343,9 @@ function r3BuildMap(){const T=THREE;if(R3.grp){R3.sc.remove(R3.grp);R3.grp.trave
     inst(L.led,stone,true);inst(L.slab,stone,true);inst(L.rail,metal,true);inst(L.awn,new T.MeshLambertMaterial({color:0xffffff}),true,AC);
     inst(L.arm,metal,false);inst(L.bulb,new T.MeshBasicMaterial({color:0xffe08a}),false);inst(L.cab,new T.MeshBasicMaterial({color:0x14101a}),false);}
   /* pohon hutan: batang + tajuk daun bertumpuk (tabrakan tetap satu petak) */
-  if(trees.length){const BX=new T.BoxGeometry(1,1,1),rt=rng(MAP.seed*17+5),tr=new T.InstancedMesh(BX,new T.MeshLambertMaterial({color:0x4a3424}),trees.length),lf=new T.InstancedMesh(BX,new T.MeshLambertMaterial({map:R3.wallTex[9]}),trees.length*3);
+  if(TREES.length){const trees=TREES,BX=new T.BoxGeometry(1,1,1),rt=rng(MAP.seed*17+5),tr=new T.InstancedMesh(BX,new T.MeshLambertMaterial({color:0x4a3424}),trees.length),lf=new T.InstancedMesh(BX,new T.MeshLambertMaterial({map:R3.wallTex[9]}),trees.length*3);
     const m=new T.Matrix4(),q=new T.Quaternion(),UP=new T.Vector3(0,1,0);let li=0;
-    trees.forEach(([x,y],i)=>{const k=0.85+rt()*0.35,ox=(rt()-0.5)*0.2,oz=(rt()-0.5)*0.2;q.setFromAxisAngle(UP,rt()*1.6);m.compose(new T.Vector3(x+0.5+ox,0.8*k,y+0.5+oz),q,new T.Vector3(0.26,1.6*k,0.26));tr.setMatrixAt(i,m);
+    trees.forEach((t0,i)=>{const k=t0.s,x=t0.x-0.5,y=t0.y-0.5,ox=0,oz=0;q.setFromAxisAngle(UP,rt()*1.6);m.compose(new T.Vector3(x+0.5,0.8*k,y+0.5),q,new T.Vector3(TRUNK_R*1.9,1.6*k,TRUNK_R*1.9));tr.setMatrixAt(i,m);
       for(const[s0,yy]of[[1.35,1.45],[1.0,2.05],[0.6,2.5]]){q.setFromAxisAngle(UP,rt()*1.6);const s1=s0*(0.9+rt()*0.25);m.compose(new T.Vector3(x+0.5+ox+(rt()-0.5)*0.15,yy*k,y+0.5+oz+(rt()-0.5)*0.15),q,new T.Vector3(s1,s0*0.62*k,s1));lf.setMatrixAt(li++,m);}});
     tr.castShadow=lf.castShadow=true;tr.receiveShadow=lf.receiveShadow=true;grp.add(tr,lf);}
   /* langit-langit untuk peta dalam ruangan */
@@ -1919,8 +1937,13 @@ function burst(x,y,z,n,pal,sp,dx,dy,up){n=Math.max(1,Math.round(n*PQ));for(let i
   parts.push({k:'b',x,y,z,vx:Math.cos(a)*s,vy:Math.sin(a)*s,vz:(up?1.5:0.6)+R()*2.4,g:9,life:0.5+R()*0.7,col:pal[i%pal.length],s:0.025+R()*0.035});}
   const cap=Math.round(600*(0.4+0.6*PQ));if(parts.length>cap)parts.splice(0,parts.length-cap);}
 function gibs(x,y,n){for(let i=0;i<n;i++){const a=R()*6.28,s=1+R()*2.5;parts.push({k:'g',spr:GIBS[(R()*GIBS.length)|0],x,y,z:0.35,vx:Math.cos(a)*s,vy:Math.sin(a)*s,vz:2+R()*3,g:9,life:1.4+R(),bounce:true});}}
-function moveEnt(e,dx,dy){const r=Math.min(0.3,e.r);if(!solidBox(e.x+dx,e.y,r))e.x+=dx;if(!solidBox(e.x,e.y+dy,r))e.y+=dy;}
-function solidBox(x,y,r){return solid(x-r,y-r)||solid(x+r,y-r)||solid(x-r,y+r)||solid(x+r,y+r);}
+function moveEnt(e,dx,dy){const r=Math.min(0.3,e.r),x0=e.x,y0=e.y;if(!solidBox(e.x+dx,e.y,r))e.x+=dx;if(!solidBox(e.x,e.y+dy,r))e.y+=dy;
+  /* tertahan batang pohon: geser menyusuri lingkaran batang supaya bisa lewat di sela pohon */
+  if(TREES.length&&(dx||dy)){const want=Math.hypot(dx,dy),got=Math.hypot(e.x-x0,e.y-y0);if(got<want*0.5){const cx=Math.floor(e.x),cy=Math.floor(e.y);let best=null,bd=9;
+    for(let oy=-1;oy<=1;oy++)for(let ox=-1;ox<=1;ox++){const t=treeIn(cx+ox,cy+oy);if(!t)continue;const d=Math.hypot(e.x-t.x,e.y-t.y);if(d<bd){bd=d;best=t;}}
+    if(best&&bd<TRUNK_R+r+want+0.06){let nx=(e.x-best.x)/bd,ny=(e.y-best.y)/bd,tx=-ny,ty=nx;if(tx*dx+ty*dy<0){tx=-tx;ty=-ty;}const m=want-got;
+      const sx=tx*m+nx*m*0.15,sy=ty*m+ny*m*0.15;if(!solidBox(e.x+sx,e.y,r))e.x+=sx;if(!solidBox(e.x,e.y+sy,r))e.y+=sy;}}}}
+function solidBox(x,y,r){return solid(x-r,y-r)||solid(x+r,y-r)||solid(x-r,y+r)||solid(x+r,y+r)||(TREES.length>0&&treeHit(x,y,r));}
 function zById(id){for(const z of zs)if(z.id===id)return z;return null;}
 
 /* ================= players list (host sim) ================= */
@@ -2989,8 +3012,10 @@ function render(){
   if(G.state==='play'||G.state==='over')for(const r of NET.remotes.values()){if(NET.mode==='pvp'&&!r.fighter)continue;if(!r.al&&r.deadT>9)continue;list.push({d:d2(r.x,r.y),k:5,o:r});}
   if(G.state==='play'||G.state==='over')for(const b of BOTS.values()){if(!b.al&&b.deadT>9)continue;list.push({d:d2(b.x,b.y),k:5,o:b});}
   if(GEN.on&&!GEN.dead&&(G.state==='play'||G.state==='over'))list.push({d:d2(GEN.x,GEN.y),k:9,o:GEN});
+  if(!R3.on&&TREES.length)for(const t of TREES){const d=d2(t.x,t.y);if(d<20*20)list.push({d,k:10,o:t});}
   list.sort((a,b)=>b.d-a.d);
   for(const it of list){const o=it.o;
+    if(it.k===10){drawSpr(TREESPR[o.v],o.x,o.y,0,2.5*o.s,false,false,false);continue;}
     if(it.k===0){if(R3.on&&!o.dead&&!(o.rise>0))r3Shadow(o.x,o.y,Math.max(0.2,o.r*1.25));
       if(R3.on&&R3.vox){if(o.dead&&o.dieT>7&&((o.dieT*10)|0)%2)continue;if(!o.dead&&o.act===5&&pl.st&&pl.st.zid===o.id)continue;
         zRig(o,o.rise>0?-0.8*o.scale*(o.rise/0.7):(o.dead?0:(o.zh||0)));if(!o.dead&&(o.act===4||o.act===9))drawTongue(o);continue;}
@@ -3124,6 +3149,7 @@ function drawMinimap(x0,y0,S){const sc=3.4,R=S/2,cx=x0+R,cy=y0+R;
   ctx.translate(cx,cy);ctx.rotate(-Math.PI/2-pl.a);ctx.translate(-pl.x*sc,-pl.y*sc);
   const rr=Math.ceil(R/sc*1.5),px=Math.floor(pl.x),py=Math.floor(pl.y);ctx.fillStyle='#7a6a80';
   for(let y=py-rr;y<=py+rr;y++)for(let x=px-rr;x<=px+rr;x++)if(x>=0&&y>=0&&x<MW&&y<MH&&map[y*MW+x]>=0)ctx.fillRect(x*sc,y*sc,sc+0.4,sc+0.4);
+  if(TREES.length){ctx.fillStyle='#4e7a34';for(const t of TREES)if(Math.abs(t.x-pl.x)<rr&&Math.abs(t.y-pl.y)<rr)ctx.fillRect(t.x*sc-1,t.y*sc-1,2,2);}
   ctx.fillStyle='#ffe14a';for(const p of(NET.mode==='pvp'?pvpPickList():picks))ctx.fillRect(p.x*sc-1,p.y*sc-1,2,2);
   for(const f of fires){ctx.fillStyle=((G.t*6)|0)%2?'#ff9a1f':'#e0401a';ctx.fillRect(f.x*sc-2,f.y*sc-2,4,4);}
   for(const pg of G.pings.values()){const k=2+Math.abs(Math.sin(G.t*6))*2;ctx.strokeStyle=pg.kind===1?'#ff4a3a':pg.col;ctx.lineWidth=1;ctx.strokeRect(pg.x*sc-k,pg.y*sc-k,k*2,k*2);}
