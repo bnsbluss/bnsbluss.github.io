@@ -1,1179 +1,1079 @@
-# 🧟 KOTA MATI
+# ☣️ KOTA MATI --- CATATAN PEKERJAAN LENGKAP
 
-### Pixel-Art Zombie FPS • Browser Game • Solo • Co-op • PvP
+> Dokumen teknis utama proyek **KOTA MATI** --- FPS Zombie Arcade Pixel
+> Art untuk PC dan Mobile Landscape.
 
-<p align="center">
+  Item                   Detail
+  ---------------------- -----------------------------------------
+  **Nama Game**          KOTA MATI
+  **Nama kerja lama**    Kota Busuk
+  **Genre**              FPS zombie arcade pixel art
+  **Platform**           Browser PC & Mobile
+  **Orientasi Mobile**   **Landscape / horizontal**
+  **Developer**          HeavyRain
+  **Hosting**            GitHub Pages
+  **Alamat**             `https://bnsbluss.github.io/kotamati/`
+  **Database**           Firebase Authentication + Firestore
+  **Online**             WebRTC P2P + PeerJS 1.5.4
+  **Engine**             Three.js r128 + sistem sprite/raycaster
+  **Versi acuan**        v54 + pekerjaan UI/aset terbaru
+  **Tanggal dokumen**    28 Oktober 2026
 
-**Survive the City.**
+------------------------------------------------------------------------
 
-*One wave. One life. No way out.*
+## 1. 🎮 Visi Proyek
 
-</p>
+KOTA MATI adalah game FPS zombie arcade dengan identitas pixel art yang
+kuat. Game harus terasa seperti **game arcade sungguhan**, bukan sekadar
+website yang kebetulan memiliki gameplay.
 
----
+### Prinsip utama
 
-## 🎮 About
+-   Gameplay yang sudah berjalan **tidak boleh rusak**.
+-   Sprite harus konsisten dalam ukuran, baseline, outline, dan
+    pencahayaan.
+-   Senjata dipisahkan dari sprite tangan/karakter agar dapat diganti
+    secara dinamis.
+-   Mobile diprioritaskan **landscape**, bukan portrait.
+-   Multiplayer harus tetap sinkron.
+-   UI harus padat tetapi tidak sesak.
+-   Setiap perubahan besar wajib diuji di PC dan Mobile.
 
-**Kota Mati** adalah game **FPS zombie bergaya pixel-art arcade** yang dimainkan langsung melalui browser, baik di **PC maupun perangkat mobile**.
+------------------------------------------------------------------------
 
-Game menggabungkan gameplay FPS klasik dengan visual pixel-art, zombie dengan berbagai kemampuan, sistem wave survival, multiplayer online, mode 3D, mode malam, berbagai senjata, serta lingkungan yang semakin beragam.
+# 2. 🧭 Alur Pemain Baru
 
-Tidak membutuhkan instalasi game khusus.
+Pemain baru sebaiknya mengikuti alur yang jelas sebelum masuk gameplay:
 
-> **Buka browser → masuk ke game → main.**
-
-### ✨ Highlights
-
-🎮 **Solo Survival**  
-👥 **Online Co-op 2–4 Player**  
-⚔️ **PvP 1 vs 1**  
-🧟 **Zombie dengan berbagai kemampuan**  
-👑 **Boss Raja Zombi**  
-🗺️ **9 Map**  
-🌙 **Night Mode**  
-🔦 **Dark / Flashlight Map**  
-🌧️ **Rain & Lightning Environment**  
-🔫 **Multiple Weapons**  
-🎯 **Headshot System**  
-👕 **14 Character Skins**  
-📱 **PC & Mobile**  
-🧊 **Sprite & 3D Rendering**  
-🌐 **Online Multiplayer**
-
----
-
-# 📊 Project Overview
-
-| Information | Details |
-|---|---|
-| 🎮 Genre | FPS · Zombie · Arcade · Survival |
-| 🎨 Visual | Pixel Art |
-| 🖥️ Platform | Web Browser |
-| 💻 Desktop | Supported |
-| 📱 Mobile | Supported |
-| 👤 Solo | ✅ |
-| 👥 Co-op | 2–4 Players |
-| ⚔️ PvP | 1 vs 1 |
-| 🗺️ Maps | **9** |
-| 🔫 Weapons | Multiple |
-| 🧟 Zombie Types | Multiple |
-| 👑 Boss | Raja Zombi |
-| 🎨 Skins | 14 |
-| 🌙 Night Mode | ✅ |
-| 🧊 Rendering | Sprite + 3D |
-| 🌐 Multiplayer | Peer-to-Peer |
-| 💾 Database | Firebase |
-| 📦 Main Game | `kotamati.html` |
-| 🔖 Current Version | **33** |
-
----
-
-# 🚀 Play
-
-Game dirancang sebagai browser game sehingga pemain tidak perlu melakukan instalasi tradisional.
-
-### Local
-
-```text
-kotamati.html
+``` text
+OPEN GAME
+   ↓
+LAYAR JUDUL
+   ↓
+LOGIN / DAFTAR / AKUN TAMU
+   ↓
+LOBBY
+   ↓
+PILIH MODE
+   ↓
+PILIH MAP
+   ↓
+ROOM / BOT / TEAM
+   ↓
+READY
+   ↓
+GAMEPLAY
 ```
 
-### GitHub Pages
+### Layar judul
 
-```text
-https://bnsbluss.github.io/kotamati.html
+Identitas visual utama:
+
+-   Logo besar **KOTA MATI**
+-   Background hutan malam / zombie survival
+-   `LOGIN`
+-   `DAFTAR`
+-   `AKUN TAMU`
+-   Informasi map
+-   Suara ON/OFF
+-   Layar penuh
+-   Hindari kredit besar yang mengganggu area utama.
+
+### Mobile Landscape
+
+Gameplay **disarankan dan diarahkan ke landscape**.
+
+Jika perangkat portrait, tampilkan halaman pengunci orientasi:
+
+``` text
+┌──────────────────────────────┐
+│                              │
+│        PUTAR PERANGKAT       │
+│                              │
+│  KOTA MATI membutuhkan       │
+│  orientasi LANDSCAPE         │
+│                              │
+│          ↻ ROTATE            │
+│                              │
+└──────────────────────────────┘
 ```
 
-> Pastikan file game dan resource menggunakan versi terbaru sebelum membagikan link kepada pemain lain.
-
----
-
-# 🕹️ Game Modes
-
-## 🧟 Solo Survival
-
-Bertahan hidup menghadapi gelombang zombie.
-
-- Zombie semakin sulit setiap wave.
-- Setiap **5 wave** muncul Raja Zombi.
-- Tersedia sistem **1UP**.
-- Tersedia shop di antara wave.
-- Pemain dapat membeli ammunition dan equipment.
-- Statistik akhir mencatat performa permainan.
-
----
-
-## 👥 Online Co-op
-
-Bermain bersama teman dalam tim hingga **4 pemain**.
-
-### Fitur
-
-- 2–4 pemain
-- Shared zombie battle
-- Revive system
-- Location marker
-- Minimap
-- Supply crate
-- Sticker communication
-- Host system
-- Host migration
-
-Jika pemain terjatuh, teman dapat melakukan revive.
-
-Jika seluruh anggota tim terjatuh:
-
-> **GAME OVER**
-
----
-
-## ⚔️ PvP
-
-Mode pertarungan **1 vs 1**.
-
-- Durasi: **5 menit**
-- Kill terbanyak menjadi pemenang.
-- Pemain berikutnya dapat menjadi spectator.
-- Mendukung sticker selama pertandingan.
-
----
-
-# 👑 Boss — Raja Zombi
-
-Setiap kelipatan **5 wave**, Raja Zombi akan muncul.
-
-### Abilities
-
-- 💥 Ground Slam
-- 🪨 Throw Rock
-- 😡 Rage Mode
-- ❤️ High HP
-
-Raja Zombi memasuki kondisi mengamuk ketika HP turun hingga sekitar **50%**.
-
-### Ground Slam
-
-Serangan tanah dapat dihindari dengan:
-
-> **Lompat pada saat yang tepat.**
-
----
-
-# 🗺️ Maps
-
-Saat ini tersedia **9 map**.
-
-| # | Map | Karakteristik |
-|---:|---|---|
-| 1 | 🏙️ **Pusat Kota** | Area perkotaan |
-| 2 | ⚓ **Pelabuhan** | Area pelabuhan |
-| 3 | ☣️ **Pabrik Kimia** | Lingkungan industri |
-| 4 | ⚰️ **Kuburan Tua** | Area pemakaman |
-| 5 | 🌲 **Hutan Rimbun** | Hutan lebat & gubuk |
-| 6 | 👻 **Rumah Hantu** | Interior rumah & lorong |
-| 7 | 💎 **Goa Gelap** | Goa dengan kristal bercahaya |
-| 8 | 🏚️ **Kota Mati** | Perumahan yang hancur |
-| 9 | 🪖 **Barak Tentara** | Barak militer & area berlumpur |
-
----
-
-## 🌲 Hutan Rimbun
-
-Map dengan lingkungan hutan yang padat.
-
-- Pohon besar
-- Daun bertumpuk
-- Semak
-- Gubuk reyot
-- Tanah & rumput
-- Langit senja
-
-Pada mode 3D, pohon memiliki struktur:
-
-**batang + tajuk daun bertumpuk**
-
----
-
-## 👻 Rumah Hantu
-
-Map indoor dengan banyak ruangan dan lorong.
-
-- Wallpaper ungu mengelupas
-- Bekas tangan berdarah
-- Lemari buku
-- Jendela dipalang
-- Lantai kayu
-- Karpet
-- Langit-langit balok
-
----
-
-## 💎 Goa Gelap
-
-Map dengan lorong dan ruangan batu yang berliku.
-
-Fitur khusus:
-
-- Kristal biru bercahaya
-- Selalu gelap
-- Tidak terpengaruh Night Mode setting
-- Menggunakan flashlight
-- Senter mengikuti arah bidikan
-- Efek kedipan cahaya
-
----
-
-## 🏚️ Kota Mati
-
-Area perumahan yang telah hancur.
-
-- Rumah bata rusak
-- Jendela pecah
-- Bekas kebakaran
-- Puing
-- Mobil hangus
-
----
-
-## 🪖 Barak Tentara
-
-Map bertema militer.
-
-- Barak seng hijau
-- Karung pasir
-- Peti ammunition
-- Tanah berlumpur
-- Hujan deras
-- Percikan air
-- Petir
-- Suara guntur
-- Langit mendung
-
----
-
-# 🌙 Night Mode
-
-Night Mode membuat lingkungan menjadi sangat gelap.
-
-Pemain mengandalkan sumber cahaya seperti:
-
-- 🔦 Flashlight
-- 🔥 Fire
-- 💥 Explosion
-- 🔫 Muzzle flash
-
-Beberapa map dapat memiliki kondisi gelap khusus.
-
-Contohnya:
-
-> **Goa Gelap selalu gelap**, bahkan ketika Night Mode dimatikan.
-
----
-
-# 🔫 Weapons
-
-Kota Mati memiliki berbagai senjata dengan karakteristik berbeda.
-
-| Weapon | Gameplay |
-|---|---|
-| 🔫 Pistol | Senjata dasar |
-| 🔥 Machine Gun | Rapid fire |
-| 💥 Shotgun | Damage tinggi jarak dekat |
-| 🚀 Rocket Launcher | Explosive area damage |
-| 🎯 AWP | Sniper dengan zoom |
-| 🔫 Kriss | Automatic weapon |
-| 🔫 Dual Kriss | Dual wield |
-| 🗡️ Parang | Melee |
-
----
-
-## 🎯 AWP
-
-AWP memiliki:
-
-- 5 peluru
-- Penetration hingga 3 zombie
-- Zoom **3×**
-- Zoom **6×**
-
----
-
-## 🗡️ Parang
-
-Senjata melee yang:
-
-- Tidak membutuhkan ammunition
-- Dapat digunakan kapan saja
-- Memiliki posisi first-person tersendiri
-
----
-
-# 🎯 Headshot System
-
-Sistem headshot menggunakan area kepala yang mengikuti visual zombie.
-
-**Head hit → HEADSHOT**
-
-**Body hit → BODY HIT**
-
-**Sedikit di atas kepala → MISS**
-
-Sistem ini digunakan pada:
-
-- Sprite mode
-- 3D mode
-
-dan telah diuji pada berbagai jenis zombie.
-
----
-
-# 💣 Throwables
-
-### 💣 Grenade
-
-Granat dapat:
-
-- Meledak ketika mengenai zombie
-- Meledak setelah timer
-
-### 🔥 Molotov
-
-Molotov menciptakan area api selama:
-
-**7 detik**
-
-Zombie yang melewati area tersebut akan terbakar.
-
----
-
-# 🧟 Zombie
-
-Kota Mati memiliki berbagai tipe zombie dengan kemampuan berbeda.
-
-| Zombie | Behavior |
-|---|---|
-| 🧟 Zombi | Musuh utama |
-| 🪖 Tentara | Bergerak lebih cepat |
-| 💥 Gendut | Racun & explosion |
-| 🏹 Pemburu | Menerkam pemain |
-| 👅 Lidah | Menarik pemain dari jauh |
-| 🐂 Penyeruduk | Charge attack |
-| 🏃 Penunggang | Melompat ke kepala |
-| ☣️ Peludah | Acid attack |
-| 👻 Kuntilanak | High HP & regeneration |
-| 🧟 Raksasa | Very high HP |
-| 👑 Raja Zombi | Boss |
-
----
-
-# 🧟‍♂️ Crawling Zombie
-
-Zombie merangkak mendapatkan peningkatan pada **Version 33**.
-
-### Version 33 Changes
-
-- Speed: **0,82 → 1,23**
-- Speed meningkat sekitar **50%**
-- HP tetap rendah: **1,2**
-- Bite damage: **11**
-
-Hasilnya zombie merangkak menjadi jauh lebih agresif dan hampir menyamai kecepatan zombie biasa.
-
----
-
-# 🧊 Sprite & 3D Mode
-
-Kota Mati sekarang menggunakan kombinasi:
-
-### 🖼️ Sprite Mode
-
-Sprite digunakan untuk:
-
-- Player
-- Zombie
-- Weapon
-- Environment
-
-Zombie memiliki tampilan:
-
-**Front · Side · Back**
-
----
-
-### 🧊 3D Mode
-
-Model 3D bergaya pixel-art digunakan untuk menciptakan tampilan yang lebih dinamis.
-
-Zombie 3D menggunakan sprite gritty sebagai texture:
-
-- Wajah hijau
-- Mata putih
-- Gigi
-- Baju robek
-- Darah
-- Hunter hood
-- Rambut Kuntilanak
-- Kulit merah Boss
-
-Animasi tulang tetap digunakan untuk:
-
-- Walk
-- Attack
-- Death
-
-Zombie biasa dan crawling zombie memiliki beberapa variasi warna.
-
----
-
-# 🔫 First-Person Weapon System
-
-Senjata first-person dibuat menggunakan model 3D kecil yang kemudian diubah menjadi gaya pixel-art.
-
-Setiap senjata memiliki model dan bentuk tersendiri.
-
-### Weapon rendering
-
-- Dua tangan
-- Jari mengikuti grip
-- Lengan mengikuti skin
-- Sarung tangan mengikuti skin
-- Muzzle flash di ujung laras
-- Shell casing keluar dari ejection port
-
-### Weapon positioning
-
-Pada versi terbaru:
-
-- Senjata digeser ke kanan bawah.
-- Ukuran diperkecil sekitar **25–30%**.
-- Laras diarahkan lurus ke depan.
-- Posisi laras mengikuti crosshair.
-- Muzzle flash tetap berada di ujung laras.
-- Parang ikut disesuaikan.
-- Dual Kriss menggunakan posisi kiri dan kanan.
-
----
-
-# 🤝 Weapons — Players, Bots & Teammates
-
-Senjata yang terlihat pada pemain lain tidak lagi selalu sama.
-
-Player, bot, dan teammate dapat terlihat memegang:
-
-> **senjata yang sedang mereka gunakan.**
-
-Hal ini berlaku pada:
-
-- Front view
-- Side view
-- Back view
-- 3D mode
-
----
-
-# ❤️ Survival System
-
-## 1UP
-
-1UP tersedia khusus Solo.
-
-| Enemy | Drop Chance |
-|---|---:|
-| Zombie biasa | 1,2% |
-| Zombie spesial | 3% |
-| Kuntilanak | 20% |
-| Raksasa | 25% |
-| Raja Zombi | 60% |
-
-Maximum:
-
-**❤️ 5 lives**
-
-Saat bangkit:
-
-- Zombie sekitar terdorong.
-- Pemain mendapatkan invulnerability selama **2,5 detik**.
-
----
-
-# 🤝 Revive System
-
-Dalam Co-op, pemain tidak langsung mati ketika HP habis.
-
-Pemain masuk status:
-
-> **DOWNED**
-
-### Downed State
-
-- ⏱️ Bertahan sekitar 35 detik
-- 🔫 Masih dapat menggunakan pistol
-- 🤝 Dapat ditolong teammate
-- ⏳ Tahan `E` selama 3 detik
-- ❤️ Bangkit dengan 40 HP
-
----
-
-# 💰 Shop
-
-Pemain memperoleh uang berdasarkan kill.
-
-Shop dapat digunakan ketika jeda antar-wave.
-
-| Item | Amount | Price |
-|---|---:|---:|
-| MG Ammo | +150 | 900 |
-| Shotgun Ammo | +20 | 900 |
-| AWP Ammo | +10 | 1.400 |
-| Rocket | +4 | 1.600 |
-| Grenade | +3 | 600 |
-| Molotov | +2 | 700 |
-| Medkit | Full HP | 700 |
-| Armor | +50 | 1.000 |
-| Damage Upgrade | +15% / level | 1.500+ |
-
-Damage Upgrade dapat ditingkatkan hingga:
-
-**Level 5**
-
----
-
-# 👕 Character & Skins
-
-Tersedia **14 skin**:
-
-1. TENTARA
-2. POLISI
-3. NINJA
-4. GURUN
-5. HAZMAT
-6. BANDIT
-7. GAGAK
-8. MELATI
-9. BADAI
-10. RIMBA
-11. KILAT
-12. SENJA
-13. BAJA
-14. NAGA
-
-Setiap karakter memiliki tampilan:
-
-**Front · Side · Back**
-
-Nama pemain dapat dibuat ketika pertama kali membuka game dan dapat diubah melalui Showroom.
-
----
-
-# 🗺️ Minimap
-
-Minimap menampilkan berbagai objek penting.
-
-- 🔴 Zombie
-- 🟣 Zombie spesial
-- 👑 Boss
-- 📦 Supply crate
-- 🔥 Fire
-- 👥 Teammate
-- 📍 Location marker
-
----
-
-# 📍 Team Communication
-
-## Location Marker
-
-Pemain dapat memberikan marker kepada:
-
-- Zombie
-- Supply crate
-- Lokasi tertentu
-
-Marker dapat terlihat pada:
-
-- Game screen
-- Minimap
-- Distance indicator
-
----
-
-## 😄 Stickers
-
-Tersedia 8 sticker:
-
-`TOS!` · `ADU TINJU` · `AH PUSING` · `MANTAP`
-
-`TOLONG!` · `HAHA` · `AWAS!` · `GG`
-
----
-
-# 📱 Mobile Support
-
-Game dirancang agar dapat dimainkan pada perangkat mobile.
-
-### Touch Controls
-
-- 🔫 Fire
-- 🦘 Jump
-- 🧎 Crouch
-- 🔄 Reload
-- 💣 Grenade
-- 🔥 Molotov
-- 🗡️ Melee
-- 🔄 Weapon Switch
-- 🔭 Zoom
-- 🛒 Shop
-- 🤝 Revive
-- 📍 Marker
-- 😄 Sticker
-- ⏸️ Pause
-
-Mendukung:
-
-**Landscape + Portrait**
-
----
-
-# 🖥️ PC Controls
-
-| Key | Function |
-|---|---|
-| `W A S D` | Movement |
-| `Mouse` | Free Aim |
-| `Left Click / F` | Shoot |
-| `Right Click / Z` | AWP Scope |
-| `Space` | Jump |
-| `C / Ctrl` | Crouch |
-| `Shift` | Sprint |
-| `R` | Reload |
-| `G` | Grenade |
-| `X` | Molotov |
-| `V` | Parang |
-| `1–6 / Scroll` | Weapon Switch |
-| `B` | Shop |
-| `E` | Revive |
-| `Q / Middle Click` | Location Marker |
-| `T + 1–8` | Sticker |
-| `Arrow Keys` | Keyboard Aim |
-| `P / M` | Pause / Sound |
-
----
-
-# 🔊 Audio
-
-Audio system menggunakan:
-
-**Web Audio API**
-
-### Zombie Audio
-
-Zombie memiliki karakter suara yang berbeda berdasarkan jenisnya.
-
-Audio mempertimbangkan:
-
-- Direction
-- Distance
-- Attenuation
-- Environmental echo
-
----
-
-## 🎵 Music
-
-### Lobby
-
-- Arcade Horror
-- D Minor
-- 96 BPM
-
-### Battle
-
-> **Upbeat RPG Battle — Vespidaze**
-
-Volume battle music dapat berubah mengikuti kondisi permainan.
-
-Musik berhenti ketika game over.
-
----
-
-# 🌐 Online Multiplayer
-
-Kota Mati menggunakan sistem multiplayer berbasis peer-to-peer.
-
-| Platform | Technology |
-|---|---|
-| Claude Artifact | Built-in Room |
-| GitHub Pages | PeerJS |
-
-### Multiplayer Flow
-
-```text
-┌──────────────┐
-│  Select Mode │
-└──────┬───────┘
-       ↓
-┌──────────────────┐
-│ Create Room      │
-│        OR        │
-│ Join by Code     │
-└──────┬───────────┘
-       ↓
-┌──────────────┐
-│    Lobby     │
-└──────┬───────┘
-       ↓
-┌──────────────┐
-│    Match     │
-└──────────────┘
+Jangan memaksakan HUD FPS lengkap ke portrait karena crosshair, weapon
+view, minimap, dan kontrol membutuhkan ruang horizontal.
+
+------------------------------------------------------------------------
+
+# 3. 🕹️ Mode Permainan
+
+  Mode           Deskripsi
+  -------------- ----------------------------------------------------------
+  **Solo**       Bertahan melawan gelombang zombie, dapat menggunakan bot
+  **Bertahan**   Menjaga generator selama 8 gelombang
+  **Co-op**      Sampai 4 pemain online melawan zombie
+  **PvP 5v5**    Tim Merah vs Biru, maksimal 10 pemain + spectator
+
+### Konten
+
+-   9 map
+-   7+ senjata utama
+-   Granat
+-   Molotov
+-   12 tipe zombie
+-   Boss Raja Zombie
+-   6 karakter pemain
+-   EXP
+-   17 pangkat
+-   Ranking
+-   Misi harian
+-   Lobby
+-   Room
+-   Kode undangan
+-   Guest Trial 5 menit
+-   Scoreboard
+-   Ping
+-   Showroom
+-   Zombie Codex
+-   PWA
+-   Foto skor
+-   Berita berjalan
+-   Musik dan ambience
+
+------------------------------------------------------------------------
+
+# 4. 👤 Akun & Guest Trial
+
+## Akun
+
+Login menggunakan nickname + password.
+
+Nickname:
+
+``` text
+3–10 karakter
+A-Z / a-z / 0-9 / _
 ```
 
-### Host System
+Firebase memakai email semu:
 
-Host bertanggung jawab terhadap:
+``` text
+nickname@kotamati.app
+```
 
-- Map
-- Night Mode
-- Zombie simulation
+## Guest
+
+Guest mendapat **5 menit gameplay aktif**.
+
+Timer hanya berkurang saat:
+
+``` js
+G.state === 'play'
+```
+
+Penyimpanan:
+
+``` text
+localStorage
+Firebase / trials
+```
+
+### Target ideal
+
+``` text
+GUEST
+  ↓
+DAFTAR
+  ↓
+MIGRASI PROFIL
+  ↓
+EXP / KILL / STATISTIK TETAP
+```
+
+------------------------------------------------------------------------
+
+# 5. 🏠 Lobby & Room
+
+## Alur room
+
+``` text
+MODE
+ ↓
+MAP
+ ↓
+ROOM
+ ↓
+PLAYER / TEAM
+ ↓
+READY
+ ↓
+START
+```
+
+Room mendukung:
+
+-   Publik
+-   Password
+-   Kode undangan
+-   Link undangan
+
+### Aturan Host
+
+**Pembuat room selalu menjadi host.**
+
+Pemain yang masuk memakai invite code **tidak boleh menjadi host**.
 
 Jika host keluar:
 
-> Pemain lain dapat mengambil alih sebagai host.
-
-⚠️ Semua pemain harus menggunakan versi game yang kompatibel.
-
----
-
-# 🔄 Automatic Version System
-
-Versi game sekarang dicatat melalui:
-
-```text
-kotamati/version.json
+``` text
+HOST KELUAR
+    ↓
+HOST MIGRATION
+    ↓
+PEMAIN DENGAN jt TERAWAL
+    ↓
+HOST BARU
 ```
 
-Pemain dapat memperoleh versi terbaru ketika membuka game.
+Urutan harus konsisten di semua client.
 
-Jika perangkat mobile masih menampilkan versi lama:
+------------------------------------------------------------------------
 
-> Tutup tab game kemudian buka kembali.
+# 6. ⚔️ PvP 5v5
 
----
-
-# 💾 Database
-
-Game menggunakan:
-
-**Firebase**
-
-Database digunakan untuk kebutuhan online game.
-
-### Current Status
-
-Tidak ada perubahan struktur database maupun aturan Firestore yang dicatat sejak pemasangan awal.
-
----
-
-# 🧩 Technical Architecture
-
-| Component | Technology |
-|---|---|
-| Rendering | Canvas |
-| 2D Engine | Raycaster |
-| 3D | Pixel-Art 3D |
-| Sprite | Generated / Rendered Assets |
-| Audio | Web Audio API |
-| Multiplayer | PeerJS |
-| Database | Firebase |
-| Local Data | localStorage |
-| Version System | `version.json` |
-| Deployment | GitHub Pages |
-| Main Game | `kotamati.html` |
-
----
-
-# 📦 Project Structure
-
-Struktur deployment utama:
-
-```text
-bnsbluss.github.io/
-│
-├── kotamati.html
-├── kotamati-sw.js
-│
-└── kotamati/
-    ├── version.json
-    └── ...
+``` text
+MERAH  5 pemain
+   VS
+BIRU   5 pemain
 ```
 
-### Update Game
+Scoreboard:
 
-Untuk memperbarui game:
+  Player      Team     Kill   Death   Score    Ping
+  ----------- ------ ------ ------- ------- -------
+  Player 01   🔴         12       4     120   42 ms
+  Player 02   🔵          9       7      90   68 ms
 
-```text
-Upload / Replace:
+Ping:
 
-kotamati.html
-kotamati-sw.js
+-   🟢 `< 80 ms`
+-   🟡 `< 150 ms`
+-   🔴 `≥ 150 ms / tidak stabil`
+
+Target PvP:
+
+**30 kill per tim atau waktu habis.**
+
+------------------------------------------------------------------------
+
+# 7. 🔫 Sistem Senjata
+
+  Senjata            Damage     Delay   Peluru/Tembak Catatan
+  ---------------- -------- --------- --------------- ---------------------------
+  Pistol                1,5    0,24 s               1 Amunisi tak terbatas
+  Senapan Mesin        1,15   0,085 s               1 Automatic
+  Shotgun              1,25    0,75 s               8 Damage turun dengan jarak
+  Peluncur Roket         16    0,85 s           Roket Radius 2,4 m
+  AWP                    18     1,3 s               1 Tembus 3 zombie
+  Parang                  5     0,5 s              \- Maks. 2 sasaran
+  KRISS                0,72   0,058 s               1 Automatic
+  Dual KRISS           0,72   0,042 s               1 Versi toko
+
+Headshot:
+
+``` text
+Zombie ×2,5
+PvP    ×2,2
+```
+
+## Weapon-in-hand
+
+Senjata harus dipisahkan dari karakter:
+
+``` text
+CHARACTER
+   +
+WEAPON
+   ↓
+FINAL SPRITE
+```
+
+Dengan cara ini semua karakter dapat memakai:
+
+-   Pistol
+-   Senapan Mesin
+-   Shotgun
+-   AWP
+-   RPG
+-   KRISS
+-   Dual KRISS
+-   Parang
+
+### Aturan angle
+
+Laras harus mengarah ke crosshair.
+
+``` text
+MUZZLE ───────────→ CROSSHAIR
+```
+
+Jangan menggunakan rotasi yang membuat senjata terlihat bengkok. Jika
+source sprite memang bengkok, perbaiki asset terlebih dahulu.
+
+------------------------------------------------------------------------
+
+# 8. 🧟 Zombie
+
+  Tipe             HP   Speed   Damage   Score
+  ------------- ----- ------- -------- -------
+  Normal            3    1,05        9     100
+  Tentara         2,4     2,2        7     150
+  Merangkak       1,2     4,2       11     120
+  Gendut           12    0,75       14     300
+  Pemburu           6     1,9        6     250
+  Lidah             5     0,9        4     250
+  Penyeruduk       16     1,1       18     350
+  Penunggang        4     2,5        3     250
+  Peludah           5     1,0        6     250
+  Kuntilanak       90     4,2       14   1.500
+  Raksasa          45    1,05       24   1.500
+  Raja Zombie     260    1,15       28   6.000
+
+------------------------------------------------------------------------
+
+# 9. 🧟‍♂️ Standar Sprite Zombie
+
+### Normal Zombie
+
+``` text
+Jalan Depan       4 frame
+Jalan Samping     4 frame
+Jalan Belakang    4 frame
+
+Serang Depan      4 frame
+Serang Samping    4 frame
+Serang Belakang   4 frame
+```
+
+### Zombie Merangkak
+
+``` text
+Merangkak Depan       4 frame
+Merangkak Samping     4 frame
+Merangkak Belakang    4 frame
+
+Serang Depan          4 frame
+Serang Samping        4 frame
+Serang Belakang       4 frame
+```
+
+### Zombie khusus / Boss
+
+Dapat memakai:
+
+``` text
+Idle
+Walk
+Run
+Attack
+Jump
+Special Attack
+Hit
+Death
+```
+
+### Aturan visual
+
+-   Background transparan.
+-   Tidak ada teks.
+-   Tidak ada watermark.
+-   Tidak ada frame yang saling menempel.
+-   Baseline kaki konsisten.
+-   Ukuran karakter stabil.
+-   Tidak miring tanpa alasan animasi.
+-   Hindari bayangan yang merusak alpha.
+-   Siluet harus konsisten.
+-   Sprite tidak boleh terpotong.
+
+------------------------------------------------------------------------
+
+# 10. 🧍 Karakter Pemain
+
+    ID Karakter   Unlock
+  ---- ---------- --------
+     0 UCOK       Gratis
+     1 POLISI     Gratis
+     2 HASMAT     LV 3
+     3 IDA        LV 5
+     4 STEVI      LV 7
+     5 RITO       LV 9
+
+### Animasi karakter
+
+``` text
+Idle Front       4
+Idle Side        4
+Idle Back        4
+Idle Crouch      4
+Jump             2
+
+Walk Front       4
+Walk Side        4
+Walk Back        4
+Walk Crouch      4
+Walk              2
+```
+
+Karakter dapat berada dalam posisi memegang/aim senjata, tetapi senjata
+dibuat terpisah agar game dapat memasang weapon sprite sendiri.
+
+------------------------------------------------------------------------
+
+# 11. 🎨 Sprite Pipeline
+
+``` mermaid
+flowchart LR
+    A[Source Image] --> B[Remove Background]
+    B --> C[Clean Alpha]
+    C --> D[Crop Frames]
+    D --> E[Align Baseline]
+    E --> F[Normalize Scale]
+    F --> G[Sprite Sheet]
+    G --> H[PNG / WebP]
+    H --> I[Game]
+```
+
+## Standar
+
+1.  Transparansi asli.
+2.  Tidak ada teks.
+3.  Tidak ada watermark.
+4.  Frame memiliki ukuran konsisten.
+5.  Baseline konsisten.
+6.  Jarak frame cukup.
+7.  Proporsi karakter tidak berubah.
+8.  Senjata panjang tidak terpotong.
+9.  Muzzle point dapat ditentukan.
+10. Selalu tes sprite di game.
+
+------------------------------------------------------------------------
+
+# 12. 🖼️ Struktur Asset
+
+``` text
 kotamati/
+├── index.html
+├── sw.js
+├── css/
+│   └── style.css
+├── js/
+│   ├── game.js
+│   ├── akun.js
+│   ├── config.js
+│   └── three.min.js
+├── img/
+│   ├── title.webp
+│   ├── char-ucok.webp
+│   ├── polisi.webp
+│   ├── hasmat.webp
+│   ├── ida.webp
+│   ├── stevi.webp
+│   ├── rito.webp
+│   ├── senjata.png
+│   ├── fpv.webp
+│   ├── zdesa.webp
+│   ├── ztentara.webp
+│   ├── zrangkak.webp
+│   ├── bos.webp
+│   ├── raksasa.webp
+│   ├── kuntilanak.webp
+│   ├── gendut.webp
+│   ├── lidah.webp
+│   ├── peludah.webp
+│   ├── pemburu.webp
+│   ├── penunggang.webp
+│   └── penyeruduk.webp
+├── sound/
+│   └── battle.mp3
+├── news.ini
+├── manifest.webmanifest
+└── version.json
 ```
 
-> Timpa file versi lama dengan versi terbaru.
+------------------------------------------------------------------------
 
-### Firebase
+# 13. 🔫 First Person Weapon View
 
-Database Firebase **tidak perlu diubah** kecuali terdapat catatan khusus pada update tertentu.
+Format `FPVS` memakai sheet vertikal.
 
----
+  Field   Fungsi
+  ------- --------------------------
+  `sy`    Posisi Y
+  `w`     Lebar
+  `h`     Tinggi
+  `cx`    Posisi horizontal
+  `vh`    Tinggi dari bawah layar
+  `mz`    Titik moncong
+  `mzL`   Moncong kiri Dual KRISS
+  `mzR`   Moncong kanan Dual KRISS
+  `ej`    Posisi eject casing
 
-# 🚀 Deploy to GitHub Pages
+Muzzle flash harus muncul tepat di ujung laras.
 
-Repository:
+Karakter lain dan bot juga dapat memiliki titik `mz` per frame.
 
-```text
-bnsbluss/bnsbluss.github.io
+------------------------------------------------------------------------
+
+# 14. 🌐 Multiplayer
+
+Teknologi:
+
+``` text
+Browser
+   ↓
+PeerJS
+   ↓
+WebRTC
+   ↓
+Host / Hub
+   ↓
+Clients
 ```
 
-Upload:
+PeerJS berfungsi sebagai signaling. Data gameplay berjalan langsung
+melalui WebRTC.
 
-```text
-kotamati.html
-kotamati-sw.js
-kotamati/
+Presence dikirim sekitar:
+
+``` text
+15 × / detik
 ```
 
-Kemudian buka:
+Data dapat meliputi:
 
-```text
-https://bnsbluss.github.io/kotamati.html
+-   posisi
+-   arah
+-   karakter
+-   senjata
+-   HP
+-   status
+-   team
+-   READY
+-   ping
+-   skor
+-   kill
+-   event
+
+------------------------------------------------------------------------
+
+# 15. 🔥 Gameplay
+
+## Scaling gelombang
+
+``` text
+HP × (1 + 0,07 × (wave - 1))
 ```
 
-Setelah deployment:
+Difficulty:
 
-```text
-Open Game
-     ↓
-Select Mode
-     ↓
-Create / Join Room
-     ↓
-Play
+  Mode          HP   Damage
+  -------- ------- --------
+  Mudah      ×0,75    ×0,70
+  Normal        ×1       ×1
+  Sulit      ×1,35    ×1,30
+
+Drop item:
+
+``` text
+Lifetime = 15 detik
+Blink    = 4 detik terakhir
 ```
 
----
+Stamina:
 
-# ⚠️ Known Limitations
-
-### 🌐 Multiplayer
-
-Multiplayer internet bergantung pada koneksi peer-to-peer dan layanan yang digunakan.
-
-Server publik dapat mengalami:
-
-- Connection failure
-- Room unavailable
-- Timeout
-- Server busy
-
-Jika gagal terhubung:
-
-> Coba kembali beberapa saat kemudian.
-
----
-
-### 📱 Browser Cache
-
-Jika perangkat masih menggunakan versi lama:
-
-1. Tutup tab game.
-2. Buka kembali game.
-3. Jika diperlukan, refresh browser.
-
-Sistem versi menggunakan:
-
-```text
-kotamati/version.json
+``` text
+Lari ±5 detik
+Pulih setelah ±2 detik
+Bisa lari lagi pada 35%
 ```
 
----
+------------------------------------------------------------------------
 
-### 🎵 Music License
+# 16. 🗺️ Map
 
-Pastikan lisensi:
+    ID Map             Ciri
+  ---- --------------- ------------------
+     0 Pusat Kota      Seimbang
+     1 Pelabuhan       Dermaga & ombak
+     2 Pabrik Kimia    Mesin & industri
+     3 Kuburan Tua     Horor
+     4 Hutan Rimbun    Pohon & gubuk
+     5 Rumah Hantu     Interior
+     6 Goa Gelap       Gelap + senter
+     7 Kota Mati       Perumahan hancur
+     8 Barak Tentara   Hujan + petir
 
-> **Upbeat RPG Battle — Vespidaze**
+------------------------------------------------------------------------
 
-mengizinkan penggunaan pada game yang dipublikasikan secara umum.
+# 17. 🏆 EXP & Pangkat
 
----
+  Aktivitas            EXP
+  ----------------- ------
+  Ikut bermain          20
+  Kill zombie           +2
+  Headshot              +1
+  Gelombang            +15
+  Raja Zombie         +150
+  Menolong teman       +30
+  Menang Bertahan     +250
+  Kill PvP             +10
+  Menang PvP          +100
 
-# 📜 Development History
+Maksimum:
 
-## Version 33 — 5 Map Baru & Crawling Zombie
-
-### 🧟 Crawling Zombie
-
-- Speed **+50%**
-- `0,82 → 1,23`
-- HP: `1,2`
-- Bite damage: `11`
-
-### 🗺️ Five New Maps
-
-Ditambahkan:
-
-- 🌲 Hutan Rimbun
-- 👻 Rumah Hantu
-- 💎 Goa Gelap
-- 🏚️ Kota Mati
-- 🪖 Barak Tentara
-
-Total:
-
-> **9 Maps**
-
-Kelima map mendukung:
-
-- Sprite mode
-- 3D mode
-- Zombie pathfinding
-
----
-
-## Version 32 — Weapon Position
-
-- Weapon dipindahkan ke kanan bawah.
-- Ukuran diperkecil sekitar 25–30%.
-- Barrel disejajarkan dengan crosshair.
-- Muzzle flash tetap berada di ujung barrel.
-- Parang ikut disesuaikan.
-- Dual Kriss menggunakan posisi kiri-kanan.
-
----
-
-## Version 31 — Weapon Redesign
-
-Semua first-person weapon dibuat menggunakan model 3D kecil yang kemudian dirender menjadi pixel-art.
-
-Ditambahkan:
-
-- Hand positioning
-- Finger grip
-- Skin-based gloves
-- Skin-based sleeves
-- Weapon-specific model
-- Muzzle flash
-- Shell ejection
-
-Weapon yang memiliki model khusus:
-
-- Pistol
-- Machine Gun
-- Shotgun
-- Rocket Launcher
-- AWP
-- Kriss
-- Dual Kriss
-- Parang
-
-Weapon pada teammate dan bot sekarang mengikuti senjata yang sedang digunakan.
-
----
-
-## Version 30 — Zombie 3D Texture
-
-Zombie 3D sekarang menggunakan sprite gritty sebagai texture.
-
-Ditambahkan:
-
-- Green zombie face
-- White eyes
-- Teeth
-- Torn shirt
-- Blood stains
-- Hunter hood
-- Kuntilanak hair
-- Boss red skin
-
-Animasi tetap menggunakan skeletal animation:
-
-- Walk
-- Attack
-- Death
-
----
-
-## Version 29 — Crawling Zombie
-
-- Speed meningkat 20%.
-- HP dikurangi.
-- Damage ditingkatkan.
-
----
-
-## Version 28 — Headshot System
-
-Sistem hitbox kepala diperbaiki agar mengikuti gambar zombie.
-
-Hasil:
-
-```text
-HEAD  → HEADSHOT
-BODY  → BODY HIT
-ABOVE → MISS
+``` text
+5.000 EXP / pertandingan
 ```
 
-Diuji pada berbagai jenis zombie.
+### Pangkat
 
----
-
-## Version 14 & Earlier
-
-Pengembangan sebelumnya mencakup:
-
-- Basic Zombie FPS
-- Co-op
-- PvP
-- Reload
-- Free Aim
-- Jump
-- Crouch
-- Mobile Controls
-- AWP
-- Grenade
-- Minimap
-- Kuntilanak
-- Showroom
-- Character Skins
-- 1UP
-- Stickers
-- Side / Back Sprite
-- Zombie Audio
-- 3D Positional Audio
-- Lobby Music
-- Shop
-- Raja Zombi
-- Parang
-- Molotov
-- Night Mode
-- Location Marker
-- Statistics
-- Dynamic Battle Music
-
----
-
-# 🛣️ Roadmap
-
-Beberapa fitur yang dapat dikembangkan berikutnya:
-
-- [ ] 🏆 Online Leaderboard
-- [ ] 📖 Story Mode
-- [ ] 🗺️ Additional Maps
-- [ ] 🧟 New Special Zombies
-- [ ] 👑 Additional Boss
-- [ ] 🏅 Achievement System
-- [ ] 📅 Daily Missions
-- [ ] 🎵 Additional Battle Music
-- [ ] 👑 Boss-specific Music
-- [ ] 🎮 Additional Game Modes
-
----
-
-# 📈 Project Status
-
-## 🟢 Implemented
-
-- 🟢 Solo Survival
-- 🟢 Online Co-op
-- 🟢 PvP
-- 🟢 9 Maps
-- 🟢 Sprite Mode
-- 🟢 3D Mode
-- 🟢 Multiple Zombie Types
-- 🟢 Crawling Zombie
-- 🟢 Boss
-- 🟢 Shop
-- 🟢 Revive
-- 🟢 1UP
-- 🟢 Night Mode
-- 🟢 Flashlight
-- 🟢 Weather Effects
-- 🟢 14 Character Skins
-- 🟢 Minimap
-- 🟢 Location Marker
-- 🟢 Stickers
-- 🟢 Mobile Controls
-- 🟢 Weapon System
-- 🟢 Headshot System
-- 🟢 Firebase
-- 🟢 Version System
-
-## 🟡 In Development / Future
-
-- 🟡 Online Leaderboard
-- 🟡 Story Mode
-- 🟡 Additional Maps
-- 🟡 Additional Bosses
-- 🟡 Achievement System
-- 🟡 Daily Missions
-
----
-
-# 📝 Update Notes
-
-Current version:
-
-> **Kota Mati — Version 33**
-
-Latest major additions:
-
-> **9 Maps · Crawling Zombie · Sprite + 3D · Improved First-Person Weapons · Weather Effects · Automatic Version Tracking**
-
----
-
-# 📚 Documentation
-
-Panduan pemasangan dan deployment tersedia di:
-
-```text
-kotamati/PANDUAN.md
+``` text
+01 Prajurit Dua
+02 Prajurit Satu
+03 Prajurit Kepala
+04 Kopral
+05 Sersan Dua
+06 Sersan Satu
+07 Sersan Kepala
+08 Letnan Dua
+09 Letnan Satu
+10 Kapten
+11 Mayor
+12 Letnan Kolonel
+13 Kolonel
+14 Brigjen
+15 Mayjen
+16 Letjen
+17 Jenderal
 ```
 
----
+------------------------------------------------------------------------
 
-# 🎵 Credits
+# 18. 📰 Berita
 
-### Battle Music
+File:
 
-**Upbeat RPG Battle**  
-Artist: **Vespidaze**
+``` text
+news.ini
+```
 
----
+``` ini
+[pengaturan]
+kecepatan = 35
+jeda = 3
+jeda_awal = 1
+jumlah = 5
+urutan = acak
+jeda_putaran = 10
+label = BERITA
+berhenti_saat_disorot = ya
+```
 
-# 📌 Project Philosophy
+`!` digunakan untuk berita penting.
 
-Kota Mati dibuat dengan tujuan sederhana:
+------------------------------------------------------------------------
 
-> **Membuat FPS zombie yang ringan, mudah dimainkan, dan dapat langsung dimainkan melalui browser tanpa instalasi.**
+# 19. 🎛️ UI / UX
 
-Game ini menggabungkan:
+Tema visual:
 
-**Pixel Art + FPS + Zombie Survival + Multiplayer + Browser Technology**
+``` text
+DARK
+PIXEL ART
+ARCADE
+ZOMBIE SURVIVAL
+FPS
+NEON ACCENT
+```
 
-menjadi satu pengalaman game yang dapat dimainkan di:
+Warna fungsi:
 
-> 💻 **PC** · 📱 **Mobile** · 🌐 **Browser**
+-   🟢 Hijau = Login / Ready / aman
+-   🟠 Oranye = aksi utama
+-   🔴 Merah = bahaya / PvP
+-   🟣 Ungu = panel / guest / sistem
+-   ⚪ Putih = informasi
 
----
+### Tab utama
 
-<div align="center">
+``` text
+MAIN
+LOBBY
+KONTROL
+SENJATA
+ZOMBI
+AKUN
+```
 
-# 🧟 KOTA MATI
+Informasi panjang sebaiknya memakai:
 
-### **SURVIVE THE CITY**
+``` text
+TAB
+CARD
+GRID
+MODAL
+TOOLTIP
+```
 
-*One wave. One life. No way out.*
+Jangan membuat manual menjadi halaman panjang yang memaksa pemain terus
+scrolling.
 
-**Version 33**
+------------------------------------------------------------------------
 
-</div>
+# 20. 💾 Local Storage
+
+  Key                   Fungsi
+  --------------------- ---------------
+  `kotamati-profil`     Profil guest
+  `kotamati-nick`       Nick terakhir
+  `kotamati-trial`      Trial
+  `kotamati-skin`       Skin
+  `kotamati-set`        Pengaturan
+  `kotamati-map`        Map terakhir
+  `kotamati-lastmode`   Mode terakhir
+  `kotamati-night`      Mode malam
+  `kotamati-bots`       Jumlah bot
+  `kotamati-hud`        Layout HUD
+  `kotamati-misi-*`     Misi
+  `kotamati-skor-*`     Rekor
+
+Service worker:
+
+``` text
+kmweb-<VER>
+```
+
+------------------------------------------------------------------------
+
+# 21. 🗄️ Firebase
+
+Project:
+
+``` text
+kotamati-a6cb3
+```
+
+Koleksi:
+
+``` text
+users
+names
+trials
+```
+
+Data user:
+
+``` text
+nick
+nickLower
+exp
+kills
+hs
+games
+best
+boss
+revives
+wins
+losses
+waves
+skin
+weekly EXP
+createdAt
+updatedAt
+```
+
+`firestore.rules` membatasi perubahan data penting dan validasi skin.
+
+------------------------------------------------------------------------
+
+# 22. 🧪 Testing Checklist
+
+## Gameplay
+
+-   [ ] Solo
+-   [ ] Bertahan
+-   [ ] Co-op
+-   [ ] PvP 5v5
+-   [ ] Bot
+-   [ ] Semua zombie
+-   [ ] Semua senjata
+-   [ ] Reload
+-   [ ] Headshot
+-   [ ] Grenade
+-   [ ] Molotov
+-   [ ] Boss
+-   [ ] Drop item
+-   [ ] Revive
+
+## Multiplayer
+
+-   [ ] Buat room
+-   [ ] Join room
+-   [ ] Room publik
+-   [ ] Room terkunci
+-   [ ] Kode undangan
+-   [ ] Link undangan
+-   [ ] Host tetap pembuat
+-   [ ] Host migration
+-   [ ] Team balance
+-   [ ] Scoreboard
+-   [ ] Ping
+-   [ ] Disconnect / reconnect
+
+## Account
+
+-   [ ] Register
+-   [ ] Login
+-   [ ] Guest
+-   [ ] Trial 5 menit
+-   [ ] Migrasi guest → account
+-   [ ] EXP
+-   [ ] Rank
+-   [ ] Skin
+-   [ ] Ranking
+-   [ ] Daily mission
+
+## Mobile
+
+-   [ ] Landscape
+-   [ ] Portrait warning
+-   [ ] Fullscreen
+-   [ ] Touch control
+-   [ ] Joystick
+-   [ ] Fire
+-   [ ] Reload
+-   [ ] Weapon switch
+-   [ ] HUD aman dari notch
+-   [ ] Tidak ada scroll horizontal
+-   [ ] FPS stabil
+
+## Asset
+
+-   [ ] Transparan
+-   [ ] Tanpa teks
+-   [ ] Tanpa watermark
+-   [ ] Frame tidak menempel
+-   [ ] Baseline konsisten
+-   [ ] Ukuran konsisten
+-   [ ] Angle weapon benar
+-   [ ] Muzzle point benar
+-   [ ] Tidak terpotong
+-   [ ] Semua asset termuat
+
+------------------------------------------------------------------------
+
+# 23. 🚧 Batasan
+
+### Browser / Anti-cheat
+
+Karena game berjalan di browser, client-side code tidak dapat dianggap
+anti-cheat sepenuhnya.
+
+### WebRTC
+
+NAT yang sangat ketat dapat menyebabkan koneksi gagal tanpa TURN.
+
+### Guest Trial
+
+Trial berbasis browser tidak dapat dianggap sebagai anti-bypass absolut.
+
+### Account Recovery
+
+Akun menggunakan password tanpa email asli sehingga pemulihan mandiri
+terbatas.
+
+------------------------------------------------------------------------
+
+# 24. 🚀 Roadmap
+
+## 🔴 Prioritas Tinggi
+
+-   [ ] Publish `firestore.rules` terbaru.
+-   [ ] Uji room dan host migration.
+-   [ ] Uji PvP 5v5.
+-   [ ] Uji landscape pada berbagai ukuran HP.
+-   [ ] Validasi Guest Trial di server.
+-   [ ] Uji seluruh sprite baru.
+-   [ ] Normalisasi semua angle weapon.
+
+## 🟠 Asset
+
+-   [ ] Parang first-person.
+-   [ ] Shotgun weapon-in-hand.
+-   [ ] Parang weapon-in-hand.
+-   [ ] KRISS weapon-in-hand.
+-   [ ] Dual KRISS.
+-   [ ] AWP.
+-   [ ] RPG.
+-   [ ] Variasi zombie.
+-   [ ] Attack / Hit / Death tambahan.
+-   [ ] Normalisasi skala zombie.
+
+## 🟡 UI
+
+-   [ ] Finalisasi title screen.
+-   [ ] Onboarding pemain baru.
+-   [ ] Landscape lock.
+-   [ ] Compact manual.
+-   [ ] Zombie Codex.
+-   [ ] Weapon Codex.
+-   [ ] Lobby FPS.
+-   [ ] Character profile HUD.
+-   [ ] Room browser.
+
+## 🟢 Polish
+
+-   [ ] Muzzle flash.
+-   [ ] Casing ejection.
+-   [ ] Recoil.
+-   [ ] Hit effect.
+-   [ ] Blood effect.
+-   [ ] Zombie death animation.
+-   [ ] Screen shake.
+-   [ ] Spatial audio.
+-   [ ] Performance optimization.
+
+------------------------------------------------------------------------
+
+# 25. 📦 Struktur Rilis
+
+``` text
+kotamati-web.zip
+├── UPLOAD-KE-GITHUB/
+│   ├── kotamati.html
+│   ├── kotamati-sw.js
+│   └── kotamati/
+│       ├── index.html
+│       ├── sw.js
+│       ├── css/
+│       ├── js/
+│       ├── img/
+│       ├── sound/
+│       ├── news.ini
+│       ├── manifest.webmanifest
+│       └── version.json
+│
+└── DOKUMEN-JANGAN-UPLOAD/
+    ├── PANDUAN.md
+    ├── CATATAN.md
+    ├── CATATAN-PEKERJAAN-LENGKAP.md
+    └── firestore.rules
+```
+
+------------------------------------------------------------------------
+
+# 26. 🔄 Build & Deploy
+
+``` mermaid
+flowchart LR
+    A[Master kota-busuk.html]
+    --> B[Build]
+    --> C[Playwright Test]
+    --> D[build_web.py]
+    --> E[kotamati-web.zip]
+    --> F[Project_KotaMati]
+    --> G[GitHub Pages]
+    --> H[Pemain]
+```
+
+Checklist:
+
+1.  Naikkan versi.
+2.  Update `version.json`.
+3.  Update `CATATAN.md`.
+4.  Update dokumen ini jika arsitektur berubah.
+5.  Build.
+6.  Playwright test.
+7.  Cek console error.
+8.  Cek asset.
+9.  Test PC.
+10. Test Mobile Landscape.
+11. Upload.
+12. Pastikan cache service worker baru.
+
+------------------------------------------------------------------------
+
+# 27. 📜 Riwayat Versi
+
+       Versi Fokus
+  ---------- -----------------------------------
+          28 Headshot
+          29 Zombie merangkak
+          30 Zombie 3D bertekstur sprite
+          31 Senjata pixel art
+          32 Posisi senjata
+          33 Map baru
+          34 Kredit & share
+          35 PvP & audio stereo
+          36 Collision pohon
+          37 Lobby, room, PvP 5v5, guest trial
+          38 Title screen & landscape
+          39 Fokus sprite
+          40 Raksasa
+          41 Kuntilanak & stamina
+          42 Drop item
+          43 Fullscreen UI
+          44 Weapon balancing
+          45 News system
+          46 Special zombies
+          47 Ambience
+          48 Foto skor
+          49 Character system
+          50 Firefox shooting fix
+          51 Weapon-in-hand
+          52 1PV & zombie sprite
+          53 Crosshair & muzzle flash
+          54 Migrasi ke `/kotamati/`
+    **Next** **UI + Sprite + Mobile Polish**
+
+------------------------------------------------------------------------
+
+# 28. ☣️ Status Proyek
+
+``` text
+GAMEPLAY       ████████████████████████████
+MULTIPLAYER    ████████████████████████████
+ACCOUNT        ████████████████████████████
+UI             ██████████████████████████░░
+SPRITE         ████████████████████████░░░
+MOBILE         ██████████████████████░░░░░
+POLISH         ████████████████████░░░░░░░
+```
+
+### Fokus pengembangan berikutnya
+
+**Gameplay → Multiplayer → Sprite → Weapon → UI → Mobile → Polish**
+
+Tujuan akhirnya:
+
+> **KOTA MATI harus terasa seperti game FPS arcade pixel yang utuh,
+> responsif, konsisten, dan siap dimainkan baik di PC maupun HP
+> landscape.**
+
+------------------------------------------------------------------------
+
+## 📝 Catatan Pemeliharaan
+
+Dokumen ini merupakan **dokumen kerja internal**.
+
+Lokasi:
+
+``` text
+DOKUMEN-JANGAN-UPLOAD/
+CATATAN-PEKERJAAN-LENGKAP.md
+```
+
+Tidak perlu di-upload ke GitHub Pages kecuali memang diperlukan untuk
+dokumentasi publik.
+
+**Last updated:** 28 Oktober 2026\
+**Developer:** HeavyRain\
+**Project:** KOTA MATI
