@@ -16,7 +16,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Chakra+Petch:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="canonical" href="https://bnsbluss.github.io/kotamati/">
-<link rel="stylesheet" href="css/style.css?v=20261028-023007">
+<link rel="stylesheet" href="css/style.css?v=20261028-030906">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" type="image/png" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-192.png">
@@ -31,7 +31,7 @@
   <form class="gform" id="gfReg" hidden><label for="rNick">Nama pemain (3–10 huruf, angka, atau _)</label><input id="rNick" maxlength="10" autocomplete="username" spellcheck="false" autocapitalize="off">
     <label for="rPass">Password (minimal 6)</label><input id="rPass" type="password" autocomplete="new-password"><label for="rPass2">Ulangi password</label><input id="rPass2" type="password" autocomplete="new-password">
     <button class="btn go" type="submit">DAFTAR</button></form>
-  <form class="gform" id="gateForm"><label for="gNick">Nama pemain</label><input id="gNick" maxlength="10" autocomplete="off" spellcheck="false"><button class="btn go" type="submit">MAIN SEBAGAI TAMU</button></form>
+  <form class="gform" id="gateForm"><label for="gNick">Nama tamu (otomatis)</label><input id="gNick" maxlength="10" autocomplete="off" spellcheck="false" readonly><button class="btn go" type="submit">MAIN SEBAGAI TAMU</button></form>
   <p class="gerr" id="gErr" role="alert"></p><p class="mnote" id="gNote">Nama ini terlihat oleh pemain lain saat mabar.</p>
   <button class="btn sm" id="gClose" type="button" hidden>TUTUP</button></div></div>
 <div class="gate shotm" id="shotM" hidden><div class="gatebox" role="dialog" aria-labelledby="shotT">
@@ -287,16 +287,16 @@
       <span class="by">Kota Mati dibuat oleh <a class="bylink" href="https://web.facebook.com/travisbarker06" target="_blank" rel="noopener">HeavyRain</a> · Musik: “Upbeat RPG Battle” oleh Vespidaze</span></div>
   </footer>
 </div>
-<script>window.KM_VER="20261028-023007";window.KM_VERURL="version.json";window.KM_PWA={sw:"sw.js",scope:"./"};window.KM_THREE="js/three.min.js?v=r128";</script>
-<script src="js/config.js?v=20261028-023007"></script>
+<script>window.KM_VER="20261028-030906";window.KM_VERURL="version.json";window.KM_PWA={sw:"sw.js",scope:"./"};window.KM_THREE="js/three.min.js?v=r128";</script>
+<script src="js/config.js?v=20261028-030906"></script>
 <script>
 /* Library Firebase hanya dimuat kalau js/config.js sudah diisi. */
 if(window.KM_FIREBASE&&KM_FIREBASE.apiKey&&!/^ISI/i.test(KM_FIREBASE.apiKey)){
   document.write('<script src="https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-app-compat.js"><\/script><script src="https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-auth-compat.js"><\/script><script src="https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-firestore-compat.js"><\/script>');
 }
 </script>
-<script src="js/akun.js?v=20261028-023007"></script>
-<script>window.KM_TRACK='sound/battle.mp3';window.KM_RAKSASA='img/raksasa.webp';window.KM_KUNTI='img/kuntilanak.webp';window.KM_NEWSURL='news.ini';window.KM_C_UCOK='img/char-ucok.webp';window.KM_C_POLISI='img/char-polisi.webp';window.KM_C_HASMAT='img/char-hasmat.webp';window.KM_C_IDA='img/char-ida.webp';window.KM_C_STEVI='img/char-stevi.webp';window.KM_C_RITO='img/char-rito.webp';window.KM_Z_GENDUT='img/gendut.webp';window.KM_Z_LIDAH='img/lidah.webp';window.KM_Z_PELUDAH='img/peludah.webp';window.KM_Z_PEMBURU='img/pemburu.webp';window.KM_Z_PENUNGGANG='img/penunggang.webp';window.KM_Z_PENYERUDUK='img/penyeruduk.webp';window.KM_WEAPSPR='img/senjata.png';window.KM_Z_DESA='img/zdesa.webp';window.KM_Z_TENTARA='img/ztentara.webp';window.KM_Z_RANGKAK='img/zrangkak.webp';window.KM_Z_BOS='img/bos.webp';window.KM_FPVSPR='img/fpv.webp';</script>
-<script src="js/game.js?v=20261028-023007"></script>
+<script src="js/akun.js?v=20261028-030906"></script>
+<script>window.KM_TRACK='sound/battle.mp3';window.KM_RAKSASA='img/raksasa.webp';window.KM_KUNTI='img/kuntilanak.webp';window.KM_NEWSURL='news.ini';window.KM_C_UCOK='img/char-ucok.webp';window.KM_C_POLISI='img/char-polisi.webp';window.KM_C_HASMAT='img/char-hasmat.webp';window.KM_C_IDA='img/char-ida.webp';window.KM_C_STEVI='img/char-stevi.webp';window.KM_C_RITO='img/char-rito.webp';window.KM_Z_GENDUT='img/gendut.webp';window.KM_Z_LIDAH='img/lidah.webp';window.KM_Z_PELUDAH='img/peludah.webp';window.KM_Z_PEMBURU='img/pemburu.webp';window.KM_Z_PENUNGGANG='img/penunggang.webp';window.KM_Z_PENYERUDUK='img/penyeruduk.webp';window.KM_WEAPSPR='img/senjata.png';window.KM_Z_DESA='img/zdesa.webp';window.KM_Z_TENTARA='img/ztentara.webp';window.KM_Z_RANGKAK='img/zrangkak.webp';window.KM_Z_BOS='img/bos.webp';window.KM_FPVSPR='img/fpv.webp';window.KM_WEAPICON='img/ikon-senjata.webp';</script>
+<script src="js/game.js?v=20261028-030906"></script>
 </body>
 </html>

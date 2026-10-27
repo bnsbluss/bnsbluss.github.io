@@ -1665,7 +1665,12 @@ const NET={mode:'solo',def:false,r:null,code:'',nick:'',me:null,host:true,hostPe
 const r2=v=>Math.round(v*100)/100;
 const num=(v,d=0)=>(typeof v==='number'&&Number.isFinite(v))?v:d;
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
-function cleanNick(s){return String(s||'').toUpperCase().replace(/[^A-Z0-9 _-]/g,'').trim().slice(0,10)||'PEMAIN';}
+function cleanNick(s){return String(s||'').toUpperCase().replace(/[^A-Z0-9 _#-]/g,'').trim().slice(0,10)||'PEMAIN';}
+/* nama tamu dibuat otomatis (TAMU#12345) dan tetap sama di browser ini. Nama sendiri hanya untuk akun terdaftar,
+   jadi tamu tidak bisa memakai nama akun orang lain. */
+function guestNick(){let n='';try{n=localStorage.getItem('kotamati-tamu')||'';}catch(e){}
+  if(!/^TAMU#\d{5}$/.test(n)){const a=new Uint32Array(1);try{crypto.getRandomValues(a);}catch(e){a[0]=(Math.random()*1e9)>>>0;}n='TAMU#'+String(10000+a[0]%90000);try{localStorage.setItem('kotamati-tamu',n);}catch(e){}}
+  return n;}
 function online(){return NET.mode!=='solo'&&!!NET.r;}
 function pushEv(arr){if(BOTS.size&&typeof arr[1]==='string'&&BOTS.has(arr[1])){botEv(arr);return;}if(!online())return;NET.ev.push([++NET.seq].concat(arr));if(NET.ev.length>24)NET.ev.splice(0,NET.ev.length-24);}
 
@@ -2717,7 +2722,7 @@ SKINS.forEach((K,i)=>{const b=document.createElement('button');b.type='button';b
 function redrawSkinBtns(){for(const c of skinsEl.querySelectorAll('canvas[data-si]')){const g=c.getContext('2d');g.clearRect(0,0,c.width,c.height);const st=getSold(+c.dataset.si,0,1);sprThumb(g,st.nu?st.idleF[0]:st.front[0],c.width,c.height);}}
 function markSkins(){[...skinsEl.children].forEach((b,j)=>{b.setAttribute('aria-pressed',j===G.showSkin?'true':'false');b.classList.toggle('lock',skinLocked(j));});
   const e=document.getElementById('sErr');if(e){if(skinLocked(G.showSkin)){const lv=skinLv(G.showSkin);e.textContent='Karakter '+SKINS[G.showSkin].name+' terbuka di pangkat LV '+lv+' · '+(window.KMA?KMA.RANKS[lv-1][0]:'')+'.';}else e.textContent='';}}
-function openShowroom(){G.showSkin=G.skin;sNick.value=G.nick;sNick.disabled=accLogged();sNick.title=accLogged()?'Nama akun tidak bisa diganti':'';document.getElementById('sErr').textContent='';markSkins();G.state='showroom';showView(vShow);}
+function openShowroom(){G.showSkin=G.skin;sNick.value=G.nick;sNick.disabled=true;sNick.title=accLogged()?'Nama akun tidak bisa diganti':'Nama tamu dibuat otomatis. Daftar akun untuk memakai nama sendiri.';document.getElementById('sErr').textContent='';markSkins();G.state='showroom';showView(vShow);}
 document.getElementById('bShow').addEventListener('click',openShowroom);
 document.getElementById('bBackShow').addEventListener('click',()=>{G.state='title';showMain();});
 document.getElementById('bSaveShow').addEventListener('click',()=>{const n=cleanNick(sNick.value);if(String(sNick.value).replace(/[^A-Za-z0-9]/g,'').length<2){document.getElementById('sErr').textContent='Nama minimal 2 huruf atau angka.';return;}
@@ -2941,21 +2946,34 @@ let keysDone=false;function renderKeys(){if(keysDone)return;keysDone=true;const 
 /* ----- tab SENJATA ----- */
 const WDESC={pistol:'Senjata awal. Peluru cadangan tak terbatas.',mg:'Tembakan cepat dengan kotak amunisi besar.',sg:'8 butir per tembakan. Paling kuat dari dekat, melemah dari jauh.',rl:'Ledakan area. Hati-hati jarak dekat.',awp:'Tembus 3 zombi. Teropong 3x dan 6x.',parang:'Tebasan tanpa peluru, kena sampai 2 zombi.',kriss:'Sangat cepat. Klik kanan untuk DUAL KRISS 60 peluru.'};
 let weapDone=false;function renderWeap(){if(weapDone)return;weapDone=true;const g=document.getElementById('wGrid');
-  const dps=k=>{const w=WEAP[k];return w.melee?w.dmg/w.rate:(w.pellets||1)*w.dmg/w.rate;},maxD=Math.max(...ORDER.map(dps));
+  /* bar dihitung langsung dari tabel WEAP: DAMAGE = damage per tembakan (semua peluru), KECEPATAN = tembakan per detik,
+     AKURASI = dari sebaran peluru (AWP dihitung dengan teropong), DPS = damage per detik. Panjang bar memakai akar supaya beda kecil tetap terlihat. */
+  const shot=k=>{const w=WEAP[k];return w.melee?w.dmg:(w.pellets||1)*w.dmg;},sps=k=>1/WEAP[k].rate,dps=k=>shot(k)*sps(k),
+    maxS=Math.max(...ORDER.map(shot)),maxR=Math.max(...ORDER.map(sps)),maxD=Math.max(...ORDER.map(dps)),fx=n=>String(Math.round(n*10)/10).replace('.',','),f2=n=>String(Math.round(n*100)/100).replace('.',','),
+    acc=k=>{const w=WEAP[k];return w.melee?1:k==='awp'?1:Math.max(0,1-w.spread*7);};
   for(const k of ORDER){const w=WEAP[k],c=document.createElement('div');c.className='wc';const t=document.createElement('div');t.className='wt';
-    const cv=document.createElement('canvas');cv.width=72;cv.height=36;gunIcon(cv,k);
+    const cv=document.createElement('canvas');cv.width=144;cv.height=72;cv.dataset.k=k;cv.style.width='72px';cv.style.height='36px';gunIcon(cv,k);
     const nm=document.createElement('div');nm.innerHTML='<div class="wn"></div><div class="wk"></div>';nm.querySelector('.wn').textContent=w.name;nm.querySelector('.wk').textContent='TOMBOL '+(ORDER.indexOf(k)+1);t.append(cv,nm);
-    const bar=(lb,v,txt)=>{const r=document.createElement('div');r.className='wbar';const l=document.createElement('span');l.textContent=lb;const i=document.createElement('i');const b=document.createElement('b');b.style.width=Math.round(Math.max(0.05,Math.min(1,v))*100)+'%';i.append(b);i.title=txt;r.append(l,i);return r;};
+    const bar=(lb,v,txt,tip)=>{const r=document.createElement('div');r.className='wbar';const l=document.createElement('span');l.textContent=lb;const i=document.createElement('i');const b=document.createElement('b');b.style.width=Math.round(Math.max(0.05,Math.min(1,v))*100)+'%';i.append(b);const q=document.createElement('em');q.textContent=txt;r.title=tip||'';r.append(l,i,q);return r;};
     const d=document.createElement('div');d.className='wd';d.textContent=(w.melee?'Jarak dekat · ':('Magasin '+MAG[k]+(MAXR[k]?' · maks '+MAXR[k]:' · cadangan ∞')+' · '))+(WDESC[k]||'');
-    c.append(t,bar('DAMAGE',dps(k)/maxD,''),bar('KECEPATAN',Math.min(1,0.08/w.rate*1.2),''),bar('AKURASI',w.melee?1:1-Math.min(1,w.spread*7),''),d);g.append(c);}
+    const dt=w.melee?f2(w.dmg)+(w.max?' ×'+w.max:''):(w.pellets>1?w.pellets+'×'+f2(w.dmg):f2(w.dmg)),
+      dtip=k==='rl'?'Damage langsung + ledakan area 2,4 m':k==='awp'?'Headshot 45, tembus 3 zombi':k==='sg'?'8 butir, penuh di bawah 3 m, tinggal 40% di 9 m':w.melee?'Kena sampai '+(w.max||1)+' zombi per tebasan':'Headshot ×2,5';
+    c.append(t,bar('DAMAGE',Math.sqrt(shot(k)/maxS),dt,dtip),bar('KECEPATAN',Math.sqrt(sps(k)/maxR),fx(sps(k))+'/dtk',w.melee?'Tebasan per detik':'Tembakan per detik'),
+      bar('AKURASI',acc(k),w.melee?'dekat':Math.round(acc(k)*100)+'%',k==='awp'?'Dengan teropong. Tanpa teropong peluru menyebar':w.melee?'Serangan jarak dekat':'Makin tinggi makin sedikit sebaran peluru'),
+      bar('DPS',dps(k)/maxD,fx(dps(k)),'Damage per detik ke badan (tanpa headshot)'),d);g.append(c);}
   const SUP=[['Granat','+5 granat, maks 10. Ledakan area.','B','#9be05a'],['Molotov','+2, maks 6. Membakar area 7 detik.','MO','#ff7a3a'],['Medkit','+35 darah.','+','#e8e4dc'],['Nyawa','Khusus solo, sangat langka, maks 6.','1UP','#4fd84a'],['Rompi','Menahan 60% damage. Beli di toko.','R','#7fb0ff']];
   const g2=document.getElementById('sGrid2');for(const[n,d,ic,col]of SUP){const c=document.createElement('div');c.className='sc';const i=document.createElement('span');i.className='crate';i.style.cssText='--c:'+col;const ii=document.createElement('span');ii.textContent=ic;i.append(ii);
     const t=document.createElement('div');const b=document.createElement('b');b.textContent=n;t.append(b,document.createTextNode(d));c.append(i,t);g2.append(c);}}
 /* ikon samping senjata (pixel art dari sprite tentara), dipotong rapat lalu diperbesar bulat */
-function gunIcon(cv,k){const t=document.createElement('canvas');t.width=48;t.height=40;const tg=t.getContext('2d');
+/* ikon kartu SENJATA dari sprite HeavyRain (tampak samping, resolusi 2x). Shotgun & parang belum punya sprite, jadi pakai ikon lama. */
+const WICON={meta:{"awp":[0,0,136,41],"kriss":[0,42,100,60],"pistol":[0,103,70,60],"rl":[0,164,136,48],"mg":[0,213,131,60]},im:null};
+(function(){const src=window.KM_WEAPICON;if(!src)return;const im=new Image();im.onload=()=>{WICON.im=im;try{for(const c of document.querySelectorAll('#wGrid canvas[data-k]')){c.getContext('2d').clearRect(0,0,c.width,c.height);gunIcon(c,c.dataset.k);}}catch(e){}};im.src=src;})();
+function gunIcon(cv,k){const M=WICON.meta[k];if(WICON.im&&M){const g=cv.getContext('2d'),pad=6,s=Math.min((cv.width-pad*2)/M[2],(cv.height-pad*2)/M[3]),w=Math.round(M[2]*s),h=Math.round(M[3]*s);
+    g.imageSmoothingEnabled=true;try{g.imageSmoothingQuality='high';}catch(e){}g.drawImage(WICON.im,M[0],M[1],M[2],M[3],((cv.width-w)/2)|0,((cv.height-h)/2)|0,w,h);return;}
+  const t=document.createElement('canvas');t.width=48;t.height=40;const tg=t.getContext('2d');
   try{sGunS((x,y,c,w,h)=>{tg.fillStyle=c;tg.fillRect(x,y,w,h);},k);}catch(e){return;}
   const d=tg.getImageData(0,0,48,40).data;let x0=48,y0=40,x1=-1,y1=-1;for(let y=0;y<40;y++)for(let x=0;x<48;x++)if(d[(y*48+x)*4+3]>16){if(x<x0)x0=x;if(x>x1)x1=x;if(y<y0)y0=y;if(y>y1)y1=y;}
-  if(x1<0)return;const bw=x1-x0+1,bh=y1-y0+1,sc=Math.max(1,Math.min(3,Math.floor(Math.min((cv.width-6)/bw,(cv.height-6)/bh)))),g=cv.getContext('2d');g.imageSmoothingEnabled=false;
+  if(x1<0)return;const bw=x1-x0+1,bh=y1-y0+1,sc=Math.max(1,Math.min(cv.width>100?6:3,Math.floor(Math.min((cv.width-12)/bw,(cv.height-12)/bh)))),g=cv.getContext('2d');g.imageSmoothingEnabled=false;
   const ox=((cv.width-bw*sc)/2)|0,oy=((cv.height-bh*sc)/2)|0;g.drawImage(t,x0,y0,bw,bh,ox,oy,bw*sc,bh*sc);}
 function sprBox(s){const w=s.w,h=s.h;let x0=w,y0=h,x1=-1,y1=-1;for(let y=0;y<h;y++)for(let x=0;x<w;x++)if((s.px[y*w+x]>>>24)>16){if(x<x0)x0=x;if(x>x1)x1=x;if(y<y0)y0=y;if(y>y1)y1=y;}return x1<0?{x:0,y:0,w,h}:{x:x0,y:y0,w:x1-x0+1,h:y1-y0+1};}
 /* ----- tab ZOMBI: kodeks ----- */
@@ -3657,18 +3675,17 @@ function accRank(){return window.KMA?KMA.state().rank:{lv:1,name:'PRAJURIT DUA',
 const gate=document.getElementById('gate'),gE=document.getElementById('gErr');let gMode='guest',gCanClose=false;
 function gateTab(t){gMode=t;for(const b of document.querySelectorAll('#gTabs button'))b.setAttribute('aria-selected',String(b.dataset.t===t));
   document.getElementById('gfLogin').hidden=t!=='login';document.getElementById('gfReg').hidden=t!=='reg';document.getElementById('gateForm').hidden=t!=='guest';gE.textContent='';
-  const k=window.KMA;document.getElementById('gNote').textContent=t==='guest'?'Mode tamu: data hanya tersimpan di browser HP ini dan tidak masuk papan peringkat.':
+  const k=window.KMA;document.getElementById('gNote').textContent=t==='guest'?'Mode tamu: nama dibuat otomatis, data hanya tersimpan di browser HP ini dan tidak masuk papan peringkat. Daftar akun untuk memakai nama sendiri.':
     t==='reg'?'Akunmu tersimpan online, jadi EXP dan pangkat tetap ada walau ganti HP. EXP dari mode tamu ikut dipindah.':'Masuk dengan nama dan password akunmu.';
   setTimeout(()=>{const f={login:'lNick',reg:'rNick',guest:'gNick'}[t];try{document.getElementById(f).focus();}catch(e){}},30);}
 function openGate(canClose){gCanClose=!!canClose;const k=window.KMA,on=!!(k&&k.online);for(const b of document.querySelectorAll('#gTabs button'))if(b.dataset.t!=='guest')b.hidden=!on;
-  document.getElementById('gTabs').hidden=!on;document.getElementById('gClose').hidden=!gCanClose;document.getElementById('gNick').value=G.nick||'';gate.hidden=false;gateTab(on?'login':'guest');
+  document.getElementById('gTabs').hidden=!on;document.getElementById('gClose').hidden=!gCanClose;document.getElementById('gNick').value=guestNick();gate.hidden=false;gateTab(on?'login':'guest');
   if(!on){document.getElementById('gNote').textContent=k&&k.configured?(k.initErr||'Server akun belum bisa dihubungi. Kamu bisa main sebagai tamu dulu.'):'Akun online belum aktif di versi ini. Kamu bisa main sebagai tamu. Datamu tersimpan di browser HP ini.';}}
 function closeGate(){gate.hidden=true;updateCard();initAudio();if(ttlOn())leaveTitle();}
 function initAccountUI(){
   for(const b of document.querySelectorAll('#gTabs button'))b.addEventListener('click',()=>gateTab(b.dataset.t));
   document.getElementById('gClose').addEventListener('click',()=>{gate.hidden=true;});
-  document.getElementById('gateForm').addEventListener('submit',e=>{e.preventDefault();const v=document.getElementById('gNick').value;if(String(v).replace(/[^A-Za-z0-9]/g,'').length<2){gE.textContent='Nama minimal 2 huruf atau angka.';return;}
-    if(accLogged()&&window.KMA)KMA.logout();G.nick=cleanNick(v);try{localStorage.setItem('kotamati-nick',G.nick);}catch(_){}if(window.KMA)KMA.setGuestNick(G.nick);closeGate();});
+  document.getElementById('gateForm').addEventListener('submit',e=>{e.preventDefault();if(accLogged()&&window.KMA)KMA.logout();G.nick=guestNick();try{localStorage.setItem('kotamati-nick',G.nick);}catch(_){}if(window.KMA)KMA.setGuestNick(G.nick);closeGate();});
   const busy=(f,on)=>{for(const b of f.querySelectorAll('button'))b.disabled=on;};
   document.getElementById('gfLogin').addEventListener('submit',async e=>{e.preventDefault();const f=e.currentTarget,n=document.getElementById('lNick').value.trim(),pw=document.getElementById('lPass').value;
     if(!KMA.validNick(n)){gE.textContent='Nama 3–10 huruf, angka, atau garis bawah.';return;}if(!pw){gE.textContent='Isi password.';return;}
@@ -3687,9 +3704,9 @@ function initAccountUI(){
   const rl=document.getElementById('aRanks');(window.KMA?KMA.RANKS:[]).forEach((r,i)=>{const li=document.createElement('li'),c=document.createElement('canvas');c.width=12;c.height=12;KMA.drawRank(c.getContext('2d'),i+1,0,0,1);
     const t=document.createElement('span');t.textContent='LV '+(i+1)+' · '+r[0]+' · '+r[1].toLocaleString('id-ID')+' EXP';li.append(c,t);rl.append(li);});
   if(!window.KMA){try{ttlRender();}catch(e){}return;}
-  KMA.onChange(st=>{if(st.logged){G.nick=cleanNick(st.nick);try{localStorage.setItem('kotamati-nick',G.nick);}catch(_){}const ks=st.prof&&st.prof.skin;if(Number.isInteger(ks)&&ks>=0&&ks<SKINS.length&&ks!==G.skin&&!skinLocked(ks)&&!G.skinSync){G.skinSync=true;applySkin(ks);try{localStorage.setItem('kotamati-skin',String(ks));}catch(_){}}}else{const ln=st.nick||'';if(ln)G.nick=cleanNick(ln);}
+  KMA.onChange(st=>{if(st.logged){G.nick=cleanNick(st.nick);try{localStorage.setItem('kotamati-nick',G.nick);}catch(_){}const ks=st.prof&&st.prof.skin;if(Number.isInteger(ks)&&ks>=0&&ks<SKINS.length&&ks!==G.skin&&!skinLocked(ks)&&!G.skinSync){G.skinSync=true;applySkin(ks);try{localStorage.setItem('kotamati-skin',String(ks));}catch(_){}}}else{if(G.nick){G.nick=guestNick();if(st.nick!==G.nick)KMA.setGuestNick(G.nick);}}
     enforceSkin();updateCard();updateMisiBadge();if(!document.getElementById('vAcc').hidden)renderAcc();try{ttlRender();}catch(e){}});
-  KMA.ready.then(()=>{enforceSkin();const st=KMA.state();if(st.logged)G.nick=cleanNick(st.nick);else if(!G.nick&&st.nick)G.nick=cleanNick(st.nick);updateCard();try{ttlRender();}catch(e){}});}
+  KMA.ready.then(()=>{enforceSkin();const st=KMA.state();if(st.logged)G.nick=cleanNick(st.nick);else if(G.nick||st.nick){G.nick=guestNick();KMA.setGuestNick(G.nick);}updateCard();try{ttlRender();}catch(e){}});}
 function openAcc(){renderAcc();showView(document.getElementById('vAcc'));}
 function renderAcc(){const st=window.KMA?KMA.state():null;if(!st)return;const r=st.rank,p=st.prof;
   const c=document.getElementById('aRank'),g=c.getContext('2d');g.clearRect(0,0,12,12);KMA.drawRank(g,r.lv,0,0,1);
@@ -3794,7 +3811,7 @@ fullB.addEventListener('click',()=>{try{if(document.fullscreenElement)document.e
 
 /* ================= loop ================= */
 let mi0=0;try{mi0=parseInt(localStorage.getItem('kotamati-map')||'0',10)||0;}catch(e){}
-try{G.nick=cleanNick(localStorage.getItem('kotamati-nick')||'');if(!localStorage.getItem('kotamati-nick'))G.nick='';applySkin(parseInt(localStorage.getItem('kotamati-skin')||'0',10)||0);}catch(e){G.nick='';}
+try{G.nick=localStorage.getItem('kotamati-nick')?guestNick():'';applySkin(parseInt(localStorage.getItem('kotamati-skin')||'0',10)||0);}catch(e){G.nick='';}
 setNight(nightPref(),false);selectMap(mi0);showMain();initRoom();fitLayout();
 initAccountUI();
 for(const ev of['pointerdown','keydown','touchstart'])addEventListener(ev,()=>{try{initAudio();}catch(e){}},{passive:true,capture:true});
