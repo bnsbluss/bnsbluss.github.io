@@ -576,6 +576,69 @@ html.fs body.game .wrap{padding:0}
 .shotb{justify-content:center;gap:8px;flex-wrap:wrap}
 .shotm .mnote{margin:0;min-height:1.2em}
 
+/* ====== menu utama: karakter besar di kiri, profil di tengah, mode di kanan ====== */
+.vmain{grid-template-columns:minmax(0,24%) minmax(0,1fr) minmax(0,33%)}
+.hero{grid-column:1;grid-row:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:6px;min-height:0;min-width:0;pointer-events:auto;animation:pin .2s ease-out}
+.hero canvas{flex:1 1 0;width:100%;height:0;min-height:0;display:block;image-rendering:pixelated}
+.hero .btn{flex:none}
+.vmain .prof{grid-column:2}
+.mcen{display:none}
+@media (min-width:901px) and (min-height:541px){
+  .vmain .prof{gap:9px;padding:12px 14px}
+  .vmain .pcard canvas{width:64px;height:78px}
+  .vmain .pname{font-size:15px}.vmain .plv{font-size:13px}.vmain .pexpt{font-size:13px}
+  .vmain .prow .pr{font-size:12px}.vmain .prow .pk{font-size:9px}.vmain .prow canvas{width:24px;height:24px}
+  .vmain .pstats span{font-size:11px}.vmain .pstats b{font-size:13px}.vmain .pskin{font-size:13px}
+}
+@media (max-width:900px){.hero{height:240px;flex:none}}
+/* berita tetap tampil di HP landscape / layar penuh, dalam satu baris tipis */
+@media (orientation:landscape) and (max-height:540px){
+  .vmain{grid-template-columns:minmax(0,21%) minmax(0,1fr) minmax(0,34%)}
+  .hero{height:auto;flex:initial}
+  .hero .btn{padding:6px 8px;font-size:7px;min-height:0}
+  .foot{display:flex;flex-wrap:nowrap;gap:8px;padding:2px 8px;border-width:1px}
+  .foot .ntag{font-size:7px;padding:2px 5px}.foot .ntext{font-size:11px}
+  .foot .fr .btn{padding:4px 8px;font-size:7px;min-height:0}.foot .by{display:none}
+}
+/* profil pemain lain */
+.ppm .gatebox{width:min(100%,460px);max-height:calc(100dvh - 24px);overflow:auto;border-color:var(--amber);gap:10px}
+.pphead{display:flex;gap:12px;align-items:center}
+.pphead>canvas{width:84px;height:102px;flex:none;background:#0e0911;border:2px solid var(--line);border-radius:3px}
+.ppinfo{display:flex;flex-direction:column;gap:5px;min-width:0;flex:1}
+.pppos{font-family:var(--f-display);font-size:8px;color:var(--muted)}
+.ppinfo .prow canvas{width:20px;height:20px}
+.ppinfo h2{font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ppst{grid-template-columns:repeat(3,minmax(0,1fr))}
+.lb li[role=button]{cursor:pointer}.lb li[role=button]:hover,.lb li[role=button]:focus-visible{border-color:var(--amber)}
+@media (max-height:540px){.ppst{grid-template-columns:repeat(4,minmax(0,1fr))}.pphead>canvas{width:60px;height:72px}}
+/* daftar pemain online */
+.olbox{display:flex;flex-direction:column;gap:6px;min-height:0}
+.olbox .mh{display:flex;align-items:center;gap:8px;font-size:9px;margin:0}
+.olbox .mh b{font-family:var(--f-display);font-weight:400;color:var(--toxic)}
+.olist{list-style:none;margin:0;padding:6px;display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:4px;max-height:min(30vh,220px);overflow:auto;background:#0c0810;border:1px solid var(--line);border-radius:4px}
+.olist li{display:flex;align-items:center;gap:6px;min-width:0;background:#140c18;border:1px solid #2a1c30;border-radius:3px;padding:4px 6px}
+.olist li.me{border-color:var(--amber)}
+.olist li.olempty{grid-column:1/-1;justify-content:center;color:var(--muted);font-size:12px;background:none;border:0}
+.olist canvas{width:14px;height:14px;image-rendering:pixelated;flex:none}
+.olist .oltag{font-style:normal;font-family:var(--f-display);font-size:6px;color:#120a0e;background:#a8939f;border-radius:2px;padding:2px 3px;flex:none}
+.olist .olname{flex:1;min-width:0;font-family:var(--f-display);font-size:8px;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.olist .olst{font-size:10px;flex:none}.olist .olst.m{color:var(--muted)}.olist .olst.r{color:var(--amber)}.olist .olst.p{color:var(--toxic)}
+.olbox.mini{background:rgba(14,9,17,.85);border:1px solid var(--line);border-radius:3px;padding:6px 7px}
+.olbox.mini .olist{grid-template-columns:1fr;max-height:140px;padding:0;background:none;border:0}
+@media (orientation:landscape) and (max-height:540px){.olbox.mini{padding:4px 6px}.olbox.mini .olist{max-height:none}.olbox.mini .mh{font-size:7px}
+  .modecol .mode{padding:4px 8px;grid-template-columns:24px 1fr;grid-template-rows:auto;align-items:center}.modecol .modes{gap:4px}.modecol .mode svg{grid-row:1}.modecol .mode .md{display:none}.modecol .mode svg{width:20px;height:20px}.modecol .mode .mt{font-size:10px}}
+/* papan skor gaya FPS */
+.sbbig{display:flex;align-items:center;justify-content:center;gap:12px;margin:2px 0 8px;font-family:var(--f-display)}
+.sbbig span{font-size:9px}.sbbig b{font-size:26px;font-weight:400}.sbbig em{font-style:normal;font-size:18px;color:var(--muted)}
+.sbbig .r{color:#ff6a5a}.sbbig .b{color:#7fb0ff}
+.sbt td:nth-child(2){max-width:180px}
+.sbt .sbn{display:flex;align-items:center;gap:5px;min-width:0}
+.sbt .sbn canvas{width:12px;height:12px;image-rendering:pixelated;flex:none}
+.sbt .sbn span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sbt .sbn i{font-style:normal;font-family:var(--f-display);font-size:6px;color:#ff6a5a;border:1px solid #8a2a24;border-radius:2px;padding:1px 3px;flex:none}
+.sbspec{margin-top:6px;font-size:11px;color:var(--muted);text-align:center}
+.sboard{width:min(96%,860px)}
+@media (min-width:700px){.sbt:not(.one){grid-template-columns:repeat(2,minmax(0,1fr))}}
 /* showroom: panel di kanan, karakter tampil di kiri */
 #vShow{margin-left:auto;width:min(48%,430px);align-self:flex-start;max-height:100%;overflow:auto;background:rgba(18,11,22,.94);border:2px solid var(--line);border-radius:6px;padding:12px 14px;pointer-events:auto}
 #vShow .skins{grid-template-columns:repeat(3,minmax(0,1fr))}

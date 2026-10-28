@@ -16,10 +16,11 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Chakra+Petch:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="canonical" href="https://bnsbluss.github.io/kotamati/">
-<link rel="stylesheet" href="css/style.css?v=20261028-030906">
+<link rel="stylesheet" href="css/style.css?v=20261028-230417">
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="icon" type="image/png" href="icon-192.png">
-<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="icon" type="image/png" sizes="48x48" href="favicon-48.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 </head>
@@ -40,6 +41,12 @@
   <div class="row shotb"><button class="btn go" id="shotShare" type="button">BAGIKAN</button><button class="btn" id="shotSave" type="button">SIMPAN GAMBAR</button><button class="btn" id="shotCopy" type="button">SALIN GAMBAR</button></div>
   <p class="mnote" id="shotMsg"></p>
   <button class="btn sm" id="shotClose" type="button">TUTUP</button></div></div>
+<div class="gate ppm" id="ppM" hidden><div class="gatebox" role="dialog" aria-labelledby="ppName">
+  <div class="pphead"><canvas id="ppCv" width="120" height="146"></canvas><div class="ppinfo"><span class="pppos" id="ppPos">#1</span><h2 id="ppName">PEMAIN</h2>
+    <div class="prow"><canvas id="ppRank" width="12" height="12"></canvas><span class="pr" id="ppRankN">PRAJURIT DUA</span></div>
+    <span class="pexp big"><i id="ppExp"></i></span><span class="pexpt" id="ppExpT"></span></div></div>
+  <ul class="pstats ppst" id="ppStats"></ul>
+  <button class="btn sm" id="ppClose" type="button">TUTUP</button></div></div>
 <div class="gate tover" id="trialOver" hidden><div class="gatebox" role="alertdialog" aria-labelledby="toT" aria-describedby="toD">
   <div class="toico" aria-hidden="true">⏱</div><h2 id="toT">GAME TRIAL SELESAI</h2>
   <p id="toD"><b>Demo akun tamu telah berakhir.</b><br>Daftar sekarang untuk melanjutkan bermain dan menyimpan progress.</p>
@@ -113,7 +120,7 @@
           <button class="ptrial" id="pcTrial" type="button" hidden>TRIAL TAMU <b id="pcTrialT">05:00</b> · DAFTAR GRATIS</button>
           <div class="prbtn"><button class="btn sm" id="bAcc" type="button">AKUN</button><button class="btn sm" id="bMisi" type="button">MISI</button><button class="btn sm" id="bLb" type="button">PERINGKAT</button></div>
         </section>
-        <div class="mcen"><button class="btn sm" id="bShow" type="button">GANTI KARAKTER</button></div>
+        <section class="hero" aria-label="Karakter"><canvas id="heroCv" width="200" height="300" aria-hidden="true"></canvas><button class="btn sm" id="bShow" type="button">GANTI KARAKTER</button></section>
         <section class="pnl modecol" aria-label="Pilih mode">
           <div class="modes">
             <button class="mode m-solo" id="mSolo" type="button"><svg viewBox="0 0 16 16" aria-hidden="true" fill="currentColor" shape-rendering="crispEdges"><path d="M6 1h4v4H6zM4 6h8v5h-2v4H6v-4H4z"/></svg><span class="mt">SOLO</span><span class="md">Bertahan sendirian dari gelombang zombi</span></button>
@@ -122,6 +129,7 @@
             <button class="mode m-pvp" id="mPvp" type="button" disabled><svg viewBox="0 0 16 16" aria-hidden="true" fill="currentColor" shape-rendering="crispEdges"><path d="M4 2h8v2h2v5h-2v2h-1v3H5v-3H4V9H2V4h2zM5 6v2h2V6zM9 6v2h2V6zM7 9v1h2V9z"/></svg><span class="mt">PVP 5 VS 5</span><span class="md">Dua tim bertarung · Merah lawan Biru</span></button>
           </div>
           <p class="mnote" id="netNote">Memeriksa koneksi online…</p>
+          <div class="olbox mini"><h3 class="mh">PEMAIN ONLINE <b class="olN">0</b></h3><ul class="olist" data-ol="mini"></ul></div>
         </section>
         <section class="pnl mstrip" aria-label="Map pilihan"><h2 class="mh">MAP PILIHAN</h2><div class="maps" id="maps"></div></section>
       </div>
@@ -284,19 +292,19 @@
     <div class="news"><span class="ntag" id="newsL">BERITA</span><span class="ntext" id="newsT" aria-live="off"><span id="newsI"></span></span></div>
     <div class="fr"><div class="shwrap"><button class="btn sm" id="bShareG" type="button" aria-expanded="false" aria-controls="sharePop">BAGIKAN GAME</button>
       <div class="sharePop share" id="sharePop" hidden><button class="btn sm fb" id="bShFb" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 8V6c0-.9.6-1 1-1h3V1h-4c-3.3 0-4.5 2.4-4.5 5v2H7v4h2.5v11H14V12h3.4l.6-4z"/></svg>FACEBOOK</button><button class="btn sm ig" id="bShIg" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm0 8.2a3.2 3.2 0 1 1 0-6.4 3.2 3.2 0 0 1 0 6.4zM17.3 5.4a1.2 1.2 0 1 0 0 2.4 1.2 1.2 0 0 0 0-2.4zM12 2c-2.7 0-3 0-4.1.1C4.3 2.2 2.2 4.3 2.1 7.9 2 9 2 9.3 2 12s0 3 .1 4.1c.1 3.6 2.2 5.7 5.8 5.8 1.1.1 1.4.1 4.1.1s3 0 4.1-.1c3.6-.1 5.7-2.2 5.8-5.8.1-1.1.1-1.4.1-4.1s0-3-.1-4.1C21.8 4.3 19.7 2.2 16.1 2.1 15 2 14.7 2 12 2zm0 1.8c2.7 0 3 0 4 .1 2.6.1 3.9 1.4 4 4 .1 1 .1 1.3.1 4s0 3-.1 4c-.1 2.6-1.4 3.9-4 4-1 .1-1.3.1-4 .1s-3 0-4-.1c-2.6-.1-3.9-1.4-4-4C3.9 15 3.8 14.7 3.8 12s0-3 .1-4c.1-2.6 1.4-3.9 4-4 1-.1 1.3-.1 4.1-.1z"/></svg>INSTAGRAM</button><a class="btn sm" id="bCreator" href="https://web.facebook.com/travisbarker06" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 8V6c0-.9.6-1 1-1h3V1h-4c-3.3 0-4.5 2.4-4.5 5v2H7v4h2.5v11H14V12h3.4l.6-4z"/></svg>KUNJUNGI PEMBUAT</a></div></div>
-      <span class="by">Kota Mati dibuat oleh <a class="bylink" href="https://web.facebook.com/travisbarker06" target="_blank" rel="noopener">HeavyRain</a> · Musik: “Upbeat RPG Battle” oleh Vespidaze</span></div>
+      <span class="by">Kota Mati dibuat oleh <a class="bylink" href="https://web.facebook.com/travisbarker06" target="_blank" rel="noopener">HeavyRain</a></span></div>
   </footer>
 </div>
-<script>window.KM_VER="20261028-030906";window.KM_VERURL="version.json";window.KM_PWA={sw:"sw.js",scope:"./"};window.KM_THREE="js/three.min.js?v=r128";</script>
-<script src="js/config.js?v=20261028-030906"></script>
+<script>window.KM_VER="20261028-230417";window.KM_VERURL="version.json";window.KM_PWA={sw:"sw.js",scope:"./"};window.KM_THREE="js/three.min.js?v=r128";</script>
+<script src="js/config.js?v=20261028-230417"></script>
 <script>
 /* Library Firebase hanya dimuat kalau js/config.js sudah diisi. */
 if(window.KM_FIREBASE&&KM_FIREBASE.apiKey&&!/^ISI/i.test(KM_FIREBASE.apiKey)){
   document.write('<script src="https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-app-compat.js"><\/script><script src="https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-auth-compat.js"><\/script><script src="https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-firestore-compat.js"><\/script>');
 }
 </script>
-<script src="js/akun.js?v=20261028-030906"></script>
+<script src="js/akun.js?v=20261028-230417"></script>
 <script>window.KM_TRACK='sound/battle.mp3';window.KM_RAKSASA='img/raksasa.webp';window.KM_KUNTI='img/kuntilanak.webp';window.KM_NEWSURL='news.ini';window.KM_C_UCOK='img/char-ucok.webp';window.KM_C_POLISI='img/char-polisi.webp';window.KM_C_HASMAT='img/char-hasmat.webp';window.KM_C_IDA='img/char-ida.webp';window.KM_C_STEVI='img/char-stevi.webp';window.KM_C_RITO='img/char-rito.webp';window.KM_Z_GENDUT='img/gendut.webp';window.KM_Z_LIDAH='img/lidah.webp';window.KM_Z_PELUDAH='img/peludah.webp';window.KM_Z_PEMBURU='img/pemburu.webp';window.KM_Z_PENUNGGANG='img/penunggang.webp';window.KM_Z_PENYERUDUK='img/penyeruduk.webp';window.KM_WEAPSPR='img/senjata.png';window.KM_Z_DESA='img/zdesa.webp';window.KM_Z_TENTARA='img/ztentara.webp';window.KM_Z_RANGKAK='img/zrangkak.webp';window.KM_Z_BOS='img/bos.webp';window.KM_FPVSPR='img/fpv.webp';window.KM_WEAPICON='img/ikon-senjata.webp';</script>
-<script src="js/game.js?v=20261028-030906"></script>
+<script src="js/game.js?v=20261028-230417"></script>
 </body>
 </html>
