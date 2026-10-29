@@ -1,1486 +1,397 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Ziky Andeska — HeavyRain</title>
-
-    <meta
-        name="description"
-        content="Ziky Andeska AKA HeavyRain — Independent Developer, Game Tools Builder, Point Blank Server Administrator and Computer Enthusiast."
-    >
-
-    <style>
-        :root {
-            --bg: #0d1117;
-            --card: #161b22;
-            --card-hover: #1c2128;
-            --border: #30363d;
-            --text: #e6edf3;
-            --muted: #8b949e;
-            --accent: #58a6ff;
-            --accent-2: #a371f7;
-            --code: #0b0f14;
-        }
-
-        * {
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            margin: 0;
-
-            font-family:
-                -apple-system,
-                BlinkMacSystemFont,
-                "Segoe UI",
-                Helvetica,
-                Arial,
-                sans-serif;
-
-            background:
-                radial-gradient(
-                    circle at 50% -20%,
-                    rgba(88, 166, 255, 0.12),
-                    transparent 40%
-                ),
-                var(--bg);
-
-            color: var(--text);
-            line-height: 1.7;
-        }
-
-        a {
-            color: var(--accent);
-            text-decoration: none;
-        }
-
-        a:hover {
-            text-decoration: underline;
-        }
-
-        .container {
-            width: min(1150px, calc(100% - 32px));
-            margin: auto;
-        }
-
-
-        /* =========================
-           HERO
-        ========================= */
-
-        .hero {
-            padding: 90px 0 60px;
-            text-align: center;
-
-            border-bottom: 1px solid var(--border);
-        }
-
-        .avatar {
-            width: 90px;
-            height: 90px;
-
-            margin: 0 auto 25px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            border-radius: 22px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    var(--accent),
-                    var(--accent-2)
-                );
-
-            font-size: 42px;
-
-            box-shadow:
-                0 15px 50px rgba(88, 166, 255, 0.18);
-        }
-
-
-        /* NAME */
-
-        .intro-name {
-            margin-bottom: 10px;
-
-            color: var(--muted);
-
-            font-size: 20px;
-        }
-
-        .intro-name strong {
-            color: #ffffff;
-        }
-
-        .aka {
-            color: var(--accent);
-
-            font-weight: 600;
-        }
-
-
-        .hero h1 {
-            margin: 0;
-
-            font-size: clamp(36px, 6vw, 58px);
-
-            letter-spacing: -2px;
-
-            background:
-                linear-gradient(
-                    90deg,
-                    #ffffff,
-                    #79c0ff,
-                    #d2a8ff
-                );
-
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .subtitle {
-            margin: 14px auto 0;
-
-            color: var(--muted);
-
-            font-size: 18px;
-
-            max-width: 850px;
-        }
-
-
-        .badges {
-            margin-top: 25px;
-
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-
-            gap: 8px;
-        }
-
-        .badge {
-            padding: 6px 12px;
-
-            border: 1px solid var(--border);
-            border-radius: 999px;
-
-            background: rgba(255,255,255,0.03);
-
-            color: var(--muted);
-
-            font-size: 13px;
-        }
-
-
-        /* =========================
-           NAVIGATION
-        ========================= */
-
-        .nav {
-            position: sticky;
-            top: 0;
-            z-index: 10;
-
-            backdrop-filter: blur(12px);
-
-            background: rgba(13, 17, 23, 0.82);
-
-            border-bottom: 1px solid var(--border);
-        }
-
-        .nav-inner {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-
-            gap: 6px;
-
-            padding: 10px;
-        }
-
-        .nav a {
-            padding: 7px 12px;
-
-            border-radius: 7px;
-
-            color: var(--muted);
-
-            font-size: 14px;
-        }
-
-        .nav a:hover {
-            background: var(--card);
-
-            color: var(--text);
-
-            text-decoration: none;
-        }
-
-
-        /* =========================
-           CONTENT
-        ========================= */
-
-        main {
-            padding: 55px 0;
-        }
-
-        section {
-            margin-bottom: 70px;
-
-            scroll-margin-top: 80px;
-        }
-
-        h2 {
-            margin-bottom: 25px;
-
-            font-size: 30px;
-
-            letter-spacing: -0.8px;
-        }
-
-        h2::before {
-            content: "#";
-
-            margin-right: 10px;
-
-            color: var(--accent);
-        }
-
-        h3 {
-            font-size: 20px;
-
-            margin-top: 35px;
-        }
-
-        p {
-            color: #c9d1d9;
-        }
-
-        strong {
-            color: #ffffff;
-        }
-
-
-        /* =========================
-           BLOCKQUOTE
-        ========================= */
-
-        blockquote {
-            margin: 25px 0;
-
-            padding: 18px 22px;
-
-            border-left: 4px solid var(--accent);
-
-            background: rgba(88,166,255,0.06);
-
-            color: #c9d1d9;
-
-            border-radius: 0 8px 8px 0;
-        }
-
-
-        /* =========================
-           SKILLS
-        ========================= */
-
-        .skills {
-            display: grid;
-
-            grid-template-columns:
-                repeat(auto-fit, minmax(240px, 1fr));
-
-            gap: 12px;
-        }
-
-        .skill {
-            padding: 15px 18px;
-
-            border: 1px solid var(--border);
-
-            border-radius: 10px;
-
-            background: var(--card);
-
-            transition:
-                transform .2s ease,
-                border-color .2s ease,
-                background .2s ease;
-        }
-
-        .skill:hover {
-            transform: translateY(-3px);
-
-            border-color: #58a6ff66;
-
-            background: var(--card-hover);
-        }
-
-
-        /* =========================
-           PROJECTS
-        ========================= */
-
-        .project-wrapper {
-            overflow-x: auto;
-
-            border: 1px solid var(--border);
-
-            border-radius: 12px;
-
-            background: var(--card);
-        }
-
-        table {
-            width: 100%;
-
-            border-collapse: collapse;
-
-            min-width: 850px;
-        }
-
-        th,
-        td {
-            padding: 16px;
-
-            text-align: left;
-
-            border-bottom: 1px solid var(--border);
-
-            vertical-align: top;
-        }
-
-        th {
-            background: #1c2128;
-
-            color: #ffffff;
-
-            font-size: 14px;
-        }
-
-        td {
-            color: #c9d1d9;
-        }
-
-        tr:last-child td {
-            border-bottom: none;
-        }
-
-        tr:hover td {
-            background: rgba(255,255,255,0.025);
-        }
-
-        .project-name {
-            color: #ffffff;
-
-            font-weight: 600;
-
-            white-space: nowrap;
-        }
-
-        .project-type {
-            color: var(--accent);
-
-            font-size: 13px;
-
-            font-weight: 600;
-        }
-
-
-        /* =========================
-           PIPELINE
-        ========================= */
-
-        .pipeline {
-            display: flex;
-
-            align-items: center;
-            justify-content: center;
-
-            flex-wrap: wrap;
-
-            gap: 8px;
-
-            margin: 30px 0;
-        }
-
-        .pipeline-item {
-            padding: 12px 16px;
-
-            border: 1px solid var(--border);
-
-            border-radius: 8px;
-
-            background: var(--card);
-
-            font-size: 14px;
-
-            white-space: nowrap;
-        }
-
-        .arrow {
-            color: var(--accent);
-
-            font-size: 20px;
-        }
-
-
-        /* =========================
-           CODE
-        ========================= */
-
-        pre {
-            margin: 25px 0;
-
-            padding: 22px;
-
-            overflow-x: auto;
-
-            border: 1px solid var(--border);
-
-            border-radius: 10px;
-
-            background: var(--code);
-
-            color: #c9d1d9;
-
-            font-family:
-                "Cascadia Code",
-                "JetBrains Mono",
-                Consolas,
-                monospace;
-
-            font-size: 14px;
-
-            line-height: 1.6;
-        }
-
-        code {
-            font-family:
-                "Cascadia Code",
-                "JetBrains Mono",
-                Consolas,
-                monospace;
-        }
-
-
-        /* =========================
-           TECHNOLOGY
-        ========================= */
-
-        .tech-grid {
-            display: grid;
-
-            grid-template-columns:
-                repeat(auto-fit, minmax(260px, 1fr));
-
-            gap: 18px;
-        }
-
-        .tech-card {
-            padding: 22px;
-
-            border: 1px solid var(--border);
-
-            border-radius: 12px;
-
-            background: var(--card);
-        }
-
-        .tech-card h3 {
-            margin-top: 0;
-        }
-
-        .tech-card ul {
-            margin: 0;
-
-            padding-left: 20px;
-
-            color: var(--muted);
-        }
-
-
-        /* =========================
-           AI
-        ========================= */
-
-        .ai-card {
-            padding: 30px;
-
-            border: 1px solid #58a6ff33;
-
-            border-radius: 14px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(88,166,255,0.08),
-                    rgba(163,113,247,0.05)
-                );
-        }
-
-        .ai-list {
-            display: grid;
-
-            grid-template-columns:
-                repeat(auto-fit, minmax(250px, 1fr));
-
-            gap: 8px;
-
-            padding: 0;
-
-            list-style: none;
-        }
-
-        .ai-list li {
-            padding: 10px 14px;
-
-            border: 1px solid var(--border);
-
-            border-radius: 8px;
-
-            background: rgba(0,0,0,0.15);
-        }
-
-
-        /* =========================
-           FOOTER
-        ========================= */
-
-        footer {
-            padding: 45px 0;
-
-            border-top: 1px solid var(--border);
-
-            text-align: center;
-
-            color: var(--muted);
-        }
-
-        .footer-title {
-            color: var(--text);
-
-            font-weight: 600;
-        }
-
-
-        /* =========================
-           RESPONSIVE
-        ========================= */
-
-        @media (max-width: 700px) {
-
-            .hero {
-                padding: 65px 0 45px;
-            }
-
-            .hero h1 {
-                font-size: 40px;
-            }
-
-            .intro-name {
-                font-size: 17px;
-            }
-
-            .subtitle {
-                font-size: 16px;
-            }
-
-            main {
-                padding-top: 40px;
-            }
-
-            h2 {
-                font-size: 26px;
-            }
-
-            .pipeline {
-                flex-direction: column;
-            }
-
-            .arrow {
-                transform: rotate(90deg);
-            }
-
-            .ai-card {
-                padding: 20px;
-            }
-        }
-    </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#120c16">
+<meta name="description" content="Kota Mati — FPS zombie pixel art di browser. Main solo, co-op, atau PvP bareng teman. Dibuat oleh HeavyRain.">
+<title>Kota Mati</title>
+<meta name="author" content="HeavyRain">
+<meta property="og:title" content="Kota Mati — FPS Zombi Pixel Art">
+<meta property="og:description" content="Bertahan dari gelombang zombi di browser. Solo, co-op & PvP. Game buatan HeavyRain.">
+<meta property="og:image" content="https://bnsbluss.github.io/kotamati/icon-512.png">
+<meta property="og:url" content="https://bnsbluss.github.io/kotamati/">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Chakra+Petch:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="canonical" href="https://bnsbluss.github.io/kotamati/">
+<link rel="stylesheet" href="css/style.css?v=20261030-005716">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="48x48" href="favicon-48.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
 </head>
-
-
 <body>
-
-
-<!-- =========================
-     HERO
-========================= -->
-
-<header class="hero">
-
-    <div class="container">
-
-        <div class="avatar">
-            👨‍💻
-        </div>
-
-
-        <!-- NAME -->
-
-        <div class="intro-name">
-            Hey there! 👋 My name is
-            <strong>Ziky Andeska</strong>
-            <span class="aka">AKA HeavyRain</span>
-        </div>
-
-
-        <h1>About Me</h1>
-
-
-        <p class="subtitle">
-            Independent Developer • Game Tools Builder •
-            Point Blank Server Administrator •
-            Computer & Laptop Enthusiast
-        </p>
-
-
-        <div class="badges">
-
-            <span class="badge">
-                🎮 Game Tools
-            </span>
-
-            <span class="badge">
-                🔬 Reverse Engineering
-            </span>
-
-            <span class="badge">
-                🐍 Python
-            </span>
-
-            <span class="badge">
-                💻 Windows
-            </span>
-
-            <span class="badge">
-                🌐 PHP + PostgreSQL
-            </span>
-
-            <span class="badge">
-                🧩 I3 Engine
-            </span>
-
-        </div>
-
+<div class="gate" id="gate" hidden><div class="gatebox" role="dialog" aria-labelledby="gTitle"><h2 id="gTitle">SELAMAT DATANG DI KOTA MATI</h2>
+  <div class="gtabs" id="gTabs" role="tablist"><button type="button" role="tab" data-t="login">MASUK</button><button type="button" role="tab" data-t="reg">DAFTAR</button><button type="button" role="tab" data-t="guest">TAMU</button></div>
+  <form class="gform" id="gfLogin" hidden><label for="lNick">Nama pemain</label><input id="lNick" maxlength="10" autocomplete="username" spellcheck="false" autocapitalize="off">
+    <label for="lPass">Password</label><input id="lPass" type="password" autocomplete="current-password"><button class="btn go" type="submit">MASUK</button></form>
+  <form class="gform" id="gfReg" hidden><label for="rNick">Nama pemain (3–10 huruf, angka, atau _)</label><input id="rNick" maxlength="10" autocomplete="username" spellcheck="false" autocapitalize="off">
+    <label for="rPass">Password (minimal 6)</label><input id="rPass" type="password" autocomplete="new-password"><label for="rPass2">Ulangi password</label><input id="rPass2" type="password" autocomplete="new-password">
+    <button class="btn go" type="submit">DAFTAR</button></form>
+  <form class="gform" id="gateForm"><label for="gNick">Nama tamu (otomatis)</label><input id="gNick" maxlength="10" autocomplete="off" spellcheck="false" readonly><button class="btn go" type="submit">MAIN SEBAGAI TAMU</button></form>
+  <p class="gerr" id="gErr" role="alert"></p><p class="mnote" id="gNote">Nama ini terlihat oleh pemain lain saat mabar.</p>
+  <button class="btn sm" id="gClose" type="button" hidden>TUTUP</button></div></div>
+<div class="gate shotm" id="shotM" hidden><div class="gatebox" role="dialog" aria-labelledby="shotT">
+  <h2 id="shotT">BAGIKAN FOTO SKOR</h2>
+  <img id="shotImg" alt="Foto skor Kota Mati">
+  <div class="row shotb"><button class="btn go" id="shotShare" type="button">BAGIKAN</button><button class="btn" id="shotSave" type="button">SIMPAN GAMBAR</button><button class="btn" id="shotCopy" type="button">SALIN GAMBAR</button></div>
+  <p class="mnote" id="shotMsg"></p>
+  <button class="btn sm" id="shotClose" type="button">TUTUP</button></div></div>
+<div class="gate ppm" id="ppM" hidden><div class="gatebox" role="dialog" aria-labelledby="ppName">
+  <div class="pphead"><canvas id="ppCv" width="120" height="146"></canvas><div class="ppinfo"><span class="pppos" id="ppPos">#1</span><h2 id="ppName">PEMAIN</h2>
+    <div class="prow"><canvas id="ppRank" width="12" height="12"></canvas><span class="pr" id="ppRankN">PRAJURIT DUA</span></div>
+    <span class="pexp big"><i id="ppExp"></i></span><span class="pexpt" id="ppExpT"></span></div></div>
+  <ul class="pstats ppst" id="ppStats"></ul>
+  <button class="btn sm" id="ppClose" type="button">TUTUP</button></div></div>
+<div class="gate tover" id="trialOver" hidden><div class="gatebox" role="alertdialog" aria-labelledby="toT" aria-describedby="toD">
+  <div class="toico" aria-hidden="true">⏱</div><h2 id="toT">GAME TRIAL SELESAI</h2>
+  <p id="toD"><b>Demo akun tamu telah berakhir.</b><br>Daftar sekarang untuk melanjutkan bermain dan menyimpan progress.</p>
+  <p class="mnote">EXP, kill, dan pangkat yang sudah kamu kumpulkan sebagai tamu ikut dipindah ke akun baru.</p>
+  <div class="row"><button class="btn go" id="toReg" type="button">DAFTAR AKUN</button><button class="btn" id="toLogin" type="button">LOGIN</button></div>
+  <button class="btn sm" id="toClose" type="button">KEMBALI KE MENU</button></div></div>
+<section class="ttl" id="ttl" aria-label="Layar judul Kota Mati">
+  <div class="ttl-frame">
+    <div class="ttl-art" id="ttlArt" aria-hidden="true"></div>
+    <canvas class="ttl-fx" id="ttlFx" width="320" height="180" aria-hidden="true"></canvas>
+    <div class="ttl-shade" aria-hidden="true"></div>
+    <header class="ttl-top">
+      <div class="ttl-brand"><span class="ttl-mini">KOTA MATI</span><span class="ttl-sub">FPS ZOMBI <i>•</i> ARCADE PIKSEL <i>•</i> SOLO, CO-OP, PVP</span></div>
+      <div class="ttl-act"><button class="ttl-sb" id="ttlSnd" type="button">SUARA: ON</button><button class="ttl-sb" id="ttlFs" type="button">LAYAR PENUH</button></div>
+    </header>
+    <div class="ttl-main">
+      <h1 class="ttl-logo"><span class="k">KOTA</span><span class="m">MATI</span></h1>
+      <p class="ttl-hello" id="ttlHello" hidden></p>
+      <nav class="ttl-btns" aria-label="Masuk ke game">
+        <button class="tbn tb-login" id="ttlLogin" type="button"><svg viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true"><rect x="5" y="1" width="6" height="6"/><rect x="2" y="9" width="12" height="6"/><rect x="4" y="8" width="8" height="1"/></svg><span id="ttlLoginT">LOGIN</span><i aria-hidden="true"></i></button>
+        <button class="tbn tb-reg" id="ttlReg" type="button"><svg viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true"><path d="M2 1h8v2H4v10h4v2H2z"/><rect x="5" y="5" width="5" height="1"/><rect x="5" y="8" width="4" height="1"/><rect x="11" y="8" width="2" height="7"/><rect x="8.5" y="10.5" width="7" height="2"/></svg><span>DAFTAR</span><i aria-hidden="true"></i></button>
+        <button class="tbn tb-guest" id="ttlGuest" type="button"><svg viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true"><path d="M3 4h10l2 2v6l-1 1h-2l-2-2H6l-2 2H2l-1-1V6z"/><rect x="3" y="7" width="4" height="1" fill="#120a16"/><rect x="4.5" y="5.5" width="1" height="4" fill="#120a16"/><rect x="10" y="6" width="1.5" height="1.5" fill="#120a16"/><rect x="11.5" y="8" width="1.5" height="1.5" fill="#120a16"/></svg><span>AKUN TAMU</span><i aria-hidden="true"></i></button>
+      </nav>
+      <p class="ttl-msg" id="ttlMsg" role="status"></p>
+      <div class="ttl-map"><svg viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true"><path d="M1 3l4-2 6 2 4-2v12l-4 2-6-2-4 2z" fill="#3a2a40"/><path d="M5 1v12M11 3v12" stroke="#120a16" stroke-width="1"/><path d="M1 3l4-2 6 2 4-2v12l-4 2-6-2-4 2z" fill="none" stroke="#b9a3c4" stroke-width="1"/><rect x="10" y="4" width="3" height="3" fill="#ff4a3a"/><rect x="11" y="7" width="1" height="2" fill="#ff4a3a"/></svg>
+        <div><b>MAP: <span id="ttlMap">PUSAT KOTA</span></b><p id="ttlMapD">Bertahan hidup dari gelombang zombi, kumpulkan senjata, dan capai skor tertinggi!</p></div></div>
     </div>
-
-</header>
-
-
-<!-- =========================
-     NAVIGATION
-========================= -->
-
-<nav class="nav">
-
-    <div class="nav-inner">
-
-        <a href="#about">
-            About
-        </a>
-
-        <a href="#skills">
-            Skills
-        </a>
-
-        <a href="#projects">
-            Projects
-        </a>
-
-        <a href="#workflow">
-            Workflow
-        </a>
-
-        <a href="#technology">
-            Technology
-        </a>
-
-        <a href="#ai">
-            AI Assisted
-        </a>
-
-    </div>
-
-</nav>
-
-
-<main>
-
-<div class="container">
-
-
-<!-- =========================
-     ABOUT
-========================= -->
-
-<section id="about">
-
-    <h2>About Me</h2>
-
-
-    <p>
-        Saya adalah developer yang banyak mengerjakan
-        <strong>
-            tools, server, modding, rekayasa file game,
-            dan otomasi
-        </strong>
-        —terutama di ekosistem
-        <strong>Point Blank</strong>.
-    </p>
-
-
-    <p>
-        Saya lebih suka membangun tool yang benar-benar
-        menyelesaikan masalah daripada sekadar membuat prototype.
-    </p>
-
-
-    <p>
-        Saya tertarik membongkar cara kerja sebuah sistem dari
-        level data/file hingga menjadi tool yang mudah digunakan.
-        Dari format binary seperti
-        <strong>
-            .I3S, .I3CHR, .i3Pack, .RSC
-        </strong>
-        dan
-        <strong>.i3AnimPack</strong>,
-        sampai server game, web panel, database,
-        pembayaran, dan watchdog Windows.
-    </p>
-
-
-    <p>
-        Saya mengerjakan project-project ini secara mandiri,
-        dengan sebagian proses pengembangan dibantu oleh
-        <strong>AI Claude</strong>—terutama saat menghadapi kode,
-        struktur file, algoritma, debugging, atau masalah teknis
-        yang sangat sulit.
-    </p>
-
-
-    <p>
-        AI saya gunakan sebagai partner untuk analisis,
-        eksplorasi solusi, dan memecahkan masalah;
-        proses pengujian, validasi, eksperimen, dan keputusan akhir
-        tetap saya lakukan sendiri.
-    </p>
-
+    <p class="ttl-by">Kota Mati dibuat oleh HeavyRain</p>
+  </div>
 </section>
-
-
-<!-- =========================
-     SKILLS
-========================= -->
-
-<section id="skills">
-
-    <h2>Fokus & Keahlian</h2>
-
-
-    <div class="skills">
-
-        <div class="skill">
-            🎮 Point Blank / Game Modding & Development Tools
-        </div>
-
-        <div class="skill">
-            🔬 Binary File Format Analysis
-        </div>
-
-        <div class="skill">
-            🧩 I3 Engine / I3S / I3CHR / i3Pack / RSC / Animation
-        </div>
-
-        <div class="skill">
-            🐍 Python Tooling & CLI
-        </div>
-
-        <div class="skill">
-            💻 Windows / PowerShell / C#
-        </div>
-
-        <div class="skill">
-            🌐 PHP Native + PostgreSQL
-        </div>
-
-        <div class="skill">
-            🎨 3D Model, Skin, Texture & Game Asset Pipeline
-        </div>
-
-        <div class="skill">
-            💻 Teknik Komputer & Laptop
-        </div>
-
-        <div class="skill">
-            🛠️ Membangun utility dari kebutuhan nyata
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- =========================
-     PROJECTS
-========================= -->
-
-<section id="projects">
-
-    <h2>Project Showcase</h2>
-
-
-    <p>
-        Berikut beberapa project dan sistem yang saya kerjakan
-        atau kembangkan. Sebagian merupakan project publik,
-        sebagian lainnya adalah project personal/private yang
-        menjadi bagian dari eksperimen dan pengembangan sistem
-        Point Blank.
-    </p>
-
-
-    <div class="project-wrapper">
-
-        <table>
-
-            <thead>
-
-                <tr>
-
-                    <th>
-                        Project
-                    </th>
-
-                    <th>
-                        Fokus
-                    </th>
-
-                    <th>
-                        Deskripsi
-                    </th>
-
-                </tr>
-
-            </thead>
-
-
-            <tbody>
-
-
-                <tr>
-
-                    <td class="project-name">
-                        🎮 I3 Engine Editor V3
-                    </td>
-
-                    <td class="project-type">
-                        Game Tools / Reverse Engineering
-                    </td>
-
-                    <td>
-                        Suite tools untuk membaca, mengedit,
-                        mengonversi, dan membangun berbagai format
-                        data Point Blank berbasis I3 Engine.
-                        Project ini merupakan fokus utama repository ini.
-                    </td>
-
-                </tr>
-
-
-                <tr>
-
-                    <td class="project-name">
-                        🧰 I3 Engine Tools V3
-                    </td>
-
-                    <td class="project-type">
-                        Tool Suite
-                    </td>
-
-                    <td>
-                        Launcher terpadu yang mengumpulkan berbagai
-                        editor dan converter I3 Engine dalam satu aplikasi
-                        dengan pencarian, kategori, serta tema dark/light.
-                    </td>
-
-                </tr>
-
-
-                <tr>
-
-                    <td class="project-name">
-                        🧍 I3 Character Pipeline
-                    </td>
-
-                    <td class="project-type">
-                        Character / Skeleton
-                    </td>
-
-                    <td>
-                        Konversi skin Avatar V2 agar dapat menggunakan
-                        skeleton, ragdoll, weapon point, dan helmet point
-                        karakter V1 tanpa kehilangan mesh dan tekstur aslinya.
-                    </td>
-
-                </tr>
-
-
-                <tr>
-
-                    <td class="project-name">
-                        🔫 I3 Weapon Pipeline
-                    </td>
-
-                    <td class="project-type">
-                        Weapon / Animation
-                    </td>
-
-                    <td>
-                        Eksperimen dan tools untuk membuat, memperbaiki,
-                        mengonversi, serta mengatur state, animasi,
-                        suara, dan resource senjata Point Blank.
-                    </td>
-
-                </tr>
-
-
-                <tr>
-
-                    <td class="project-name">
-                        🗺️ I3 Map Tools
-                    </td>
-
-                    <td class="project-type">
-                        Map Editing
-                    </td>
-
-                    <td>
-                        Editor i3Path, i3INS, collision, serta viewer
-                        untuk membantu mengedit jalur AI, objek map,
-                        collision, dan model dalam scene Point Blank.
-                    </td>
-
-                </tr>
-
-
-                <tr>
-
-                    <td class="project-name">
-                        📦 I3Pack / RSC Tools
-                    </td>
-
-                    <td class="project-type">
-                        Resource / Archive
-                    </td>
-
-                    <td>
-                        Editor dan library untuk membaca, mengubah,
-                        mengekstrak, memasukkan kembali, dan memeriksa
-                        resource .i3Pack serta .RSC.
-                    </td>
-
-                </tr>
-
-
-                <tr>
-
-                    <td class="project-name">
-                        🎞️ I3 Animation Tools
-                    </td>
-
-                    <td class="project-type">
-                        Animation
-                    </td>
-
-                    <td>
-                        Editor .i3AnimPack dan workflow animasi untuk
-                        membaca track, keyframe, durasi, serta memindahkan
-                        gerakan antar paket animasi.
-                    </td>
-
-                </tr>
-
-
-                <tr>
-
-                    <td class="project-name">
-                        🖥️ Point Blank Server Ecosystem
-                    </td>
-
-                    <td class="project-type">
-                        Game Server
-                    </td>
-
-                    <td>
-                        Pengembangan dan administrasi ekosistem private
-                        server Point Blank, termasuk server, database,
-                        web account system, voucher, inbox, dan berbagai
-                        utility pendukung.
-                    </td>
-
-                </tr>
-
-
-                <tr>
-
-                    <td class="project-name">
-                        🌐 Web System
-                    </td>
-
-                    <td class="project-type">
-                        PHP / PostgreSQL
-                    </td>
-
-                    <td>
-                        Sistem web pendukung server dengan account,
-                        inbox, redeem voucher, package, dan integrasi
-                        pembayaran untuk distribusi item/game package.
-                    </td>
-
-                </tr>
-
-
-                <tr>
-
-                    <td class="project-name">
-                        🎨 Point Blank Asset / Texture Workflow
-                    </td>
-
-                    <td class="project-type">
-                        3D / Texture
-                    </td>
-
-                    <td>
-                        Workflow pengolahan model, skin, texture, bone,
-                        LOD, material, dan asset game untuk kebutuhan
-                        modding serta pengembangan content.
-                    </td>
-
-                </tr>
-
-
-            </tbody>
-
-        </table>
-
-    </div>
-
-
-    <blockquote>
-
-        <strong>Catatan:</strong>
-
-        Tidak semua project di atas merupakan repository publik.
-        Sebagian adalah project pribadi, eksperimen, atau sistem yang
-        digunakan dalam pengembangan server dan tooling.
-
-    </blockquote>
-
-</section>
-
-
-<!-- =========================
-     WORKFLOW
-========================= -->
-
-<section id="workflow">
-
-    <h2>Cara Saya Mengerjakan Project</h2>
-
-
-    <p>
-        Saya biasanya memulai dari
-        <strong>masalah nyata</strong>,
-        kemudian membongkar struktur sistemnya sampai ditemukan cara
-        kerja yang dapat direproduksi.
-    </p>
-
-
-    <div class="pipeline">
-
-        <div class="pipeline-item">
-            Problem
-        </div>
-
-        <div class="arrow">
-            →
-        </div>
-
-        <div class="pipeline-item">
-            Analisis
-        </div>
-
-        <div class="arrow">
-            →
-        </div>
-
-        <div class="pipeline-item">
-            Eksperimen
-        </div>
-
-        <div class="arrow">
-            →
-        </div>
-
-        <div class="pipeline-item">
-            Tool
-        </div>
-
-        <div class="arrow">
-            →
-        </div>
-
-        <div class="pipeline-item">
-            Validasi
-        </div>
-
-        <div class="arrow">
-            →
-        </div>
-
-        <div class="pipeline-item">
-            Otomasi
-        </div>
-
-    </div>
-
-
-    <h3>
-        Contoh — I3 Engine Editor V3
-    </h3>
-
-
-<pre><code>Game File
-   ↓
-Analisis struktur binary
-   ↓
-Identifikasi object / node / bone / material
-   ↓
-Reverse engineering format
-   ↓
-Python parser / writer
-   ↓
-Editor GUI
-   ↓
-Verifikasi otomatis
-   ↓
-Testing di i3Viewer2 / Client
-   ↓
-Tool siap digunakan</code></pre>
-
-
-    <p>
-        Saya juga sangat memperhatikan
-        <strong>data integrity</strong>.
-        Banyak tool di project ini tidak sekadar "bisa membuka file",
-        tetapi berusaha menjaga struktur file asli, melakukan
-        read-back verification setelah penyimpanan, dan menghindari
-        perubahan yang tidak diperlukan.
-    </p>
-
-</section>
-
-
-<!-- =========================
-     TECHNOLOGY
-========================= -->
-
-<section id="technology">
-
-    <h2>
-        Teknologi yang Sering Saya Gunakan
-    </h2>
-
-
-    <div class="tech-grid">
-
-
-        <div class="tech-card">
-
-            <h3>
-                💻 Languages
-            </h3>
-
-            <ul>
-
-                <li>
-                    Python
-                </li>
-
-                <li>
-                    PHP
-                </li>
-
-                <li>
-                    C#
-                </li>
-
-                <li>
-                    PowerShell
-                </li>
-
-                <li>
-                    SQL
-                </li>
-
-            </ul>
-
-        </div>
-
-
-        <div class="tech-card">
-
-            <h3>
-                🎮 Game / 3D
-            </h3>
-
-            <ul>
-
-                <li>
-                    Point Blank / I3 Engine
-                </li>
-
-                <li>
-                    I3S
-                </li>
-
-                <li>
-                    I3CHR
-                </li>
-
-                <li>
-                    I3AnimPack
-                </li>
-
-                <li>
-                    I3Pack
-                </li>
-
-                <li>
-                    RSC
-                </li>
-
-                <li>
-                    OBJ
-                </li>
-
-                <li>
-                    Texture / LOD / Skeleton / Animation
-                </li>
-
-            </ul>
-
-        </div>
-
-
-        <div class="tech-card">
-
-            <h3>
-                🌐 Backend
-            </h3>
-
-            <ul>
-
-                <li>
-                    PostgreSQL
-                </li>
-
-                <li>
-                    PHP Native
-                </li>
-
-                <li>
-                    Web Server
-                </li>
-
-                <li>
-                    Payment / Webhook
-                </li>
-
-                <li>
-                    Server Automation
-                </li>
-
-            </ul>
-
-        </div>
-
-
-        <div class="tech-card">
-
-            <h3>
-                🪟 Windows
-            </h3>
-
-            <ul>
-
-                <li>
-                    PowerShell
-                </li>
-
-                <li>
-                    C#
-                </li>
-
-                <li>
-                    Executable Tooling
-                </li>
-
-                <li>
-                    Process Monitoring
-                </li>
-
-                <li>
-                    Crash / Restart Automation
-                </li>
-
-            </ul>
-
-        </div>
-
-
-    </div>
-
-</section>
-
-
-<!-- =========================
-     AI
-========================= -->
-
-<section id="ai">
-
-    <h2>
-        AI-Assisted Development
-    </h2>
-
-
-    <div class="ai-card">
-
-        <p>
-            Beberapa bagian dari project ini dikembangkan dengan
-            bantuan <strong>AI Claude</strong> sebagai technical assistant.
-        </p>
-
-
-        <p>
-            Bantuan tersebut terutama digunakan ketika menemukan masalah
-            yang kompleks, kode yang sulit dipahami, reverse engineering
-            yang membutuhkan banyak eksperimen, debugging yang panjang,
-            atau ketika diperlukan pendekatan alternatif untuk memecahkan
-            suatu masalah.
-        </p>
-
-
-        <ul class="ai-list">
-
-            <li>
-                🔎 Menganalisis kode dan struktur data yang kompleks
-            </li>
-
-            <li>
-                🧩 Mencari kemungkinan solusi untuk masalah yang sulit
-            </li>
-
-            <li>
-                🐛 Membantu debugging dan menemukan sumber error
-            </li>
-
-            <li>
-                🧠 Mengeksplorasi algoritma dan pendekatan teknis
-            </li>
-
-            <li>
-                🧪 Membantu merancang eksperimen dan validasi
-            </li>
-
-            <li>
-                ⚙️ Mengembangkan atau menyempurnakan utility dan tooling
-            </li>
-
-        </ul>
-
-
-        <p>
-            Namun,
-            <strong>AI bukan pengganti proses pengembangan</strong>.
-            Setiap solusi tetap saya pelajari, uji, verifikasi, dan
-            sesuaikan dengan perilaku sebenarnya dari file, engine,
-            client, server, atau sistem yang sedang dikerjakan.
-        </p>
-
-
-        <blockquote>
-
-            <strong>
-                AI membantu mempercepat pemecahan masalah.
-                Saya tetap bertanggung jawab atas implementasi,
-                pengujian, dan hasil akhirnya.
-            </strong>
-
-        </blockquote>
-
-    </div>
-
-</section>
-
-
+<div class="rot" id="rot" role="alertdialog" aria-labelledby="rotT" aria-describedby="rotD">
+  <div class="rotbox">
+    <svg class="rotph" viewBox="0 0 48 48" shape-rendering="crispEdges" aria-hidden="true"><g class="ph"><rect x="17" y="6" width="14" height="26" fill="#2a1d30" stroke="#ffb23e" stroke-width="2"/><rect x="19" y="9" width="10" height="18" fill="#3fd84a" opacity=".55"/><rect x="22" y="29" width="4" height="1" fill="#ffb23e"/></g>
+      <path class="ar" d="M36 30a14 14 0 0 1-8 10" fill="none" stroke="#a86ae8" stroke-width="2.5"/><path class="ar" d="M25 37l4 4 1-5z" fill="#a86ae8"/></svg>
+    <h2 id="rotT">PUTAR PERANGKAT ANDA</h2>
+    <p id="rotD">KOTA MATI dirancang untuk dimainkan dalam mode landscape.</p>
+  </div>
 </div>
-
-</main>
-
-
-<!-- =========================
-     FOOTER
-========================= -->
-
-<footer>
-
-    <div class="container">
-
-        <div class="footer-title">
-            👋 Thanks for visiting my project.
-        </div>
-
-        <div>
-            Built with curiosity, experimentation,
-            and lots of debugging.
-        </div>
-
-        <br>
-
-        <div>
-            © 2026 Ziky Andeska
-            <span style="color:#58a6ff;">
-                AKA HeavyRain
-            </span>
-        </div>
-
+<div class="wrap">
+  <button class="upd" id="upd" type="button" hidden>VERSI BARU TERSEDIA · KETUK UNTUK MEMPERBARUI</button>
+  <header class="top">
+    <div class="brand">
+      <span class="logo">KOTA MATI</span>
+      <span class="tag">FPS zombi · arcade piksel</span>
     </div>
+    <div class="onl" id="onl" title="Pemain yang sedang membuka game"><span class="ondot" id="onDot"></span><span class="onk">ONLINE</span><b class="onn" id="onN">–</b>
+      <span class="ons"><span>Terdaftar <b id="onR">–</b></span><span>Tamu <b id="onG">–</b></span><span>Bot <b id="onB">–</b></span></span></div>
+    <div class="actions">
+      <button class="btn" id="btnExit" type="button" hidden>KELUAR KE MENU</button>
+      <button class="btn ib" id="bSet" type="button" aria-label="Pengaturan" title="Pengaturan"><svg viewBox="0 0 16 16" aria-hidden="true" fill="currentColor" shape-rendering="crispEdges"><path d="M7 0h2v2h2v1h1v1h1v2h2v2h-2v2h-1v1h-1v1H9v2H7v-2H5v-1H4v-1H3V8H1V6h2V4h1V3h1V2h2zM7 5v1H6v3h1v1h2V9h1V6H9V5z"/></svg></button>
+      <button class="btn" id="btnSound" type="button">SUARA: ON</button>
+      <button class="btn" id="btnFull" type="button">LAYAR PENUH</button>
+    </div>
+  </header>
+  <nav class="tabs" id="tabs" role="tablist" aria-label="Menu utama">
+    <button type="button" role="tab" data-tab="main" aria-selected="true">MAIN</button><button type="button" role="tab" data-tab="lobby">LOBBY</button><button type="button" role="tab" data-tab="kontrol">KONTROL</button><button type="button" role="tab" data-tab="senjata">SENJATA</button><button type="button" role="tab" data-tab="zombi">ZOMBI</button><button type="button" role="tab" data-tab="akun">AKUN</button>
+  </nav>
 
-</footer>
+  <div class="cab" id="cab">
+    <canvas id="screen" width="384" height="216" tabindex="0" aria-label="Layar game Kota Mati"></canvas>
+    <div class="oshare share" id="oShare" hidden><span>BAGIKAN SKOR</span><button class="btn sm go" id="oShShot" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3 7.2 5H4a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-3.2L15 3H9zm3 4.5a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/></svg>FOTO SKOR</button><button class="btn sm fb" id="oShFb" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 8V6c0-.9.6-1 1-1h3V1h-4c-3.3 0-4.5 2.4-4.5 5v2H7v4h2.5v11H14V12h3.4l.6-4z"/></svg>FACEBOOK</button><button class="btn sm ig" id="oShIg" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm0 8.2a3.2 3.2 0 1 1 0-6.4 3.2 3.2 0 0 1 0 6.4zM17.3 5.4a1.2 1.2 0 1 0 0 2.4 1.2 1.2 0 0 0 0-2.4zM12 2c-2.7 0-3 0-4.1.1C4.3 2.2 2.2 4.3 2.1 7.9 2 9 2 9.3 2 12s0 3 .1 4.1c.1 3.6 2.2 5.7 5.8 5.8 1.1.1 1.4.1 4.1.1s3 0 4.1-.1c3.6-.1 5.7-2.2 5.8-5.8.1-1.1.1-1.4.1-4.1s0-3-.1-4.1C21.8 4.3 19.7 2.2 16.1 2.1 15 2 14.7 2 12 2zm0 1.8c2.7 0 3 0 4 .1 2.6.1 3.9 1.4 4 4 .1 1 .1 1.3.1 4s0 3-.1 4c-.1 2.6-1.4 3.9-4 4-1 .1-1.3.1-4 .1s-3 0-4-.1c-2.6-.1-3.9-1.4-4-4C3.9 15 3.8 14.7 3.8 12s0-3 .1-4c.1-2.6 1.4-3.9 4-4 1-.1 1.3-.1 4.1-.1z"/></svg>INSTAGRAM</button></div>
+    <div class="menu" id="menu">
+      <div class="mview vmain" id="vMain">
+        <div class="mcol">
+        <section class="pnl prof" aria-label="Profil pemain">
+          <div class="pcard"><canvas id="pcCv" width="96" height="116"></canvas><div class="pinfo"><span class="pname" id="pcName">PEMAIN</span>
+            <span class="plv" id="pcLv">LV 1</span><span class="pexp" title="EXP"><i id="pcExp"></i></span><span class="pexpt" id="pcExpT">0 / 500 EXP</span></div></div>
+          <div class="prow"><canvas id="pcRank" width="12" height="12"></canvas><span class="pk">RANK</span><span class="pr" id="pcRankN">PRAJURIT DUA</span></div>
+          <ul class="pstats"><li><span>TOTAL KILL</span><b id="stK">0</b></li><li><span>WIN</span><b id="stW">0</b></li><li><span>LOSS</span><b class="bad" id="stL">0</b></li>
+            <li class="w2"><span>MODE TERAKHIR</span><b class="acc" id="stM">–</b></li><li><span>STATUS</span><b id="stS">–</b></li><li><span>PING</span><b id="stP" title="">–</b></li></ul>
+          <span class="pskin" id="pcSkin">TENTARA</span>
+          <button class="ptrial" id="pcTrial" type="button" hidden>TRIAL TAMU <b id="pcTrialT">05:00</b> · DAFTAR GRATIS</button>
+          <div class="prbtn"><button class="btn sm" id="bAcc" type="button">AKUN</button><button class="btn sm" id="bMisi" type="button">MISI</button><button class="btn sm" id="bLb" type="button">PERINGKAT</button></div>
+        </section>
+        <section class="pnl chat" id="chatBox" aria-label="Chat pemain online">
+          <button class="chtog" id="chatTog" type="button" aria-controls="chatBody" aria-expanded="false" title="Tampilkan chat"><span class="chx" aria-hidden="true">CHAT</span><b class="cbadge" id="chatBadge" hidden>0</b></button>
+          <div class="chbody" id="chatBody">
+            <h3 class="mh">CHAT <small class="cst2" id="chatSt">menghubungkan…</small></h3>
+            <ul class="cmsgs" id="cMsgs" aria-live="polite"></ul>
+            <div class="cstkp" id="cStkP" hidden></div>
+            <form class="chform" id="cForm" autocomplete="off"><button type="button" class="btn sm" id="cStkB" aria-label="Kirim stiker" title="Stiker" aria-expanded="false"></button><input id="cIn" maxlength="90" placeholder="Tulis pesan…" enterkeyhint="send" spellcheck="false" aria-label="Pesan chat"><button class="btn sm go" type="submit">KIRIM</button></form>
+          </div>
+        </section>
+        </div>
+        <section class="hero" aria-label="Karakter"><canvas id="heroCv" width="200" height="300" aria-hidden="true"></canvas><button class="btn sm" id="bShow" type="button">GANTI KARAKTER</button></section>
+        <section class="pnl modecol" aria-label="Pilih mode">
+          <div class="modes">
+            <button class="mode m-solo" id="mSolo" type="button"><svg viewBox="0 0 16 16" aria-hidden="true" fill="currentColor" shape-rendering="crispEdges"><path d="M6 1h4v4H6zM4 6h8v5h-2v4H6v-4H4z"/></svg><span class="mt">SOLO</span><span class="md">Bertahan sendirian dari gelombang zombi</span></button>
+            <button class="mode m-def" id="mDef" type="button"><svg viewBox="0 0 16 16" aria-hidden="true" fill="currentColor" shape-rendering="crispEdges"><path d="M2 2h12v6l-6 7-6-7zM5 5v3l3 4 3-4V5z"/></svg><span class="mt">BERTAHAN</span><span class="md">Jaga generator selama 8 gelombang</span></button>
+            <button class="mode m-coop" id="mCoop" type="button" disabled><svg viewBox="0 0 16 16" aria-hidden="true" fill="currentColor" shape-rendering="crispEdges"><path d="M2 2h4v4H2zM10 2h4v4h-4zM1 7h6v4H5v4H3v-4H1zM9 7h6v4h-2v4h-2v-4H9z"/></svg><span class="mt">CO-OP</span><span class="md">2–4 pemain melawan zombi bersama</span></button>
+            <button class="mode m-pvp" id="mPvp" type="button" disabled><svg viewBox="0 0 16 16" aria-hidden="true" fill="currentColor" shape-rendering="crispEdges"><path d="M4 2h8v2h2v5h-2v2h-1v3H5v-3H4V9H2V4h2zM5 6v2h2V6zM9 6v2h2V6zM7 9v1h2V9z"/></svg><span class="mt">PVP 5 VS 5</span><span class="md">Dua tim bertarung · Merah lawan Biru</span></button>
+            <button class="mode m-br" id="mBr" type="button" disabled><svg viewBox="0 0 16 16" aria-hidden="true" fill="currentColor" shape-rendering="crispEdges"><path d="M7 0h2v4H7zM7 12h2v4H7zM0 7h4v2H0zM12 7h4v2h-4zM5 3h6v2H5zM3 5h2v6H3zM11 5h2v6h-2zM5 11h6v2H5zM7 7h2v2H7z"/></svg><span class="mt">BATTLEGROUND</span><span class="md">Semua lawan semua · 3 map · maks 25 petarung</span></button>
+          </div>
+          <p class="mnote" id="netNote">Memeriksa koneksi online…</p>
+          <div class="olbox mini"><h3 class="mh">PEMAIN ONLINE <b class="olN">0</b><small class="olBn"></small></h3><ul class="olist" data-ol="mini"></ul></div>
+        </section>
+        <section class="pnl mstrip" aria-label="Map pilihan"><h2 class="mh">MAP PILIHAN</h2><div class="maps" id="maps"></div></section>
+      </div>
+      <div class="mview panel" id="vSolo" hidden>
+        <h2 class="mh" id="soloT">SOLO</h2>
+        <ol class="steps" id="soloSteps"><li class="done">MODE</li><li class="cur">MAP</li><li>MULAI</li></ol>
+        <div class="mapgrid" id="soloMaps"></div>
+        <div class="srow"><button class="btn sm" id="bNight" type="button">MODE MALAM: MATI</button><button class="btn sm" id="bBots" type="button">TEMAN BOT: 0</button><button class="btn sm go" id="bInstall" type="button" hidden>PASANG DI HP</button></div>
+        <div class="row end"><button class="btn" id="sBack" type="button">KEMBALI</button><button class="btn go" id="sGo" type="button">MULAI GAME</button></div>
+      </div>
+      <div class="mview panel wide" id="vKeys" hidden>
+        <h2 class="mh">KONTROL</h2>
+        <div class="kgrid" id="kGrid"></div>
+        <p class="mnote">Di HP semua aksi ada di tombol layar, dan posisinya bisa diatur lewat Pengaturan → ATUR TOMBOL HP.</p>
+      </div>
+      <div class="mview panel wide" id="vWeap" hidden>
+        <h2 class="mh">SENJATA</h2>
+        <div class="wgrid" id="wGrid"></div>
+        <h2 class="mh">SUPLAI</h2>
+        <div class="sgrid2" id="sGrid2"></div>
+        <p class="mnote">Parang selalu dibawa dan tidak butuh peluru. Poin dari tiap kill juga jadi uang untuk belanja di toko saat jeda gelombang. Tembakan ke kepala memberi damage 2,5 kali lipat.</p>
+      </div>
+      <div class="mview panel wide" id="vZom" hidden>
+        <h2 class="mh">KODEKS ZOMBI</h2>
+        <div class="zcodex"><div class="zgrid" id="zGrid"></div><div class="zdet" id="zDet"></div></div>
+      </div>
+      <div class="mview panel wide" id="vRooms" hidden>
+        <div class="rtop"><h2 class="mh" id="rTitle">LOBBY · DAFTAR ROOM</h2>
+          <div class="seg2" role="tablist" aria-label="Lobby"><button type="button" id="rtList" aria-pressed="true">DAFTAR ROOM</button><button type="button" id="bCreate">BUAT ROOM</button><button type="button" id="rtCode">MASUK DENGAN KODE</button></div></div>
+        <div class="rfilter"><label class="sel"><span>Mode</span><select id="rfMode"><option value="all">Semua mode</option><option value="coop">Co-op</option><option value="pvp">PvP 5 vs 5</option><option value="br">Battleground</option></select></label>
+          <input id="rfSearch" maxlength="20" autocomplete="off" spellcheck="false" placeholder="Cari room…" aria-label="Cari room"><button class="btn sm" id="rfRefresh" type="button" title="Muat ulang">MUAT ULANG</button></div>
+        <div class="rcode" id="rCodeBox" hidden><label for="fRoom">Kode undangan</label><div class="row"><input id="fRoom" maxlength="24" autocomplete="off" spellcheck="false" placeholder="KM-C-ABCDE"><button class="btn sm go" id="bJoinCode" type="button">GABUNG</button></div>
+          <p class="mnote">Minta kode undangan ke host room. Kode room yang dikunci sudah berisi password, jadi tidak perlu mengetik password lagi.</p></div>
+        <div class="rtwrap"><table class="rtable"><thead><tr><th>ID</th><th>NAMA ROOM</th><th>MAP</th><th>MODE</th><th>PEMAIN</th><th>STATUS</th><th><span class="sr">Aksi</span></th></tr></thead><tbody id="rList"></tbody></table></div>
+        <div class="rpw" id="rPw" hidden><span id="rPwT">Room terkunci</span><input id="rPwIn" type="password" maxlength="20" autocomplete="off" placeholder="Password room"><button class="btn sm go" id="rPwGo" type="button">MASUK</button><button class="btn sm" id="rPwX" type="button">BATAL</button></div>
+        <p class="mnote" id="rMsg"></p>
+        <div class="row end"><button class="btn sm" id="bBackRooms" type="button">KEMBALI KE MAIN</button></div>
+      </div>
+      <div class="mview panel wide" id="vCreate" hidden>
+        <h2 class="mh">BUAT ROOM</h2>
+        <ol class="steps" id="cSteps"><li>MODE</li><li>MAP</li><li>PENGATURAN</li><li>BUAT</li></ol>
+        <div class="cstep" data-s="0"><div class="cmodes">
+          <button type="button" class="cmode m-coop" data-m="coop"><span class="mt">CO-OP</span><span class="md">2–4 pemain lawan gelombang zombi.</span></button>
+          <button type="button" class="cmode m-def" data-m="def"><span class="mt">CO-OP BERTAHAN</span><span class="md">Jaga generator bersama selama 8 gelombang.</span></button>
+          <button type="button" class="cmode m-pvp" data-m="pvp"><span class="mt">PVP 5 VS 5</span><span class="md">Tim Merah lawan Biru, maksimal 10 pemain.</span></button>
+          <button type="button" class="cmode m-br" data-m="br"><span class="mt">BATTLEGROUND</span><span class="md">Semua lawan semua di map besar (120 atau 350 petak). Terjun parasut, zona menyempit, yang terakhir hidup menang.</span></button></div></div>
+        <div class="cstep" data-s="1" hidden><div class="mapgrid" id="cMaps"></div><div class="mapgrid" id="cMapsBR" hidden></div></div>
+        <div class="cstep" data-s="2" hidden><div class="cform">
+          <label>Nama room<input id="cName" maxlength="18" autocomplete="off" spellcheck="false"></label>
+          <label>Maks pemain<span class="num"><button type="button" class="btn sm" id="cMaxM" aria-label="Kurangi">◀</button><b id="cMax">4</b><button type="button" class="btn sm" id="cMaxP" aria-label="Tambah">▶</button></span></label>
+          <label class="c-coop">Kesulitan<span class="seg mini" id="cDiff"><button type="button" data-d="0">MUDAH</button><button type="button" data-d="1">NORMAL</button><button type="button" data-d="2">SULIT</button></span></label>
+          <label class="c-coop">Teman bot<span class="seg mini" id="cBot"><button type="button" data-b="0">0</button><button type="button" data-b="1">1</button><button type="button" data-b="2">2</button><button type="button" data-b="3">3</button></span></label>
+          <label class="c-br">Isi slot kosong<span class="seg mini two" id="cFb"><button type="button" data-f="1">DENGAN BOT</button><button type="button" data-f="0">TANPA BOT</button></span></label>
+          <label class="c-pvp">Friendly fire<span class="seg mini two" id="cFf"><button type="button" data-f="0">MATI</button><button type="button" data-f="1">NYALA</button></span></label>
+          <label class="c-pvp">Seimbangkan tim<span class="seg mini two" id="cTb"><button type="button" data-t="1">OTOMATIS</button><button type="button" data-t="0">BEBAS PILIH</button></span></label>
+          <label>Mode malam<span class="seg mini two" id="cNt"><button type="button" data-n="0">MATI</button><button type="button" data-n="1">NYALA</button></span></label>
+          <fieldset class="clock"><legend>Akses room</legend>
+            <label class="radio"><input type="radio" name="cLock" value="0" checked><span><b>🔓 PUBLIC</b><small>Semua pemain bisa melihat dan masuk.</small></span></label>
+            <label class="radio"><input type="radio" name="cLock" value="1"><span><b>🔒 LOCKED</b><small>Hanya dengan password atau kode undangan.</small></span></label>
+            <input id="cPw" type="password" maxlength="20" autocomplete="new-password" placeholder="Password (min. 3 karakter)" hidden></fieldset>
+          </div></div>
+        <p class="gerr" id="cErr"></p>
+        <div class="row end"><button class="btn" id="cBack" type="button">KEMBALI</button><button class="btn go" id="cNext" type="button">LANJUT</button></div>
+      </div>
+      <div class="mview" id="vShow" hidden>
+        <h2 class="mh">SHOWROOM</h2>
+        <div class="fields"><label for="sNick">Nama</label><input id="sNick" maxlength="10" autocomplete="off" spellcheck="false"></div>
+        <h2 class="mh">PILIH KARAKTER</h2>
+        <div class="skins" id="skins"></div>
+        <p class="gerr" id="sErr"></p>
+        <div class="row"><button class="btn go" id="bSaveShow" type="button">SIMPAN</button><button class="btn" id="bBackShow" type="button">KEMBALI</button></div>
+      </div>
+      <div class="mview panel" id="vAcc" hidden>
+        <h2 class="mh">AKUN PEMAIN</h2>
+        <div class="accTop"><canvas id="aRank" width="12" height="12"></canvas><div class="pinfo"><span class="pname" id="aNick">PEMAIN</span><span class="prank" id="aRankN">PRAJURIT DUA</span><span class="mnote" id="aStatus"></span></div></div>
+        <span class="pexp big"><i id="aExp"></i></span><p class="mnote" id="aExpT"></p>
+        <ul class="astats" id="aStats"></ul>
+        <details class="rk"><summary>DAFTAR PANGKAT</summary><ul class="ranks" id="aRanks"></ul></details>
+        <p class="gerr" id="aErr"></p>
+        <div class="row"><button class="btn go sm" id="aLogin" type="button">MASUK / DAFTAR</button><button class="btn sm" id="aLogout" type="button">KELUAR AKUN</button><button class="btn sm" id="aBack" type="button">KEMBALI</button></div>
+      </div>
+      <div class="mview panel" id="vMisi" hidden>
+        <h2 class="mh">MISI HARIAN</h2>
+        <ul class="misi" id="misiList"></ul><p class="mnote" id="misiMsg"></p>
+        <div class="row"><button class="btn sm" id="misiBack" type="button">KEMBALI</button></div>
+      </div>
+      <div class="mview panel" id="vLb" hidden>
+        <h2 class="mh">PAPAN PERINGKAT</h2>
+        <div class="seg" id="lbTabs"><button type="button" data-f="exp">EXP</button><button type="button" data-f="best">SKOR</button><button type="button" data-f="kills">KILL</button><button type="button" data-f="week">MINGGUAN</button></div>
+        <ol class="lb" id="lbList"></ol><p class="mnote" id="lbMsg"></p>
+        <div class="row"><button class="btn sm" id="lbRefresh" type="button">MUAT ULANG</button><button class="btn sm" id="lbBack" type="button">KEMBALI</button></div>
+      </div>
+      <div class="mview panel" id="vSet" hidden>
+        <h2 class="mh">PENGATURAN</h2>
+        <div class="rng"><label for="sSens">Sensitivitas bidik <b id="vSens">1.0</b></label><input type="range" id="sSens" min="0.3" max="2.5" step="0.1"></div>
+        <div class="rng"><label for="sMus">Volume musik <b id="vMus">70</b></label><input type="range" id="sMus" min="0" max="100" step="5"></div>
+        <div class="rng"><label for="sSfx">Volume efek suara <b id="vSfx">80</b></label><input type="range" id="sSfx" min="0" max="100" step="5"></div>
+        <div class="rng"><label for="sAmb">Volume suara sekitar (hujan, hewan malam) <b id="vAmb">70</b></label><input type="range" id="sAmb" min="0" max="100" step="5"></div>
+        <h2 class="mh">KUALITAS GRAFIS</h2>
+        <div class="seg" id="sQ"><button type="button" data-q="0">RENDAH</button><button type="button" data-q="1">SEDANG</button><button type="button" data-q="2">TINGGI</button></div>
+        <h2 class="mh">UKURAN HUD</h2>
+        <div class="seg" id="sHud"><button type="button" data-h="2">KECIL</button><button type="button" data-h="1">SEDANG</button><button type="button" data-h="0">BESAR</button></div>
+        <div class="rng" id="gsRow" hidden><label for="sGs">Ukuran semua tombol HP <b id="vGs">100%</b></label><input type="range" id="sGs" min="0.5" max="1.2" step="0.05"></div>
+        <div class="row" id="hudRow" hidden><button class="btn sm" id="bHud" type="button">ATUR TOMBOL HP</button><span class="mnote">Geser dan ubah ukuran tiap tombol.</span></div>
+        <div class="row"><button class="btn sm" id="bG3D" type="button" hidden>COBA LAGI GRAFIK 3D</button><span class="mnote" id="g3dNote">Grafik: dunia 3D bergaya piksel dengan karakter sprite.</span></div>
+        <div class="row"><button class="btn sm" id="bAutoFs" type="button">LAYAR PENUH OTOMATIS: NYALA</button></div>
+        <p class="mnote">Pilih RENDAH kalau game terasa patah-patah di HP. Lantai digambar lebih sederhana dan efek partikel dikurangi.</p>
+        <div class="row"><button class="btn" id="bBackSet" type="button">KEMBALI</button></div>
+      </div>
+      <div class="mview panel wide" id="vLobby" hidden>
+        <div class="lhead"><span class="lid" id="lId">ROOM</span><span class="lname" id="lTitle">RUANGAN</span><span class="lbadge" id="lLock">PUBLIC</span>
+          <span class="linv"><span>KODE UNDANGAN</span><span class="code" id="lCode"></span><button class="btn sm" id="bCopy" type="button">SALIN</button><button class="btn sm go" id="bShare" type="button" hidden>BAGIKAN LINK</button></span></div>
+        <div class="linfo"><span>MAP <b id="lMap"></b><button class="btn sm" id="bMap" type="button">GANTI</button></span><span>MODE <b id="lModeN"></b></span><span id="lDefRow">TIPE <b id="lDef">GELOMBANG</b><button class="btn sm" id="bDefL" type="button">GANTI</button></span>
+          <span id="lDiffRow">KESULITAN <b id="lDiff">NORMAL</b></span><span id="lFfRow">FRIENDLY FIRE <b id="lFf">MATI</b></span><span>MAKS <b id="lMax">4</b></span><span>MALAM <b id="lNight">MATI</b><button class="btn sm" id="bNightL" type="button">GANTI</button></span></div>
+        <div class="lteams" id="lTeams" hidden>
+          <section class="tcol red"><h3>TIM MERAH <span id="tRedN">0/5</span></h3><ol id="tRed"></ol><button class="btn sm" id="bJoinRed" type="button">GABUNG MERAH</button></section>
+          <section class="tcol blue"><h3>TIM BIRU <span id="tBlueN">0/5</span></h3><ol id="tBlue"></ol><button class="btn sm" id="bJoinBlue" type="button">GABUNG BIRU</button></section>
+          <section class="tcol wait"><h3>MENUNGGU / PENONTON</h3><ol id="tWait"></ol><button class="btn sm" id="bJoinSpec" type="button">JADI PENONTON</button><button class="btn sm" id="bBalance" type="button" hidden>SEIMBANGKAN TIM</button></section>
+        </div>
+        <div class="ptwrap" id="lTableW"><table class="ptable"><thead><tr><th>#</th><th>NICK</th><th>RANK</th><th>READY</th><th>PING</th></tr></thead><tbody id="lTable"></tbody></table></div>
+        <ul class="plist" id="lList" hidden></ul>
+        <p class="mnote" id="lMsg"></p>
+        <div class="row end"><button class="btn" id="bLeave" type="button">KELUAR ROOM</button><button class="btn ready" id="bReady" type="button">READY</button><button class="btn go" id="bStart" type="button">MULAI GAME</button></div>
+      </div>
+    </div>
+    <div class="sboard" id="sboard" hidden aria-live="off"></div>
+    <div class="trialB" id="trialB" hidden>GUEST TRIAL <b id="trialT">05:00</b></div>
+    <div class="touch" id="touch" hidden>
+      <div class="stick" id="stick"><i class="n"></i><i class="s"></i><i class="w"></i><i class="e"></i><div class="knob" id="knob"></div></div>
+      <div class="pad">
+        <button class="tb t-swap" id="tSwap" type="button" aria-label="Ganti senjata"><svg viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true" fill="currentColor"><path d="M1 4h10V1l4 4-4 4V6H1z"/><path d="M15 12H5v3l-4-4 4-4v3h10z"/></svg><span>GANTI</span></button>
+        <button class="tb t-nade" id="tNade" type="button" aria-label="Lempar granat"><svg viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true"><rect x="7" y="1" width="3" height="2" fill="#c9c0b0"/><rect x="10" y="2" width="3" height="1" fill="#c9c0b0"/><rect x="12" y="3" width="1" height="4" fill="#c9c0b0"/><rect x="5" y="3" width="6" height="2" fill="#9aa3ad"/><rect x="4" y="5" width="8" height="9" fill="#56652a"/><rect x="4" y="5" width="2" height="9" fill="#7e8f42"/><rect x="10" y="5" width="2" height="9" fill="#38431a"/><rect x="4" y="8" width="8" height="1" fill="#2a3214"/><rect x="4" y="11" width="8" height="1" fill="#2a3214"/><rect x="7" y="5" width="1" height="9" fill="#2a3214"/><rect x="5" y="14" width="6" height="1" fill="#38431a"/></svg><span>GRANAT</span></button>
+        <button class="tb t-reload" id="tReload" type="button" aria-label="Isi ulang"><svg viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 8a5 5 0 1 1-1.6-3.7"/><path d="M13.5 1.5v4h-4" stroke-linejoin="miter"/></svg><span>ISI</span></button>
+        <button class="tb t-crouch" id="tCrouch" type="button" aria-label="Jongkok"><svg viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true" fill="currentColor"><path d="M6 1h4v4h4l-6 6-6-6h4z"/><rect x="1" y="13" width="14" height="2"/></svg><span>JONGKOK</span></button>
+        <button class="tb t-scope" id="tScope" type="button" aria-label="Teropong" hidden><svg viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="8" cy="8" r="5.5"/><path d="M8 0v5M8 11v5M0 8h5M11 8h5"/></svg><span>ZOOM</span></button>
+        <button class="tb t-jump" id="tJump" type="button" aria-label="Lompat"><svg viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true" fill="currentColor"><path d="M8 1l6 6h-4v3H6V7H2z"/><rect x="6" y="11" width="4" height="1"/><rect x="6" y="13" width="4" height="2" opacity=".6"/></svg><span>LOMPAT</span></button>
+        <button class="tb t-melee" id="tMelee" type="button" aria-label="Tebas parang"><svg viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true"><rect x="10" y="10" width="2" height="5" fill="#7a5236"/><rect x="9" y="9" width="4" height="1" fill="#2a2a2e"/><path d="M10 9L3 2 2 3 1 1l3 1 8 7z" fill="#d8dce4"/><path d="M3 2l7 7-1 0L2 3z" fill="#8a909a"/></svg><span>PARANG</span></button>
+        <button class="tb t-molo" id="tMolo" type="button" aria-label="Lempar molotov"><svg viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true"><rect x="6" y="6" width="5" height="9" fill="#7aa04a"/><rect x="6" y="6" width="1" height="9" fill="#a8d070"/><rect x="7" y="3" width="3" height="3" fill="#7aa04a"/><rect x="7" y="2" width="3" height="1" fill="#e8e4dc"/><rect x="8" y="0" width="2" height="2" fill="#ffb23e"/><rect x="9" y="-1" width="1" height="2" fill="#ff5a3a"/><rect x="6" y="10" width="5" height="2" fill="#c8a050"/></svg><span>MOLOTOV</span></button>
+        <button class="tb t-fire" id="tFire" type="button" aria-label="Tembak"><svg viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true"><rect x="6" y="1" width="4" height="1" fill="#f4f4f4"/><rect x="5" y="2" width="6" height="3" fill="#cfd4dc"/><rect x="5" y="2" width="2" height="3" fill="#fff"/><rect x="4" y="5" width="8" height="8" fill="#e8b43a"/><rect x="4" y="5" width="2" height="8" fill="#ffe08a"/><rect x="10" y="5" width="2" height="8" fill="#a07420"/><rect x="4" y="12" width="8" height="1" fill="#7a5410"/><rect x="3" y="13" width="10" height="2" fill="#c9962a"/></svg><b id="tAmmo">12</b></button>
+      </div>
+      <button class="tb t-use" id="tUse" type="button" aria-label="Tahan untuk menolong teman" hidden><svg viewBox="0 0 16 16" aria-hidden="true" fill="currentColor" shape-rendering="crispEdges"><rect x="6" y="2" width="4" height="12"/><rect x="2" y="6" width="12" height="4"/></svg><span>TOLONG</span></button>
+      <button class="tb t-med" id="tMed" type="button" aria-label="Pakai medkit" hidden><svg viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true"><rect x="2" y="3" width="12" height="11" fill="#e8e4dc"/><rect x="6" y="5" width="4" height="8" fill="#d8322a"/><rect x="4" y="7" width="8" height="4" fill="#d8322a"/></svg><span id="tMedN">MED</span></button>
+      <button class="tb t-shop" id="tShop" type="button" aria-label="Buka toko" hidden><svg viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true"><path d="M1 2h3l2 8h7l2-6H5" fill="none" stroke="#ffe14a" stroke-width="1.6"/><rect x="6" y="12" width="2" height="2" fill="#ffe14a"/><rect x="11" y="12" width="2" height="2" fill="#ffe14a"/></svg><span>TOKO</span></button>
+      <button class="tb t-ping" id="tPing" type="button" aria-label="Tandai lokasi" hidden><svg viewBox="0 0 16 16" aria-hidden="true" fill="currentColor"><path d="M8 1l6 7-6 7-6-7z"/><rect x="7" y="5" width="2" height="4" fill="#120a0e"/><rect x="7" y="10" width="2" height="2" fill="#120a0e"/></svg></button>
+      <button class="tb t-emote" id="tEmote" type="button" aria-label="Kirim stiker" hidden><svg viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="8" cy="8" r="6.5"/><path d="M5 9.5c1.6 2 4.4 2 6 0"/><path d="M5.5 6h.01M10.5 6h.01" stroke-width="2.4" stroke-linecap="round"/></svg></button>
+      <button class="tb t-score" id="tScore" type="button" aria-label="Papan skor (tahan)" hidden><svg viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true" fill="currentColor"><rect x="1" y="2" width="14" height="2"/><rect x="1" y="7" width="14" height="2" opacity=".75"/><rect x="1" y="12" width="14" height="2" opacity=".5"/></svg></button>
+      <button class="tb t-full" id="tFull" type="button" aria-label="Layar penuh"><svg viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" shape-rendering="crispEdges"><path d="M1 6V1h5M10 1h5v5M15 10v5h-5M6 15H1v-5"/></svg></button>
+      <button class="tb t-pause" id="tPause" type="button" aria-label="Jeda"><svg viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true" fill="currentColor"><rect x="3" y="2" width="4" height="12"/><rect x="9" y="2" width="4" height="12"/></svg></button>
+    </div>
+    <div class="stk" id="stk" hidden><div class="sgrid" id="sgrid"></div><p class="shint" id="shint"></p></div>
+    <div class="hudEd" id="hudEd" hidden>
+      <div class="hrow"><b class="htitle">ATUR TOMBOL</b><span class="hori" id="hudOri">LANDSCAPE</span><span class="hsel" id="hudSelName">TEMBAK</span>
+        <button class="btn sm" id="hudMove" type="button" aria-label="Pindah panel ke atas atau bawah">⇵</button><button class="btn sm" id="hudReset" type="button">RESET</button><button class="btn sm" id="hudCancel" type="button">BATAL</button><button class="btn go sm" id="hudSave" type="button">SIMPAN</button></div>
+      <div class="hgrid"><label for="hudSize"><span>TERPILIH</span><input type="range" id="hudSize" min="0.6" max="1.6" step="0.05"></label><label for="hudGs"><span>SEMUA</span><input type="range" id="hudGs" min="0.5" max="1.2" step="0.05"></label><label for="hudOp"><span>TRANSPARAN</span><input type="range" id="hudOp" min="0.3" max="1" step="0.05"></label></div>
+      <p class="hhint">Geser tombol untuk memindah, ketuk untuk memilih lalu atur ukurannya. Landscape dan portrait disimpan terpisah.</p>
+    </div>
+    <div class="shop" id="shop" hidden><div class="shead"><span class="stitle">TOKO</span><span class="scash" id="shopCash">UANG: 0</span></div>
+      <div class="shgrid" id="shopGrid"></div><p class="shint" id="shopHint"></p>
+      <div class="row"><button class="btn go sm" id="shopSkip" type="button">MULAI GELOMBANG</button><button class="btn sm" id="shopClose" type="button">TUTUP</button></div></div>
+    <div class="pausebox" id="pausebox" hidden><button class="btn go" id="bResume" type="button">LANJUT</button><button class="btn" id="bSetP" type="button">PENGATURAN</button><button class="btn" id="bFullP" type="button">LAYAR PENUH</button><button class="btn" id="bQuit" type="button">KELUAR KE MENU</button></div>
+  </div>
 
-
+  <footer class="foot">
+    <div class="news"><span class="ntag" id="newsL">BERITA</span><span class="ntext" id="newsT" aria-live="off"><span id="newsI"></span></span></div>
+    <div class="fr"><div class="shwrap"><button class="btn sm" id="bShareG" type="button" aria-expanded="false" aria-controls="sharePop">BAGIKAN GAME</button>
+      <div class="sharePop share" id="sharePop" hidden><button class="btn sm fb" id="bShFb" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 8V6c0-.9.6-1 1-1h3V1h-4c-3.3 0-4.5 2.4-4.5 5v2H7v4h2.5v11H14V12h3.4l.6-4z"/></svg>FACEBOOK</button><button class="btn sm ig" id="bShIg" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm0 8.2a3.2 3.2 0 1 1 0-6.4 3.2 3.2 0 0 1 0 6.4zM17.3 5.4a1.2 1.2 0 1 0 0 2.4 1.2 1.2 0 0 0 0-2.4zM12 2c-2.7 0-3 0-4.1.1C4.3 2.2 2.2 4.3 2.1 7.9 2 9 2 9.3 2 12s0 3 .1 4.1c.1 3.6 2.2 5.7 5.8 5.8 1.1.1 1.4.1 4.1.1s3 0 4.1-.1c3.6-.1 5.7-2.2 5.8-5.8.1-1.1.1-1.4.1-4.1s0-3-.1-4.1C21.8 4.3 19.7 2.2 16.1 2.1 15 2 14.7 2 12 2zm0 1.8c2.7 0 3 0 4 .1 2.6.1 3.9 1.4 4 4 .1 1 .1 1.3.1 4s0 3-.1 4c-.1 2.6-1.4 3.9-4 4-1 .1-1.3.1-4 .1s-3 0-4-.1c-2.6-.1-3.9-1.4-4-4C3.9 15 3.8 14.7 3.8 12s0-3 .1-4c.1-2.6 1.4-3.9 4-4 1-.1 1.3-.1 4.1-.1z"/></svg>INSTAGRAM</button><a class="btn sm" id="bCreator" href="https://web.facebook.com/travisbarker06" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 8V6c0-.9.6-1 1-1h3V1h-4c-3.3 0-4.5 2.4-4.5 5v2H7v4h2.5v11H14V12h3.4l.6-4z"/></svg>KUNJUNGI PEMBUAT</a></div></div>
+      <span class="by">Kota Mati dibuat oleh <a class="bylink" href="https://web.facebook.com/travisbarker06" target="_blank" rel="noopener">HeavyRain</a></span></div>
+  </footer>
+</div>
+<script>window.KM_VER="20261030-005716";window.KM_VERURL="version.json";window.KM_PWA={sw:"sw.js",scope:"./"};window.KM_THREE="js/three.min.js?v=r128";</script>
+<script src="js/config.js?v=20261030-005716"></script>
+<script>
+/* Library Firebase hanya dimuat kalau js/config.js sudah diisi. */
+if(window.KM_FIREBASE&&KM_FIREBASE.apiKey&&!/^ISI/i.test(KM_FIREBASE.apiKey)){
+  document.write('<script src="https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-app-compat.js"><\/script><script src="https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-auth-compat.js"><\/script><script src="https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-firestore-compat.js"><\/script>');
+}
+</script>
+<script src="js/akun.js?v=20261030-005716"></script>
+<script>window.KM_TRACK='sound/battle.mp3';window.KM_RAKSASA='img/raksasa.webp';window.KM_KUNTI='img/kuntilanak.webp';window.KM_NEWSURL='news.ini';window.KM_C_UCOK='img/char-ucok.webp';window.KM_C_POLISI='img/char-polisi.webp';window.KM_C_HASMAT='img/char-hasmat.webp';window.KM_C_IDA='img/char-ida.webp';window.KM_C_STEVI='img/char-stevi.webp';window.KM_C_RITO='img/char-rito.webp';window.KM_Z_GENDUT='img/gendut.webp';window.KM_Z_LIDAH='img/lidah.webp';window.KM_Z_PELUDAH='img/peludah.webp';window.KM_Z_PEMBURU='img/pemburu.webp';window.KM_Z_PENUNGGANG='img/penunggang.webp';window.KM_Z_PENYERUDUK='img/penyeruduk.webp';window.KM_WEAPSPR='img/senjata.png';window.KM_Z_DESA='img/zdesa.webp';window.KM_Z_TENTARA='img/ztentara.webp';window.KM_Z_RANGKAK='img/zrangkak.webp';window.KM_Z_BOS='img/bos.webp';window.KM_FPVSPR='img/fpv.webp';window.KM_WEAPICON='img/ikon-senjata.webp';window.KM_STIKER='img/stiker.webp';</script>
+<script src="js/game.js?v=20261030-005716"></script>
+<script>
+/* CHAT: panel kiri buka-tutup (v70). game.js tetap memakai id yang sama. */
+(function(){
+  var box=document.getElementById('chatBox'),btn=document.getElementById('chatTog'),
+      body=document.getElementById('chatBody'),badge=document.getElementById('chatBadge'),
+      list=document.getElementById('cMsgs');
+  if(!box||!btn||!body)return;
+  var KEY='kotamati-chat',unread=0,lastTxt=list?list.textContent:'';
+  function draw(){
+    var open=box.classList.contains('open');
+    btn.setAttribute('aria-expanded',open?'true':'false');
+    btn.setAttribute('title',open?'Sembunyikan chat':'Tampilkan chat');
+    if(open)unread=0;
+    if(badge){badge.textContent=unread>99?'99+':String(unread);badge.hidden=!unread||open;}
+  }
+  function set(open,save){
+    box.classList.toggle('open',!!open);draw();
+    if(save){try{localStorage.setItem(KEY,open?'1':'0');}catch(e){}}
+  }
+  btn.addEventListener('click',function(){set(!box.classList.contains('open'),true);});
+  box.addEventListener('keydown',function(e){
+    if(!box.classList.contains('open'))return;
+    if(e.key==='Escape'){e.preventDefault();set(false,true);btn.focus();}
+  });
+  if(list&&window.MutationObserver){
+    new MutationObserver(function(){
+      var open=box.classList.contains('open'),txt=list.textContent;
+      if(open){unread=0;lastTxt=txt;draw();return;}
+      if(txt!==lastTxt){lastTxt=txt;unread=Math.min(99,unread+1);draw();}
+    }).observe(list,{childList:true,subtree:true,characterData:true});
+  }
+  var saved=null;try{saved=localStorage.getItem(KEY);}catch(e){}
+  set(saved==='1'||(saved===null&&window.matchMedia&&window.matchMedia('(min-width:901px)').matches),false);
+})();
+</script>
+<script>
+/* v71: klik nama pemain di chat tidak lagi menyembunyikan pesannya.
+   game.js membuat nama sebagai <button class="cnm"> yang mematikan/menyalakan
+   pesan pemain itu. Skrip ini menggantinya jadi <span> biasa (tanpa tooltip,
+   tanpa tombol, tanpa handler) supaya benar-benar tidak bisa diklik. */
+(function(){
+  var list=document.getElementById('cMsgs');
+  if(!list)return;
+  function neutralize(){
+    var btns=list.querySelectorAll('button.cnm');
+    for(var i=0;i<btns.length;i++){
+      var b=btns[i],s=document.createElement('span');
+      s.className=b.className;
+      while(b.firstChild)s.appendChild(b.firstChild);
+      if(b.parentNode)b.parentNode.replaceChild(s,b);
+    }
+  }
+  neutralize();
+  if(window.MutationObserver){
+    new MutationObserver(neutralize).observe(list,{childList:true,subtree:true});
+  }
+  /* jaring pengaman: kalau ada klik/keyboard yang lolos sebelum penggantian */
+  document.addEventListener('click',function(e){
+    var t=e.target;
+    while(t&&t!==document){
+      if(t.classList&&t.classList.contains('cnm')){e.preventDefault();e.stopImmediatePropagation();return;}
+      t=t.parentNode;
+    }
+  },true);
+  document.addEventListener('keydown',function(e){
+    if(e.key!=='Enter'&&e.key!==' ')return;
+    var t=e.target;
+    if(t&&t.classList&&t.classList.contains('cnm')){e.preventDefault();e.stopImmediatePropagation();}
+  },true);
+})();
+</script>
 </body>
 </html>
