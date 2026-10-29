@@ -792,3 +792,46 @@ html{color-scheme:dark}body{margin:0}img{max-width:100%}
    Elemen tetap ada di DOM supaya game.js masih bisa membangun tombol peta di #maps;
    pilih peta tetap bisa lewat alur SOLO/BERTAHAN (langkah MAP) dan lobby (tombol GANTI). */
 .vmain>.mstrip{display:none}
+
+/* ====== v73: kotak chat sedikit diperbesar ====== */
+.cmsgs{min-height:52px}
+.cmsgs li{font-size:13px}
+.cmsgs li.csys{font-size:12px}
+.cmsgs time{font-size:11px}
+.cmsgs .cnm{font-size:9px}
+.cmsgs .cnm .ctag{font-size:10px}
+.chat .mh{font-size:10px}
+@media (max-width:900px) and (min-height:541px){
+  .cmsgs{height:240px}
+  .chat .cmsgs{height:clamp(150px,30vh,270px)}
+}
+@media (min-width:901px){
+  .chat{width:min(382px,92vw)}
+  .chat .cmsgs{height:clamp(170px,36vh,360px);min-height:100px}
+}
+/* layar pendek tetap ringkas (jangan sampai chat memakan layar game) */
+@media (orientation:landscape) and (max-height:540px){
+  .cmsgs{height:56px}
+  .cmsgs li{font-size:11px}
+  .cmsgs li.csys{font-size:10px}
+  .cmsgs time{font-size:9px}
+  .cmsgs .cnm{font-size:8px}
+  .chat .mh{font-size:7px}
+}
+@media (orientation:landscape) and (max-height:340px){
+  .cmsgs{height:44px}
+}
+
+/* ====== v73: tombol PASANG DI HP di samping nama KOTA MATI (header menu) ====== */
+.brow{display:flex;align-items:center;gap:10px;flex-wrap:wrap;min-width:0}
+.binst{display:inline-flex;align-items:center;gap:6px;padding:6px 9px;background:var(--bezel);
+  border:2px solid var(--toxic);border-radius:3px;color:var(--toxic);font-family:var(--f-display);
+  font-size:8px;line-height:1;letter-spacing:.06em;cursor:pointer;box-shadow:0 2px 0 #000;white-space:nowrap}
+.binst svg{width:12px;height:12px;flex:none;fill:currentColor}
+.binst:hover,.binst:focus-visible{border-color:var(--amber);color:var(--amber);outline:none}
+.binst[hidden]{display:none}
+@media (max-width:600px){
+  .brow{gap:7px}
+  .binst{padding:5px 7px}
+  .binst .bl{display:none}
+}

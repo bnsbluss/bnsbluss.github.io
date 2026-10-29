@@ -9,14 +9,14 @@
 <meta name="author" content="HeavyRain">
 <meta property="og:title" content="Kota Mati — FPS Zombi Pixel Art">
 <meta property="og:description" content="Bertahan dari gelombang zombi di browser. Solo, co-op & PvP. Game buatan HeavyRain.">
-<meta property="og:image" content="https://bnsbluss.github.io/kotamati/icon-512.png">
-<meta property="og:url" content="https://bnsbluss.github.io/kotamati/">
+<meta property="og:image" content="https://bnsbluss.github.io/icon-512.png">
+<meta property="og:url" content="https://bnsbluss.github.io/">
 <meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Chakra+Petch:wght@400;600;700&display=swap" rel="stylesheet">
-<link rel="canonical" href="https://bnsbluss.github.io/kotamati/">
-<link rel="stylesheet" href="css/style.css?v=20261030-005716">
+<link rel="canonical" href="https://bnsbluss.github.io/">
+<link rel="stylesheet" href="css/style.css?v=20261030-025625">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" type="image/png" sizes="48x48" href="favicon-48.png">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
@@ -89,7 +89,7 @@
   <button class="upd" id="upd" type="button" hidden>VERSI BARU TERSEDIA · KETUK UNTUK MEMPERBARUI</button>
   <header class="top">
     <div class="brand">
-      <span class="logo">KOTA MATI</span>
+      <span class="brow"><span class="logo">KOTA MATI</span><button class="binst" id="bInstallTop" type="button" hidden title="Pasang Kota Mati di layar utama HP"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 0h8l1 1v14l-1 1H4l-1-1V1zM5 2v11h6V2zm2 12h2v1H7z"/></svg><span class="bl">PASANG DI HP</span></button></span>
       <span class="tag">FPS zombi · arcade piksel</span>
     </div>
     <div class="onl" id="onl" title="Pemain yang sedang membuka game"><span class="ondot" id="onDot"></span><span class="onk">ONLINE</span><b class="onn" id="onN">–</b>
@@ -311,17 +311,17 @@
       <span class="by">Kota Mati dibuat oleh <a class="bylink" href="https://web.facebook.com/travisbarker06" target="_blank" rel="noopener">HeavyRain</a></span></div>
   </footer>
 </div>
-<script>window.KM_VER="20261030-005716";window.KM_VERURL="version.json";window.KM_PWA={sw:"sw.js",scope:"./"};window.KM_THREE="js/three.min.js?v=r128";</script>
-<script src="js/config.js?v=20261030-005716"></script>
+<script>window.KM_VER="20261030-025625";window.KM_VERURL="version.json";window.KM_PWA={sw:"sw.js",scope:"./"};window.KM_THREE="js/three.min.js?v=r128";</script>
+<script src="js/config.js?v=20261030-025625"></script>
 <script>
 /* Library Firebase hanya dimuat kalau js/config.js sudah diisi. */
 if(window.KM_FIREBASE&&KM_FIREBASE.apiKey&&!/^ISI/i.test(KM_FIREBASE.apiKey)){
   document.write('<script src="https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-app-compat.js"><\/script><script src="https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-auth-compat.js"><\/script><script src="https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-firestore-compat.js"><\/script>');
 }
 </script>
-<script src="js/akun.js?v=20261030-005716"></script>
+<script src="js/akun.js?v=20261030-025625"></script>
 <script>window.KM_TRACK='sound/battle.mp3';window.KM_RAKSASA='img/raksasa.webp';window.KM_KUNTI='img/kuntilanak.webp';window.KM_NEWSURL='news.ini';window.KM_C_UCOK='img/char-ucok.webp';window.KM_C_POLISI='img/char-polisi.webp';window.KM_C_HASMAT='img/char-hasmat.webp';window.KM_C_IDA='img/char-ida.webp';window.KM_C_STEVI='img/char-stevi.webp';window.KM_C_RITO='img/char-rito.webp';window.KM_Z_GENDUT='img/gendut.webp';window.KM_Z_LIDAH='img/lidah.webp';window.KM_Z_PELUDAH='img/peludah.webp';window.KM_Z_PEMBURU='img/pemburu.webp';window.KM_Z_PENUNGGANG='img/penunggang.webp';window.KM_Z_PENYERUDUK='img/penyeruduk.webp';window.KM_WEAPSPR='img/senjata.png';window.KM_Z_DESA='img/zdesa.webp';window.KM_Z_TENTARA='img/ztentara.webp';window.KM_Z_RANGKAK='img/zrangkak.webp';window.KM_Z_BOS='img/bos.webp';window.KM_FPVSPR='img/fpv.webp';window.KM_WEAPICON='img/ikon-senjata.webp';window.KM_STIKER='img/stiker.webp';</script>
-<script src="js/game.js?v=20261030-005716"></script>
+<script src="js/game.js?v=20261030-025625"></script>
 <script>
 /* CHAT: panel kiri buka-tutup (v70). game.js tetap memakai id yang sama. */
 (function(){
@@ -391,6 +391,45 @@ if(window.KM_FIREBASE&&KM_FIREBASE.apiKey&&!/^ISI/i.test(KM_FIREBASE.apiKey)){
     var t=e.target;
     if(t&&t.classList&&t.classList.contains('cnm')){e.preventDefault();e.stopImmediatePropagation();}
   },true);
+})();
+</script>
+<script>
+/* v73: tombol PASANG DI HP di samping nama KOTA MATI (menu), bukan di layar masuk/daftar.
+   game.js sudah punya tombol #bInstall (di layar SOLO) yang menyimpan event
+   beforeinstallprompt. Tombol di header ini menyalin statusnya, lalu meneruskan
+   kliknya ke #bInstall supaya hanya ada satu pemanggilan prompt. */
+(function(){
+  var src=document.getElementById('bInstall'),btn=document.getElementById('bInstallTop');
+  if(!btn)return;
+  var ua=navigator.userAgent||'';
+  var ios=/iPad|iPhone|iPod/.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+  var standalone=false;
+  try{standalone=(window.matchMedia&&window.matchMedia('(display-mode: standalone)').matches)||navigator.standalone===true;}catch(e){}
+  function toast(msg){
+    var d=document.createElement('div');
+    d.className='shtoast';d.setAttribute('role','status');d.textContent=msg;
+    document.body.appendChild(d);
+    setTimeout(function(){try{d.remove();}catch(e){}},5600);
+  }
+  function sync(){btn.hidden=!(src&&!src.hidden);}
+  if(ios&&!standalone){
+    /* Safari iOS tidak punya beforeinstallprompt: tampilkan tombol + petunjuk */
+    btn.hidden=false;
+  }else{
+    sync();
+    if(src&&window.MutationObserver){
+      new MutationObserver(sync).observe(src,{attributes:true,attributeFilter:['hidden']});
+    }
+  }
+  btn.addEventListener('click',function(){
+    if(!src||src.hidden){
+      if(ios&&!standalone){
+        toast('Ketuk ikon Bagikan di Safari, lalu pilih "Tambah ke Layar Utama".');
+      }
+      return;
+    }
+    src.click();
+  });
 })();
 </script>
 </body>
