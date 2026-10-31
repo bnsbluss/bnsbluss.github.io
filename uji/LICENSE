@@ -1,0 +1,28 @@
+Hak Cipta (c) 2026 HeavyRain (https://web.facebook.com/travisbarker06)
+Semua hak dilindungi. / All rights reserved.
+
+KOTA MATI — game FPS zombi di https://bnsbluss.github.io/kotamati/
+
+Seluruh isi folder "kotamati/" beserta file "kotamati.html" dan "kotamati-sw.js" adalah karya
+milik HeavyRain, termasuk namun tidak terbatas pada: kode program, desain game, desain level,
+gambar, sprite karakter, sprite zombi, sprite senjata, ilustrasi, ikon, musik "Kota Mati - Battle"
+(kotamati/sound/battle.mp3), teks, dan nama "Kota Mati".
+
+Kode ini dapat dilihat publik hanya karena situs dihosting di GitHub Pages. Itu BUKAN izin
+untuk memakainya. Tanpa izin tertulis dari HeavyRain, Anda DILARANG:
+
+  1. menyalin, meng-clone, atau mengunduh game ini untuk di-upload atau di-hosting di tempat lain;
+  2. mengubah, menerjemahkan, atau membuat karya turunan dari kode, gambar, atau sprite-nya;
+  3. menjual, menyewakan, atau membagikan ulang game ini atau bagian mana pun darinya;
+  4. menghapus atau mengganti nama pembuat dan pemberitahuan hak cipta ini.
+
+Anda boleh MEMAINKAN game ini di situs resminya secara gratis.
+
+Pelanggaran akan dilaporkan, termasuk lewat pemberitahuan DMCA ke GitHub atau penyedia hosting.
+
+Komponen pihak ketiga tetap mengikuti lisensinya masing-masing:
+  - Three.js r128 (kotamati/js/three.min.js) — lisensi MIT, (c) 2010-2021 three.js authors
+  - Font Press Start 2P dan Chakra Petch (Google Fonts) — SIL Open Font License
+  - Firebase SDK dan PeerJS dimuat dari CDN — lisensi Apache 2.0 / MIT
+
+Untuk izin atau kerja sama, hubungi HeavyRain lewat https://web.facebook.com/travisbarker06
