@@ -16,7 +16,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Chakra+Petch:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="canonical" href="https://bnsbluss.github.io/">
-<link rel="stylesheet" href="css/style.css?v=20261031-002750">
+<link rel="stylesheet" href="css/style.css?v=20261030-025625">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" type="image/png" sizes="48x48" href="favicon-48.png">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
@@ -139,7 +139,6 @@
             <button class="mode m-coop" id="mCoop" type="button" disabled><svg viewBox="0 0 16 16" aria-hidden="true" fill="currentColor" shape-rendering="crispEdges"><path d="M2 2h4v4H2zM10 2h4v4h-4zM1 7h6v4H5v4H3v-4H1zM9 7h6v4h-2v4h-2v-4H9z"/></svg><span class="mt">CO-OP</span><span class="md">2–4 pemain melawan zombi bersama</span></button>
             <button class="mode m-pvp" id="mPvp" type="button" disabled><svg viewBox="0 0 16 16" aria-hidden="true" fill="currentColor" shape-rendering="crispEdges"><path d="M4 2h8v2h2v5h-2v2h-1v3H5v-3H4V9H2V4h2zM5 6v2h2V6zM9 6v2h2V6zM7 9v1h2V9z"/></svg><span class="mt">PVP 5 VS 5</span><span class="md">Dua tim bertarung · Merah lawan Biru</span></button>
             <button class="mode m-br" id="mBr" type="button" disabled><svg viewBox="0 0 16 16" aria-hidden="true" fill="currentColor" shape-rendering="crispEdges"><path d="M7 0h2v4H7zM7 12h2v4H7zM0 7h4v2H0zM12 7h4v2h-4zM5 3h6v2H5zM3 5h2v6H3zM11 5h2v6h-2zM5 11h6v2H5zM7 7h2v2H7z"/></svg><span class="mt">BATTLEGROUND</span><span class="md">Semua lawan semua · 3 map · maks 25 petarung</span></button>
-            <button class="mode m-inf m-br" id="mInf" type="button"><svg viewBox="0 0 16 16" aria-hidden="true" fill="currentColor" shape-rendering="crispEdges"><path d="M5 1h6v3H5zM6 4h4v2H6zM4 6h8v5h-1v4h-2v-4H7v4H5v-4H4zM3 2h1v3H3zM12 2h1v3h-1z"/></svg><span class="mt">INFEKSI</span><span class="md">Satu pemain jadi zombi - cakar dan tulari semua. Bot ikut bermain.</span></button>
           </div>
           <p class="mnote" id="netNote">Memeriksa koneksi online…</p>
           <div class="olbox mini"><h3 class="mh">PEMAIN ONLINE <b class="olN">0</b><small class="olBn"></small></h3><ul class="olist" data-ol="mini"></ul></div>
@@ -188,8 +187,7 @@
           <button type="button" class="cmode m-coop" data-m="coop"><span class="mt">CO-OP</span><span class="md">2–4 pemain lawan gelombang zombi.</span></button>
           <button type="button" class="cmode m-def" data-m="def"><span class="mt">CO-OP BERTAHAN</span><span class="md">Jaga generator bersama selama 8 gelombang.</span></button>
           <button type="button" class="cmode m-pvp" data-m="pvp"><span class="mt">PVP 5 VS 5</span><span class="md">Tim Merah lawan Biru, maksimal 10 pemain.</span></button>
-          <button type="button" class="cmode m-br" data-m="br"><span class="mt">BATTLEGROUND</span><span class="md">Semua lawan semua di map besar (120 atau 350 petak). Terjun parasut, zona menyempit, yang terakhir hidup menang.</span></button>
-          <button type="button" class="cmode m-inf m-br" data-m="inf" id="cmInf"><span class="mt">INFEKSI</span><span class="md">Satu pemain jadi zombi dan menulari yang lain lewat cakaran. Bot ikut bermain. Pakai alur Battleground.</span></button></div></div>
+          <button type="button" class="cmode m-br" data-m="br"><span class="mt">BATTLEGROUND</span><span class="md">Semua lawan semua di map besar (120 atau 350 petak). Terjun parasut, zona menyempit, yang terakhir hidup menang.</span></button></div></div>
         <div class="cstep" data-s="1" hidden><div class="mapgrid" id="cMaps"></div><div class="mapgrid" id="cMapsBR" hidden></div></div>
         <div class="cstep" data-s="2" hidden><div class="cform">
           <label>Nama room<input id="cName" maxlength="18" autocomplete="off" spellcheck="false"></label>
@@ -313,17 +311,17 @@
       <span class="by">Kota Mati dibuat oleh <a class="bylink" href="https://web.facebook.com/travisbarker06" target="_blank" rel="noopener">HeavyRain</a></span></div>
   </footer>
 </div>
-<script>window.KM_VER="20261031-002750";window.KM_VERURL="version.json";window.KM_PWA={sw:"sw.js",scope:"./"};window.KM_THREE="js/three.min.js?v=r128";</script>
-<script src="js/config.js?v=20261031-002750"></script>
+<script>window.KM_VER="20261030-025625";window.KM_VERURL="version.json";window.KM_PWA={sw:"sw.js",scope:"./"};window.KM_THREE="js/three.min.js?v=r128";</script>
+<script src="js/config.js?v=20261030-025625"></script>
 <script>
 /* Library Firebase hanya dimuat kalau js/config.js sudah diisi. */
 if(window.KM_FIREBASE&&KM_FIREBASE.apiKey&&!/^ISI/i.test(KM_FIREBASE.apiKey)){
   document.write('<script src="https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-app-compat.js"><\/script><script src="https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-auth-compat.js"><\/script><script src="https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-firestore-compat.js"><\/script>');
 }
 </script>
-<script src="js/akun.js?v=20261031-002750"></script>
+<script src="js/akun.js?v=20261030-025625"></script>
 <script>window.KM_TRACK='sound/battle.mp3';window.KM_RAKSASA='img/raksasa.webp';window.KM_KUNTI='img/kuntilanak.webp';window.KM_NEWSURL='news.ini';window.KM_C_UCOK='img/char-ucok.webp';window.KM_C_POLISI='img/char-polisi.webp';window.KM_C_HASMAT='img/char-hasmat.webp';window.KM_C_IDA='img/char-ida.webp';window.KM_C_STEVI='img/char-stevi.webp';window.KM_C_RITO='img/char-rito.webp';window.KM_Z_GENDUT='img/gendut.webp';window.KM_Z_LIDAH='img/lidah.webp';window.KM_Z_PELUDAH='img/peludah.webp';window.KM_Z_PEMBURU='img/pemburu.webp';window.KM_Z_PENUNGGANG='img/penunggang.webp';window.KM_Z_PENYERUDUK='img/penyeruduk.webp';window.KM_WEAPSPR='img/senjata.png';window.KM_Z_DESA='img/zdesa.webp';window.KM_Z_TENTARA='img/ztentara.webp';window.KM_Z_RANGKAK='img/zrangkak.webp';window.KM_Z_BOS='img/bos.webp';window.KM_FPVSPR='img/fpv.webp';window.KM_WEAPICON='img/ikon-senjata.webp';window.KM_STIKER='img/stiker.webp';</script>
-<script src="js/game.js?v=20261031-002750"></script>
+<script src="js/game.js?v=20261030-025625"></script>
 <script>
 /* CHAT: panel kiri buka-tutup (v70). game.js tetap memakai id yang sama. */
 (function(){
@@ -331,18 +329,7 @@ if(window.KM_FIREBASE&&KM_FIREBASE.apiKey&&!/^ISI/i.test(KM_FIREBASE.apiKey)){
       body=document.getElementById('chatBody'),badge=document.getElementById('chatBadge'),
       list=document.getElementById('cMsgs');
   if(!box||!btn||!body)return;
-  var KEY='kotamati-chat',unread=0,lastN=0;
-  /* Hanya hitung pesan sungguhan. .cempty/.csys hanyalah teks status,
-     jadi tidak boleh menaikkan badge (dulu badge bisa tampil 1-2 walau chat kosong). */
-  function realN(){
-    if(!list)return 0;
-    var n=0,c=list.children;
-    for(var i=0;i<c.length;i++){
-      var cl=c[i].classList;
-      if(cl&&!cl.contains('cempty'))n++;
-    }
-    return n;
-  }
+  var KEY='kotamati-chat',unread=0,lastTxt=list?list.textContent:'';
   function draw(){
     var open=box.classList.contains('open');
     btn.setAttribute('aria-expanded',open?'true':'false');
@@ -361,14 +348,10 @@ if(window.KM_FIREBASE&&KM_FIREBASE.apiKey&&!/^ISI/i.test(KM_FIREBASE.apiKey)){
   });
   if(list&&window.MutationObserver){
     new MutationObserver(function(){
-      var open=box.classList.contains('open'),n=realN();
-      if(open){unread=0;lastN=n;draw();return;}
-      if(n>lastN)unread=Math.min(99,unread+(n-lastN));
-      else if(n<lastN)unread=Math.min(unread,n);
-      if(!n)unread=0;
-      lastN=n;draw();
+      var open=box.classList.contains('open'),txt=list.textContent;
+      if(open){unread=0;lastTxt=txt;draw();return;}
+      if(txt!==lastTxt){lastTxt=txt;unread=Math.min(99,unread+1);draw();}
     }).observe(list,{childList:true,subtree:true,characterData:true});
-    lastN=realN();
   }
   var saved=null;try{saved=localStorage.getItem(KEY);}catch(e){}
   set(saved==='1'||(saved===null&&window.matchMedia&&window.matchMedia('(min-width:901px)').matches),false);
@@ -447,53 +430,6 @@ if(window.KM_FIREBASE&&KM_FIREBASE.apiKey&&!/^ISI/i.test(KM_FIREBASE.apiKey)){
     }
     src.click();
   });
-})();
-</script>
-<script>
-/* INFEKSI: kartu mode di daftar mode (menu utama) dan di layar BUAT ROOM.
-   game.js sudah menganggap mode "inf" sama seperti Battleground, jadi di sini
-   kita hanya menandai pilihan di localStorage supaya host tahu ini ronde infeksi. */
-(function(){
-  var KEY='kotamati-inf';
-  function mark(v){try{v?localStorage.setItem(KEY,'1'):localStorage.removeItem(KEY);}catch(e){}}
-
-  /* menu utama: tombol INFEKSI meneruskan ke alur BATTLEGROUND */
-  var inf=document.getElementById('mInf'),br=document.getElementById('mBr');
-  if(inf&&br){
-    function sync(){inf.disabled=br.disabled;}
-    inf.addEventListener('click',function(){
-      if(br.disabled)return;
-      br.click();
-      mark(true);
-    });
-    var modes=document.querySelectorAll('.modes .mode');
-    for(var i=0;i<modes.length;i++){
-      if(modes[i]!==inf&&modes[i]!==br)modes[i].addEventListener('click',function(){mark(false);});
-    }
-    sync();
-    if(window.MutationObserver)new MutationObserver(sync).observe(br,{attributes:true,attributeFilter:['disabled']});
-  }
-
-  /* layar BUAT ROOM: kartu INFEKSI menandai ronde infeksi */
-  var cInf=document.getElementById('cmInf');
-  if(cInf){
-    var cBox=document.getElementById('vCreate'),cBr=document.querySelector('#vCreate .cmode[data-m="br"]');
-    function paint(){
-      var on=false;try{on=localStorage.getItem(KEY)==='1';}catch(e){}
-      if(on){
-        if(cInf.getAttribute('aria-pressed')!=='true')cInf.setAttribute('aria-pressed','true');
-        if(cBr&&cBr.getAttribute('aria-pressed')!=='false')cBr.setAttribute('aria-pressed','false');
-      }else if(cInf.getAttribute('aria-pressed')!=='false')cInf.setAttribute('aria-pressed','false');
-    }
-    cInf.addEventListener('click',function(){mark(true);paint();});
-    var cmodes=document.querySelectorAll('#vCreate .cmode');
-    for(var j=0;j<cmodes.length;j++){
-      if(cmodes[j]!==cInf)cmodes[j].addEventListener('click',function(){mark(false);paint();});
-    }
-    paint();
-    /* game.js menandai ulang kartu tiap kali layar ini disegarkan, jadi kita ikut merapikan */
-    if(cBox&&window.MutationObserver)new MutationObserver(paint).observe(cBox,{attributes:true,attributeFilter:['aria-pressed'],subtree:true});
-  }
 })();
 </script>
 </body>
