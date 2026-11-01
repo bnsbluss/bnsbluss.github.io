@@ -835,3 +835,19 @@ html{color-scheme:dark}body{margin:0}img{max-width:100%}
   .binst{padding:5px 7px}
   .binst .bl{display:none}
 }
+
+/* ===== v74: tombol HP tidak nyangkut ===== */
+/* Di perangkat sentuh, keadaan :active bisa tersangkut kalau browser
+   membatalkan gesture (pointercancel hilang). Tampilan "tertekan" lalu
+   disediakan lewat kelas .kmpr yang dipasang/dilepas skrip v74 di index.html
+   dengan listener level window, sehingga lepas sentuhnya dijamin. */
+@media (hover:none) and (pointer:coarse){
+  /* netralkan :active yang bisa nyangkut (kembalikan ke gaya dasar) */
+  .tb:active{transform:translate(var(--dx,0px),var(--dy,0px)) scale(calc(var(--s,1) * var(--gs,1)));
+    background:radial-gradient(circle at 35% 28%,rgba(255,255,255,.22),rgba(20,12,24,.66) 58%);
+    box-shadow:0 0 0 2px rgba(0,0,0,.65),inset 0 -4px 0 rgba(0,0,0,.4),0 0 12px var(--glow)}
+  /* gaya tertekan hanya dari .kmpr (kontrol penuh lewat JS) */
+  .tb.kmpr,.tb.on.kmpr{transform:translate(var(--dx,0px),var(--dy,0px)) scale(calc(var(--s,1) * var(--gs,1) * .9));
+    background:radial-gradient(circle at 35% 28%,rgba(255,255,255,.4),rgba(20,12,24,.4) 70%);
+    box-shadow:0 0 0 2px rgba(0,0,0,.65),0 0 18px var(--ring)}
+}
