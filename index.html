@@ -16,7 +16,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Chakra+Petch:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="canonical" href="https://bnsbluss.github.io/">
-<link rel="stylesheet" href="css/style.css?v=20261101-101500">
+<link rel="stylesheet" href="css/style.css?v=20261101-114500">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" type="image/png" sizes="48x48" href="favicon-48.png">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
@@ -311,17 +311,17 @@
       <span class="by">Kota Mati dibuat oleh <a class="bylink" href="https://web.facebook.com/travisbarker06" target="_blank" rel="noopener">HeavyRain</a></span></div>
   </footer>
 </div>
-<script>window.KM_VER="20261101-101500";window.KM_VERURL="version.json";window.KM_PWA={sw:"sw.js",scope:"./"};window.KM_THREE="js/three.min.js?v=r128";</script>
-<script src="js/config.js?v=20261101-101500"></script>
+<script>window.KM_VER="20261101-114500";window.KM_VERURL="version.json";window.KM_PWA={sw:"sw.js",scope:"./"};window.KM_THREE="js/three.min.js?v=r128";</script>
+<script src="js/config.js?v=20261101-114500"></script>
 <script>
 /* Library Firebase hanya dimuat kalau js/config.js sudah diisi. */
 if(window.KM_FIREBASE&&KM_FIREBASE.apiKey&&!/^ISI/i.test(KM_FIREBASE.apiKey)){
   document.write('<script src="https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-app-compat.js"><\/script><script src="https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-auth-compat.js"><\/script><script src="https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-firestore-compat.js"><\/script>');
 }
 </script>
-<script src="js/akun.js?v=20261101-101500"></script>
+<script src="js/akun.js?v=20261101-114500"></script>
 <script>window.KM_TRACK='sound/battle.mp3';window.KM_RAKSASA='img/raksasa.webp';window.KM_KUNTI='img/kuntilanak.webp';window.KM_NEWSURL='news.ini';window.KM_C_UCOK='img/char-ucok.webp';window.KM_C_POLISI='img/char-polisi.webp';window.KM_C_HASMAT='img/char-hasmat.webp';window.KM_C_IDA='img/char-ida.webp';window.KM_C_STEVI='img/char-stevi.webp';window.KM_C_RITO='img/char-rito.webp';window.KM_Z_GENDUT='img/gendut.webp';window.KM_Z_LIDAH='img/lidah.webp';window.KM_Z_PELUDAH='img/peludah.webp';window.KM_Z_PEMBURU='img/pemburu.webp';window.KM_Z_PENUNGGANG='img/penunggang.webp';window.KM_Z_PENYERUDUK='img/penyeruduk.webp';window.KM_WEAPSPR='img/senjata.png';window.KM_Z_DESA='img/zdesa.webp';window.KM_Z_TENTARA='img/ztentara.webp';window.KM_Z_RANGKAK='img/zrangkak.webp';window.KM_Z_BOS='img/bos.webp';window.KM_FPVSPR='img/fpv.webp';window.KM_WEAPICON='img/ikon-senjata.webp';window.KM_STIKER='img/stiker.webp';</script>
-<script src="js/game.js?v=20261101-101500"></script>
+<script src="js/game.js?v=20261101-114500"></script>
 <script>
 /* CHAT: panel kiri buka-tutup (v70). game.js tetap memakai id yang sama. */
 (function(){
@@ -490,6 +490,79 @@ if(window.KM_FIREBASE&&KM_FIREBASE.apiKey&&!/^ISI/i.test(KM_FIREBASE.apiKey)){
   /* jaga-jaga untuk browser tanpa pointer events yang andal */
   window.addEventListener('touchend',function(){releaseAll();},true);
   window.addEventListener('touchcancel',function(){releaseAll();},true);
+})();
+</script>
+<script>
+/* v75: joystick mengapung (floating stick).
+   Di game asli, joystick hanya merespons kalau jari menempati area #stick;
+   sentuhan di area kanvas kiri dipakai game untuk memutar kamera, sehingga
+   joystick terasa "fixed". Patch ini memindahkan stick ke titik sentuh pertama
+   di sisi kiri layar, lalu MENERUSKAN gerak/lepas jari ke #stick dengan event
+   sintetis (setPointerCapture game ke #stick gagal karena Chrome mengunci
+   capture sentuhan ke kanvas secara implisit). Knob mengikuti jari memakai
+   mekanisme asli game. Saat jari lepas, stick kembali ke posisi semula.
+   game.js tidak diubah. */
+(function(){
+  var DONE='km75';
+  if(window[DONE])return;window[DONE]=true;
+  var stick=document.getElementById('stick');
+  if(!stick)return;
+  var canvas=document.getElementById('screen');
+  var activePid=null;
+
+  function hudBusy(){
+    var t=document.getElementById('touch');
+    return !t||t.hidden||t.classList.contains('editing');
+  }
+  function home(){
+    stick.style.left='';stick.style.top='';stick.style.right='';stick.style.bottom='';
+  }
+  function centerOn(x,y){
+    var r=stick.getBoundingClientRect(),cs=getComputedStyle(stick);
+    var dx=x-(r.left+r.width/2),dy=y-(r.top+r.height/2);
+    stick.style.left=(parseFloat(cs.left)||0)+dx+'px';
+    stick.style.top=(parseFloat(cs.top)||0)+dy+'px';
+    stick.style.right='auto';stick.style.bottom='auto';
+  }
+  function syn(type,e){
+    try{
+      stick.dispatchEvent(new PointerEvent(type,{
+        pointerId:e.pointerId,pointerType:e.pointerType,isPrimary:e.isPrimary,
+        clientX:e.clientX,clientY:e.clientY,
+        button:type==='pointermove'?-1:0,buttons:type==='pointerup'?0:1,
+        bubbles:true,cancelable:true}));
+    }catch(err){}
+  }
+  document.addEventListener('pointerdown',function(e){
+    if(e.pointerType==='mouse')return;
+    if(activePid!==null)return;
+    if(hudBusy()||!canvas)return;
+    if(e.target!==canvas)return;                 /* hanya sentuhan di kanvas */
+    if(e.clientX>window.innerWidth*0.55)return;  /* hanya sisi kiri layar */
+    centerOn(e.clientX,e.clientY);
+    activePid=e.pointerId;
+    syn('pointerdown',e);
+  },true);
+
+  canvas.addEventListener('pointermove',function(e){
+    if(activePid===null||e.pointerId!==activePid)return;
+    syn('pointermove',e);
+  },true);
+  canvas.addEventListener('pointerup',function(e){
+    if(activePid!==null&&e.pointerId===activePid){syn('pointerup',e);activePid=null;home();}
+  },true);
+  window.addEventListener('pointercancel',function(e){
+    if(activePid!==null&&e.pointerId===activePid){syn('pointercancel',e);activePid=null;home();}
+  },true);
+  /* jaga-jaga: hilang fokus/tab disembunyikan -> stick kembali & knob reset */
+  function bail(){
+    if(activePid===null)return;
+    var k=document.getElementById('knob');
+    if(k)k.style.transform='';
+    activePid=null;home();
+  }
+  window.addEventListener('blur',bail,true);
+  document.addEventListener('visibilitychange',function(){if(document.hidden)bail();});
 })();
 </script>
 </body>
