@@ -501,6 +501,8 @@ if(window.KM_FIREBASE&&KM_FIREBASE.apiKey&&!/^ISI/i.test(KM_FIREBASE.apiKey)){
    sintetis (setPointerCapture game ke #stick gagal karena Chrome mengunci
    capture sentuhan ke kanvas secara implisit). Knob mengikuti jari memakai
    mekanisme asli game. Saat jari lepas, stick kembali ke posisi semula.
+   v76: akhir sentuhan (pointerup/pointercancel/lostpointercapture/touchend) kini
+   ditangkap di level window, bukan di #screen (lihat catatan di bawah).
    game.js tidak diubah. */
 (function(){
   var DONE='km75';
@@ -554,19 +556,40 @@ if(window.KM_FIREBASE&&KM_FIREBASE.apiKey&&!/^ISI/i.test(KM_FIREBASE.apiKey)){
     e.stopPropagation(); /* jari joystick tidak boleh mengubah kamera */
     syn('pointermove',e);
   },true);
-  canvas.addEventListener('pointerup',function(e){
-    if(activePid!==null&&e.pointerId===activePid){syn('pointerup',e);activePid=null;home();}
-  },true);
-  window.addEventListener('pointercancel',function(e){
-    if(activePid!==null&&e.pointerId===activePid){syn('pointercancel',e);activePid=null;home();}
-  },true);
-  /* jaga-jaga: hilang fokus/tab disembunyikan -> stick kembali & knob reset */
-  function bail(){
-    if(activePid===null)return;
+  /* v76 ROOT CAUSE FIX: akhir sentuhan HARUS didengar di window (fase capture),
+     bukan di #screen. pointerdown sintetis ke #stick memicu handler game yang
+     memanggil stick.setPointerCapture(pointerId); Chrome lalu mengalihkan semua
+     pointermove/pointerup berikutnya ke #stick, SEHINGGA pointerup tidak pernah
+     lewat #screen. Akibatnya dulu activePid tak pernah dibersihkan dan home() tak
+     pernah jalan: stick "freeze" di posisi terakhir dan sentuhan berikutnya
+     diabaikan oleh guard activePid. Listener window menerima event apa pun
+     targetnya (#stick, #screen, atau elemen lain), jadi cleanup selalu terjadi. */
+  function finish(type,e){
+    if(activePid===null||e.pointerId!==activePid)return;
+    activePid=null;               /* bersihkan state dulu (aman dari re-entrancy) */
+    syn(type,e);                  /* idempotent: game hanya bereaksi jika id cocok */
     var k=document.getElementById('knob');
     if(k)k.style.transform='';
-    activePid=null;home();
+    home();                       /* hapus left/top/right/bottom -> kembali ke HUD */
   }
+  window.addEventListener('pointerup',function(e){finish('pointerup',e);},true);
+  window.addEventListener('pointercancel',function(e){finish('pointercancel',e);},true);
+  /* capture ke #stick terlepas (jari lepas, elemen disembunyikan, dll.) */
+  stick.addEventListener('lostpointercapture',function(e){finish('pointercancel',e);});
+  /* jaga-jaga: hilang fokus/tab disembunyikan/semua jari terangkat -> stick kembali
+     & input joystick game di-nol-kan (pointercancel sintetis ke #stick) */
+  function bail(){
+    if(activePid===null)return;
+    var pid=activePid;
+    activePid=null;
+    syn('pointercancel',{pointerId:pid,pointerType:'touch',isPrimary:true,clientX:0,clientY:0});
+    var k=document.getElementById('knob');
+    if(k)k.style.transform='';
+    home();
+  }
+  function allUp(e){if(activePid!==null&&e.touches&&e.touches.length===0)bail();}
+  window.addEventListener('touchend',allUp,true);
+  window.addEventListener('touchcancel',allUp,true);
   window.addEventListener('blur',bail,true);
   document.addEventListener('visibilitychange',function(){if(document.hidden)bail();});
 })();
