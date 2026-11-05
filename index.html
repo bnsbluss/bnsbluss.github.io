@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#120c16">
-<meta name="description" content="Kota Mati â€” FPS zombie pixel art di browser. Main solo, co-op, atau PvP bareng teman. Dibuat oleh HeavyRain.">
+<meta name="description" content="Kota Mati — FPS zombie pixel art di browser. Main solo, co-op, atau PvP bareng teman. Dibuat oleh HeavyRain.">
 <title>Kota Mati</title>
 <meta name="author" content="HeavyRain">
-<meta property="og:title" content="Kota Mati â€” FPS Zombi Pixel Art">
+<meta property="og:title" content="Kota Mati — FPS Zombi Pixel Art">
 <meta property="og:description" content="Bertahan dari gelombang zombi di browser. Solo, co-op & PvP. Game buatan HeavyRain.">
 <meta property="og:image" content="https://bnsbluss.github.io/icon-512.png">
 <meta property="og:url" content="https://bnsbluss.github.io/">
@@ -29,7 +29,7 @@
   <div class="gtabs" id="gTabs" role="tablist"><button type="button" role="tab" data-t="login">MASUK</button><button type="button" role="tab" data-t="reg">DAFTAR</button><button type="button" role="tab" data-t="guest">TAMU</button></div>
   <form class="gform" id="gfLogin" hidden><label for="lNick">Nama pemain</label><input id="lNick" maxlength="10" autocomplete="username" spellcheck="false" autocapitalize="off">
     <label for="lPass">Password</label><input id="lPass" type="password" autocomplete="current-password"><button class="btn go" type="submit">MASUK</button></form>
-  <form class="gform" id="gfReg" hidden><label for="rNick">Nama pemain (3â€“10 huruf, angka, atau _)</label><input id="rNick" maxlength="10" autocomplete="username" spellcheck="false" autocapitalize="off">
+  <form class="gform" id="gfReg" hidden><label for="rNick">Nama pemain (3–10 huruf, angka, atau _)</label><input id="rNick" maxlength="10" autocomplete="username" spellcheck="false" autocapitalize="off">
     <label for="rPass">Password (minimal 6)</label><input id="rPass" type="password" autocomplete="new-password"><label for="rPass2">Ulangi password</label><input id="rPass2" type="password" autocomplete="new-password">
     <button class="btn go" type="submit">DAFTAR</button></form>
   <form class="gform" id="gateForm"><label for="gNick">Nama tamu (otomatis)</label><input id="gNick" maxlength="10" autocomplete="off" spellcheck="false" readonly><button class="btn go" type="submit">MAIN SEBAGAI TAMU</button></form>
@@ -48,7 +48,7 @@
   <ul class="pstats ppst" id="ppStats"></ul>
   <button class="btn sm" id="ppClose" type="button">TUTUP</button></div></div>
 <div class="gate tover" id="trialOver" hidden><div class="gatebox" role="alertdialog" aria-labelledby="toT" aria-describedby="toD">
-  <div class="toico" aria-hidden="true">â±</div><h2 id="toT">GAME TRIAL SELESAI</h2>
+  <div class="toico" aria-hidden="true">⏱</div><h2 id="toT">GAME TRIAL SELESAI</h2>
   <p id="toD"><b>Demo akun tamu telah berakhir.</b><br>Daftar sekarang untuk melanjutkan bermain dan menyimpan progress.</p>
   <p class="mnote">EXP, kill, dan pangkat yang sudah kamu kumpulkan sebagai tamu ikut dipindah ke akun baru.</p>
   <div class="row"><button class="btn go" id="toReg" type="button">DAFTAR AKUN</button><button class="btn" id="toLogin" type="button">LOGIN</button></div>
@@ -59,7 +59,7 @@
     <canvas class="ttl-fx" id="ttlFx" width="320" height="180" aria-hidden="true"></canvas>
     <div class="ttl-shade" aria-hidden="true"></div>
     <header class="ttl-top">
-      <div class="ttl-brand"><span class="ttl-mini">KOTA MATI</span><span class="ttl-sub">FPS ZOMBI <i>â€¢</i> ARCADE PIKSEL <i>â€¢</i> SOLO, CO-OP, PVP</span></div>
+      <div class="ttl-brand"><span class="ttl-mini">KOTA MATI</span><span class="ttl-sub">FPS ZOMBI <i>•</i> ARCADE PIKSEL <i>•</i> SOLO, CO-OP, PVP</span></div>
       <div class="ttl-act"><button class="ttl-sb" id="ttlSnd" type="button">SUARA: ON</button><button class="ttl-sb" id="ttlFs" type="button">LAYAR PENUH</button></div>
     </header>
     <div class="ttl-main">
@@ -86,14 +86,14 @@
   </div>
 </div>
 <div class="wrap">
-  <button class="upd" id="upd" type="button" hidden>VERSI BARU TERSEDIA Â· KETUK UNTUK MEMPERBARUI</button>
+  <button class="upd" id="upd" type="button" hidden>VERSI BARU TERSEDIA · KETUK UNTUK MEMPERBARUI</button>
   <header class="top">
     <div class="brand">
       <span class="brow"><span class="logo">KOTA MATI</span><button class="binst" id="bInstallTop" type="button" hidden title="Pasang Kota Mati di layar utama HP"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 0h8l1 1v14l-1 1H4l-1-1V1zM5 2v11h6V2zm2 12h2v1H7z"/></svg><span class="bl">PASANG DI HP</span></button></span>
-      <span class="tag">FPS zombi Â· arcade piksel</span>
+      <span class="tag">FPS zombi · arcade piksel</span>
     </div>
-    <div class="onl" id="onl" title="Pemain yang sedang membuka game"><span class="ondot" id="onDot"></span><span class="onk">ONLINE</span><b class="onn" id="onN">â€“</b>
-      <span class="ons"><span>Terdaftar <b id="onR">â€“</b></span><span>Tamu <b id="onG">â€“</b></span><span>Bot <b id="onB">â€“</b></span></span></div>
+    <div class="onl" id="onl" title="Pemain yang sedang membuka game"><span class="ondot" id="onDot"></span><span class="onk">ONLINE</span><b class="onn" id="onN">–</b>
+      <span class="ons"><span>Terdaftar <b id="onR">–</b></span><span>Tamu <b id="onG">–</b></span><span>Bot <b id="onB">–</b></span></span></div>
     <div class="actions">
       <button class="btn" id="btnExit" type="button" hidden>KELUAR KE MENU</button>
       <button class="btn ib" id="bSet" type="button" aria-label="Pengaturan" title="Pengaturan"><svg viewBox="0 0 16 16" aria-hidden="true" fill="currentColor" shape-rendering="crispEdges"><path d="M7 0h2v2h2v1h1v1h1v2h2v2h-2v2h-1v1h-1v1H9v2H7v-2H5v-1H4v-1H3V8H1V6h2V4h1V3h1V2h2zM7 5v1H6v3h1v1h2V9h1V6H9V5z"/></svg></button>
@@ -116,18 +116,18 @@
             <span class="plv" id="pcLv">LV 1</span><span class="pexp" title="EXP"><i id="pcExp"></i></span><span class="pexpt" id="pcExpT">0 / 500 EXP</span></div></div>
           <div class="prow"><canvas id="pcRank" width="12" height="12"></canvas><span class="pk">RANK</span><span class="pr" id="pcRankN">PRAJURIT DUA</span></div>
           <ul class="pstats"><li><span>TOTAL KILL</span><b id="stK">0</b></li><li><span>WIN</span><b id="stW">0</b></li><li><span>LOSS</span><b class="bad" id="stL">0</b></li>
-            <li class="w2"><span>MODE TERAKHIR</span><b class="acc" id="stM">â€“</b></li><li><span>STATUS</span><b id="stS">â€“</b></li><li><span>PING</span><b id="stP" title="">â€“</b></li></ul>
+            <li class="w2"><span>MODE TERAKHIR</span><b class="acc" id="stM">–</b></li><li><span>STATUS</span><b id="stS">–</b></li><li><span>PING</span><b id="stP" title="">–</b></li></ul>
           <span class="pskin" id="pcSkin">TENTARA</span>
-          <button class="ptrial" id="pcTrial" type="button" hidden>TRIAL TAMU <b id="pcTrialT">05:00</b> Â· DAFTAR GRATIS</button>
+          <button class="ptrial" id="pcTrial" type="button" hidden>TRIAL TAMU <b id="pcTrialT">05:00</b> · DAFTAR GRATIS</button>
           <div class="prbtn"><button class="btn sm" id="bAcc" type="button">AKUN</button><button class="btn sm" id="bMisi" type="button">MISI</button><button class="btn sm" id="bLb" type="button">PERINGKAT</button></div>
         </section>
         <section class="pnl chat" id="chatBox" aria-label="Chat pemain online">
           <button class="chtog" id="chatTog" type="button" aria-controls="chatBody" aria-expanded="false" title="Tampilkan chat"><span class="chx" aria-hidden="true">CHAT</span><b class="cbadge" id="chatBadge" hidden>0</b></button>
           <div class="chbody" id="chatBody">
-            <h3 class="mh">CHAT <small class="cst2" id="chatSt">menghubungkanâ€¦</small></h3>
+            <h3 class="mh">CHAT <small class="cst2" id="chatSt">menghubungkan…</small></h3>
             <ul class="cmsgs" id="cMsgs" aria-live="polite"></ul>
             <div class="cstkp" id="cStkP" hidden></div>
-            <form class="chform" id="cForm" autocomplete="off"><button type="button" class="btn sm" id="cStkB" aria-label="Kirim stiker" title="Stiker" aria-expanded="false"></button><input id="cIn" maxlength="90" placeholder="Tulis pesanâ€¦" enterkeyhint="send" spellcheck="false" aria-label="Pesan chat"><button class="btn sm go" type="submit">KIRIM</button></form>
+            <form class="chform" id="cForm" autocomplete="off"><button type="button" class="btn sm" id="cStkB" aria-label="Kirim stiker" title="Stiker" aria-expanded="false"></button><input id="cIn" maxlength="90" placeholder="Tulis pesan…" enterkeyhint="send" spellcheck="false" aria-label="Pesan chat"><button class="btn sm go" type="submit">KIRIM</button></form>
           </div>
         </section>
         </div>
@@ -136,11 +136,11 @@
           <div class="modes">
             <button class="mode m-solo" id="mSolo" type="button"><svg viewBox="0 0 16 16" aria-hidden="true" fill="currentColor" shape-rendering="crispEdges"><path d="M6 1h4v4H6zM4 6h8v5h-2v4H6v-4H4z"/></svg><span class="mt">SOLO</span><span class="md">Bertahan sendirian dari gelombang zombi</span></button>
             <button class="mode m-def" id="mDef" type="button"><svg viewBox="0 0 16 16" aria-hidden="true" fill="currentColor" shape-rendering="crispEdges"><path d="M2 2h12v6l-6 7-6-7zM5 5v3l3 4 3-4V5z"/></svg><span class="mt">BERTAHAN</span><span class="md">Jaga generator selama 8 gelombang</span></button>
-            <button class="mode m-coop" id="mCoop" type="button" disabled><svg viewBox="0 0 16 16" aria-hidden="true" fill="currentColor" shape-rendering="crispEdges"><path d="M2 2h4v4H2zM10 2h4v4h-4zM1 7h6v4H5v4H3v-4H1zM9 7h6v4h-2v4h-2v-4H9z"/></svg><span class="mt">CO-OP</span><span class="md">2â€“4 pemain melawan zombi bersama</span></button>
-            <button class="mode m-pvp" id="mPvp" type="button" disabled><svg viewBox="0 0 16 16" aria-hidden="true" fill="currentColor" shape-rendering="crispEdges"><path d="M4 2h8v2h2v5h-2v2h-1v3H5v-3H4V9H2V4h2zM5 6v2h2V6zM9 6v2h2V6zM7 9v1h2V9z"/></svg><span class="mt">PVP 5 VS 5</span><span class="md">Dua tim bertarung Â· Merah lawan Biru</span></button>
-            <button class="mode m-br" id="mBr" type="button" disabled><svg viewBox="0 0 16 16" aria-hidden="true" fill="currentColor" shape-rendering="crispEdges"><path d="M7 0h2v4H7zM7 12h2v4H7zM0 7h4v2H0zM12 7h4v2h-4zM5 3h6v2H5zM3 5h2v6H3zM11 5h2v6h-2zM5 11h6v2H5zM7 7h2v2H7z"/></svg><span class="mt">BATTLEGROUND</span><span class="md">Semua lawan semua Â· 3 map Â· maks 25 petarung</span></button>
+            <button class="mode m-coop" id="mCoop" type="button" disabled><svg viewBox="0 0 16 16" aria-hidden="true" fill="currentColor" shape-rendering="crispEdges"><path d="M2 2h4v4H2zM10 2h4v4h-4zM1 7h6v4H5v4H3v-4H1zM9 7h6v4h-2v4h-2v-4H9z"/></svg><span class="mt">CO-OP</span><span class="md">2–4 pemain melawan zombi bersama</span></button>
+            <button class="mode m-pvp" id="mPvp" type="button" disabled><svg viewBox="0 0 16 16" aria-hidden="true" fill="currentColor" shape-rendering="crispEdges"><path d="M4 2h8v2h2v5h-2v2h-1v3H5v-3H4V9H2V4h2zM5 6v2h2V6zM9 6v2h2V6zM7 9v1h2V9z"/></svg><span class="mt">PVP 5 VS 5</span><span class="md">Dua tim bertarung · Merah lawan Biru</span></button>
+            <button class="mode m-br" id="mBr" type="button" disabled><svg viewBox="0 0 16 16" aria-hidden="true" fill="currentColor" shape-rendering="crispEdges"><path d="M7 0h2v4H7zM7 12h2v4H7zM0 7h4v2H0zM12 7h4v2h-4zM5 3h6v2H5zM3 5h2v6H3zM11 5h2v6h-2zM5 11h6v2H5zM7 7h2v2H7z"/></svg><span class="mt">BATTLEGROUND</span><span class="md">Semua lawan semua · 3 map · maks 25 petarung</span></button>
           </div>
-          <p class="mnote" id="netNote">Memeriksa koneksi onlineâ€¦</p>
+          <p class="mnote" id="netNote">Memeriksa koneksi online…</p>
           <div class="olbox mini"><h3 class="mh">PEMAIN ONLINE <b class="olN">0</b><small class="olBn"></small></h3><ul class="olist" data-ol="mini"></ul></div>
         </section>
         <section class="pnl mstrip" aria-label="Map pilihan"><h2 class="mh">MAP PILIHAN</h2><div class="maps" id="maps"></div></section>
@@ -155,7 +155,7 @@
       <div class="mview panel wide" id="vKeys" hidden>
         <h2 class="mh">KONTROL</h2>
         <div class="kgrid" id="kGrid"></div>
-        <p class="mnote">Di HP semua aksi ada di tombol layar, dan posisinya bisa diatur lewat Pengaturan â†’ ATUR TOMBOL HP.</p>
+        <p class="mnote">Di HP semua aksi ada di tombol layar, dan posisinya bisa diatur lewat Pengaturan → ATUR TOMBOL HP.</p>
       </div>
       <div class="mview panel wide" id="vWeap" hidden>
         <h2 class="mh">SENJATA</h2>
@@ -169,7 +169,7 @@
         <div class="zcodex"><div class="zgrid" id="zGrid"></div><div class="zdet" id="zDet"></div></div>
       </div>
       <div class="mview panel wide" id="vRooms" hidden>
-        <div class="rtop"><h2 class="mh" id="rTitle">LOBBY Â· DAFTAR ROOM</h2>
+        <div class="rtop"><h2 class="mh" id="rTitle">LOBBY · DAFTAR ROOM</h2>
           <div class="seg2" role="tablist" aria-label="Lobby"><button type="button" id="rtList" aria-pressed="true">DAFTAR ROOM</button><button type="button" id="bCreate">BUAT ROOM</button><button type="button" id="rtCode">MASUK DENGAN KODE</button></div></div>
         <div class="rfilter"><label class="sel"><span>Mode</span><select id="rfMode"><option value="all">Semua mode</option><option value="coop">Co-op</option><option value="pvp">PvP 5 vs 5</option><option value="br">Battleground</option></select></label>
           <input id="rfSearch" maxlength="20" autocomplete="off" spellcheck="false" placeholder="Cari room" aria-label="Cari room"><button class="btn sm" id="rfRefresh" type="button" title="Muat ulang">MUAT ULANG</button></div>
@@ -184,14 +184,14 @@
         <h2 class="mh">BUAT ROOM</h2>
         <ol class="steps" id="cSteps"><li>MODE</li><li>MAP</li><li>PENGATURAN</li><li>BUAT</li></ol>
         <div class="cstep" data-s="0"><div class="cmodes">
-          <button type="button" class="cmode m-coop" data-m="coop"><span class="mt">CO-OP</span><span class="md">2â€“4 pemain lawan gelombang zombi.</span></button>
+          <button type="button" class="cmode m-coop" data-m="coop"><span class="mt">CO-OP</span><span class="md">2–4 pemain lawan gelombang zombi.</span></button>
           <button type="button" class="cmode m-def" data-m="def"><span class="mt">CO-OP BERTAHAN</span><span class="md">Jaga generator bersama selama 8 gelombang.</span></button>
           <button type="button" class="cmode m-pvp" data-m="pvp"><span class="mt">PVP 5 VS 5</span><span class="md">Tim Merah lawan Biru, maksimal 10 pemain.</span></button>
           <button type="button" class="cmode m-br" data-m="br"><span class="mt">BATTLEGROUND</span><span class="md">Semua lawan semua di map besar (120 atau 350 petak). Terjun parasut, zona menyempit, yang terakhir hidup menang.</span></button></div></div>
         <div class="cstep" data-s="1" hidden><div class="mapgrid" id="cMaps"></div><div class="mapgrid" id="cMapsBR" hidden></div></div>
         <div class="cstep" data-s="2" hidden><div class="cform">
           <label>Nama room<input id="cName" maxlength="18" autocomplete="off" spellcheck="false"></label>
-          <label>Maks pemain<span class="num"><button type="button" class="btn sm" id="cMaxM" aria-label="Kurangi">â—€</button><b id="cMax">4</b><button type="button" class="btn sm" id="cMaxP" aria-label="Tambah">â–¶</button></span></label>
+          <label>Maks pemain<span class="num"><button type="button" class="btn sm" id="cMaxM" aria-label="Kurangi">◀</button><b id="cMax">4</b><button type="button" class="btn sm" id="cMaxP" aria-label="Tambah">▶</button></span></label>
           <label class="c-coop">Kesulitan<span class="seg mini" id="cDiff"><button type="button" data-d="0">MUDAH</button><button type="button" data-d="1">NORMAL</button><button type="button" data-d="2">SULIT</button></span></label>
           <label class="c-coop">Teman bot<span class="seg mini" id="cBot"><button type="button" data-b="0">0</button><button type="button" data-b="1">1</button><button type="button" data-b="2">2</button><button type="button" data-b="3">3</button></span></label>
           <label class="c-br">Isi slot kosong<span class="seg mini two" id="cFb"><button type="button" data-f="1">DENGAN BOT</button><button type="button" data-f="0">TANPA BOT</button></span></label>
@@ -199,8 +199,8 @@
           <label class="c-pvp">Seimbangkan tim<span class="seg mini two" id="cTb"><button type="button" data-t="1">OTOMATIS</button><button type="button" data-t="0">BEBAS PILIH</button></span></label>
           <label>Mode malam<span class="seg mini two" id="cNt"><button type="button" data-n="0">MATI</button><button type="button" data-n="1">NYALA</button></span></label>
           <fieldset class="clock"><legend>Akses room</legend>
-            <label class="radio"><input type="radio" name="cLock" value="0" checked><span><b>ðŸ”“ PUBLIC</b><small>Semua pemain bisa melihat dan masuk.</small></span></label>
-            <label class="radio"><input type="radio" name="cLock" value="1"><span><b>ðŸ”’ LOCKED</b><small>Hanya dengan password atau kode undangan.</small></span></label>
+            <label class="radio"><input type="radio" name="cLock" value="0" checked><span><b>🔓 PUBLIC</b><small>Semua pemain bisa melihat dan masuk.</small></span></label>
+            <label class="radio"><input type="radio" name="cLock" value="1"><span><b>🔒 LOCKED</b><small>Hanya dengan password atau kode undangan.</small></span></label>
             <input id="cPw" type="password" maxlength="20" autocomplete="new-password" placeholder="Password (min. 3 karakter)" hidden></fieldset>
           </div></div>
         <p class="gerr" id="cErr"></p>
@@ -294,7 +294,7 @@
     <div class="stk" id="stk" hidden><div class="sgrid" id="sgrid"></div><p class="shint" id="shint"></p></div>
     <div class="hudEd" id="hudEd" hidden>
       <div class="hrow"><b class="htitle">ATUR TOMBOL</b><span class="hori" id="hudOri">LANDSCAPE</span><span class="hsel" id="hudSelName">TEMBAK</span>
-        <button class="btn sm" id="hudMove" type="button" aria-label="Pindah panel ke atas atau bawah">â‡µ</button><button class="btn sm" id="hudReset" type="button">RESET</button><button class="btn sm" id="hudCancel" type="button">BATAL</button><button class="btn go sm" id="hudSave" type="button">SIMPAN</button></div>
+        <button class="btn sm" id="hudMove" type="button" aria-label="Pindah panel ke atas atau bawah">⇵</button><button class="btn sm" id="hudReset" type="button">RESET</button><button class="btn sm" id="hudCancel" type="button">BATAL</button><button class="btn go sm" id="hudSave" type="button">SIMPAN</button></div>
       <div class="hgrid"><label for="hudSize"><span>TERPILIH</span><input type="range" id="hudSize" min="0.6" max="1.6" step="0.05"></label><label for="hudGs"><span>SEMUA</span><input type="range" id="hudGs" min="0.5" max="1.2" step="0.05"></label><label for="hudOp"><span>TRANSPARAN</span><input type="range" id="hudOp" min="0.3" max="1" step="0.05"></label></div>
       <p class="hhint">Geser tombol untuk memindah, ketuk untuk memilih lalu atur ukurannya. Landscape dan portrait disimpan terpisah.</p>
     </div>
@@ -454,7 +454,7 @@ if(window.KM_FIREBASE&&KM_FIREBASE.apiKey&&!/^ISI/i.test(KM_FIREBASE.apiKey)){
    browser HP keadaan :active bisa tersangkut ketika event pointerup/pointercancel
    tidak sampai (gesture diambil alih sistem, jendela kehilangan fokus, dsb.).
    Patch ini tidak mengubah game.js: hanya memantau sentuhan secara global dan
-   menghapus kelas tertekan buatan kita (kmpr) â€” dengan jaminan lewat listener
+   menghapus kelas tertekan buatan kita (kmpr) — dengan jaminan lewat listener
    level window + watchdog blur/visibility. CSS di style.css memakai .kmpr di
    perangkat sentuh sebagai pengganti visual :active. */
 (function(){
@@ -592,6 +592,33 @@ if(window.KM_FIREBASE&&KM_FIREBASE.apiKey&&!/^ISI/i.test(KM_FIREBASE.apiKey)){
   window.addEventListener('touchcancel',allUp,true);
   window.addEventListener('blur',bail,true);
   document.addEventListener('visibilitychange',function(){if(document.hidden)bail();});
+})();
+</script>
+<script>
+/* v77 — LOBBY: saat tab LOBBY dibuka, tampilkan SEMUA room.
+   Sebelumnya game.js memanggil pembuka lobby dengan mode terakhir ("coop"), sehingga
+   filter #rfMode terkunci di "Co-op" dan room mode lain tersembunyi. Di sini filter
+   dikembalikan ke "Semua mode" tepat setelah handler game selesai (listener di document
+   = fase bubble, berjalan setelah listener #tabs milik game). Hanya nilai filter yang
+   diubah; "mode terpilih" di game tidak disentuh. Masuk lewat kartu CO-OP/PVP/BATTLEGROUND
+   di MAIN tetap memakai filter mode itu. game.js tidak diubah. */
+(function(){
+  var sel=document.getElementById('rfMode'),q=document.getElementById('rfSearch');
+  if(!sel||!q)return;
+  function showAll(){
+    if(sel.value==='all')return;
+    sel.value='all';
+    try{q.dispatchEvent(new Event('input'));}catch(e){}   /* render ulang daftar dgn filter baru */
+  }
+  document.addEventListener('click',function(e){
+    var b=e.target&&e.target.closest?e.target.closest('button[data-tab="lobby"]'):null;
+    if(b)showAll();
+  });
+  document.addEventListener('keydown',function(e){   /* navigasi tab dengan panah kiri/kanan */
+    if(e.key!=='ArrowLeft'&&e.key!=='ArrowRight')return;
+    var a=document.activeElement;
+    if(a&&a.getAttribute&&a.getAttribute('data-tab')==='lobby')showAll();
+  });
 })();
 </script>
 </body>
