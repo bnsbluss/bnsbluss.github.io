@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Foto ke Video</title>
+<style>
+:root{--bg:#f6f4ef;--card:#fff;--ink:#1d1b18;--mute:#6f6a60;--line:#e4dfd4;--acc:#d9481a;--on:#fff;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#161512;--card:#211f1b;--ink:#f1ede4;--mute:#a39d90;--line:#37342d;--acc:#ff7a45;--on:#1a0f08;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#161512;--card:#211f1b;--ink:#f1ede4;--mute:#a39d90;--line:#37342d;--acc:#ff7a45;--on:#1a0f08;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:680px;margin:0 auto;padding:20px 16px 40px}
+h1{font-size:26px;margin:4px 0 2px;letter-spacing:-.02em}
+.sub{color:var(--mute);margin:0 0 18px;font-size:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:14px}
+.drop{display:block;border:2px dashed var(--line);border-radius:14px;padding:20px 12px;text-align:center;color:var(--mute);cursor:pointer}
+.drop.on{border-color:var(--acc);color:var(--acc)}
+.drop b{display:block;color:var(--ink);font-size:17px}
+.drop input{display:none}
+#grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(62px,1fr));gap:6px;max-height:250px;overflow:auto;margin-top:10px}
+.tile{position:relative;aspect-ratio:1;border-radius:8px;overflow:hidden;border:2px solid transparent;cursor:pointer;background:#000}
+.tile img{width:100%;height:100%;object-fit:cover;display:block}
+.tile i{position:absolute;left:2px;bottom:2px;font:10px/1 system-ui;font-style:normal;background:rgba(0,0,0,.65);color:#fff;padding:2px 4px;border-radius:4px}
+.tile.sel{border-color:var(--acc)}
+.sel-t{font-size:13px;color:var(--mute);margin:10px 0 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tools{display:flex;gap:6px;flex-wrap:wrap}
+.tb{border:1px solid var(--line);background:transparent;color:var(--ink);border-radius:9px;padding:8px 11px;font-size:14px;cursor:pointer}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.full{grid-column:1/-1}
+label.f{display:block;font-size:13px;color:var(--mute)}
+select,input[type=number]{width:100%;margin-top:4px;padding:9px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font-size:15px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.chips button.on{background:var(--acc);color:var(--on);border-color:var(--acc)}
+.chk{display:flex;gap:8px;align-items:center;font-size:15px}
+.stage{background:#000;border-radius:12px;overflow:hidden;display:flex;justify-content:center}
+#cv{max-width:100%;max-height:55vh;height:auto;width:auto;display:block}
+.bar{height:6px;background:var(--line);border-radius:3px;margin:10px 0;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--acc)}
+.meta{font-size:13px;color:var(--mute);display:flex;justify-content:space-between}
+.btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+button.b{flex:1;min-width:120px;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:16px;font-weight:600;cursor:pointer}
+button.p{background:var(--acc);color:var(--on);border-color:var(--acc)}
+button:disabled,input:disabled,select:disabled{opacity:.45;cursor:not-allowed}
+#msg{font-size:14px;color:var(--mute);margin:8px 0 0;min-height:1.2em}
+video{width:100%;border-radius:12px;margin-top:10px;background:#000;max-height:60vh}
+</style>
+</head>
+<body>
+<main>
+<h1>Foto → Video</h1>
+<p class="sub">Gabungkan hingga ratusan foto jadi satu video. Semua diproses di perangkat Anda, foto tidak diunggah ke mana pun.</p>
+
+<div class="card">
+  <label class="drop" id="drop"><b>+ Pilih foto</b>Bisa ratusan sekaligus, atau tambah bertahap<input type="file" id="file" accept="image/*" multiple></label>
+  <div id="grid"></div>
+  <div class="sel-t" id="selT">Belum ada foto</div>
+  <div class="tools">
+    <button class="tb" id="rl">⟲ Putar kiri</button><button class="tb" id="rr">⟳ Putar kanan</button>
+    <button class="tb" id="ml">← Geser</button><button class="tb" id="mr">Geser →</button>
+    <button class="tb" id="del">✕ Hapus</button>
+  </div>
+  <div class="sel-t" style="margin-top:12px">Semua foto</div>
+  <div class="tools">
+    <button class="tb" id="arl">⟲ Putar semua</button><button class="tb" id="arr">⟳ Putar semua</button>
+    <button class="tb" id="sn">Urut nama</button><button class="tb" id="sd">Urut tanggal</button>
+    <button class="tb" id="rev">Balik urutan</button><button class="tb" id="clr">Kosongkan</button>
+  </div>
+</div>
+
+<div class="card grid">
+  <div class="full">
+    <label class="f">Kecepatan: detik per foto <span id="fps"></span>
+      <input type="number" id="dur" min="0.1" max="30" step="0.1" value="0.1" inputmode="decimal"></label>
+    <div class="chips" id="chips"></div>
+  </div>
+  <label class="f">Transisi
+    <select id="trans"><option value="none">Tanpa transisi</option><option value="fade">Pudar (fade)</option><option value="slide">Geser</option><option value="zoom">Zoom keluar</option></select></label>
+  <label class="f">Ukuran video
+    <select id="ratio"><option value="auto">Sesuai format foto</option><option value="16:9">16:9</option><option value="9:16">9:16</option><option value="1:1">1:1</option><option value="4:3">4:3</option><option value="3:4">3:4</option></select></label>
+  <label class="f">Resolusi (sisi terpanjang)
+    <select id="res"><option value="640">640 px (hemat)</option><option value="960">960 px</option><option value="1280" selected>1280 px (HD)</option></select></label>
+  <label class="f">Penyesuaian foto
+    <select id="fit"><option value="contain">Muat utuh (bingkai hitam)</option><option value="cover">Isi penuh (dipotong)</option></select></label>
+  <label class="chk full"><input type="checkbox" id="kb"> Zoom pelan tiap foto</label>
+</div>
+
+<div class="card">
+  <div class="stage"><canvas id="cv" width="1280" height="720"></canvas></div>
+  <div class="bar"><i id="pg"></i></div>
+  <div class="meta"><span id="tot">Total 0 detik</span><span id="cnt">0 foto</span></div>
+  <div class="btns">
+    <button class="b" id="play">▶ Pratinjau</button>
+    <button class="b p" id="exp">Buat Video</button>
+  </div>
+  <p id="msg"></p>
+  <div id="res2" hidden>
+    <video id="vid" controls playsinline></video>
+    <div class="btns"><button class="b p" id="save">Simpan video</button></div>
+  </div>
+</div>
+</main>
+
+<script>
+const $=s=>document.querySelector(s);
+const S={items:[],dur:0.1,trans:'none',ratio:'auto',res:1280,fit:'contain',kb:false,sel:0};
+const cv=$('#cv'),ctx=cv.getContext('2d'),loaded=new Set();
+let raf=0,busy=false,blob=null,ext='webm';
+const total=()=>S.items.length*S.dur;
+const msg=t=>{$('#msg').textContent=t||''};
+const nf=(v,d=1)=>v.toFixed(d).replace('.',',');
+const fmt=s=>s>=60?Math.floor(s/60)+' menit '+Math.round(s%60)+' detik':nf(s)+' detik';
+
+/* ---- decode cache ---- */
+function load(it){if(it.bm||it.ld||it.bad)return;it.ld=1;createImageBitmap(it.blob).then(b=>{it.bm=b;it.ld=0;loaded.add(it)}).catch(()=>{it.ld=0;it.bad=1})}
+function dispose(it){if(it.bm){it.bm.close();it.bm=null}loaded.delete(it)}
+function prefetch(i){
+  const n=Math.min(40,Math.ceil(1.5/S.dur)+3);
+  for(let k=i;k<Math.min(S.items.length,i+n);k++)load(S.items[k]);
+  for(const it of [...loaded])if(it.k<i-2||it.k>=i+n+2)dispose(it);
+}
+const rdy=it=>!it||it.bm||it.bad;
+
+/* ---- drawing ---- */
+function plan(t){
+  const n=S.items.length,d=S.dur;t=Math.min(Math.max(t,0),n*d-1e-3);
+  const i=Math.floor(t/d),l=t-i*d,tr=(S.trans==='none'||d<.3)?0:Math.min(.8,d/2);
+  let p=0;if(tr&&i<n-1&&l>d-tr)p=(l-(d-tr))/tr;
+  return{i,l,p};
+}
+function put(it,z,ox,a){
+  if(!it||!it.bm)return;
+  const W=cv.width,H=cv.height,odd=it.rot%180!==0,rw=odd?it.h:it.w,rh=odd?it.w:it.h;
+  const s=(S.fit==='cover'?Math.max:Math.min)(W/rw,H/rh)*z;
+  ctx.save();ctx.globalAlpha=a;ctx.translate(W/2+ox,H/2);ctx.rotate(it.rot*Math.PI/180);
+  ctx.drawImage(it.bm,-it.w*s/2,-it.h*s/2,it.w*s,it.h*s);ctx.restore();
+}
+function frame(t){
+  const W=cv.width,H=cv.height,n=S.items.length;
+  ctx.globalAlpha=1;ctx.fillStyle='#000';ctx.fillRect(0,0,W,H);
+  if(!n){ctx.fillStyle='#888';ctx.font=(W/26)+'px system-ui';ctx.textAlign='center';ctx.fillText('Tambahkan foto dulu',W/2,H/2);return}
+  const{i,l,p}=plan(t),A=S.items[i],zi=S.kb?1+0.08*(l/S.dur):1;
+  if(!p){put(A,zi,0,1);return}
+  const B=S.items[i+1],e=p*p*(3-2*p);
+  if(S.trans==='fade'){put(A,zi,0,1);put(B,1,0,e)}
+  else if(S.trans==='slide'){put(A,zi,-e*W,1);put(B,1,(1-e)*W,1)}
+  else{put(B,1,0,1);put(A,zi+e*0.3,0,1-e)}
+}
+async function show(k){
+  const it=S.items[k];
+  if(it&&!rdy(it)){await new Promise(r=>{load(it);const w=()=>rdy(it)?r():setTimeout(w,20);w()})}
+  frame(k*S.dur);
+}
+function autoAspect(){
+  const eff=it=>it.rot%180?[it.h,it.w]:[it.w,it.h];
+  const L=S.items.filter(it=>{const[w,h]=eff(it);return w>=h}),P=S.items.length-L.length;
+  const pick=(L.length>=P?L:S.items.filter(it=>!L.includes(it)))[0];
+  if(!pick)return 16/9;const[w,h]=eff(pick);return Math.min(2,Math.max(.5,w/h));
+}
+function sizeCanvas(){
+  let a=16/9;
+  if(S.ratio==='auto'){if(S.items.length)a=autoAspect()}else{const[x,y]=S.ratio.split(':');a=x/y}
+  const L=S.res;let w=a>=1?L:L*a,h=a>=1?L/a:L;
+  w=2*Math.round(w/2);h=2*Math.round(h/2);
+  if(cv.width!==w||cv.height!==h){cv.width=w;cv.height=h}
+}
+
+/* ---- playback ---- */
+function stop(){cancelAnimationFrame(raf);$('#play').textContent='▶ Pratinjau'}
+function play(done){
+  stop();if(!S.items.length)return;
+  let vt=0,last=performance.now();const T=total();
+  $('#play').textContent='■ Berhenti';
+  const loop=now=>{
+    const dt=Math.min((now-last)/1000,.1);last=now;
+    const nx=Math.min(vt+dt,T),pl=plan(nx);prefetch(pl.i);
+    const need=[S.items[pl.i]];if(pl.p>0)need.push(S.items[pl.i+1]);
+    if(need.every(rdy)){vt=nx;frame(vt);$('#pg').style.width=(vt/T*100)+'%'}
+    if(vt>=T){$('#play').textContent='▶ Pratinjau';done&&done();return}
+    raf=requestAnimationFrame(loop);
+  };
+  raf=requestAnimationFrame(loop);
+}
+
+/* ---- UI ---- */
+function info(){
+  $('#fps').textContent='('+nf(1/S.dur,S.dur<1?0:1)+' foto/detik)';
+  $('#tot').textContent='Total '+fmt(total());
+  $('#cnt').textContent=S.items.length+' foto';
+  document.querySelectorAll('#chips button').forEach(b=>b.classList.toggle('on',+b.dataset.v===S.dur));
+}
+function selInfo(){
+  const it=S.items[S.sel],n=S.items.length;
+  $('#selT').textContent=it?`Foto ${S.sel+1} dari ${n} · ${it.name} · putar ${it.rot}°`:'Belum ada foto';
+  ['rl','rr','ml','mr','del','arl','arr','sn','sd','rev','clr','play','exp'].forEach(i=>$('#'+i).disabled=busy||!n);
+}
+function tiles(){
+  const G=$('#grid');G.textContent='';const fr=document.createDocumentFragment();
+  S.items.forEach((it,k)=>{
+    const d=document.createElement('div');d.className='tile'+(k===S.sel?' sel':'');d.dataset.k=k;
+    const im=new Image();im.src=it.th;im.style.transform=`rotate(${it.rot}deg)`;
+    const b=document.createElement('i');b.textContent=k+1;d.append(im,b);fr.append(d);
+  });
+  G.append(fr);
+}
+function upd(){
+  stop();S.items.forEach((it,k)=>it.k=k);
+  if(S.sel>=S.items.length)S.sel=Math.max(0,S.items.length-1);
+  tiles();info();sizeCanvas();selInfo();show(S.sel);
+  $('#res2').hidden=true;$('#pg').style.width='0';
+}
+function select(k){
+  if(busy)return;const G=$('#grid');
+  G.children[S.sel]&&G.children[S.sel].classList.remove('sel');
+  S.sel=k;G.children[k]&&G.children[k].classList.add('sel');
+  stop();selInfo();show(k);
+}
+$('#grid').onclick=e=>{const t=e.target.closest('.tile');if(t)select(+t.dataset.k)};
+function rotOne(it,d){it.rot=(it.rot+d*90+360)%360}
+function rotTile(k){const t=$('#grid').children[k];if(t)t.firstChild.style.transform=`rotate(${S.items[k].rot}deg)`}
+$('#rl').onclick=()=>{const it=S.items[S.sel];if(!it)return;rotOne(it,-1);rotTile(S.sel);sizeCanvas();selInfo();show(S.sel)};
+$('#rr').onclick=()=>{const it=S.items[S.sel];if(!it)return;rotOne(it,1);rotTile(S.sel);sizeCanvas();selInfo();show(S.sel)};
+$('#arl').onclick=()=>{S.items.forEach(it=>rotOne(it,-1));S.items.forEach((_,k)=>rotTile(k));sizeCanvas();selInfo();show(S.sel)};
+$('#arr').onclick=()=>{S.items.forEach(it=>rotOne(it,1));S.items.forEach((_,k)=>rotTile(k));sizeCanvas();selInfo();show(S.sel)};
+function move(d){const a=S.items,k=S.sel,j=k+d;if(j<0||j>=a.length)return;[a[k],a[j]]=[a[j],a[k]];S.sel=j;upd()}
+$('#ml').onclick=()=>move(-1);$('#mr').onclick=()=>move(1);
+$('#del').onclick=()=>{const[it]=S.items.splice(S.sel,1);if(it)dispose(it);upd()};
+$('#sn').onclick=()=>{S.items.sort((a,b)=>a.name.localeCompare(b.name,undefined,{numeric:true}));S.sel=0;upd()};
+$('#sd').onclick=()=>{S.items.sort((a,b)=>a.mt-b.mt);S.sel=0;upd()};
+$('#rev').onclick=()=>{S.items.reverse();S.sel=0;upd()};
+$('#clr').onclick=()=>{S.items.forEach(dispose);S.items=[];S.sel=0;upd()};
+
+[0.1,0.2,0.5,1,2,3].forEach(v=>{
+  const b=document.createElement('button');b.className='tb';b.dataset.v=v;b.textContent=nf(v).replace(',0','');
+  b.onclick=()=>{$('#dur').value=v;S.dur=v;info();show(S.sel)};$('#chips').append(b);
+});
+$('#dur').oninput=e=>{const v=parseFloat(e.target.value);if(v>=0.1){S.dur=v;info();show(S.sel)}};
+$('#trans').onchange=e=>{S.trans=e.target.value};
+$('#ratio').onchange=e=>{S.ratio=e.target.value;sizeCanvas();show(S.sel)};
+$('#res').onchange=e=>{S.res=+e.target.value;sizeCanvas();show(S.sel)};
+$('#fit').onchange=e=>{S.fit=e.target.value;show(S.sel)};
+$('#kb').onchange=e=>{S.kb=e.target.checked};
+$('#play').onclick=()=>{if($('#play').textContent.startsWith('■'))stop();else play()};
+
+/* ---- import ---- */
+function lock(v){
+  busy=v;document.querySelectorAll('.card input,.card select,.tools button,#chips button').forEach(e=>e.disabled=v);
+  $('#exp').disabled=$('#play').disabled=v;if(!v)selInfo();
+}
+async function add(files){
+  files=files.filter(f=>f.type.startsWith('image/'));if(!files.length)return;
+  stop();lock(true);let done=0,bad=0,idx=0;const out=[];
+  const lane=async()=>{
+    const c=document.createElement('canvas'),t=document.createElement('canvas');t.width=t.height=96;
+    while(idx<files.length){
+      const j=idx++,f=files[j];
+      try{
+        const bm=await createImageBitmap(f),sc=Math.min(1,1280/Math.max(bm.width,bm.height));
+        c.width=Math.round(bm.width*sc);c.height=Math.round(bm.height*sc);
+        c.getContext('2d').drawImage(bm,0,0,c.width,c.height);bm.close&&bm.close();
+        const blob=await new Promise(r=>c.toBlob(r,'image/jpeg',.85));
+        const x=t.getContext('2d'),s=Math.max(96/c.width,96/c.height);
+        x.drawImage(c,(96-c.width*s)/2,(96-c.height*s)/2,c.width*s,c.height*s);
+        out[j]={blob,w:c.width,h:c.height,rot:0,name:f.name||'foto',mt:f.lastModified||0,th:t.toDataURL('image/jpeg',.6)};
+      }catch(e){bad++}
+      msg('Memproses foto '+(++done)+' dari '+files.length+'…');
+    }
+  };
+  await Promise.all([lane(),lane(),lane(),lane()]);
+  out.forEach(o=>o&&S.items.push(o));
+  lock(false);upd();
+  msg(bad?bad+' file tidak bisa dibaca (format tidak didukung).':out.filter(Boolean).length+' foto ditambahkan.');
+}
+$('#file').onchange=e=>{add([...e.target.files]);e.target.value=''};
+const dz=$('#drop');
+dz.ondragover=e=>{e.preventDefault();dz.classList.add('on')};
+dz.ondragleave=()=>dz.classList.remove('on');
+dz.ondrop=e=>{e.preventDefault();dz.classList.remove('on');add([...e.dataTransfer.files])};
+
+/* ---- export ---- */
+$('#exp').onclick=()=>{
+  if(!S.items.length)return;
+  const types=['video/mp4;codecs=avc1','video/mp4','video/webm;codecs=vp9','video/webm;codecs=vp8','video/webm'];
+  const mt=window.MediaRecorder&&types.find(t=>MediaRecorder.isTypeSupported(t));
+  if(!mt){msg('Browser ini belum mendukung perekaman video. Coba Chrome atau Safari versi terbaru.');return}
+  stop();$('#res2').hidden=true;lock(true);
+  msg('Merekam video… jaga layar tetap menyala dan jangan pindah aplikasi.');
+  const bps=Math.round(Math.min(12e6,Math.max(2e6,cv.width*cv.height*30*0.25)));
+  const rec=new MediaRecorder(cv.captureStream(30),{mimeType:mt,videoBitsPerSecond:bps}),ch=[];
+  rec.ondataavailable=e=>{if(e.data.size)ch.push(e.data)};
+  rec.onstop=()=>{
+    ext=mt.includes('mp4')?'mp4':'webm';blob=new Blob(ch,{type:mt.split(';')[0]});
+    const v=$('#vid');if(v.src)URL.revokeObjectURL(v.src);v.src=URL.createObjectURL(blob);
+    $('#res2').hidden=false;lock(false);
+    msg('Selesai ('+nf(blob.size/1048576)+' MB, format '+ext.toUpperCase()+', '+cv.width+'×'+cv.height+').');
+  };
+  rec.start(1000);
+  play(()=>setTimeout(()=>rec.stop(),400));
+};
+$('#save').onclick=async()=>{
+  if(!blob)return;
+  try{
+    const d=window.claude&&await window.claude.use('downloads');
+    if(!d){msg('Fitur simpan tidak tersedia di sini. Tekan lama pada video lalu pilih simpan.');return}
+    await d.save({filename:'video-foto.'+ext,data:blob});msg('Video tersimpan.');
+  }catch(e){if(e&&e.code!=='declined')msg('Gagal menyimpan: '+(e.message||e.code))}
+};
+upd();
+</script>
+</body>
+</html>
