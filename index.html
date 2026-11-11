@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="id">
 <head>
 <meta charset="utf-8">
@@ -16,7 +16,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Chakra+Petch:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="canonical" href="https://bnsbluss.github.io/">
-<link rel="stylesheet" href="css/style.css?v=20261112-011700">
+<link rel="stylesheet" href="css/style.css?v=20261101-121500">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" type="image/png" sizes="48x48" href="favicon-48.png">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
@@ -107,7 +107,6 @@
 
   <div class="cab" id="cab">
     <canvas id="screen" width="384" height="216" tabindex="0" aria-label="Layar game Kota Mati"></canvas>
-    <button class="btn sm afk-ai-toggle" id="afkAiToggle" type="button" aria-pressed="false" title="AI patroli otomatis menggerakkan karakter. Input manual menghentikan AI." hidden>AI AFK: MATI</button>
     <div class="oshare share" id="oShare" hidden><span>BAGIKAN SKOR</span><button class="btn sm go" id="oShShot" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3 7.2 5H4a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-3.2L15 3H9zm3 4.5a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/></svg>FOTO SKOR</button><button class="btn sm fb" id="oShFb" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 8V6c0-.9.6-1 1-1h3V1h-4c-3.3 0-4.5 2.4-4.5 5v2H7v4h2.5v11H14V12h3.4l.6-4z"/></svg>FACEBOOK</button><button class="btn sm ig" id="oShIg" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm0 8.2a3.2 3.2 0 1 1 0-6.4 3.2 3.2 0 0 1 0 6.4zM17.3 5.4a1.2 1.2 0 1 0 0 2.4 1.2 1.2 0 0 0 0-2.4zM12 2c-2.7 0-3 0-4.1.1C4.3 2.2 2.2 4.3 2.1 7.9 2 9 2 9.3 2 12s0 3 .1 4.1c.1 3.6 2.2 5.7 5.8 5.8 1.1.1 1.4.1 4.1.1s3 0 4.1-.1c3.6-.1 5.7-2.2 5.8-5.8.1-1.1.1-1.4.1-4.1s0-3-.1-4.1C21.8 4.3 19.7 2.2 16.1 2.1 15 2 14.7 2 12 2zm0 1.8c2.7 0 3 0 4 .1 2.6.1 3.9 1.4 4 4 .1 1 .1 1.3.1 4s0 3-.1 4c-.1 2.6-1.4 3.9-4 4-1 .1-1.3.1-4 .1s-3 0-4-.1c-2.6-.1-3.9-1.4-4-4C3.9 15 3.8 14.7 3.8 12s0-3 .1-4c.1-2.6 1.4-3.9 4-4 1-.1 1.3-.1 4.1-.1z"/></svg>INSTAGRAM</button></div>
     <div class="menu" id="menu">
       <div class="mview vmain" id="vMain">
@@ -157,7 +156,6 @@
         <h2 class="mh">KONTROL</h2>
         <div class="kgrid" id="kGrid"></div>
         <p class="mnote">Di HP semua aksi ada di tombol layar, dan posisinya bisa diatur lewat Pengaturan → ATUR TOMBOL HP.</p>
-        <p class="mnote">Mode AI AFK tersedia saat bermain SOLO atau BERTAHAN. AI berpatroli otomatis; input manual menghentikannya.</p>
       </div>
       <div class="mview panel wide" id="vWeap" hidden>
         <h2 class="mh">SENJATA</h2>
@@ -174,7 +172,7 @@
         <div class="rtop"><h2 class="mh" id="rTitle">LOBBY · DAFTAR ROOM</h2>
           <div class="seg2" role="tablist" aria-label="Lobby"><button type="button" id="rtList" aria-pressed="true">DAFTAR ROOM</button><button type="button" id="bCreate">BUAT ROOM</button><button type="button" id="rtCode">MASUK DENGAN KODE</button></div></div>
         <div class="rfilter"><label class="sel"><span>Mode</span><select id="rfMode"><option value="all">Semua mode</option><option value="coop">Co-op</option><option value="pvp">PvP 5 vs 5</option><option value="br">Battleground</option></select></label>
-          <input id="rfSearch" maxlength="20" autocomplete="off" spellcheck="false" placeholder="Cari room…" aria-label="Cari room"><button class="btn sm" id="rfRefresh" type="button" title="Muat ulang">MUAT ULANG</button></div>
+          <input id="rfSearch" maxlength="20" autocomplete="off" spellcheck="false" placeholder="Cari room" aria-label="Cari room"><button class="btn sm" id="rfRefresh" type="button" title="Muat ulang">MUAT ULANG</button></div>
         <div class="rcode" id="rCodeBox" hidden><label for="fRoom">Kode undangan</label><div class="row"><input id="fRoom" maxlength="24" autocomplete="off" spellcheck="false" placeholder="KM-C-ABCDE"><button class="btn sm go" id="bJoinCode" type="button">GABUNG</button></div>
           <p class="mnote">Minta kode undangan ke host room. Kode room yang dikunci sudah berisi password, jadi tidak perlu mengetik password lagi.</p></div>
         <div class="rtwrap"><table class="rtable"><thead><tr><th>ID</th><th>NAMA ROOM</th><th>MAP</th><th>MODE</th><th>PEMAIN</th><th>STATUS</th><th><span class="sr">Aksi</span></th></tr></thead><tbody id="rList"></tbody></table></div>
@@ -313,18 +311,17 @@
       <span class="by">Kota Mati dibuat oleh <a class="bylink" href="https://web.facebook.com/travisbarker06" target="_blank" rel="noopener">HeavyRain</a></span></div>
   </footer>
 </div>
-<script>window.KM_VER="20261112-011700";window.KM_VERURL="version.json";window.KM_PWA={sw:"sw.js",scope:"./"};window.KM_THREE="js/three.min.js?v=r128";</script>
-<script src="js/config.js?v=20261112-011700"></script>
+<script>window.KM_VER="20261101-121500";window.KM_VERURL="version.json";window.KM_PWA={sw:"sw.js",scope:"./"};window.KM_THREE="js/three.min.js?v=r128";</script>
+<script src="js/config.js?v=20261101-121500"></script>
 <script>
 /* Library Firebase hanya dimuat kalau js/config.js sudah diisi. */
 if(window.KM_FIREBASE&&KM_FIREBASE.apiKey&&!/^ISI/i.test(KM_FIREBASE.apiKey)){
   document.write('<script src="https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-app-compat.js"><\/script><script src="https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-auth-compat.js"><\/script><script src="https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-firestore-compat.js"><\/script>');
 }
 </script>
-<script src="js/akun.js?v=20261112-011700"></script>
+<script src="js/akun.js?v=20261101-121500"></script>
 <script>window.KM_TRACK='sound/battle.mp3';window.KM_RAKSASA='img/raksasa.webp';window.KM_KUNTI='img/kuntilanak.webp';window.KM_NEWSURL='news.ini';window.KM_C_UCOK='img/char-ucok.webp';window.KM_C_POLISI='img/char-polisi.webp';window.KM_C_HASMAT='img/char-hasmat.webp';window.KM_C_IDA='img/char-ida.webp';window.KM_C_STEVI='img/char-stevi.webp';window.KM_C_RITO='img/char-rito.webp';window.KM_Z_GENDUT='img/gendut.webp';window.KM_Z_LIDAH='img/lidah.webp';window.KM_Z_PELUDAH='img/peludah.webp';window.KM_Z_PEMBURU='img/pemburu.webp';window.KM_Z_PENUNGGANG='img/penunggang.webp';window.KM_Z_PENYERUDUK='img/penyeruduk.webp';window.KM_WEAPSPR='img/senjata.png';window.KM_Z_DESA='img/zdesa.webp';window.KM_Z_TENTARA='img/ztentara.webp';window.KM_Z_RANGKAK='img/zrangkak.webp';window.KM_Z_BOS='img/bos.webp';window.KM_FPVSPR='img/fpv.webp';window.KM_WEAPICON='img/ikon-senjata.webp';window.KM_STIKER='img/stiker.webp';</script>
-<script src="js/game.js?v=20261112-011700"></script>
-<script src="js/afk-ai.js?v=20261112-011700"></script>
+<script src="js/game.js?v=20261101-121500"></script>
 <script>
 /* CHAT: panel kiri buka-tutup (v70). game.js tetap memakai id yang sama. */
 (function(){
@@ -332,7 +329,22 @@ if(window.KM_FIREBASE&&KM_FIREBASE.apiKey&&!/^ISI/i.test(KM_FIREBASE.apiKey)){
       body=document.getElementById('chatBody'),badge=document.getElementById('chatBadge'),
       list=document.getElementById('cMsgs');
   if(!box||!btn||!body)return;
-  var KEY='kotamati-chat',unread=0,lastTxt=list?list.textContent:'';
+  var KEY='kotamati-chat',unread=0,lastMsgs=(list?countMsgs():0);
+  function countMsgs(){
+    if(!list)return 0;
+    /* hitung hanya li chat ASLI (punya nama .cnm atau teks .ctx/.cst);
+       li.csys (info sistem) & li.cempty (placeholder) tidak dihitung.
+       game.js merender ulang SELURUH daftar tiap poll, jadi menghitung
+       jumlah pesan (bukan "teks berubah = 1 pesan baru") mencegah
+       badge muncul tanpa chat sama sekali. */
+    var n=0,els=list.querySelectorAll('li');
+    for(var i=0;i<els.length;i++){var li=els[i];
+      var cl=li.className||'';
+      if(cl.indexOf('csys')>-1||cl.indexOf('cempty')>-1)continue;
+      if(li.querySelector('.cnm,.ctx,.cst'))n++;
+    }
+    return n;
+  }
   function draw(){
     var open=box.classList.contains('open');
     btn.setAttribute('aria-expanded',open?'true':'false');
@@ -351,9 +363,10 @@ if(window.KM_FIREBASE&&KM_FIREBASE.apiKey&&!/^ISI/i.test(KM_FIREBASE.apiKey)){
   });
   if(list&&window.MutationObserver){
     new MutationObserver(function(){
-      var open=box.classList.contains('open'),txt=list.textContent;
-      if(open){unread=0;lastTxt=txt;draw();return;}
-      if(txt!==lastTxt){lastTxt=txt;unread=Math.min(99,unread+1);draw();}
+      var open=box.classList.contains('open'),n=countMsgs();
+      if(open){unread=0;lastMsgs=n;draw();return;}
+      if(n>lastMsgs)unread=Math.min(99,unread+(n-lastMsgs));
+      lastMsgs=n;draw();
     }).observe(list,{childList:true,subtree:true,characterData:true});
   }
   var saved=null;try{saved=localStorage.getItem(KEY);}catch(e){}
@@ -432,6 +445,179 @@ if(window.KM_FIREBASE&&KM_FIREBASE.apiKey&&!/^ISI/i.test(KM_FIREBASE.apiKey)){
       return;
     }
     src.click();
+  });
+})();
+</script>
+<script>
+/* v74: tombol kendali HP "fixed/nyangkut" setelah disentuh.
+   game.js memakai pseudo-class :active untuk tampilan tertekan, tapi di sebagian
+   browser HP keadaan :active bisa tersangkut ketika event pointerup/pointercancel
+   tidak sampai (gesture diambil alih sistem, jendela kehilangan fokus, dsb.).
+   Patch ini tidak mengubah game.js: hanya memantau sentuhan secara global dan
+   menghapus kelas tertekan buatan kita (kmpr) — dengan jaminan lewat listener
+   level window + watchdog blur/visibility. CSS di style.css memakai .kmpr di
+   perangkat sentuh sebagai pengganti visual :active. */
+(function(){
+  var TOUCH_FIX_DONE='km74';
+  if(window[TOUCH_FIX_DONE])return;window[TOUCH_FIX_DONE]=true;
+  var pressed={}; /* pointerId -> elemen .tb */
+  function elFrom(e){
+    var t=e.target;
+    if(!t||!t.closest)return null;
+    return t.closest('.tb')||(t.parentElement&&t.parentElement.closest&&t.parentElement.closest('.tb'));
+  }
+  function press(id,e){
+    var el=elFrom(e);if(!el)return;
+    pressed[id]=el;el.classList.add('kmpr');
+  }
+  function release(id){
+    var el=pressed[id];
+    if(el){el.classList.remove('kmpr');delete pressed[id];}
+  }
+  function releaseAll(){
+    for(var k in pressed){var el=pressed[k];if(el)el.classList.remove('kmpr');}
+    pressed={};
+    /* netiskan juga sisa kmpr dari id ganda */
+    for(var i=0,l=document.querySelectorAll('.tb.kmpr'),j=l.length;i<j;i++)l[i].classList.remove('kmpr');
+  }
+  document.addEventListener('pointerdown',function(e){press(e.pointerId,e);},true);
+  window.addEventListener('pointerup',function(e){release(e.pointerId);},true);
+  window.addEventListener('pointercancel',function(e){release(e.pointerId);},true);
+  window.addEventListener('blur',releaseAll,true);
+  document.addEventListener('visibilitychange',function(){
+    if(document.hidden)releaseAll();
+  });
+  /* jaga-jaga untuk browser tanpa pointer events yang andal */
+  window.addEventListener('touchend',function(){releaseAll();},true);
+  window.addEventListener('touchcancel',function(){releaseAll();},true);
+})();
+</script>
+<script>
+/* v75: joystick mengapung (floating stick).
+   Di game asli, joystick hanya merespons kalau jari menempati area #stick;
+   sentuhan di area kanvas kiri dipakai game untuk memutar kamera, sehingga
+   joystick terasa "fixed". Patch ini memindahkan stick ke titik sentuh pertama
+   di sisi kiri layar, lalu MENERUSKAN gerak/lepas jari ke #stick dengan event
+   sintetis (setPointerCapture game ke #stick gagal karena Chrome mengunci
+   capture sentuhan ke kanvas secara implisit). Knob mengikuti jari memakai
+   mekanisme asli game. Saat jari lepas, stick kembali ke posisi semula.
+   v76: akhir sentuhan (pointerup/pointercancel/lostpointercapture/touchend) kini
+   ditangkap di level window, bukan di #screen (lihat catatan di bawah).
+   game.js tidak diubah. */
+(function(){
+  var DONE='km75';
+  if(window[DONE])return;window[DONE]=true;
+  var stick=document.getElementById('stick');
+  if(!stick)return;
+  var canvas=document.getElementById('screen');
+  var activePid=null;
+
+  function hudBusy(){
+    var t=document.getElementById('touch');
+    return !t||t.hidden||t.classList.contains('editing');
+  }
+  function home(){
+    stick.style.left='';stick.style.top='';stick.style.right='';stick.style.bottom='';
+  }
+  function centerOn(x,y){
+    var r=stick.getBoundingClientRect(),cs=getComputedStyle(stick);
+    var dx=x-(r.left+r.width/2),dy=y-(r.top+r.height/2);
+    stick.style.left=(parseFloat(cs.left)||0)+dx+'px';
+    stick.style.top=(parseFloat(cs.top)||0)+dy+'px';
+    stick.style.right='auto';stick.style.bottom='auto';
+  }
+  function syn(type,e){
+    try{
+      stick.dispatchEvent(new PointerEvent(type,{
+        pointerId:e.pointerId,pointerType:e.pointerType,isPrimary:e.isPrimary,
+        clientX:e.clientX,clientY:e.clientY,
+        button:type==='pointermove'?-1:0,buttons:type==='pointerup'?0:1,
+        bubbles:true,cancelable:true}));
+    }catch(err){}
+  }
+  document.addEventListener('pointerdown',function(e){
+    if(e.pointerType==='mouse')return;
+    if(activePid!==null)return;
+    if(hudBusy()||!canvas)return;
+    if(e.target!==canvas)return;                 /* hanya sentuhan di kanvas */
+    if(e.clientX>window.innerWidth*0.55)return;  /* hanya sisi kiri layar */
+    /* jenting penting: stop propagation supaya game TIDAK memproses
+       pointerdown kanvas ini (yang memutar kamera/aim); jari ini khusus
+       joystick. Sentuhan sisi kanan tidak lolos celah if di atas, jadi
+       aim/tembak di sisi kanan tetap bekerja normal lewat game. */
+    e.stopPropagation();
+    centerOn(e.clientX,e.clientY);
+    activePid=e.pointerId;
+    syn('pointerdown',e);
+  },true);
+
+  canvas.addEventListener('pointermove',function(e){
+    if(activePid===null||e.pointerId!==activePid)return;
+    e.stopPropagation(); /* jari joystick tidak boleh mengubah kamera */
+    syn('pointermove',e);
+  },true);
+  /* v76 ROOT CAUSE FIX: akhir sentuhan HARUS didengar di window (fase capture),
+     bukan di #screen. pointerdown sintetis ke #stick memicu handler game yang
+     memanggil stick.setPointerCapture(pointerId); Chrome lalu mengalihkan semua
+     pointermove/pointerup berikutnya ke #stick, SEHINGGA pointerup tidak pernah
+     lewat #screen. Akibatnya dulu activePid tak pernah dibersihkan dan home() tak
+     pernah jalan: stick "freeze" di posisi terakhir dan sentuhan berikutnya
+     diabaikan oleh guard activePid. Listener window menerima event apa pun
+     targetnya (#stick, #screen, atau elemen lain), jadi cleanup selalu terjadi. */
+  function finish(type,e){
+    if(activePid===null||e.pointerId!==activePid)return;
+    activePid=null;               /* bersihkan state dulu (aman dari re-entrancy) */
+    syn(type,e);                  /* idempotent: game hanya bereaksi jika id cocok */
+    var k=document.getElementById('knob');
+    if(k)k.style.transform='';
+    home();                       /* hapus left/top/right/bottom -> kembali ke HUD */
+  }
+  window.addEventListener('pointerup',function(e){finish('pointerup',e);},true);
+  window.addEventListener('pointercancel',function(e){finish('pointercancel',e);},true);
+  /* capture ke #stick terlepas (jari lepas, elemen disembunyikan, dll.) */
+  stick.addEventListener('lostpointercapture',function(e){finish('pointercancel',e);});
+  /* jaga-jaga: hilang fokus/tab disembunyikan/semua jari terangkat -> stick kembali
+     & input joystick game di-nol-kan (pointercancel sintetis ke #stick) */
+  function bail(){
+    if(activePid===null)return;
+    var pid=activePid;
+    activePid=null;
+    syn('pointercancel',{pointerId:pid,pointerType:'touch',isPrimary:true,clientX:0,clientY:0});
+    var k=document.getElementById('knob');
+    if(k)k.style.transform='';
+    home();
+  }
+  function allUp(e){if(activePid!==null&&e.touches&&e.touches.length===0)bail();}
+  window.addEventListener('touchend',allUp,true);
+  window.addEventListener('touchcancel',allUp,true);
+  window.addEventListener('blur',bail,true);
+  document.addEventListener('visibilitychange',function(){if(document.hidden)bail();});
+})();
+</script>
+<script>
+/* v77 — LOBBY: saat tab LOBBY dibuka, tampilkan SEMUA room.
+   Sebelumnya game.js memanggil pembuka lobby dengan mode terakhir ("coop"), sehingga
+   filter #rfMode terkunci di "Co-op" dan room mode lain tersembunyi. Di sini filter
+   dikembalikan ke "Semua mode" tepat setelah handler game selesai (listener di document
+   = fase bubble, berjalan setelah listener #tabs milik game). Hanya nilai filter yang
+   diubah; "mode terpilih" di game tidak disentuh. Masuk lewat kartu CO-OP/PVP/BATTLEGROUND
+   di MAIN tetap memakai filter mode itu. game.js tidak diubah. */
+(function(){
+  var sel=document.getElementById('rfMode'),q=document.getElementById('rfSearch');
+  if(!sel||!q)return;
+  function showAll(){
+    if(sel.value==='all')return;
+    sel.value='all';
+    try{q.dispatchEvent(new Event('input'));}catch(e){}   /* render ulang daftar dgn filter baru */
+  }
+  document.addEventListener('click',function(e){
+    var b=e.target&&e.target.closest?e.target.closest('button[data-tab="lobby"]'):null;
+    if(b)showAll();
+  });
+  document.addEventListener('keydown',function(e){   /* navigasi tab dengan panah kiri/kanan */
+    if(e.key!=='ArrowLeft'&&e.key!=='ArrowRight')return;
+    var a=document.activeElement;
+    if(a&&a.getAttribute&&a.getAttribute('data-tab')==='lobby')showAll();
   });
 })();
 </script>
