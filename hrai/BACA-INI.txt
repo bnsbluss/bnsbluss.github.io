@@ -1,0 +1,17 @@
+HRAI Mobile - paket pasang di Android
+Isi: index.html, sw.js, manifest.webmanifest, icon-192.png, icon-512.png, hrai-cors-proxy.py
+
+PASANG LEWAT GITHUB PAGES (https)
+1. Unggah SEMUA file di folder ini ke repo GitHub (nama index.html jangan diubah).
+2. Settings -> Pages -> Deploy from branch -> main / root.
+3. Buka https://NAMA.github.io/REPO/ di Chrome Android, muat ulang sekali.
+4. Ketuk "Pasang" pada spanduk di atas aplikasi, atau menu titik tiga -> Instal aplikasi.
+5. Tekan lama ikon di layar utama untuk shortcut "Percakapan baru".
+6. Atur -> centang "Notifikasi saat AI selesai" lalu izinkan notifikasi.
+
+PASANG LEWAT TERMUX (localhost)
+  cd folder-ini && python3 -m http.server 8080
+  Buka http://localhost:8080 di Chrome, lalu langkah 4-6 di atas.
+
+Catatan: data (provider, API key, sesi, file) tersimpan per alamat situs. Pindah alamat = pakai Atur -> Cadangan & Pulihkan.
+Service worker hanya untuk pemasangan dan notifikasi; tidak ada mode offline.
