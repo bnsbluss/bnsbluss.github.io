@@ -162,10 +162,10 @@ code,pre,.bt,.bi{font-family:var(--fm)}pre{font-size:13.5px}
 <label>Base URL</label><input type="text" id="su" autocapitalize="off" autocomplete="off" spellcheck="false" inputmode="url">
 <label>Model</label><div style="display:flex;gap:8px"><input type="text" id="sm" autocapitalize="off" style="flex:1;min-width:0"><button class="btn" id="sf" type="button">Ambil</button></div><div id="mz" style="display:none"><input type="text" id="mq" placeholder="Cari model…" autocapitalize="off"><div id="ms" class="sys"></div><div id="ml"></div></div>
 <label>API key (disimpan di perangkat ini saja)</label><input type="password" id="sk" autocomplete="off">
-<label>Proxy CORS (opsional; isi jika muncul "Failed to fetch")</label><input type="text" id="sy" autocapitalize="off" autocomplete="off" spellcheck="false" inputmode="url" placeholder="http://127.0.0.1:8787">
+<label>Proxy CORS (opsional; isi jika muncul "Failed to fetch")</label><input type="text" id="sy" autocapitalize="off" autocomplete="off" spellcheck="false" inputmode="url" placeholder="http://127.0.0.1:8787 atau https://nama.akun.workers.dev/TOKEN">
 <label><input type="checkbox" id="sa"> Setujui otomatis tool tulis/edit (mode BUILD)</label>
 <label><input type="checkbox" id="th"> Tampilkan proses berpikir (/think on · /think off)</label>
-<label><input type="checkbox" id="wk"> Tetap aktif saat layar mati (wake lock + audio senyap)</label>
+<label><input type="checkbox" id="wk"> Tetap aktif saat layar mati (wake lock + beep sekali tiap 5 detik)</label>
 <label><input type="checkbox" id="nt"> Notifikasi saat AI selesai (saat aplikasi di latar)</label>
 <label>Tema (/theme)</label><select id="tm"></select>
 <label>Font (/font)</label><select id="fz"><option value="f4">Terminal F4</option><option value="sys">Sistem</option></select>
@@ -469,8 +469,8 @@ let LT=Date.now(),WL=null,KA=null;
 const isNet=e=>e instanceof TypeError||/network|fetch|terminated|load failed|connection|socket|timeout/i.test(e.message||"")||/^HTTP (429|5\d\d)/.test(e.message||"");
 function keep(on){if(C.wake===false)on=false;
  try{if(on){
-   if(!KA){const n=16000,b=new Uint8Array(44+n),v=new DataView(b.buffer),w=(o,s)=>[...s].forEach((c,i)=>v.setUint8(o+i,c.charCodeAt(0)));
-    w(0,"RIFF");v.setUint32(4,36+n,true);w(8,"WAVEfmt ");v.setUint32(16,16,true);v.setUint16(20,1,true);v.setUint16(22,1,true);v.setUint32(24,8000,true);v.setUint32(28,8000,true);v.setUint16(32,1,true);v.setUint16(34,8,true);w(36,"data");v.setUint32(40,n,true);for(let i=0;i<n;i++)b[44+i]=128+(i&1);
+   if(!KA){const HZ=8000,PER=5,BEEP_HZ=880,BEEP_S=0.25,BEEP_V=70,n=HZ*PER,b=new Uint8Array(44+n),v=new DataView(b.buffer),w=(o,s)=>[...s].forEach((c,i)=>v.setUint8(o+i,c.charCodeAt(0)));
+    w(0,"RIFF");v.setUint32(4,36+n,true);w(8,"WAVEfmt ");v.setUint32(16,16,true);v.setUint16(20,1,true);v.setUint16(22,1,true);v.setUint32(24,HZ,true);v.setUint32(28,HZ,true);v.setUint16(32,1,true);v.setUint16(34,8,true);w(36,"data");v.setUint32(40,n,true);for(let i=0;i<n;i++){const t=i/HZ;b[44+i]=t<BEEP_S?128+Math.round(BEEP_V*Math.sin(2*Math.PI*BEEP_HZ*t)*Math.min(1,t/0.01,(BEEP_S-t)/0.01)):128+(i&1)}
     KA=new Audio(URL.createObjectURL(new Blob([b],{type:"audio/wav"})));KA.loop=true;
     if(navigator.mediaSession&&typeof MediaMetadata!=="undefined")navigator.mediaSession.metadata=new MediaMetadata({title:"HRAI sedang bekerja",artist:"HRAI CODEX"})}
    KA.play().catch(()=>{});
@@ -591,7 +591,7 @@ async function compact(auto){let cut=H.length-8;while(cut>0&&H[cut]&&H[cut].role
 function cmdCtx(a){if(H.length===0)log.innerHTML="";if(!a)return note("Batas konteks: "+fk(C.ctx||128000)+" token (dipakai ≈"+fk(est())+"). Ubah: /ctx 200000");
  const n=/^\d+$/.test(a)?+a:NaN;if(!(n>=8000&&n<=2000000))return note("Format: /ctx ANGKA (8000-2000000)");C.ctx=n;saveC();modeUI();note("Batas konteks: "+fk(n)+" token.")}
 const pf=(p,url,o)=>{o=o||{};if(!p.proxy)return fetch(url,o);return fetch(p.proxy.replace(/\/$/,"")+"/",Object.assign({},o,{headers:Object.assign({},o.headers,{"X-Target-URL":url})},/^https?:\/\/(127\.0\.0\.1|localhost|\[::1\])/.test(p.proxy)?{targetAddressSpace:"loopback"}:{}))};
-const netMsg=()=>navigator.onLine===false?"Tidak ada koneksi internet.":"Server tidak bisa dijangkau atau memblokir akses dari browser (CORS). Isi Proxy CORS di Atur (lihat hrai-cors-proxy.py).";
+const netMsg=()=>navigator.onLine===false?"Tidak ada koneksi internet.":"Server tidak bisa dijangkau atau memblokir akses dari browser (CORS). Isi Proxy CORS di Atur (lihat hrai-proxy.py atau hrai-worker.js).";
 $("#sd").onclick=()=>{const n=sp.value;if(busy())return;if(PL().length<2){alert("Minimal harus ada satu provider.");return}
  if(!confirm("Hapus provider "+n+" beserta API key-nya?"))return;
  if((C.custom||{})[n])delete C.custom[n];else C.hide=(C.hide||[]).concat(n);delete C.p[n];
