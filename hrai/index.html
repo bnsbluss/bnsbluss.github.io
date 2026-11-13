@@ -272,7 +272,7 @@ const MT=()=>C.maxTok||32000,BG=()=>C.budget??8000;
 const oaClean=m=>m.role==="assistant"?{role:"assistant",content:m.content,tool_calls:m.tool_calls}:m.role==="tool"?{role:"tool",tool_call_id:m.tool_call_id,content:m.content}:oaMsg(m);
 async function agent(){
  const p=prov(C.provider);if(!p.key&&p.id!=="ollama"){add("er","API key untuk "+p.id+" belum diisi. Buka Atur.");return}if(!p.model){add("er","Model untuk "+p.id+" belum dipilih. Buka Atur lalu ketuk Ambil.");return}
- ctrl=new AbortController();$("#go").textContent="■";keep(true);let cont=0,done=false,acOK=true,fail=null;const wrote=new Set;
+ ctrl=new AbortController();$("#go").textContent="■";keep(true);let cont=0,done=false,acOK=true,fail=null;const wrote=new Set,tg=mkG("Giliran AI");CG=tg;
  try{for(let step=0;step<40;step++){
   if(acOK&&C.ac!==false&&est()>.85*(C.ctx||128000)){if(!await compact(true))acOK=false}log.querySelectorAll(".ac").forEach(x=>{if(x.dataset.n!=="write"&&x.dataset.n!=="edit")x.remove()});let rt="",over=false,last="",text="",calls=[];TC=0;FR="";SG=new AbortController();ctrl.signal.addEventListener("abort",()=>SG.abort());
   const t0=Date.now(),tk=mkTk(),a=add("a");let raf=0;
@@ -313,12 +313,12 @@ async function agent(){
  if(!done)add("sys","Batas 40 langkah tercapai. Ketik \"lanjut\" untuk meneruskan.");
  wrote.forEach(q=>add("thw",`<button class="btn pvf" data-p="${esc(q).replace(/"/g,"&quot;")}">▶ Pratinjau ${esc(q)}</button>`));
  }catch(e){fail=e.name==="AbortError"?null:(e.message||"error");add("er",esc(e.name==="AbortError"?"Dihentikan.":e instanceof TypeError?netMsg():e.message))}
- log.querySelectorAll(".tk,.ac.run").forEach(x=>x.remove());keep(false);ctrl=null;$("#go").textContent="↑";if(fail)notify("HRAI berhenti",fail);else if(done){const lm=[...H].reverse().find(m=>m.role==="assistant"&&m.content);notify("HRAI selesai",lm?lm.content:"Tugas selesai.")}}
+ log.querySelectorAll(".tk,.ac.run").forEach(x=>x.remove());CG=null;{const n=grpRecs(tg.id).length;if(n>=2)add("thw",`<button class="btn pvf" data-ug="${tg.id}">↩ Batalkan semua perubahan giliran ini (${n} file)</button>`)}keep(false);ctrl=null;$("#go").textContent="↑";if(fail)notify("HRAI berhenti",fail);else if(done){const lm=[...H].reverse().find(m=>m.role==="assistant"&&m.content);notify("HRAI selesai",lm?lm.content:"Tugas selesai.")}}
 
 /* ---- UI ---- */
 $("#go").onclick=()=>{if(ctrl){ctrl.abort();return}let v=$("#in").value.trim();if(!v&&!PA.length&&!PF.length)return;const sm=v.match(/^\/(think|budget|tokens|theme|font|ctx|compact|undo|changes)(?:\s+(.*))?$/i);if(sm){$("#in").value="";$("#in").style.height="";cmdSlash(sm[1].toLowerCase(),(sm[2]||"").trim().toLowerCase());return}$("#in").value="";$("#in").style.height="";if(PF.length)v+=(v?"\n\n":"")+"[File dilampirkan di penyimpanan virtual: "+PF.join(", ")+"]";if(!v)v="Lihat gambar terlampir.";if(H.length===0)log.innerHTML="";const m={role:"user",content:v};if(PA.length){m.images=PA;m.nimg=PA.length}PA=[];PF=[];attUI();H.push(m);saveH();add("u",uHtml(m));agent()};
 $("#mode").onclick=e=>{const m=e.target.dataset.m;if(m){C.mode=m;saveC();modeUI()}};
-log.onclick=e=>{const T=e.target;if(T.dataset.df||T.dataset.ud){const r=UL.find(x=>x.id===T.closest(".ac").dataset.u);if(!r)return;if(T.dataset.ud){if(chApply(r))T.textContent=r.u?"Terapkan ulang":"Batalkan"}else{$("#dm").showModal();chDiff(r.id)}return}const q=e.target.dataset.q;if(q){$("#in").value=q;$("#in").focus();return}const pp=e.target.dataset.p;if(pp){pv(FS()[pp]??"<p>File tidak ditemukan</p>",pp);return}if(e.target.classList.contains("pb")){pv(e.target.parentElement.querySelector("code").textContent);return}if(e.target.classList.contains("cp")){navigator.clipboard?.writeText(e.target.parentElement.querySelector("code").textContent);e.target.textContent="✓"}};
+log.onclick=e=>{const T=e.target;if(T.dataset.ug){const g=T.dataset.ug,n=grpApply(g),rs=grpRecs(g);if(n)T.textContent=rs.every(r=>r.u)?"↻ Terapkan ulang perubahan giliran ini":"↩ Batalkan semua perubahan giliran ini ("+rs.length+" file)";return}if(T.dataset.df||T.dataset.ud){const r=UL.find(x=>x.id===T.closest(".ac").dataset.u);if(!r)return;if(T.dataset.ud){if(chApply(r))T.textContent=r.u?"Terapkan ulang":"Batalkan"}else{$("#dm").showModal();chDiff(r.id)}return}const q=e.target.dataset.q;if(q){$("#in").value=q;$("#in").focus();return}const pp=e.target.dataset.p;if(pp){pv(FS()[pp]??"<p>File tidak ditemukan</p>",pp);return}if(e.target.classList.contains("pb")){pv(e.target.parentElement.querySelector("code").textContent);return}if(e.target.classList.contains("cp")){navigator.clipboard?.writeText(e.target.parentElement.querySelector("code").textContent);e.target.textContent="✓"}};
 const sp=$("#sp");function fillSP(){sp.innerHTML="";PL().forEach(x=>sp.add(new Option(x[0]+((C.custom||{})[x[0]]?" (kustom)":""),x[0])))}fillSP();
 const loadP=()=>{const p=prov(sp.value);$("#su").value=p.url;$("#sm").value=p.model;$("#sk").value=p.key;$("#sy").value=p.proxy||"";$("#sd").style.display="";$("#sr").style.display=(C.hide||[]).length?"":"none";$("#mz").style.display="none";ML=[]};
 sp.onchange=loadP;
@@ -340,11 +340,24 @@ function hist(){const b=$("#hl");b.innerHTML="";const k=Object.values(S).sort((a
   r.querySelector(".st").onclick=()=>openS(x.id);
   r.querySelector("button").onclick=()=>{if(busy()||!confirm("Hapus percakapan ini?"))return;delete S[x.id];if(x.id===cur){cur=null;H=[];LS.removeItem("hrai.cur");draw()}delS(x.id);hist()};
   b.append(r)})}
-function pv(code,t){$("#pf").srcdoc=code;$("#pt").textContent=t||"Pratinjau";$("#dp").showModal()}
+let PVs=null;
+const rp=(base,ref)=>{ref=String(ref||"").split("#")[0].split("?")[0];if(!ref)return"";try{ref=decodeURIComponent(ref)}catch{}const parts=ref[0]==="/"?[]:String(base||"").split("/").slice(0,-1);for(const q of ref.split("/")){if(q===""||q===".")continue;if(q==="..")parts.pop();else parts.push(q)}return parts.join("/")};
+const hasF=(f,p)=>Object.prototype.hasOwnProperty.call(f,p),EXTU=/^([a-z][a-z0-9+.-]*:|\/\/)/i;
+const NAV=function(F){document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[href]");if(!a)return;var h=a.getAttribute("href")||"";if(!h||h.charAt(0)==="#"||/^([a-z][a-z0-9+.-]*:|\/\/)/i.test(h))return;e.preventDefault();parent.postMessage({hrai:"nav",from:F,href:h},"*")},true)};
+/* gabungkan file virtual (CSS, JS, SVG) ke HTML agar pratinjau proyek multi-file jalan */
+function bundle(html,path){const fs=FS(),doc=new DOMParser().parseFromString(html,"text/html"),late=[];
+ doc.querySelectorAll('link[rel~="stylesheet"][href]').forEach(l=>{const h=l.getAttribute("href");if(EXTU.test(h))return;const p=rp(path,h);if(!hasF(fs,p))return;const st=doc.createElement("style");if(l.media)st.media=l.media;st.textContent=fs[p].replace(/<\/style/gi,"<\\/style");l.replaceWith(st)});
+ doc.querySelectorAll("script[src]").forEach(sc=>{const h=sc.getAttribute("src");if(EXTU.test(h))return;const p=rp(path,h);if(!hasF(fs,p))return;const n=doc.createElement("script"),ty=sc.getAttribute("type");if(ty)n.type=ty;n.textContent=fs[p].replace(/<\/script/gi,"<\\/script");if(sc.hasAttribute("defer")&&ty!=="module"){late.push(n);sc.remove()}else sc.replaceWith(n)});
+ late.forEach(n=>doc.body.append(n));
+ doc.querySelectorAll("img[src]").forEach(im=>{const h=im.getAttribute("src");if(EXTU.test(h))return;const p=rp(path,h);if(hasF(fs,p)&&/\.svg$/i.test(p))im.setAttribute("src","data:image/svg+xml;charset=utf-8,"+encodeURIComponent(fs[p]))});
+ const ns=doc.createElement("script");ns.textContent="("+NAV+")("+JSON.stringify(path||"").replace(/</g,"\\u003c")+");";doc.body.append(ns);
+ return(/^\s*<!doctype/i.test(html)?"<!DOCTYPE html>":"")+doc.documentElement.outerHTML}
+function pv(code,t){PVs={code,t};let h;try{h=bundle(code,t)}catch{h=code}$("#pf").srcdoc=h;$("#pt").textContent=t||"Pratinjau";if(!$("#dp").open)$("#dp").showModal()}
+addEventListener("message",e=>{const d=e.data;if(e.source!==$("#pf").contentWindow||!d||d.hrai!=="nav"||typeof d.href!=="string")return;const fs=FS();let p=rp(String(d.from||""),d.href);if(!hasF(fs,p)){const q=(p?p+"/":"")+"index.html";if(hasF(fs,q))p=q;else{$("#pt").textContent="Tidak ditemukan: "+(p||"/");return}}pv(fs[p],p)});
 $("#bh").onclick=()=>{hist();$("#dh").showModal()};
 $("#hn").onclick=newChat;$("#hc").onclick=()=>$("#dh").close();
 $("#pc").onclick=()=>$("#dp").close();
-$("#pr").onclick=()=>{const c=$("#pf").srcdoc;$("#pf").srcdoc="";setTimeout(()=>$("#pf").srcdoc=c,50)};
+$("#pr").onclick=()=>{if(!PVs)return;const f=FS(),c=PVs.t&&hasF(f,PVs.t)?f[PVs.t]:PVs.code;$("#pf").srcdoc="";setTimeout(()=>pv(c,PVs.t),50)};
 $("#dp").onclose=()=>$("#pf").srcdoc="";
 let PA=[],PF=[];
 const jr=function(a,b){if(a==="images"&&Array.isArray(b))return;if(typeof b==="string"&&b.length>20000){if(a==="arguments")return JSON.stringify({catatan:"argumen besar dipotong dari riwayat tersimpan"});if(a==="content"&&this.role==="tool")return b.slice(0,2000)+"\n[…dipotong di riwayat tersimpan; baca ulang file bila perlu]"}return b};
@@ -357,7 +370,8 @@ function attUI(){const b=$("#att");b.innerHTML="";
  PF.forEach((n,i)=>{const d=document.createElement("div");d.className="ch";d.innerHTML=`<span>${esc(n)}</span><button aria-label="Hapus">✕</button>`;d.querySelector("button").onclick=()=>{PF.splice(i,1);attUI()};b.append(d)});
  b.style.display=PA.length||PF.length?"flex":"none"}
 $("#at").onclick=()=>$("#fi").click();
-$("#fi").onchange=async e=>{for(const f of e.target.files){try{if(f.type.startsWith("image/"))PA.push(await shrink(f));else{if(f.size>2e7){alert(f.name+" terlalu besar (maks 20 MB)");continue}const t=await f.text();if(t.includes("\u0000")){alert(f.name+" bukan file teks");continue}const fs=FS();fs[f.name]=t;setFS(fs);PF.push(f.name)}}catch(x){alert(f.name+": "+x.message)}}e.target.value="";attUI()};
+let LG=null;
+$("#fi").onchange=async e=>{LG=null;for(const f of e.target.files){try{if(f.type.startsWith("image/"))PA.push(await shrink(f));else{if(f.size>2e7){alert(f.name+" terlalu besar (maks 20 MB)");continue}const t=await f.text();if(t.includes("\u0000")){alert(f.name+" bukan file teks");continue}const fs=FS();if(hasF(fs,f.name)&&fs[f.name]!==t&&!confirm("File "+f.name+" sudah ada dan akan ditimpa.\nBisa dibatalkan lewat Perubahan (/changes). Lanjutkan?"))continue;rec(f.name,hasF(fs,f.name)?fs[f.name]:null,t,"lampir",LG||(LG=mkG("Lampiran")));fs[f.name]=t;setFS(fs);PF.push(f.name)}}catch(x){alert(f.name+": "+x.message)}}e.target.value="";attUI()};
 $("#bx").onclick=()=>{const k=confirm("Sertakan API key di file backup?\n\nOK = sertakan (simpan file dengan aman)\nBatal = tanpa API key");const cfg=JSON.parse(JSON.stringify(C));if(!k)for(const i in cfg.p)cfg.p[i].key="";const t=new Date(),z=n=>String(n).padStart(2,"0");
  dl(`hrai-backup-${t.getFullYear()}${z(t.getMonth()+1)}${z(t.getDate())}-${z(t.getHours())}${z(t.getMinutes())}.json`,JSON.stringify({app:"hrai-mobile",v:1,ts:t.toISOString(),cfg,sess:S,fs:FS()},jr,1),"application/json")};
 $("#bi").onclick=()=>$("#bj").click();
@@ -402,7 +416,7 @@ function cmdThink(a){if(H.length===0)log.innerHTML="";
  if(["show","last","lihat"].includes(a)){if(!THL)return note("Belum ada pemikiran yang tersimpan.");const d=add("thw",`<details open class="thd"><summary>Pemikiran terakhir</summary><div class="thx"></div></details>`);typeInto(d.querySelector(".thx"),THL);return}
  let v;if(a==="")v=C.think===false;else if(["on","live","full","aktif","nyala"].includes(a))v=true;else if(["off","mati"].includes(a))v=false;else return note("Pakai: /think on · /think off · /think show");
  C.think=v;saveC();$("#th").checked=v;note(v?"Thinking ON: proses berpikir ditampilkan (animasi logo + teks).":"Thinking OFF: proses berpikir disembunyikan.")}
-function cmdSlash(c,a){if(c==="think")return cmdThink(a);if(c==="theme")return cmdTheme(a);if(c==="font")return cmdFont(a);if(c==="ctx")return cmdCtx(a);if(c==="changes"){$("#dm").showModal();return chList()}if(c==="undo"){const r=UL.find(x=>!x.u);if(!r)return note("Tidak ada perubahan untuk dibatalkan.");if(chApply(r))note("Dibatalkan: "+r.p+" ("+r.k+")");return}if(c==="compact"){if(a==="auto"){C.ac=C.ac===false;saveC();return note("Padatkan otomatis: "+(C.ac===false?"mati":"hidup"))}return compact(false)}if(H.length===0)log.innerHTML="";const b=c==="budget";
+function cmdSlash(c,a){if(c==="think")return cmdThink(a);if(c==="theme")return cmdTheme(a);if(c==="font")return cmdFont(a);if(c==="ctx")return cmdCtx(a);if(c==="changes"){$("#dm").showModal();return chList()}if(c==="undo"){const r=UL.find(x=>!x.u);if(!r)return note("Tidak ada perubahan untuk dibatalkan.");if(r.g&&/^(giliran|turn|semua)$/.test(a)){const n=grpApply(r.g);return note(n?"Dibatalkan: "+n+" perubahan ("+(r.gl||"kelompok terakhir")+").":"Tidak ada yang dibatalkan.")}if(chApply(r))note("Dibatalkan: "+r.p+" ("+r.k+")");return}if(c==="compact"){if(a==="auto"){C.ac=C.ac===false;saveC();return note("Padatkan otomatis: "+(C.ac===false?"mati":"hidup"))}return compact(false)}if(H.length===0)log.innerHTML="";const b=c==="budget";
  if(a==="")return note(b?"Batas berpikir: "+(BG()||"tanpa batas")+" token. Ubah: /budget 12000 (0 = tanpa batas)":"Batas output: "+MT()+" token. Ubah: /tokens 32000");
  const n=/^\d+$/.test(a)?+a:NaN;if(!(b?(n===0||n>=500&&n<=200000):(n>=1000&&n<=128000)))return note("Format: /"+c+" ANGKA ("+(b?"500-200000, atau 0 untuk tanpa batas":"1000-128000")+")");
  C[b?"budget":"maxTok"]=n;saveC();note(b?"Batas berpikir: "+(n||"tanpa batas")+" token.":"Batas output: "+n+" token.")}
@@ -470,7 +484,7 @@ const isNet=e=>e instanceof TypeError||/network|fetch|terminated|load failed|con
 function keep(on){if(C.wake===false)on=false;
  try{if(on){
    if(!KA){const HZ=8000,PER=5,BEEP_HZ=880,BEEP_S=0.25,BEEP_V=70,n=HZ*PER,b=new Uint8Array(44+n),v=new DataView(b.buffer),w=(o,s)=>[...s].forEach((c,i)=>v.setUint8(o+i,c.charCodeAt(0)));
-    w(0,"RIFF");v.setUint32(4,36+n,true);w(8,"WAVEfmt ");v.setUint32(16,16,true);v.setUint16(20,1,true);v.setUint16(22,1,true);v.setUint32(24,HZ,true);v.setUint32(28,HZ,true);v.setUint16(32,1,true);v.setUint16(34,8,true);w(36,"data");v.setUint32(40,n,true);for(let i=0;i<n;i++){const t=i/HZ;b[44+i]=t<BEEP_S?128+Math.round(BEEP_V*Math.sin(2*Math.PI*BEEP_HZ*t)*Math.min(1,t/0.01,(BEEP_S-t)/0.01)):128+(i&1)}
+    w(0,"RIFF");v.setUint32(4,36+n,true);w(8,"WAVEfmt ");v.setUint32(16,16,true);v.setUint16(20,1,true);v.setUint16(22,1,true);v.setUint32(24,HZ,true);v.setUint32(28,HZ,true);v.setUint16(32,1,true);v.setUint16(34,8,true);w(36,"data");v.setUint32(40,n,true);for(let i=0;i<n;i++){const t=i/HZ;b[44+i]=t<BEEP_S?128+Math.round(BEEP_V*Math.sin(2*Math.PI*BEEP_HZ*t)*Math.min(1,t/0.01,(BEEP_S-t)/0.01)):128}
     KA=new Audio(URL.createObjectURL(new Blob([b],{type:"audio/wav"})));KA.loop=true;
     if(navigator.mediaSession&&typeof MediaMetadata!=="undefined")navigator.mediaSession.metadata=new MediaMetadata({title:"HRAI sedang bekerja",artist:"HRAI CODEX"})}
    KA.play().catch(()=>{});
@@ -493,7 +507,7 @@ function flushS(){Object.keys(dbS).forEach(id=>{clearTimeout(dbS[id]);doSaveS(id
 const delS=id=>{clearTimeout(dbS[id]);delete dbS[id];if(IDBOK)idbDel("sess",id);else try{LS["hrai.sess"]=JSON.stringify(S,jr)}catch{}};
 document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="hidden")flushS()});addEventListener("pagehide",flushS);
 async function boot(){
- try{const[a,b,u]=await Promise.all([idbAll("files"),idbAll("sess"),idbAll("undo")]);FSC=a;S=b;UL=Object.values(u).sort((x,y)=>y.t-x.t);
+ try{const[a,b,u]=await Promise.all([idbAll("files"),idbAll("sess"),idbAll("undo")]);FSC=a;S=b;UL=Object.values(u).sort((x,y)=>y.t-x.t);RT=UL.length?UL[0].t:0;
   try{const o=JSON.parse(LS["hrai.fs"]||"null");if(o){for(const k in o)if(!(k in FSC)){FSC[k]=o[k];idbPut("files",k,o[k])}LS.removeItem("hrai.fs")}}catch{}
   try{const o=JSON.parse(LS["hrai.sess"]||"null");if(o){for(const k in o)if(!S[k]){S[k]=o[k];idbPut("sess",k,o[k])}LS.removeItem("hrai.sess")}}catch{}
  }catch(e){IDBOK=false;try{FSC=JSON.parse(LS["hrai.fs"]||"{}")}catch{}}
@@ -529,7 +543,7 @@ function fmRen(p){const n=(prompt("Nama/path baru",p)||"").trim().replace(/^\/+/
  for(const k in f){if(k===p)mv[k]=n;else if(k.startsWith(p+"/"))mv[k]=n+k.slice(p.length)}
  if(!Object.keys(mv).length)return;if(Object.values(mv).some(t=>t in f&&!(t in mv))&&!confirm("Ada file bernama sama. Timpa?"))return;
  const g={};for(const k in f)if(!(k in mv))g[k]=f[k];for(const k in mv)g[mv[k]]=f[k];setFS(g);fmList()}
-function fmDel(p){const f=FS(),ks=Object.keys(f).filter(k=>k===p||k.startsWith(p+"/"));if(!confirm("Hapus "+(ks.length>1?ks.length+" file di "+p:p)+"?"))return;ks.forEach(k=>delete f[k]);setFS(f);fmList()}
+function fmDel(p){const f=FS(),ks=Object.keys(f).filter(k=>k===p||k.startsWith(p+"/"));if(!confirm("Hapus "+(ks.length>1?ks.length+" file di "+p:p)+"?\nBisa dibatalkan lewat Perubahan (/changes)."))return;const g=mkG("Hapus "+p);ks.forEach(k=>{rec(k,f[k],null,"hapus",g);delete f[k]});setFS(f);fmList()}
 function fmEdit(path){FMP=path;FMD=false;fmTop();$("#dmt").textContent=path;const t=FS()[path]??"",ext=path.split(".").pop(),b=$("#fmb");
  b.innerHTML='<div class="et"><button class="btn" id="eb">‹ Kembali</button><button class="btn" id="es">Simpan</button><button class="btn" id="ep">Pratinjau</button><button class="btn" id="ed">Unduh</button></div><div class="ed"><pre class="gt"></pre><div class="ew"><pre class="eh"><code></code></pre><textarea class="ei" spellcheck="false" autocapitalize="off" autocomplete="off" wrap="off"></textarea></div></div>';
  const ta=b.querySelector(".ei"),gt=b.querySelector(".gt"),eh=b.querySelector(".eh"),code=eh.querySelector("code"),es=$("#es");ta.value=t;let raf=0;
@@ -537,25 +551,29 @@ function fmEdit(path){FMP=path;FMD=false;fmTop();$("#dmt").textContent=path;cons
  ta.oninput=()=>{FMD=true;if(!raf)raf=requestAnimationFrame(upd)};
  ta.onscroll=()=>{eh.scrollTop=gt.scrollTop=ta.scrollTop;eh.scrollLeft=ta.scrollLeft};
  $("#eb").onclick=()=>{if(FMD&&!confirm("Perubahan belum disimpan. Buang?"))return;fmList()};
- es.onclick=()=>{const f=FS();rec(path,f[path]??null,ta.value,"manual");f[path]=ta.value;setFS(f);FMD=false;upd()};
+ es.onclick=()=>{const f=FS();rec(path,f[path]??null,ta.value,"manual",null);f[path]=ta.value;setFS(f);FMD=false;upd()};
  $("#ep").style.display=/\.html?$/i.test(path)?"":"none";$("#ep").onclick=()=>pv(ta.value,path);
  $("#ed").onclick=()=>dl(path.split("/").pop(),ta.value);upd()}
-$("#fmb").onclick=e=>{const d=e.target.dataset;if(d.ch!==undefined)chList();else if(d.d!==undefined){FMC.has(d.d)?FMC.delete(d.d):FMC.add(d.d);fmList()}else if(d.c!==undefined)chDiff(d.c);else if(d.o!==undefined)fmEdit(d.o);else if(d.r!==undefined)fmRen(d.r);else if(d.x!==undefined)fmDel(d.x)};
+$("#fmb").onclick=e=>{const d=e.target.dataset;if(d.ug!==undefined){grpApply(d.ug);chList()}else if(d.ch!==undefined)chList();else if(d.d!==undefined){FMC.has(d.d)?FMC.delete(d.d):FMC.add(d.d);fmList()}else if(d.c!==undefined)chDiff(d.c);else if(d.o!==undefined)fmEdit(d.o);else if(d.r!==undefined)fmRen(d.r);else if(d.x!==undefined)fmDel(d.x)};
 $("#bf").onclick=()=>{$("#dh").close();fmList();$("#dm").showModal()};
 $("#fmc").onclick=()=>{if(FMD&&!confirm("Perubahan belum disimpan. Tutup?"))return;$("#dm").close()};
 $("#dm").onclose=()=>{FMP=null;FMD=false};
 $("#fmn").onclick=()=>{const n=(prompt("Nama file (boleh dengan folder, mis. src/app.js)")||"").trim().replace(/^\/+/,"");if(!n)return;const f=FS();if(n in f){alert("File sudah ada.");return}f[n]="";setFS(f);fmEdit(n)};
 $("#fmi").onclick=()=>$("#fmf").click();
-$("#fmf").onchange=async e=>{const fl=[...e.target.files];e.target.value="";const f=FS();let n=0,sk=0;
- for(const x of fl){try{if(/\.zip$/i.test(x.name)){const o=await readZip(await x.arrayBuffer());for(const k in o){f[k]=o[k];n++}}else{if(x.size>2e7){sk++;continue}const t=await x.text();if(t.includes("\u0000")){sk++;continue}f[x.name]=t;n++}}catch{sk++}}
+$("#fmf").onchange=async e=>{const fl=[...e.target.files];e.target.value="";const f=FS(),inc={};let sk=0;
+ for(const x of fl){try{if(/\.zip$/i.test(x.name)){const o=await readZip(await x.arrayBuffer());for(const k in o)inc[k]=o[k]}else{if(x.size>2e7){sk++;continue}const t=await x.text();if(t.includes("\u0000")){sk++;continue}inc[x.name]=t}}catch{sk++}}
+ const ow=Object.keys(inc).filter(k=>hasF(f,k)&&f[k]!==inc[k]);if(ow.length&&!confirm(ow.length+" file akan ditimpa: "+ow.slice(0,5).join(", ")+(ow.length>5?", …":"")+"\nBisa dibatalkan lewat Perubahan (/changes). Lanjutkan impor?"))return;
+ const g=mkG("Impor"),n=Object.keys(inc).length;for(const k in inc){rec(k,hasF(f,k)?f[k]:null,inc[k],"impor",g);f[k]=inc[k]}
  setFS(f);fmList();alert("Diimpor: "+n+" file"+(sk?" · dilewati: "+sk+" (biner atau terlalu besar)":""))};
 $("#fmz").onclick=()=>{const f=FS();if(!Object.keys(f).length){alert("Belum ada file.");return}const t=new Date(),z=n=>String(n).padStart(2,"0");dl("hrai-proyek-"+t.getFullYear()+z(t.getMonth()+1)+z(t.getDate())+".zip",mkZip(f),"application/zip")};
-let UL=[];
+let UL=[],CG=null,RT=0;
+const mkG=l=>({id:"g"+Date.now().toString(36)+Math.random().toString(36).slice(2,5),l});
 const fk=n=>n>=1000?(n/1000).toFixed(n<10000?1:0)+"k":String(n);
 const est=()=>Math.round(H.reduce((n,m)=>n+(m.content?m.content.length:0)+(m.tool_calls||[]).reduce((a,t)=>a+t.function.arguments.length+t.function.name.length,0)+(m.images?m.images.length*1500:0),0)/4+SYS().length/4);
-function rec(p,b,a,k){if(b===a)return;const r={id:Date.now().toString(36)+Math.random().toString(36).slice(2,5),p,b,a,k,t:Date.now(),u:false};UL.unshift(r);idbPut("undo",r.id,r);while(UL.length>100){const o=UL.pop();idbDel("undo",o.id)}}
-function chApply(r){const f=FS(),cu=f[r.p]??null,want=r.u?r.a:r.b,exp=r.u?r.b:r.a;
- if(cu!==exp&&!confirm("File sudah berubah sejak edit ini. Tetap lanjut?"))return false;
+function rec(p,b,a,k,g){if(b===a)return;const t=Math.max(Date.now(),RT+1);RT=t;const r={id:t.toString(36)+Math.random().toString(36).slice(2,5),p,b,a,k,t,u:false},G=g===undefined?CG:g;if(G){r.g=G.id;r.gl=G.l}UL.unshift(r);idbPut("undo",r.id,r);
+ const sz=x=>(x.b?x.b.length:0)+(x.a?x.a.length:0);let n=UL.reduce((q,x)=>q+sz(x),0);while(UL.length>1&&(UL.length>400||n>3e7)){const o=UL.pop();n-=sz(o);idbDel("undo",o.id)}}
+function chApply(r,force){const f=FS(),cu=f[r.p]??null,want=r.u?r.a:r.b,exp=r.u?r.b:r.a;
+ if(!force&&cu!==exp&&!confirm("File sudah berubah sejak edit ini. Tetap lanjut?"))return false;
  if(want===null)delete f[r.p];else f[r.p]=want;setFS(f);r.u=!r.u;idbPut("undo",r.id,r);return true}
 function diffLines(a,b){const A=a?a.split("\n"):[],B=b?b.split("\n"):[];let s=0;while(s<A.length&&s<B.length&&A[s]===B[s])s++;let e=0;while(e<A.length-s&&e<B.length-s&&A[A.length-1-e]===B[B.length-1-e])e++;
  const X=A.slice(s,A.length-e),Y=B.slice(s,B.length-e),out=A.slice(0,s).map(t=>[" ",t]);
@@ -568,8 +586,14 @@ function dfHtml(o){let h="",i=0;const E=t=>esc(t)||" ";
   let j=i;while(j<o.length&&o[j][0]===" ")j++;const n=j-i,sh=(a,z)=>{for(let k=a;k<z;k++)h+=`<div class="dc">  ${E(o[k][1])}</div>`};
   if(n>8){sh(i,i+3);h+=`<div class="dk">⋯ ${n-6} baris sama</div>`;sh(j-3,j)}else sh(i,j);i=j}
  return h||'<p class="sys" style="padding:14px">Tidak ada perbedaan.</p>'}
+const grpRecs=g=>UL.filter(r=>r.g===g);
+function grpRun(seq,verb){const f=FS();let bad=0;for(const r of seq){const cu=f[r.p]??null,exp=r.u?r.b:r.a,want=r.u?r.a:r.b;if(cu!==exp)bad++;if(want===null)delete f[r.p];else f[r.p]=want}
+ if(bad&&!confirm(bad+" file sudah berubah setelah langkah ini. "+verb+" semua tetap dilanjutkan?"))return 0;let n=0;for(const r of seq)if(chApply(r,true))n++;return n}
+function grpApply(g){const rs=grpRecs(g);if(!rs.length)return 0;return rs.every(r=>r.u)?grpRun([...rs].reverse(),"Terapkan ulang"):grpRun(rs.filter(r=>!r.u),"Batalkan")}
 function chList(){FMP="*";FMD=false;fmTop();$("#dmt").textContent="Perubahan";
- $("#fmb").innerHTML='<div class="et"><button class="btn" id="cb">‹ Kembali</button></div>'+(UL.map(r=>`<div class="fr"><span class="fn" data-c="${r.id}">${esc(r.p)}</span><span class="fs" data-c="${r.id}">${r.k} · ${new Date(r.t).toLocaleTimeString("id-ID",{hour:"2-digit",minute:"2-digit"})}${r.u?" · dibatalkan":""}</span></div>`).join("")||'<p class="sys" style="padding:14px">Belum ada perubahan.</p>');
+ const cnt={};UL.forEach(r=>{if(r.g)cnt[r.g]=(cnt[r.g]||0)+1});let lg=null;
+ $("#fmb").innerHTML='<div class="et"><button class="btn" id="cb">‹ Kembali</button></div>'+(UL.map(r=>{let h="";const grp=r.g&&cnt[r.g]>1;if(grp&&r.g!==lg)h=`<div class="fr" style="background:var(--panel)"><span class="fn"><b>${esc(r.gl||"Perubahan")}</b> · ${cnt[r.g]} file · ${new Date(r.t).toLocaleTimeString("id-ID",{hour:"2-digit",minute:"2-digit"})}</span><button class="ib" data-ug="${r.g}">${grpRecs(r.g).every(x=>x.u)?"Terapkan ulang semua":"Batalkan semua"}</button></div>`;lg=r.g||null;
+  return h+`<div class="fr"${grp?' style="padding-left:24px"':""}><span class="fn" data-c="${r.id}">${esc(r.p)}</span><span class="fs" data-c="${r.id}">${esc(r.k)} · ${new Date(r.t).toLocaleTimeString("id-ID",{hour:"2-digit",minute:"2-digit"})}${r.u?" · dibatalkan":""}</span></div>`}).join("")||'<p class="sys" style="padding:14px">Belum ada perubahan.</p>');
  $("#cb").onclick=fmList}
 function chDiff(id){const r=UL.find(x=>x.id===id);if(!r)return;FMP="*";fmTop();$("#dmt").textContent=r.p;const o=diffLines(r.b??"",r.a);
  $("#fmb").innerHTML=`<div class="et"><button class="btn" id="cb">‹ Kembali</button><button class="btn" id="cu">${r.u?"Terapkan ulang":"Batalkan"}</button><span class="sys" style="align-self:center">+${o.filter(x=>x[0]==="+").length} −${o.filter(x=>x[0]==="-").length}</span></div><div class="df">${dfHtml(o)}</div>`;
