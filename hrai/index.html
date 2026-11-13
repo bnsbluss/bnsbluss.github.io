@@ -226,11 +226,11 @@ const T_GM=TL.map(([n,d,p])=>({name:n,description:d,parameters:sch(p)}));
 const EXE={
  list:()=>Object.entries(FS()).map(([k,v])=>k+"  ("+v.split("\n").length+" baris, "+(v.length/1024).toFixed(1)+" KB)").join("\n")||"(kosong)",
  read:a=>{const f=FS();if(!(a.path in f))return "ERROR: file tidak ada. File tersedia: "+(Object.keys(f).join(", ")||"(kosong)");const v=f[a.path];return "["+a.path+" · "+v.split("\n").length+" baris · "+(v.length/1024).toFixed(1)+" KB · isi LENGKAP, tidak terpotong]\n"+v},
- write:a=>{const f=FS();rec(a.path,f[a.path]??null,a.content,"write");f[a.path]=a.content;setFS(f);return "OK ditulis "+a.path+" ("+a.content.length+" karakter)"},
+ write:a=>{if(typeof a.path!=="string"||!a.path||typeof a.content!=="string")return"ERROR write butuh path dan content berupa teks.";if(a.content.startsWith("[isi file ada di penyimpanan virtual"))return"DITOLAK: itu hanya penanda riwayat, bukan isi file. Gunakan read untuk melihat isi asli lalu edit, atau tulis isi lengkap yang sebenarnya.";const f=FS();rec(a.path,f[a.path]??null,a.content,"write");f[a.path]=a.content;setFS(f);return "OK ditulis "+a.path+" ("+a.content.length+" karakter)"},
  edit:a=>{const f=FS(),s=f[a.path];if(s==null)return "ERROR: file tidak ada";const n=s.split(a.old).length-1;if(n!==1)return "ERROR: teks lama ditemukan "+n+"x (harus tepat 1x)";f[a.path]=s.replace(a.old,()=>a.new);setFS(f);rec(a.path,s,f[a.path],"edit");return "OK diedit "+a.path},
  grep:a=>Object.entries(FS()).flatMap(([k,v])=>v.split("\n").map((l,i)=>l.includes(a.pattern)?k+":"+(i+1)+": "+l:null).filter(Boolean)).join("\n")||"(tidak ada hasil)"
 };
-const SYS=()=>"Kamu HRAI, asisten coding di HP. Jawab ringkas dalam bahasa Indonesia. Kamu hanya punya penyimpanan file virtual di browser (tool list/read/write/edit/grep); TIDAK ada shell atau internet. Pengguna bisa melihat pratinjau file .html yang kamu tulis (buat satu file mandiri; localStorage tidak tersedia di pratinjau). File yang dilampirkan pengguna otomatis ada di penyimpanan virtual; gunakan read. Untuk file besar, tulis bertahap (kerangka dulu, lalu tambah per bagian dengan edit). Tool read selalu mengembalikan isi file LENGKAP dalam satu panggilan: baca file utuh sekali saja, jangan membaca per potongan dan jangan menelusuri file dengan grep berulang jika bisa dibaca utuh.\n"+(C.mode==="PLAN"?"MODE AKTIF: PLAN. Hanya baca dan susun rencana bertahap; jangan menulis/mengedit file.":"MODE AKTIF: BUILD. Eksekusi penuh: tulis dan edit file sesuai kebutuhan, lalu ringkas hasilnya. Jika ada rencana dari mode PLAN di percakapan, jalankan tahap demi tahap.");
+const SYS=()=>"Kamu HRAI, asisten coding di HP. Jawab ringkas dalam bahasa Indonesia. Kamu hanya punya penyimpanan file virtual di browser (tool list/read/write/edit/grep); TIDAK ada shell atau internet. Pengguna bisa melihat pratinjau file .html yang kamu tulis (buat satu file mandiri; localStorage tidak tersedia di pratinjau). File yang dilampirkan pengguna otomatis ada di penyimpanan virtual; gunakan read. Untuk file besar, tulis bertahap (kerangka dulu, lalu tambah per bagian dengan edit). Tool read selalu mengembalikan isi file LENGKAP dalam satu panggilan: baca file utuh sekali saja, jangan membaca per potongan dan jangan menelusuri file dengan grep berulang jika bisa dibaca utuh.\n"+(C.mode==="PLAN"?"MODE AKTIF: PLAN. Hanya baca dan susun rencana bertahap; jangan menulis/mengedit file.":"MODE AKTIF: BUILD. Eksekusi penuh: tulis dan edit file sesuai kebutuhan, lalu ringkas hasilnya. Jika ada rencana dari mode PLAN di percakapan, jalankan tahap demi tahap.")+fsNote();
 
 /* ---- render ---- */
 const esc=s=>s.replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
@@ -274,7 +274,7 @@ async function agent(){
  const p=prov(C.provider);if(!p.key&&p.id!=="ollama"){add("er","API key untuk "+p.id+" belum diisi. Buka Atur.");return}if(!p.model){add("er","Model untuk "+p.id+" belum dipilih. Buka Atur lalu ketuk Ambil.");return}
  ctrl=new AbortController();$("#go").textContent="■";keep(true);let cont=0,done=false,acOK=true,fail=null;const wrote=new Set,tg=mkG("Giliran AI");CG=tg;
  try{for(let step=0;step<40;step++){
-  if(acOK&&C.ac!==false&&est()>.85*(C.ctx||128000)){if(!await compact(true))acOK=false}log.querySelectorAll(".ac").forEach(x=>{if(x.dataset.n!=="write"&&x.dataset.n!=="edit")x.remove()});let rt="",over=false,last="",text="",calls=[];TC=0;FR="";SG=new AbortController();ctrl.signal.addEventListener("abort",()=>SG.abort());
+  if(acOK&&C.ac!==false&&est()>.85*(C.ctx||128000)){const cr=await compact(true);if(cr===false)acOK=false}log.querySelectorAll(".ac").forEach(x=>{if(x.dataset.n!=="write"&&x.dataset.n!=="edit")x.remove()});let rt="",over=false,last="",text="",calls=[];TC=0;FR="";SG=new AbortController();ctrl.signal.addEventListener("abort",()=>SG.abort());
   const t0=Date.now(),tk=mkTk(),a=add("a");let raf=0;
   const onT=t=>{got=true;last=t;endTk(tk,rt,t0);if(!raf)raf=requestAnimationFrame(()=>{raf=0;a.innerHTML=md(last);log.scrollTop=log.scrollHeight})};
   const onR=t=>{got=true;rt+=t;if(C.think!==false)tk.querySelector(".tt").textContent=rt.slice(-260);log.scrollTop=log.scrollHeight;if(BG()&&!last&&!TC&&rt.length/4>=BG()){over=true;SG.abort()}};
@@ -602,15 +602,47 @@ async function oneShot(p,text){const u=p.url.replace(/\/$/,"");let r,j;
  if(p.type==="anthropic"){r=await pf(p,u+"/messages",{method:"POST",headers:{"Content-Type":"application/json","x-api-key":p.key,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},body:JSON.stringify({model:p.model,max_tokens:4000,messages:[{role:"user",content:text}]})});await chk(r);j=await r.json();return(j.content||[]).map(x=>x.text||"").join("")}
  if(p.type==="gemini"){r=await pf(p,u+"/models/"+p.model+":generateContent?key="+encodeURIComponent(p.key),{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({contents:[{role:"user",parts:[{text}]}],generationConfig:{maxOutputTokens:4000}})});await chk(r);j=await r.json();return(j.candidates?.[0]?.content?.parts||[]).map(x=>x.text||"").join("")}
  r=await pf(p,u+"/chat/completions",{method:"POST",headers:{"Content-Type":"application/json",Authorization:"Bearer "+p.key},body:JSON.stringify({model:p.model,max_tokens:4000,messages:[{role:"user",content:text}]})});await chk(r);j=await r.json();return j.choices?.[0]?.message?.content||""}
-async function compact(auto){let cut=H.length-8;while(cut>0&&H[cut]&&H[cut].role==="tool")cut--;
- if(cut<2){if(!auto)note("Riwayat masih pendek, belum perlu dipadatkan.");return false}
+const STUB="[isi file ada di penyimpanan virtual; gunakan read untuk melihatnya]";
+/* Rampingkan riwayat lama TANPA model: isi file (argumen write/edit, hasil read) dilepas dari percakapan
+   karena sudah tersimpan di penyimpanan virtual. Tidak ada informasi yang hilang. */
+function slim(keep){const end=Math.max(0,H.length-keep);let ch=0;
+ for(let i=0;i<end;i++){const m=H[i];if(m.slim)continue;
+  if(m.role==="assistant"&&m.tool_calls){let did=false;
+   for(const t of m.tool_calls){let a;try{a=JSON.parse(t.function.arguments)}catch{continue}let c=false;
+    if(t.function.name==="write"&&typeof a.content==="string"&&a.content.length>200){a.content=STUB;c=true}
+    if(t.function.name==="edit")for(const k of["old","new"])if(typeof a[k]==="string"&&a[k].length>300){a[k]=a[k].slice(0,120)+"…[dipotong]";c=true}
+    if(c){t.function.arguments=JSON.stringify(a);did=true}}
+   if(did){m.slim=1;ch++}}
+  else if(m.role==="tool"&&typeof m.content==="string"&&m.content.length>1500){m.content=m.content.slice(0,300)+"\n[…dipotong dari konteks; panggil read atau grep lagi jika perlu]";m.slim=1;ch++}}
+ if(ch)saveH();return ch}
+/* daftar file NYATA + aturan, dibuat kode (bukan model) dan selalu terkini; dipasang di prompt sistem setelah riwayat dipadatkan */
+function fsNote(){if(!H.some(m=>m.sum||m.slim))return"";let f;try{f=FS()}catch{return""}const ks=Object.keys(f).sort();
+ const L=ks.slice(0,80).map(k=>{const t=f[k]||"";return"- "+k+" · "+(t.length<2e5?t.split("\n").length+" baris · ":"")+t.length+" karakter"}).join("\n");
+ return"\n\nSTATUS PENYIMPANAN VIRTUAL (terkini). Sebagian riwayat lama sudah dipadatkan, jadi isi file lama TIDAK lagi ada di percakapan:\n"+(L||"(kosong)")+(ks.length>80?"\n… dan "+(ks.length-80)+" file lain (pakai list)":"")+"\nATURAN: file pada daftar ini SUDAH ADA. Jangan menulis ulang (write) file yang sudah selesai. Untuk melanjutkan atau mengubah: read dulu (baca utuh sekali), lalu edit bagian yang perlu. Gunakan write hanya untuk file baru atau bila pengguna meminta menulis ulang. Teks '[isi file ada di penyimpanan virtual…]' di riwayat hanya penanda; jangan pernah menulisnya ke dalam file."}
+/* hasil: true = berhasil, "short" = tidak ada yang bisa dipadatkan (BUKAN kegagalan), false = gagal */
+async function compact(auto){const lim=C.ctx||128000,before=est();let cut=H.length-8;while(cut>0&&H[cut]&&H[cut].role==="tool")cut--;
+ if(!auto){if(cut<2){note("Riwayat masih pendek, belum perlu dipadatkan.");return"short"}
+  const p0=prov(C.provider);if(!p0.key||!p0.model){note("Isi API key dan model dulu.");return false}
+  if(!confirm("Padatkan "+cut+" pesan lama menjadi ringkasan?"))return false}
+ let sl=slim(8);
+ if(auto&&sl&&est()<=.7*lim){note("Konteks dirampingkan tanpa ringkasan: isi file lama dilepas dari riwayat (file tetap ada di penyimpanan). ≈"+fk(before)+" → ≈"+fk(est())+" token.");return true}
+ if(cut<2){if(est()>.7*lim)sl+=slim(2);
+  if(sl){note("Konteks dirampingkan: isi file lama dilepas dari riwayat (file tetap ada di penyimpanan). ≈"+fk(before)+" → ≈"+fk(est())+" token.");return true}
+  return"short"}
  const p=prov(C.provider);if(!p.key||!p.model){if(!auto)note("Isi API key dan model dulu.");return false}
- if(!auto&&!confirm("Padatkan "+cut+" pesan lama menjadi ringkasan?"))return false;
- const before=est(),tx=H.slice(0,cut).map(m=>m.sum?"RINGKASAN SEBELUMNYA: "+m.content:m.role==="user"?"USER: "+(m.content||"").slice(0,1500):m.role==="assistant"?"ASISTEN: "+(m.content||"").slice(0,1500)+(m.tool_calls||[]).map(t=>"\n[tool "+t.function.name+" "+t.function.arguments.slice(0,200)+"]").join(""):"HASIL TOOL: "+String(m.content).slice(0,300)).join("\n").slice(-60000);
+ const fm=m=>{if(m.sum)return"RINGKASAN SEBELUMNYA: "+m.content;if(m.role==="user")return"USER: "+(m.content||"").slice(0,2500);
+  if(m.role==="assistant")return"ASISTEN: "+(m.content||"").slice(0,1500)+(m.tool_calls||[]).map(t=>{let a={};try{a=JSON.parse(t.function.arguments)}catch{}const n=t.function.name;
+   if(n==="write")return"\n[write "+(a.path||"?")+(typeof a.content==="string"&&a.content!==STUB?" ("+a.content.length+" karakter)":"")+"]";
+   if(n==="edit"||n==="read")return"\n["+n+" "+(a.path||"?")+"]";
+   return"\n[tool "+n+" "+String(t.function.arguments).slice(0,200)+"]"}).join("");
+  return"HASIL TOOL: "+String(m.content).slice(0,300)};
+ const parts=H.slice(0,cut).map(fm),head=parts[0],rest=parts.slice(1).join("\n"),TX=60000;
+ const tx=head.length+rest.length+1<=TX?[head,rest].join("\n"):head+"\n[… bagian tengah dipotong …]\n"+rest.slice(-(TX-head.length-40));
  const w=add("tk",`${SPARK}<div class="tl"><div class="tr"><b class="shim">Memadatkan konteks…</b></div></div>`);
- try{const sum=await oneShot(p,"Ringkas percakapan agen coding berikut dalam bahasa Indonesia, maksimal 600 kata. Pertahankan: tujuan pengguna, keputusan penting, daftar file yang dibuat/diubah (path persis) beserta statusnya, masalah yang belum selesai, dan preferensi pengguna. Jangan menyalin kode panjang.\n\n"+tx);
+ try{const sum=await oneShot(p,"Ringkas percakapan agen coding berikut dalam bahasa Indonesia, maksimal 600 kata. Pertahankan: tujuan pengguna (permintaan awal), keputusan penting, preferensi pengguna, tiap file yang dibuat/diubah (path persis) beserta statusnya (selesai / sebagian / belum) menurut hasil tool, masalah yang belum selesai, dan LANGKAH BERIKUTNYA yang belum dikerjakan. Jangan menyalin kode. Daftar file terkini ditambahkan otomatis oleh sistem.\n\n"+tx);
   if(!sum.trim())throw new Error("ringkasan kosong");
-  H=[{role:"user",content:"[Ringkasan percakapan sebelumnya]\n"+sum.trim(),sum:true},...H.slice(cut)];saveH();draw();note("Konteks dipadatkan: ≈"+fk(before)+" → ≈"+fk(est())+" token.");return true}
+  H=[{role:"user",content:"[Ringkasan percakapan sebelumnya]\n"+sum.trim()+"\n\n[Catatan sistem] Daftar file terkini ada di prompt sistem. Jangan menulis ulang file yang sudah ada; gunakan read lalu edit.",sum:true},...H.slice(cut)];
+  if(est()>.7*lim)slim(2);saveH();draw();note("Konteks dipadatkan: ≈"+fk(before)+" → ≈"+fk(est())+" token.");return true}
  catch(e){note("Gagal memadatkan: "+(e.message||e));return false}finally{w.remove()}}
 function cmdCtx(a){if(H.length===0)log.innerHTML="";if(!a)return note("Batas konteks: "+fk(C.ctx||128000)+" token (dipakai ≈"+fk(est())+"). Ubah: /ctx 200000");
  const n=/^\d+$/.test(a)?+a:NaN;if(!(n>=8000&&n<=2000000))return note("Format: /ctx ANGKA (8000-2000000)");C.ctx=n;saveC();modeUI();note("Batas konteks: "+fk(n)+" token.")}
