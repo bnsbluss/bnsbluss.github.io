@@ -423,12 +423,21 @@ async function agent(){
   const cards={};let rafC=0,pc=null;const onC=cs=>{got=true;pc=cs;endTk(tk,rt,t0);if(!rafC)rafC=requestAnimationFrame(()=>{rafC=0;pc.forEach((c,k)=>{if(!c||!c.name)return;const d=cards[k]||(cards[k]=newCard(c.name));d.dataset.live=1;fillCard(d,c.name,pj(c.args||""),true)})})};
   const f=p.type==="anthropic"?callAN:p.type==="gemini"?callGM:callOA;
   let stall=false,got=false;const wd=setInterval(()=>{if(p.type!=="gemini"&&document.visibilityState==="visible"&&Date.now()-LT>120000&&!over){stall=true;SG.abort()}},5000);
-  try{for(let tr=0;;tr++){try{LT=Date.now();({text,calls}=await f(p,SYS(),onT,onR,onC));break}catch(e){
-   if(over){text=last;calls=[];break}if(ctrl.signal.aborted)throw e;if(!(stall||isNet(e))||tr>=6||(e instanceof TypeError&&!got&&tr>=1))throw e;stall=false;
-   add("sys",esc("Koneksi terputus ("+String(e.message||e.name).slice(0,60)+"). Menyambung ulang ("+(tr+1)+"/6)…"));
-   rt="";last="";text="";calls=[];got=false;Object.values(cards).forEach(x=>x.remove());for(const k in cards)delete cards[k];a.innerHTML="";tk.style.display="";tk.querySelector(".tt").textContent="";
-   if(navigator.onLine===false)await new Promise(r=>{addEventListener("online",r,{once:true});setTimeout(r,60000)});
-   await sleep(Math.min(20000,1500*2**tr));if(ctrl.signal.aborted)throw e;TC=0;FR="";SG=new AbortController();ctrl.signal.addEventListener("abort",()=>SG.abort())}}}finally{clearInterval(wd)}
+  const resetSt=()=>{rt="";last="";text="";calls=[];got=false;Object.values(cards).forEach(x=>x.remove());for(const k in cards)delete cards[k];a.innerHTML="";tk.style.display="";tk.querySelector(".tt").textContent=""};
+  let ib=0;
+  try{for(let tr=0;;tr++){try{LT=Date.now();RQ0=LT;({text,calls}=await f(p,SYS(),onT,onR,onC));break}catch(e){
+   if(over){text=last;calls=[];break}if(ctrl.signal.aborted)throw e;if(!(stall||isNet(e)))throw e;
+   const intr=document.visibilityState!=="visible"||HID_AT>=RQ0;
+   if(intr&&ib<60){ib++;tr--;stall=false;
+    if(document.visibilityState!=="visible")notify("HRAI menunggu","Koneksi terputus saat layar dikunci atau aplikasi di latar. Buka HRAI untuk melanjutkan.");
+    add("sys",esc("Koneksi terputus karena layar dikunci atau aplikasi di latar. Dilanjutkan otomatis saat HRAI aktif lagi…"));
+    resetSt();await waitVisible(ctrl.signal);if(ctrl.signal.aborted)throw e;await sleep(800)}
+   else{if(tr>=6||(e instanceof TypeError&&!got&&tr>=1&&!OKU[okKey(p)]))throw e;stall=false;
+    add("sys",esc("Koneksi terputus ("+String(e.message||e.name).slice(0,60)+"). Menyambung ulang ("+(tr+1)+"/6)…"));
+    resetSt();
+    if(navigator.onLine===false)await new Promise(r=>{addEventListener("online",r,{once:true});setTimeout(r,60000)});
+    await sleep(Math.min(20000,1500*2**tr))}
+   if(ctrl.signal.aborted)throw e;TC=0;FR="";SG=new AbortController();ctrl.signal.addEventListener("abort",()=>SG.abort())}}}finally{clearInterval(wd)}
   a.innerHTML=md(text);if(!text)a.remove();
   const why=over?"budget":TRUNC.test(FR)?"length":!calls.length&&!text.trim()?"empty":"";
   if(why||calls.length)tk.remove();else endTk(tk,rt,t0,true);
@@ -454,7 +463,7 @@ async function agent(){
  }
  if(!done)add("sys","Batas 40 langkah tercapai. Ketik \"lanjut\" untuk meneruskan.");
  wrote.forEach(q=>add("thw",`<button class="btn pvf" data-p="${esc(q).replace(/"/g,"&quot;")}">▶ Pratinjau ${esc(q)}</button>`));wroteSvg.forEach(q=>{const f=FS();if(hasF(f,q))add("svgw",svgCard(f[q],q.split("/").pop()))});
- }catch(e){fail=e.name==="AbortError"?null:(e.message||"error");add("er",esc(e.name==="AbortError"?"Dihentikan.":e instanceof TypeError?netMsg():e.message))}
+ }catch(e){const nm=e.name!=="AbortError"&&e instanceof TypeError?await netWhy(p):null;fail=e.name==="AbortError"?null:(nm||e.message||"error");add("er",esc(e.name==="AbortError"?"Dihentikan.":nm||e.message))}
  log.querySelectorAll(".tk,.ac.run").forEach(x=>x.remove());CG=null;{const n=grpRecs(tg.id).length;if(n>=2)add("thw",`<button class="btn pvf" data-ug="${tg.id}">↩ Batalkan semua perubahan giliran ini (${n} file)</button>`)}keep(false);ctrl=null;$("#go").textContent="↑";if(fail)notify("HRAI berhenti",fail);else if(done){const lm=[...H].reverse().find(m=>m.role==="assistant"&&m.content);if(!notify("HRAI selesai",lm?lm.content:"Tugas selesai."))chime()}}
 
 /* ---- UI ---- */
@@ -539,7 +548,7 @@ async function fetchModels(){const P=Object.assign({},prov(sp.value),{proxy:$("#
   const j=await r.json(),a=Array.isArray(j)?j:j.data||j.models;if(!Array.isArray(a))throw new Error("Format /models tidak dikenal");
   ML=a.filter(x=>t!=="gemini"||!x.supportedGenerationMethods||x.supportedGenerationMethods.includes("generateContent")).map(x=>typeof x==="string"?x:t==="gemini"?String(x.name||"").replace(/^models\//,""):x.id).filter(Boolean).sort((x,y)=>x.toLowerCase()<y.toLowerCase()?-1:1);
   $("#mq").value="";showML();if(!ML.length)$("#ms").textContent="Server tidak mengembalikan model."}
- catch(e){$("#ms").textContent=e instanceof TypeError?netMsg():"Gagal: "+e.message}
+ catch(e){$("#ms").textContent=e instanceof TypeError?await netWhy(P):"Gagal: "+e.message}
  b.disabled=false;b.textContent="Ambil"}
 $("#sf").onclick=fetchModels;$("#mq").oninput=showML;
 $("#sn").onclick=()=>{["nn","nu","nm","nk"].forEach(i=>$("#"+i).value="");$("#ntp").value="openai";$("#dn").showModal()};
@@ -624,17 +633,20 @@ function finCard(d,n,a,res){const ok=/^OK/.test(res),sp=d.querySelector(".sp");d
  fillCard(d,n,a,false);if(!ok)d.querySelector(".av").textContent=/^DITOLAK/.test(res)?"Ditolak":"Gagal";
  if(n!=="write"&&n!=="edit")setTimeout(()=>d.remove(),450)}
 async function typeCard(d,n,a){const k=n==="write"?"content":"new",b=a[k]||"",st=Math.max(4,Math.ceil(b.length/70));for(let i=st;i<b.length;i+=st){fillCard(d,n,Object.assign({},a,{[k]:b.slice(0,i)}),true);await sleep(16)}}
-let LT=Date.now(),WL=null,KA=null;
+let LT=Date.now(),WL=null,KA=null,WLK=null,WLKR=null,HID_AT=0,RQ0=0;
+document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="hidden")HID_AT=Date.now()});
 const isNet=e=>e instanceof TypeError||/network|fetch|terminated|load failed|connection|socket|timeout/i.test(e.message||"")||/^HTTP (429|5\d\d)/.test(e.message||"");
 function keep(on){if(C.wake===false)on=false;
  try{if(on){
-   if(!KA){const HZ=8000,n=HZ*2,b=new Uint8Array(44+n),v=new DataView(b.buffer),w=(o,s)=>[...s].forEach((c,i)=>v.setUint8(o+i,c.charCodeAt(0)));
-    w(0,"RIFF");v.setUint32(4,36+n,true);w(8,"WAVEfmt ");v.setUint32(16,16,true);v.setUint16(20,1,true);v.setUint16(22,1,true);v.setUint32(24,HZ,true);v.setUint32(28,HZ,true);v.setUint16(32,1,true);v.setUint16(34,8,true);w(36,"data");v.setUint32(40,n,true);b.fill(128,44)
+   if(!KA){const HZ=8000,n=HZ*2,b=new Uint8Array(44+n*2),v=new DataView(b.buffer),w=(o,s)=>[...s].forEach((c,i)=>v.setUint8(o+i,c.charCodeAt(0)));
+    /* 25 Hz sangat pelan (~-50 dBFS): tak terdengar di speaker HP, tetapi Chrome tetap menganggap ada audio yang diputar sehingga halaman tidak dibekukan */
+    w(0,"RIFF");v.setUint32(4,36+n*2,true);w(8,"WAVEfmt ");v.setUint32(16,16,true);v.setUint16(20,1,true);v.setUint16(22,1,true);v.setUint32(24,HZ,true);v.setUint32(28,HZ*2,true);v.setUint16(32,2,true);v.setUint16(34,16,true);w(36,"data");v.setUint32(40,n*2,true);for(let i=0;i<n;i++)v.setInt16(44+i*2,Math.round(110*Math.sin(2*Math.PI*25*i/HZ)),true)
     KA=new Audio(URL.createObjectURL(new Blob([b],{type:"audio/wav"})));KA.loop=true;
     if(navigator.mediaSession&&typeof MediaMetadata!=="undefined")navigator.mediaSession.metadata=new MediaMetadata({title:"HRAI sedang bekerja",artist:"HRAI CODEX"})}
    KA.play().catch(()=>{});
+   if(navigator.locks&&!WLK){WLK=new Promise(res=>{WLKR=res});navigator.locks.request("hrai-kerja",()=>WLK).catch(()=>{})}
    if(navigator.wakeLock&&!WL)navigator.wakeLock.request("screen").then(l=>{WL=l;l.addEventListener("release",()=>{if(WL===l)WL=null})}).catch(()=>{})
-  }else{if(KA)KA.pause();if(WL){WL.release().catch(()=>{});WL=null}}}catch{}}
+  }else{if(KA)KA.pause();if(WL){WL.release().catch(()=>{});WL=null}if(WLKR){WLKR();WLK=null;WLKR=null}}}catch{}}
 document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"){LT=Date.now();if(ctrl)keep(true)}});
 const DB=(()=>{try{return new Promise((ok,no)=>{const r=indexedDB.open("hrai",2);r.onupgradeneeded=()=>{for(const n of["files","sess","undo"])if(!r.result.objectStoreNames.contains(n))r.result.createObjectStore(n)};r.onsuccess=()=>ok(r.result);r.onerror=()=>no(r.error);r.onblocked=()=>no(new Error("blocked"))})}catch(e){return Promise.reject(e)}})();DB.catch(()=>{});
 let warned=false;const idbErr=e=>{if(!warned){warned=true;alert("Gagal menyimpan ke penyimpanan browser: "+((e&&e.name)||"error")+". Ekspor backup lebih dulu.")}};
@@ -795,7 +807,17 @@ async function compact(auto){const lim=C.ctx||128000,before=est();let cut=H.leng
  catch(e){note("Gagal memadatkan: "+(e.message||e));return false}finally{w.remove()}}
 function cmdCtx(a){if(H.length===0)log.innerHTML="";if(!a)return note("Batas konteks: "+fk(C.ctx||128000)+" token (dipakai ≈"+fk(est())+"). Ubah: /ctx 200000");
  const n=/^\d+$/.test(a)?+a:NaN;if(!(n>=8000&&n<=2000000))return note("Format: /ctx ANGKA (8000-2000000)");C.ctx=n;saveC();modeUI();note("Batas konteks: "+fk(n)+" token.")}
-const pf=(p,url,o)=>{o=o||{};if(!p.proxy)return fetch(url,o);return fetch(p.proxy.replace(/\/$/,"")+"/",Object.assign({},o,{headers:Object.assign({},o.headers,{"X-Target-URL":url})},/^https?:\/\/(127\.0\.0\.1|localhost|\[::1\])/.test(p.proxy)?{targetAddressSpace:"loopback"}:{}))};
+const OKU={},okKey=p=>{if(p.proxy)return p.proxy;try{return new URL(p.url).origin}catch{return""}};
+const pf=(p,url,o)=>{o=o||{};const mark=r=>{try{OKU[p.proxy||new URL(url).origin]=1}catch{}return r};if(!p.proxy)return fetch(url,o).then(mark);return fetch(p.proxy.replace(/\/$/,"")+"/",Object.assign({},o,{headers:Object.assign({},o.headers,{"X-Target-URL":url})},/^https?:\/\/(127\.0\.0\.1|localhost|\[::1\])/.test(p.proxy)?{targetAddressSpace:"loopback"}:{})).then(mark)};
+/* diagnosis kegagalan jaringan yang jujur: CORS hanya disebut jika server memang terjangkau tetapi tidak pernah menjawab browser */
+async function netWhy(p){if(navigator.onLine===false)return"Tidak ada koneksi internet.";
+ const key=okKey(p);if(key&&OKU[key])return"Koneksi ke server terputus. Sebelumnya berhasil, jadi ini BUKAN masalah CORS: kemungkinan jaringan tidak stabil, atau layar dikunci / aplikasi di latar saat bekerja. Kirim ulang pesan terakhir.";
+ const px=p.proxy?String(p.proxy).replace(/\/+$/,""):"";let o="";try{o=new URL(p.url).origin}catch{}const tgt=px||o;if(!tgt)return"Base URL tidak valid.";
+ let reach=false;try{const c=new AbortController(),t=setTimeout(()=>c.abort(),8000);await fetch(tgt+"/",{mode:"no-cors",cache:"no-store",signal:c.signal});clearTimeout(t);reach=true}catch{}
+ if(px)return reach?"Proxy menjawab, tetapi permintaan gagal. Cek TOKEN pada alamat proxy (Cloudflare Worker) atau terminal hrai-proxy.py.":"Proxy CORS tidak bisa dijangkau di "+px+". Periksa alamatnya, dan jika memakai Termux/PC pastikan hrai-proxy.py sedang berjalan.";
+ return reach?"Server terjangkau tetapi memblokir akses dari browser (CORS). Isi Proxy CORS di Atur (lihat hrai-worker.js atau hrai-proxy.py).":"Tidak bisa menjangkau server (offline, DNS gagal, atau jaringan memblokir)."}
+/* tunggu sampai aplikasi tampil lagi (atau proses dihentikan) */
+const waitVisible=sig=>new Promise(r=>{if(document.visibilityState==="visible")return r();let f,ab;f=()=>{if(document.visibilityState==="visible"){document.removeEventListener("visibilitychange",f);if(sig)sig.removeEventListener("abort",ab);r()}};ab=()=>{document.removeEventListener("visibilitychange",f);r()};document.addEventListener("visibilitychange",f);if(sig)sig.addEventListener("abort",ab,{once:true})});
 const netMsg=()=>navigator.onLine===false?"Tidak ada koneksi internet.":"Server tidak bisa dijangkau atau memblokir akses dari browser (CORS). Isi Proxy CORS di Atur (lihat hrai-proxy.py atau hrai-worker.js).";
 $("#sd").onclick=()=>{const n=sp.value;if(busy())return;if(PL().length<2){alert("Minimal harus ada satu provider.");return}
  if(!confirm("Hapus provider "+n+" beserta API key-nya?"))return;
