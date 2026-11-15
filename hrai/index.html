@@ -503,7 +503,7 @@ const NUDGE={budget:"[sistem] Kamu berpikir terlalu lama tanpa menghasilkan hasi
 const MT=()=>C.maxTok||32000,BG=()=>C.budget??8000;
 const oaClean=m=>m.role==="assistant"?{role:"assistant",content:m.content,tool_calls:m.tool_calls}:m.role==="tool"?{role:"tool",tool_call_id:m.tool_call_id,content:m.content}:oaMsg(m);
 async function agent(){
- const p=prov(C.provider);if(!p.key&&p.id!=="ollama"){add("er","API key untuk "+p.id+" belum diisi. Buka Atur.");return}if(!p.model){add("er","Model untuk "+p.id+" belum dipilih. Buka Atur lalu ketuk Ambil.");return}
+ const p=prov(C.provider);if(!p.key&&p.id!=="ollama"){add("er","API key untuk "+p.id+" belum diisi. Buka Atur.");add("thw",`<button class="btn pvf" data-retry="1">↻ Kirim ulang pesan terakhir</button>`);return}if(!p.model){add("er","Model untuk "+p.id+" belum dipilih. Buka Atur lalu ketuk Ambil.");add("thw",`<button class="btn pvf" data-retry="1">↻ Kirim ulang pesan terakhir</button>`);return}
  ctrl=new AbortController();$("#go").textContent="■";keep(true);let cont=0,done=false,acOK=true,fail=null;const wrote=new Set,wroteSvg=new Set,tg=mkG("Giliran AI");CG=tg;
  try{for(let step=0;step<40;step++){
   if(acOK&&C.ac!==false&&est()>.85*(C.ctx||128000)){const cr=await compact(true);if(cr===false)acOK=false}log.querySelectorAll(".ac").forEach(x=>{if(x.dataset.n!=="write"&&x.dataset.n!=="edit")x.remove()});let rt="",over=false,last="",text="",calls=[];TC=0;FR="";SG=new AbortController();ctrl.signal.addEventListener("abort",()=>SG.abort());
@@ -533,7 +533,7 @@ async function agent(){
   if(why||calls.length)tk.remove();else endTk(tk,rt,t0,true);
   if(why){Object.values(cards).forEach(x=>x.remove());
    H.push({role:"assistant",content:(text.trim()||"(respons tidak selesai)")+(rt.trim()?"\n[catatan pemikiran terakhir]\n"+rt.trim().slice(-1500):""),hid:!text.trim()});
-   if(cont>=3){add("er","Masih gagal setelah 3 kali lanjut otomatis. Coba ganti model, naikkan /budget atau /tokens, atau pecah tugasnya.");saveH();done=true;break}
+   if(cont>=3){add("er","Masih gagal setelah 3 kali lanjut otomatis. Coba ganti model, naikkan /budget atau /tokens, atau pecah tugasnya.");add("thw",`<button class="btn pvf" data-retry="1">↻ Kirim ulang pesan terakhir</button>`);saveH();done=true;break}
    cont++;add("sys",esc((why==="budget"?"Berpikir terlalu lama (≈"+Math.round(rt.length/4)+" token) tanpa hasil; dihentikan.":why==="length"?"Output terpotong batas token ("+MT()+").":"Model berhenti tanpa menghasilkan jawaban.")+" Lanjut otomatis ("+cont+"/3)."));
    H.push({role:"user",content:NUDGE[why],sys:true});saveH();continue}
   const m={role:"assistant",content:text||null};
@@ -553,15 +553,21 @@ async function agent(){
    if(n==="show_image"&&/^OK/.test(String(res))){const pp=String(res).split(" ")[1];if(pp&&FS()[pp])add("imgw",imgCard(FS()[pp],pp.split("/").pop()))}
    H.push({role:"tool",tool_call_id:t.id,name:n,content:String(res)});saveH()}
  }
- if(!done)add("sys","Batas 40 langkah tercapai. Ketik \"lanjut\" untuk meneruskan.");
+ if(!done){add("sys","Batas 40 langkah tercapai. Ketik \"lanjut\" untuk meneruskan.");add("thw",`<button class="btn pvf" data-retry="1">↻ Kirim ulang pesan terakhir</button>`)}
  wrote.forEach(q=>add("thw",`<button class="btn pvf" data-p="${esc(q).replace(/"/g,"&quot;")}">▶ Pratinjau ${esc(q)}</button>`));wroteSvg.forEach(q=>{const f=FS();if(hasF(f,q))add("svgw",svgCard(f[q],q.split("/").pop()))});
- }catch(e){const nm=e.name!=="AbortError"&&e instanceof TypeError?await netWhy(p):null;fail=e.name==="AbortError"?null:(nm||e.message||"error");add("er",esc(e.name==="AbortError"?"Dihentikan.":nm||e.message))}
+ }catch(e){const nm=e.name!=="AbortError"&&e instanceof TypeError?await netWhy(p):null;fail=e.name==="AbortError"?null:(nm||e.message||"error");add("er",esc(e.name==="AbortError"?"Dihentikan.":nm||e.message));if(H.some(x=>x.role==="user"))add("thw",`<button class="btn pvf" data-retry="1">↻ Kirim ulang pesan terakhir</button>`)}
  log.querySelectorAll(".tk,.ac.run").forEach(x=>x.remove());CG=null;{const n=grpRecs(tg.id).length;if(n>=2)add("thw",`<button class="btn pvf" data-ug="${tg.id}">↩ Batalkan semua perubahan giliran ini (${n} file)</button>`)}keep(false);ctrl=null;$("#go").textContent="↑";if(fail)notify("HRAI berhenti",fail);else if(done){const lm=[...H].reverse().find(m=>m.role==="assistant"&&m.content);if(!notify("HRAI selesai",lm?lm.content:"Tugas selesai."))chime()}}
+
+/* kirim ulang: buang sisa giliran yang gagal/berhenti, lalu jalankan ulang pesan pengguna terakhir */
+function retryLast(){if(busy())return;let i=H.length-1;while(i>=0&&H[i].role!=="user")i--;
+ if(i<0)return note("Tidak ada pesan yang bisa dikirim ulang.");
+ const m=H[i];if(m.sys||m.sum)return note("Percakapan sistem tidak bisa dikirim ulang.");
+ H.length=i;saveH();draw();H.push(m);saveH();add("u",uHtml(m));agent()}
 
 /* ---- UI ---- */
 $("#go").onclick=async()=>{if(ctrl){ctrl.abort();return}let v=$("#in").value.trim();if(!v&&!PA.length&&!PF.length)return;const sm=v.match(/^\/(think|budget|tokens|theme|font|ctx|compact|undo|changes)(?:\s+(.*))?$/i);if(sm){$("#in").value="";$("#in").style.height="";cmdSlash(sm[1].toLowerCase(),(sm[2]||"").trim().toLowerCase());return}$("#in").value="";$("#in").style.height="";if(PF.length)v+=(v?"\n\n":"")+"[File dilampirkan di penyimpanan virtual: "+PF.join(", ")+"]";if(!v)v="Lihat gambar terlampir.";if(needAdult(v)&&!verified()){const okV=await gateAdult();if(!okV){note("Verifikasi 18+ ditolak — pesan tidak dikirim.");return}}if(H.length===0)log.innerHTML="";const m={role:"user",content:v};if(PA.length){m.images=PA;m.nimg=PA.length}PA=[];PF=[];attUI();H.push(m);saveH();add("u",uHtml(m));agent()};
 $("#mode").onclick=e=>{const m=e.target.dataset.m;if(m){C.mode=m;saveC();modeUI()}};
-log.onclick=e=>{const T=e.target;if(T.dataset.sv||T.classList.contains("svgi")){const c=T.closest(".svgc"),src=c&&SVGS[c.dataset.id];if(!src)return;const nm=c.dataset.name||"gambar.svg",a=T.dataset.sv||"view";
+log.onclick=e=>{const T=e.target;if(T.dataset.retry){retryLast();return}if(T.dataset.sv||T.classList.contains("svgi")){const c=T.closest(".svgc"),src=c&&SVGS[c.dataset.id];if(!src)return;const nm=c.dataset.name||"gambar.svg",a=T.dataset.sv||"view";
  if(a==="view")pvSvg(src,nm);else if(a==="svg")saveBlob(new Blob([src],{type:"image/svg+xml"}),nm);else{const o=T.textContent;T.disabled=true;T.textContent="…";svgToPng(src,2).then(b=>saveBlob(b,nm.replace(/\.svg$/i,"")+".png")).catch(x=>alert("Gagal membuat PNG: "+(x.message||x))).finally(()=>{T.disabled=false;T.textContent=o})}return}
  if(T.dataset.iv){const c=T.closest(".svgc"),src=c&&IMGS[c.dataset.im];if(!src)return;const nm=c.dataset.name||"foto.png";
   if(T.dataset.iv==="view")pv('<img alt="" style="max-width:100%;max-height:100vh;display:block;margin:auto" src="'+src+'">',nm);
