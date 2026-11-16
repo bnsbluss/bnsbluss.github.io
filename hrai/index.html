@@ -1027,8 +1027,13 @@ $("#gvc").onclick=()=>{gvStop();$("#gv").close()};
 $("#gv").onclose=()=>{gvStop();GV.frames=[];const s=$("#gvimg");if(s.src&&!/^data:/i.test(s.src))URL.revokeObjectURL(s.src)};
 /* loader: pakai gif asli bila tersedia di penyimpanan virtual, selain itu SVG pixel animasi */
 function gvLoaderHtml(){const f=FS(),g=f["claude-claude-code.gif"];
- if(g)return '<img class="sp px" src="'+g+'" alt="" style="width:32px;height:32px;object-fit:contain;flex:none;align-self:center">';
+ if(g){const h='<img class="sp px" src="'+g+'" alt="" style="width:32px;height:32px;object-fit:contain;flex:none;align-self:center">';
+  if(!GVG){GVG=1;fetch("claude-claude-code.gif").then(r=>{if(!r.ok)throw 0;return r.blob()}).then(b=>{const u=URL.createObjectURL(b);document.querySelectorAll("img.sp.px").forEach(im=>{if(!im.src.startsWith("data:"))im.src=u})}).catch(()=>{})}}
+ if(g)return h;
+ /* tidak ada gif di penyimpanan virtual (mis. di hosting): coba ambil file gif di folder yang sama */
+ return '<img class="sp px" src="claude-claude-code.gif" alt="" style="width:32px;height:32px;object-fit:contain;flex:none;align-self:center" onerror="this.outerHTML=window.__PXSPARK||\'\';">';
  return SPARK}
+let GVG=0;window.__PXSPARK=SPARK;
 const web=/^https?:/.test(location.protocol),standalone=matchMedia("(display-mode: standalone)").matches||navigator.standalone===true;let SWR=null,IP=null;
 if(web){const l=document.createElement("link");l.rel="manifest";l.href="manifest.webmanifest";document.head.append(l);if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js").then(()=>navigator.serviceWorker.ready).then(r=>{SWR=r}).catch(()=>{})}
 function pwaUI(){const b=$("#pwi"),t=$("#pwt"),n=$("#ibn"),can=!!IP&&!standalone;b.style.display=can?"":"none";n.style.display=can&&!C.noinst?"flex":"none";
