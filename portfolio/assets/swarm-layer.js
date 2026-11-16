@@ -34,8 +34,6 @@ if(game)prep(game);
 const cs=D.createElement('div');cs.id='cs';D.body.append(cs);
 const PL=[['#ff6b6b','claude'],['#ffd166','ghidra'],['#06d6a0','i3'],['#7aa7ff','python'],['#c792ff','php'],['#ff9f5a','postgres'],['#4dd0e1','kota'],['#f78fb3','watchdog'],['#a3e635','hyperion'],['#fb7185','midtrans'],['#38bdf8','i3pack'],['#facc15','rsc'],['#e879f9','heavyrain'],['#5eead4','pb']];
 const N=innerWidth<760?7:14,ease=p=>1-Math.pow(1-p,3);
-let mx=innerWidth/2,my=innerHeight*.7;
-addEventListener('pointermove',e=>{mx=e.clientX;my=e.clientY});
 const tn=el=>{const w=D.createTreeWalker(el,4),a=[];let n;while(n=w.nextNode())a.push([n,n.data]);return a};
 const rest=t=>{t.n.forEach(([n,s])=>n.data=s);const s=t.el.style;s.minHeight=s.minWidth='';if(t.dsp)s.display='';t.el.classList.remove('ty');t.n=0};
 const fin=t=>{if(t.n)rest(t);t.el.style.clipPath='';if(t.ps)t.ps.forEach(a=>a.style.strokeDashoffset=0);t.el.classList.add('on');t.s=3};
@@ -43,7 +41,7 @@ const C=PL.slice(0,N).map(([col,nm],i)=>{
   const e=D.createElement('div');e.className='c';
   e.innerHTML=`<svg width="18" height="18" viewBox="0 0 20 20"><path d="M2 2l5.5 15 2.3-6.2L16 8.5z" fill="${col}" stroke="#04101f" stroke-width="1.2"/></svg><b style="background:${col}">${nm}</b>`;
   const o=D.createElement('div');o.className='ov';o.innerHTML='<i></i>';cs.append(e,o);
-  return{e,o,v:e.firstChild,i,x:innerWidth/2,y:innerHeight/2,sp:6+Math.random()*4,ph:'o',t:null,c0:0,d:0};
+  return{e,o,v:e.firstChild,i,x:innerWidth/2,y:innerHeight/2,op:0,sp:6+Math.random()*4,ph:'o',t:null,c0:0,d:0};
 });
 function claim(c){
   const vh=innerHeight;
@@ -84,7 +82,7 @@ function frame(){
     }
     if(c.ph==='i'){
       if(go)claim(c);
-      if(c.ph==='i'){const a=c.i*6.283/N+el/3e3,r=46+(c.i%3)*24;tx=mx+Math.cos(a)*r;ty=my+Math.sin(a)*r}
+      if(c.ph==='i'){tx=(c.i+.5)/N*innerWidth;ty=innerHeight+50}
     }
     if(c.ph==='g'){
       const t=c.t;
@@ -138,7 +136,7 @@ function frame(){
       if(p>=1){fin(t);c.t=null;c.ph='i'}
     }
     if(ex){c.x=tx;c.y=ty}else{const k=1-Math.exp(-dt*c.sp);c.x+=(tx-c.x)*k;c.y+=(ty-c.y)*k}
-    c.e.style.transform=`translate(${c.x}px,${c.y}px)`;c.v.style.transform=`rotate(${rot}deg)`;
+    c.op+=((c.ph==='i'?0:1)-c.op)*Math.min(1,dt*6);c.e.style.opacity=c.op;c.e.style.transform=`translate(${c.x}px,${c.y}px)`;c.v.style.transform=`rotate(${rot}deg)`;
   }
   requestAnimationFrame(frame);
 }
