@@ -577,6 +577,7 @@ const sp=$("#sp");function fillSP(){sp.innerHTML="";PL().forEach(x=>sp.add(new O
 const loadP=()=>{const p=prov(sp.value);$("#su").value=p.url;$("#sm").value=p.model;$("#sk").value=p.key;$("#sy").value=p.proxy||"";$("#sd").style.display="";$("#sr").style.display=(C.hide||[]).length?"":"none";$("#mz").style.display="none";ML=[]};
 sp.onchange=loadP;
 $("#bs").onclick=()=>{sp.value=C.provider;loadP();$("#sa").checked=C.auto;$("#th").checked=C.think!==false;tm.value=C.theme||"hrai";$("#fz").value=C.font||"f4";$("#wk").checked=C.wake!==false;$("#nt").checked=!!C.notif;$("#snd").checked=C.snd!==false;pwaUI();$("#ds").showModal()};
+/* Simpan juga preferensi wake lock; sebelumnya checkbox ini tidak pernah disimpan. */
 $("#ok").onclick=()=>{C.provider=sp.value;C.p[sp.value]={url:$("#su").value.trim(),model:$("#sm").value.trim(),key:$("#sk").value.trim(),proxy:$("#sy").value.trim()};C.auto=$("#sa").checked;C.think=$("#th").checked;C.wake=$("#wk").checked;C.notif=$("#nt").checked;C.snd=$("#snd").checked;saveC();modeUI();$("#ds").close()};
 $("#nc").onclick=()=>{newChat();$("#ds").close()};
 $("#cl").onclick=()=>$("#ds").close();
@@ -625,6 +626,8 @@ function attUI(){const b=$("#att");b.innerHTML="";
  PF.forEach((n,i)=>{const d=document.createElement("div");d.className="ch";d.innerHTML=`<span>${esc(n)}</span><button aria-label="Hapus">✕</button>`;d.querySelector("button").onclick=()=>{PF.splice(i,1);attUI()};b.append(d)});
  b.style.display=PA.length||PF.length?"flex":"none"}
 $("#at").onclick=()=>$("#fi").click();
+/* Tempel gambar dari clipboard: Ctrl+V di desktop atau menu Tempel di HP. */
+document.addEventListener("paste",async e=>{const cd=e.clipboardData;if(!cd)return;let files=[...(cd.items||[])].filter(x=>x.kind==="file"&&x.type.startsWith("image/")).map(x=>x.getAsFile()).filter(Boolean);if(!files.length)files=[...(cd.files||[])].filter(x=>x.type.startsWith("image/"));if(!files.length)return;e.preventDefault();for(const f of files){try{PA.push(await shrink(f))}catch(x){note("Gambar dari clipboard gagal diproses: "+(x.message||x))}}attUI()});
 let LG=null;
 $("#fi").onchange=async e=>{LG=null;for(const f of e.target.files){try{if(f.type.startsWith("image/"))PA.push(await shrink(f));else{if(f.size>2e7){alert(f.name+" terlalu besar (maks 20 MB)");continue}const t=await f.text();if(t.includes("\u0000")){alert(f.name+" bukan file teks");continue}const fs=FS();if(hasF(fs,f.name)&&fs[f.name]!==t&&!confirm("File "+f.name+" sudah ada dan akan ditimpa.\nBisa dibatalkan lewat Perubahan (/changes). Lanjutkan?"))continue;rec(f.name,hasF(fs,f.name)?fs[f.name]:null,t,"lampir",LG||(LG=mkG("Lampiran")));fs[f.name]=t;setFS(fs);PF.push(f.name)}}catch(x){alert(f.name+": "+x.message)}}e.target.value="";attUI()};
 $("#bx").onclick=()=>{const k=confirm("Sertakan API key di file backup?\n\nOK = sertakan (simpan file dengan aman)\nBatal = tanpa API key");const cfg=JSON.parse(JSON.stringify(C));if(!k)for(const i in cfg.p)cfg.p[i].key="";const t=new Date(),z=n=>String(n).padStart(2,"0");
