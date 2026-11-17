@@ -2,7 +2,7 @@
 <html lang="id"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#012456"><meta name="mobile-web-app-capable" content="yes">
-<title>HRAI Mobile</title>
+<title>HRAI — AI Web Agent</title>
 <style>
 :root{--bg:#011a3d;--bg2:#02306e;--panel:rgba(255,255,255,.06);--panel2:rgba(255,255,255,.11);--line:rgba(255,255,255,.13);--fg:#eaf0fc;--dim:#9db0d3;--acc:#4da3ff;--accfg:#04122b;--plan:#f5c542;--build:#4ade80;--err:#ff8a8a;--code:#00122c;--ub:#1f6fe0;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media(prefers-color-scheme:light){:root{--bg:#f3f6fc;--bg2:#e2ebfa;--panel:#fff;--panel2:#eaf0fb;--line:#d3deef;--fg:#0f1b33;--dim:#5a6b8c;--acc:#1f6fe0;--accfg:#fff;--plan:#b7791f;--build:#15803d;--err:#c53030;--code:#f1f5fc;color-scheme:light}}
@@ -280,14 +280,131 @@ header{padding-left:max(var(--gut),calc((100% - var(--col))/2));padding-right:ma
 .tokdrop .sys{margin:8px 0 0}
 @media(max-height:720px){.bn svg{width:140px;height:56px}.hero{padding:14px 8px}.hero h2{margin:10px 0 4px}.hero p{margin-bottom:12px}}
 @media(max-width:340px){.chips button{min-height:36px;padding:0 12px;font-size:12.5px}.hero .bt{font-size:12px}}
+
+/* ===================== UI v3: tampilan profesional & responsif ===================== */
+:root{--ff:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;--fm:ui-monospace,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;--rs:8px;--rm:12px;--rl:16px;--r:12px;--col:860px;--gut:clamp(14px,4vw,28px);--hh:56px;--sh:0 1px 2px rgba(0,0,0,.22),0 10px 28px rgba(0,0,0,.26);--el:max(var(--gut),env(safe-area-inset-left,0px),calc((100% - var(--col))/2));--er:max(var(--gut),env(safe-area-inset-right,0px),calc((100% - var(--col))/2))}
+:root[data-font=f4]{--ff:"TermF4",ui-monospace,Menlo,Consolas,monospace;--fm:"TermF4",ui-monospace,Menlo,Consolas,monospace}
+:root[data-theme=hrai]{--bg:#0a1222;--bg2:#0a1222;--surf:#0e182c;--panel:rgba(255,255,255,.045);--panel2:rgba(255,255,255,.085);--line:rgba(158,184,232,.17);--fg:#e8eefb;--dim:#93a4c6;--acc:#5aa9ff;--accfg:#04122b;--code:#060d1b;--ub:#1f5fd1;--plan:#f5c542;--build:#4ade80;--err:#ff8a8a;color-scheme:dark}
+@media(prefers-color-scheme:light){:root[data-theme=hrai]{--bg:#f5f7fc;--bg2:#f5f7fc;--surf:#ffffff;--panel:#ffffff;--panel2:#ebf0f9;--line:#d8e0ee;--fg:#0f1b33;--dim:#58698a;--acc:#1d63d6;--accfg:#ffffff;--code:#eef2f9;--ub:#1d63d6;--plan:#b7791f;--build:#15803d;--err:#c53030;--sh:0 1px 2px rgba(15,27,51,.06),0 10px 28px rgba(15,27,51,.10);color-scheme:light}}
+:root[data-theme=terang]{--surf:#ffffff}
+html,body{background:var(--bg)}
+:root:not([data-theme=terminal]):not([data-theme=amber]):not([data-theme=powershell]) body{background:var(--bg)}
+body{line-height:1.6;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+
+/* --- bar atas --- */
+header{position:relative;z-index:3;display:flex;align-items:center;gap:8px;min-height:var(--hh);padding:max(8px,env(safe-area-inset-top,0px)) var(--er) 8px var(--el);background:var(--bg);border-bottom:1px solid var(--line);-webkit-backdrop-filter:none;backdrop-filter:none}
+header .ib{width:40px;height:40px;border-radius:10px;border:1px solid transparent;background:transparent}
+header .ib:hover{background:var(--panel2);border-color:var(--line)}
+.brand{gap:10px}
+.logo{width:34px;height:34px;border-radius:9px;box-shadow:none;font-size:12px;letter-spacing:.03em;background:var(--acc);color:var(--accfg)}
+.ttl b{font-size:15px;font-weight:650;letter-spacing:.02em}
+.ttl span{font-size:12px;color:var(--dim)}
+.seg{border-radius:10px;padding:3px;background:var(--panel);border:1px solid var(--line)}
+.seg button{min-height:32px;padding:0 14px;border-radius:8px;font-size:13px;font-weight:600}
+.seg button.on{background:var(--panel2);box-shadow:inset 0 0 0 1px var(--line)}
+.ibn{margin:10px var(--er) 0 var(--el);border-radius:var(--rm);background:var(--panel)}
+
+/* --- percakapan --- */
+#log{padding:22px var(--er) 26px var(--el);gap:22px}
+.u{max-width:min(82%,640px);padding:10px 14px;border-radius:14px 14px 4px 14px;box-shadow:none;font-size:15px;line-height:1.55}
+.a{white-space:normal;overflow-wrap:anywhere;word-break:normal;font-size:15px;line-height:1.7}
+.a>:first-child{margin-top:0}.a>:last-child{margin-bottom:0}
+.a p{margin:.6em 0}
+.a h1,.a h2,.a h3,.a h4{margin:1.1em 0 .4em;line-height:1.3;font-weight:650}
+.a h1{font-size:19px}.a h2{font-size:17.5px}.a h3{font-size:16px}.a h4{font-size:15px;color:var(--dim)}
+.a ul,.a ol{margin:.5em 0;padding-left:1.45em}
+.a li{margin:.25em 0}
+.a blockquote{margin:.7em 0;padding:.15em 0 .15em 14px;border-left:3px solid var(--line);color:var(--dim)}
+.a hr{border:0;border-top:1px solid var(--line);margin:1.1em 0}
+.a a{color:var(--acc);text-decoration:underline;text-underline-offset:2px}
+.a .tw{overflow-x:auto;margin:.7em 0;border:1px solid var(--line);border-radius:var(--rs)}
+.a table{border-collapse:collapse;width:100%;font-size:13.5px}
+.a th,.a td{padding:7px 11px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+.a th{background:var(--panel);font-weight:650}
+.a tr:last-child td{border-bottom:0}
+.a code{border-radius:5px}
+.a pre{border-radius:10px;padding:38px 14px 14px;font-size:13px;line-height:1.55;margin:.8em 0}
+.cp{top:7px;border-radius:6px;padding:3px 9px;font-size:11.5px;background:var(--panel2)}
+.cp:hover{border-color:var(--acc)}
+details,.ac,.er,.svgc{border-radius:10px}
+.ac{background:var(--panel)}
+.ah{padding:9px 13px}
+.ab{padding:12px 14px;font-size:12.5px}
+.er{padding:10px 14px}
+.thd summary{padding:2px 0}
+
+/* --- layar awal --- */
+.hero{margin:auto;width:100%;max-width:680px;padding:28px 0 12px;text-align:left}
+.bn{justify-content:flex-start;gap:14px 22px}
+.bn svg{width:168px;height:67px}
+.bt{font-size:13px;line-height:1.6;color:var(--dim)}
+.bt b{color:var(--fg);font-size:14px;letter-spacing:.04em}
+.bi{margin:16px 0 0;display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;font:12.5px/1.4 var(--fm);color:var(--dim)}
+.bi b{color:var(--fg);font-weight:600;background:var(--panel2);border:1px solid var(--line);border-radius:6px;padding:2px 9px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hero>p{margin:24px 0 10px;font-size:13px;color:var(--dim)}
+.chips{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;justify-content:stretch}
+.chips button{display:flex;flex-direction:column;align-items:flex-start;gap:3px;text-align:left;min-height:68px;padding:12px 14px;border-radius:var(--rm);background:var(--panel);border:1px solid var(--line);font-size:13px}
+.chips button b{font-size:14px;font-weight:650;color:var(--fg)}
+.chips button span{font-size:12.5px;color:var(--dim);line-height:1.4}
+.chips button:hover{border-color:var(--acc);background:var(--panel2)}
+
+/* --- statistik token & composer --- */
+#tus{flex-wrap:nowrap;overflow-x:auto;white-space:nowrap;scrollbar-width:none;padding:0 var(--er) 6px var(--el);max-width:none;margin:0;font-size:11.5px}
+#tus::-webkit-scrollbar{display:none}
+#tus>*{flex:none}
+footer{padding:8px var(--er) calc(10px + env(safe-area-inset-bottom,0px)) var(--el)}
+.composer{gap:8px;padding:8px;border-radius:var(--rl);background:var(--surf,var(--panel));border:1px solid var(--line);box-shadow:var(--sh);-webkit-backdrop-filter:none;backdrop-filter:none;align-items:flex-end}
+.composer:focus-within{border-color:var(--acc);box-shadow:0 0 0 3px color-mix(in srgb,var(--acc) 18%,transparent),var(--sh)}
+#at,#go{width:40px;height:40px;border-radius:10px}
+#at{background:transparent;border:1px solid var(--line);font-size:20px}
+#go{box-shadow:none;font-size:17px}
+textarea{padding:9px 4px;min-height:40px;line-height:1.45}
+.att{padding:0 2px 8px}
+.ch{border-radius:var(--rs)}
+.hint{display:none;margin-top:6px;text-align:center;font-size:11.5px;color:var(--dim)}
+@media(hover:hover) and (pointer:fine){.hint{display:block}}
+body.dz::after{content:"Lepaskan file di sini untuk melampirkan (teks, .ogg, gambar)";position:fixed;inset:12px;z-index:60;display:grid;place-items:center;padding:24px;text-align:center;font-size:16px;border:2px dashed var(--acc);border-radius:var(--rl);background:color-mix(in srgb,var(--bg) 90%,transparent);color:var(--fg);pointer-events:none}
+
+/* --- tombol & isian --- */
+.btn{min-height:40px;border-radius:10px;font-size:14px;font-weight:600}
+.ib{border-radius:10px}
+dialog input[type=text],dialog input[type=password],dialog select{background:var(--bg);border-radius:10px}
+
+/* --- dialog: lembar bawah di HP, kartu di layar lebar --- */
+dialog{background:var(--surf,var(--bg));border-radius:18px 18px 0 0;box-shadow:0 -12px 48px rgba(0,0,0,.35)}
+.dhd h3,dialog>h3{font-size:18px;font-weight:650;letter-spacing:0}
+.sec{margin-top:14px;padding:12px 14px 14px;border:1px solid var(--line);border-radius:var(--rm);background:var(--panel)}
+.sec>h4{margin:0 0 4px;font-size:13.5px;font-weight:650;letter-spacing:0;text-transform:none;color:var(--fg)}
+.sw{padding:11px 0}
+.sec .sw:last-child{border-bottom:0}
+.tokdrop{background:var(--bg);border-radius:10px}
+.bar{background:var(--surf,var(--bg));border-top:1px solid var(--line)}
+.si{border-radius:var(--rm)}
+@media(min-width:720px){
+ dialog:not(#dp):not(#dm){border-radius:16px;box-shadow:var(--sh)}
+ #dm{border-radius:16px}
+}
+
+/* --- pengelola file --- */
+.fn{font-size:14px}
+.bv{display:flex;flex-direction:column;align-items:center;gap:14px;padding:24px var(--gut)}
+.bv audio{width:min(520px,100%)}
+.bv img{max-width:100%;max-height:50vh;border:1px solid var(--line);border-radius:10px;background:var(--panel)}
+
+/* --- responsif --- */
+@media(max-width:520px){.chips{grid-template-columns:1fr}.chips button{min-height:60px}.bn svg{width:140px;height:56px}.hero{padding-top:14px}}
+@media(max-width:400px){.u{max-width:90%}header .ib{width:38px;height:38px}}
+@media(max-height:480px){header{min-height:48px}.hero{padding:8px 0}.hint{display:none!important}}
+@media(min-width:1100px){:root{--col:900px}body{font-size:15.5px}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
 </style></head>
 <body>
 
-<header><button class="ib" id="bh" aria-label="Riwayat" title="Riwayat"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"/></svg></button><div class="brand"><div class="logo">HR</div><div class="ttl"><b>HRAI</b><span id="sub"></span></div></div><div class="seg" id="mode"><button data-m="PLAN">Plan</button><button data-m="BUILD">Build</button></div><button class="ib" id="bs" aria-label="Atur" title="Atur"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h8M18 6h2M4 12h2M12 12h8M4 18h10M20 18h0"/><circle cx="15" cy="6" r="2.2"/><circle cx="9" cy="12" r="2.2"/><circle cx="17" cy="18" r="2.2"/></svg></button></header>
+<header><button class="ib" id="bh" aria-label="Riwayat" title="Riwayat"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"/></svg></button><div class="brand"><div class="logo">HR</div><div class="ttl"><b>HRAI</b><span id="sub"></span></div></div><div class="seg" id="mode" role="group" aria-label="Mode kerja"><button data-m="PLAN">Plan</button><button data-m="BUILD">Build</button></div><button class="ib" id="bs" aria-label="Atur" title="Atur"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h8M18 6h2M4 12h2M12 12h8M4 18h10M20 18h0"/><circle cx="15" cy="6" r="2.2"/><circle cx="9" cy="12" r="2.2"/><circle cx="17" cy="18" r="2.2"/></svg></button></header>
 <div id="ibn" class="ibn" style="display:none"><span>Pasang HRAI di layar utama</span><button class="btn" id="ibi">Pasang</button><button class="ib" id="ibx" aria-label="Tutup">✕</button></div>
 <div id="log"></div>
 <div id="tus"></div>
-<footer><div id="att" class="att" style="display:none"></div><div class="composer"><button id="at" aria-label="Lampirkan">+</button><textarea id="in" rows="1" placeholder="Tulis perintah…"></textarea><button id="go" aria-label="Kirim">↑</button></div><input type="file" id="fi" multiple hidden accept="image/*,text/*,.json,.js,.ts,.jsx,.tsx,.py,.html,.css,.md,.csv,.xml,.yml,.yaml,.sh,.java,.c,.cpp,.go,.rs,.sql,.log"></footer>
+<footer><div id="att" class="att" style="display:none"></div><div class="composer"><button id="at" aria-label="Lampirkan">+</button><textarea id="in" rows="1" placeholder="Tulis perintah…" aria-label="Perintah untuk HRAI"></textarea><button id="go" aria-label="Kirim">↑</button></div><div class="hint">Enter kirim · Shift+Enter baris baru · seret file ke halaman untuk melampirkan</div><input type="file" id="fi" multiple hidden accept="audio/ogg,application/ogg,.ogg,.oga,image/*,text/*,.json,.js,.ts,.jsx,.tsx,.py,.html,.css,.md,.csv,.xml,.yml,.yaml,.sh,.java,.c,.cpp,.go,.rs,.sql,.log"></footer>
 
 <dialog id="ds" class="hb"><div class="dhd"><h3>Pengaturan</h3></div>
 <section class="sec"><h4>Provider &amp; model</h4>
@@ -305,7 +422,7 @@ header{padding-left:max(var(--gut),calc((100% - var(--col))/2));padding-right:ma
 <label class="sw"><input type="checkbox" id="nt"><span>Notifikasi saat AI selesai (saat aplikasi di latar)</span></label>
 </section>
 <section class="sec"><h4>Tampilan</h4>
-<div class="grid2"><div class="fld"><label>Tema (/theme)</label><select id="tm"></select></div><div class="fld"><label>Font (/font)</label><select id="fz"><option value="f4">Terminal F4</option><option value="sys">Sistem</option></select></div></div>
+<div class="grid2"><div class="fld"><label>Tema (/theme)</label><select id="tm"></select></div><div class="fld"><label>Font (/font)</label><select id="fz"><option value="sys">Sistem (bawaan)</option><option value="f4">Terminal F4</option></select></div></div>
 <details class="tokdrop" id="tokdrop"><summary>⚙️ Batas token (/tokens · /budget)</summary><div class="tdb">
 <div class="fld"><label>Batas output (/tokens, 1000–128000)</label><input type="text" id="dtok" inputmode="numeric" autocapitalize="off" placeholder="32000"></div>
 <div class="fld"><label>Budget berpikir (/budget, 500–200000, 0 = tanpa batas)</label><input type="text" id="dbud" inputmode="numeric" autocapitalize="off" placeholder="8000"></div>
@@ -319,8 +436,6 @@ header{padding-left:max(var(--gut),calc((100% - var(--col))/2));padding-right:ma
 <div class="row" style="margin-top:0;display:none"><button class="btn" id="bx">Ekspor backup</button><button class="btn" id="bi">Impor backup</button></div><input type="file" id="bj" accept="application/json,.json" hidden>
 </section>
 <div class="row bar"><button class="btn pri" id="ok">Simpan</button><button class="btn" id="nc">Percakapan baru</button><button class="btn" id="cl">Tutup</button></div></dialog>
-<dialog id="df"><h3 style="margin:0">File virtual</h3><div id="fl"></div>
-<div class="row"><button class="btn" id="fx">Kosongkan semua</button><button class="btn" id="fc">Tutup</button></div></dialog>
 
 <dialog id="dn" class="hb"><div class="dhd"><h3>Tambah provider</h3></div>
 <div class="fld"><label>Nama</label><input type="text" id="nn" autocapitalize="off" placeholder="mis. provider-saya"></div>
@@ -329,7 +444,7 @@ header{padding-left:max(var(--gut),calc((100% - var(--col))/2));padding-right:ma
 <div class="fld"><label>Model (opsional, bisa diambil dari server nanti)</label><input type="text" id="nm" autocapitalize="off"></div>
 <div class="fld"><label>API key (opsional)</label><input type="password" id="nk" autocomplete="off"></div>
 <div class="row bar"><button class="btn pri" id="na">Tambah</button><button class="btn" id="nx">Batal</button></div></dialog>
-<dialog id="dm"><div class="ph"><b id="dmt">File</b><button class="btn" id="fmn">+ Baru</button><button class="btn" id="fmi">Impor</button><button class="btn" id="fmz">ZIP</button><button class="btn" id="fmc">Tutup</button></div><div id="fmb"></div><input type="file" id="fmf" multiple hidden accept=".zip,image/gif,text/*,.json,.js,.ts,.jsx,.tsx,.py,.html,.css,.md,.csv,.xml,.yml,.yaml,.sh,.java,.c,.cpp,.go,.rs,.sql,.log,.txt"></dialog>
+<dialog id="dm"><div class="ph"><b id="dmt">File</b><button class="btn" id="fmn">+ Baru</button><button class="btn" id="fmi">Impor</button><button class="btn" id="fmz">ZIP</button><button class="btn" id="fmc">Tutup</button></div><div id="fmb"></div><input type="file" id="fmf" multiple hidden accept=".zip,.ogg,.oga,audio/ogg,image/gif,image/png,image/jpeg,image/webp,text/*,.json,.js,.ts,.jsx,.tsx,.py,.html,.css,.md,.csv,.xml,.yml,.yaml,.sh,.java,.c,.cpp,.go,.rs,.sql,.log,.txt"></dialog>
 <dialog id="db" class="hb"><div class="dhd"><h3>Cadangan &amp; Pulihkan</h3></div>
 <p class="sys">Provider dan API key hanya tersimpan di perangkat ini. Cadangan berupa file di perangkatmu; tidak ada yang dikirim ke server mana pun.</p>
 <section class="sec"><h4>Buat cadangan</h4>
@@ -362,7 +477,24 @@ const PL=()=>P0.filter(x=>!(C.hide||[]).includes(x[0])).concat(Object.entries(C.
 const prov=id=>{const d=PL().find(x=>x[0]===id)||PL()[0]||P0[0];return Object.assign({id:d[0],type:d[1],url:d[2],model:d[3],key:""},C.p[d[0]]||{})};
 const saveC=()=>LS["hrai.cfg"]=JSON.stringify(C);
 const saveH=()=>{if(!H.length)return;if(!cur)cur="s"+Date.now().toString(36);const o=S[cur];S[cur]={id:cur,title:o?o.title:(H.find(m=>m.role==="user")?.content||"Percakapan").slice(0,48),ts:Date.now(),H};saveS(cur);LS["hrai.cur"]=cur;modeUI()};
-let FSC={},IDBOK=true,WTSIG=null;const FS=()=>Object.assign({},FSC),setFS=f=>{const o=FSC;FSC=f;persistFS(o,f)};
+let FSC={},IDBOK=true,WTSIG=null;
+/* ---- aset biner (audio .ogg, gambar): disimpan sebagai data URL base64 di penyimpanan virtual ---- */
+const BINRE=/^data:[\w.+-]+\/[\w.+-]+(?:;[\w=.+-]+)*;base64,/i,isBin=v=>typeof v==="string"&&BINRE.test(v);
+const binMime=v=>{const m=/^data:([^;,]+)/i.exec(v||"");return m?m[1].toLowerCase():""};
+const binSize=v=>{const i=v.indexOf(","),n=v.length-i-1,p=v.endsWith("==")?2:v.endsWith("=")?1:0;return Math.max(0,Math.floor(n*3/4)-p)};
+const fmtB=n=>n<1024?n+" B":n<1048576?(n/1024).toFixed(1)+" KB":(n/1048576).toFixed(1)+" MB";
+const u2b=v=>ub(v.slice(v.indexOf(",")+1)),u2blob=v=>new Blob([u2b(v)],{type:binMime(v)||"application/octet-stream"});
+const BM={ogg:"audio/ogg",oga:"audio/ogg",gif:"image/gif",png:"image/png",jpg:"image/jpeg",jpeg:"image/jpeg",webp:"image/webp"};
+const bmOf=n=>BM[String(n).split(".").pop().toLowerCase()]||"";
+const isOgg=b=>b.length>4&&b[0]===79&&b[1]===103&&b[2]===103&&b[3]===83;
+const isOggFile=f=>/\.(ogg|oga)$/i.test(f.name)||/^(audio|application)\/ogg$/i.test(f.type||"");
+const fico=v=>isBin(v)?(/^data:audio\//i.test(v)?"♪ ":"▣ "):"";
+const binNote=(p,v)=>{const mt=binMime(v);return/^audio\//.test(mt)?"["+p+" · aset audio "+mt+" · "+fmtB(binSize(v))+" — file biner, isinya tidak bisa dibaca sebagai teks. Panggil lewat path-nya di kode, mis. new Audio(\""+p+"\") atau <audio src=\""+p+"\">; pratinjau HRAI memuatnya otomatis.]":"["+p+" · aset biner "+(mt||"?")+" · "+fmtB(binSize(v))+" — tidak bisa dibaca sebagai teks]"};
+const sj=s=>{try{return JSON.parse(s||"{}")}catch{return{}}},vj=s=>{s=s||"{}";try{JSON.parse(s);return s}catch{return"{}"}};
+const keyless=p=>p.id==="ollama"||!!(C.custom||{})[p.id]||/^https?:\/\/(localhost|127\.0\.0\.1|\[::1\]|192\.168\.|10\.)/i.test(p.url||"");
+async function readBin(file){const b=new Uint8Array(await file.arrayBuffer()),m=bmOf(file.name);if(m==="audio/ogg"&&!isOgg(b))throw new Error(file.name+" bukan file OGG yang valid");return"data:"+m+";base64,"+bs(b)}
+const audDur=d=>new Promise(ok=>{let u="";try{u=URL.createObjectURL(u2blob(d))}catch{return ok(0)}const a=new Audio(),end=v=>{clearTimeout(t);a.onloadedmetadata=a.onerror=null;URL.revokeObjectURL(u);ok(v)},t=setTimeout(()=>end(0),3000);a.preload="metadata";a.onloadedmetadata=()=>end(isFinite(a.duration)?a.duration:0);a.onerror=()=>end(0);a.src=u});
+const FS=()=>Object.assign({},FSC),setFS=f=>{const o=FSC;FSC=f;persistFS(o,f)};
 
 /* ---- tools (penyimpanan virtual; tanpa shell) ---- */
 const TL=[["list","Daftar semua file",{}],["read","Baca isi file",{path:1}],["write","Buat/timpa file",{path:1,content:1}],["edit","Ganti satu teks persis di file",{path:1,old:1,new:1}],["grep","Cari teks di semua file",{pattern:1}],["web_search","Cari di internet (hasil: judul, URL, ringkasan). Untuk info terkini/fakta",{query:1}],["open_url","Buka sebuah URL dan baca isi halamannya sebagai teks",{url:1}],["show_image","Tampilkan gambar/foto dari URL internet ke chat (URL langsung ke file .jpg/.png/.webp/.gif, bukan halaman web)",{url:1,name:1}]];
@@ -389,7 +521,7 @@ function gateAdult(){return new Promise(ok=>{
  const done=r=>{d.remove();ok(r)};
  draw();q("#gr2").onclick=draw;q("#gmx").onclick=()=>done(false);
  q("#gb2").onclick=()=>{const e=q("#ge2"),y=q("#gy2").value.trim(),c=q("#gi2").value.trim().toUpperCase();e.textContent="";
-  if(!/^\d{4}$/.test(y)||+y<1900||+y>2026){e.textContent="Isi tahun kelahiran yang valid (4 angka).";draw();return}
+  if(!/^\d{4}$/.test(y)||+y<1900||+y>new Date().getFullYear()){e.textContent="Isi tahun kelahiran yang valid (4 angka).";draw();return}
   if(new Date().getFullYear()-+y<18){e.textContent="Anda belum memenuhi syarat usia (18+).";draw();return}
   if(!q("#gc19").checked){e.textContent="Centang pernyataan 18+ terlebih dahulu.";draw();return}
   if(c!==CODE){e.textContent="Kode captcha salah. Kode baru dibuat.";q("#gi2").value="";draw();return}
@@ -397,11 +529,11 @@ function gateAdult(){return new Promise(ok=>{
   done(true)};
  q("#gi2").addEventListener("keydown",ev=>{if(ev.key==="Enter")q("#gb2").click()})})}
 const EXE={
- list:()=>Object.entries(FS()).map(([k,v])=>k+"  ("+v.split("\n").length+" baris, "+(v.length/1024).toFixed(1)+" KB)").join("\n")||"(kosong)",
- read:a=>{const f=FS();if(!(a.path in f))return "ERROR: file tidak ada. File tersedia: "+(Object.keys(f).join(", ")||"(kosong)");const v=f[a.path];if(/^data:image\//i.test(v))return "["+a.path+" · file gambar ("+(v.length/1024).toFixed(0)+" KB data URL) — tidak perlu dibaca; file ini sudah ditampilkan di chat via show_image]";return "["+a.path+" · "+v.split("\n").length+" baris · "+(v.length/1024).toFixed(1)+" KB · isi LENGKAP, tidak terpotong]\n"+v},
- write:a=>{if(typeof a.path!=="string"||!a.path||typeof a.content!=="string")return"ERROR write butuh path dan content berupa teks.";if(a.content.startsWith("[isi file ada di penyimpanan virtual"))return"DITOLAK: itu hanya penanda riwayat, bukan isi file. Gunakan read untuk melihat isi asli lalu edit, atau tulis isi lengkap yang sebenarnya.";const f=FS();rec(a.path,f[a.path]??null,a.content,"write");f[a.path]=a.content;setFS(f);return "OK ditulis "+a.path+" ("+a.content.length+" karakter)"},
- edit:a=>{const f=FS(),s=f[a.path];if(s==null)return "ERROR: file tidak ada";const n=s.split(a.old).length-1;if(n!==1)return "ERROR: teks lama ditemukan "+n+"x (harus tepat 1x)";f[a.path]=s.replace(a.old,()=>a.new);setFS(f);rec(a.path,s,f[a.path],"edit");return "OK diedit "+a.path},
- grep:a=>Object.entries(FS()).flatMap(([k,v])=>v.split("\n").map((l,i)=>l.includes(a.pattern)?k+":"+(i+1)+": "+l:null).filter(Boolean)).join("\n")||"(tidak ada hasil)",
+ list:()=>Object.entries(FS()).map(([k,v])=>k+"  ("+(isBin(v)?"aset "+(binMime(v)||"biner")+", "+fmtB(binSize(v)):v.split("\n").length+" baris, "+(v.length/1024).toFixed(1)+" KB")+")").join("\n")||"(kosong)",
+ read:a=>{const f=FS();if(!(a.path in f))return "ERROR: file tidak ada. File tersedia: "+(Object.keys(f).join(", ")||"(kosong)");const v=f[a.path];if(isBin(v)&&!/^data:image\//i.test(v))return binNote(a.path,v);if(/^data:image\//i.test(v))return "["+a.path+" · file gambar ("+(v.length/1024).toFixed(0)+" KB data URL) — tidak perlu dibaca; file ini sudah ditampilkan di chat via show_image]";return "["+a.path+" · "+v.split("\n").length+" baris · "+(v.length/1024).toFixed(1)+" KB · isi LENGKAP, tidak terpotong]\n"+v},
+ write:a=>{if(typeof a.path!=="string"||!a.path||typeof a.content!=="string")return"ERROR write butuh path dan content berupa teks.";if(a.content.startsWith("[isi file ada di penyimpanan virtual"))return"DITOLAK: itu hanya penanda riwayat, bukan isi file. Gunakan read untuk melihat isi asli lalu edit, atau tulis isi lengkap yang sebenarnya.";const f=FS();if(isBin(f[a.path]))return"DITOLAK: "+a.path+" adalah aset biner (audio/gambar) dan tidak boleh ditimpa dengan teks. Pakai nama file lain.";rec(a.path,f[a.path]??null,a.content,"write");f[a.path]=a.content;setFS(f);return "OK ditulis "+a.path+" ("+a.content.length+" karakter)"},
+ edit:a=>{const f=FS(),s=f[a.path];if(s==null)return "ERROR: file tidak ada";if(isBin(s))return "ERROR: aset biner tidak bisa diedit";if(typeof a.old!=="string"||!a.old||typeof a.new!=="string")return "ERROR: edit butuh old (tidak kosong) dan new berupa teks";const n=s.split(a.old).length-1;if(n!==1)return "ERROR: teks lama ditemukan "+n+"x (harus tepat 1x)";f[a.path]=s.replace(a.old,()=>a.new);setFS(f);rec(a.path,s,f[a.path],"edit");return "OK diedit "+a.path},
+ grep:a=>typeof a.pattern!=="string"||!a.pattern?"ERROR: grep butuh pattern":Object.entries(FS()).filter(([k,v])=>!isBin(v)).flatMap(([k,v])=>v.split("\n").map((l,i)=>l.includes(a.pattern)?k+":"+(i+1)+": "+l:null).filter(Boolean)).join("\n")||"(tidak ada hasil)",
  web_search:async a=>{const q=String(a&&a.query||"").trim();if(!q)return"ERROR: butuh query.";const bm=blockMinor(q);if(bm)return bm;
   const H2T=s=>s.replace(/<script[\s\S]*?<\/script>/gi," ").replace(/<style[\s\S]*?<\/style>/gi," ").replace(/<[^>]+>/g," ").replace(/&nbsp;/gi," ").replace(/&amp;/gi,"&").replace(/&lt;/gi,"<").replace(/&gt;/gi,">").replace(/&quot;/gi,"\"").replace(/&#39;/g,"'").replace(/[ \t]+/g," ").trim();
   const dec=h=>{const m=/(?:\?|&|&amp;)uddg=([^&"]+)/.exec(h||"");let u=m?m[1]:h;if(u.startsWith("//"))u="https:"+u;try{u=decodeURIComponent(u)}catch{}return u};
@@ -464,10 +596,11 @@ const EXE={
   return"OK "+nm+" ("+(wh?wh+" · ":"")+(du.length/1024).toFixed(0)+" KB)"}
 };
 const IMGN="\n\nGAMBAR: aplikasi ini tidak dapat MENGHASILKAN gambar raster/foto. Jika pengguna meminta gambar, ilustrasi, ikon, logo, atau diagram, buat sebagai SVG yang valid (selalu sertakan xmlns=\"http://www.w3.org/2000/svg\" dan viewBox; tanpa gambar atau font eksternal; tanpa <script>). Simpan sebagai file .svg dengan write, atau tulis dalam blok ```svg. Aplikasi menampilkan SVG langsung di chat dan pengguna dapat mengunduhnya sebagai PNG atau SVG. Jika pengguna meminta FOTO/gambar dari internet, jangan mengarang SVG palsu — cari dengan web_search bila perlu, ambil URL yang menunjuk LANGSUNG ke file gambarnya (berakhiran .jpg/.png/.webp/.gif, bukan halaman HTML), lalu panggil show_image(url) agar foto tampil di chat dengan tombol unduh.";
-const SYS=()=>"Kamu HRAI, asisten coding di HP. Jawab ringkas dalam bahasa Indonesia. Kamu punya penyimpanan file virtual di browser (tool list/read/write/edit/grep) DAN akses internet melalui tool web_search (cari info terkini/fakta berita), open_url (baca isi sebuah URL), serta show_image (tampilkan gambar/foto dari URL langsung ke file gambar di chat); TIDAK ada shell. KONTEN DEWASA: aplikasi menampilkan verifikasi 18+ saat permintaan terdeteksi dewasa — jika tool internet mengembalikan \"DITOLAK: verifikasi 18+ ditolak pengguna\", hormati dan jelaskan bahwa pengguna bisa mencoba lagi lalu menyelesaikan verifikasi; jika verifikasi lolos, lanjutkan konten dewasa sesuai kebijakan provider modelmu — jika provider menolak, sampaikan bahwa yang menolak adalah kebijakan provider, bukan aplikasi. BATAS MUTLAK: JANGAN PERNAH membuat, mencari, atau menampilkan konten seksual yang melibatkan anak di bawah umur / pelajar / minor, apa pun alasannya — tolak keras. JANGAN pernah mengatakan tidak punya akses internet — langsung pakai web_search untuk pertanyaan tentang hal terkini, lalu open_url pada hasil terrelevan untuk detail. Jika tool internet gagal dengan galat CORS/proxy, sarankan pengguna mengisi kolom Proxy CORS di menu Atur (Cloudflare Worker hrai-worker.js atau hrai-proxy.py). Pengguna bisa melihat pratinjau file .html yang kamu tulis (buat satu file mandiri; localStorage tidak tersedia di pratinjau). File yang dilampirkan pengguna otomatis ada di penyimpanan virtual; gunakan read. Untuk file besar, tulis bertahap (kerangka dulu, lalu tambah per bagian dengan edit). Tool read selalu mengembalikan isi file LENGKAP dalam satu panggilan: baca file utuh sekali saja, jangan membaca per potongan dan jangan menelusuri file dengan grep berulang jika bisa dibaca utuh.\n"+(C.mode==="PLAN"?"MODE AKTIF: PLAN. Hanya baca dan susun rencana bertahap; jangan menulis/mengedit file.":"MODE AKTIF: BUILD. Eksekusi penuh: tulis dan edit file sesuai kebutuhan, lalu ringkas hasilnya. Jika ada rencana dari mode PLAN di percakapan, jalankan tahap demi tahap.")+IMGN+fsNote();
+const ASN="\n\nASET BINER: pengguna dapat melampirkan file audio .ogg (juga gambar/gif) sebagai aset game. File itu tersimpan di penyimpanan virtual sebagai aset biner: muncul di list, tetapi read tidak membaca isinya dan write/edit tidak boleh menimpanya. Rujuk lewat path persisnya di kode, mis. new Audio('jump.ogg') atau <audio src='bgm.ogg'> (path relatif terhadap file HTML); pratinjau HRAI memuat aset itu otomatis. Putar audio hanya setelah interaksi pengguna (klik/ketuk) agar tidak diblokir browser, dan sediakan tombol mute serta kendali volume. Jangan mengarang aset yang tidak ada di list.";
+const SYS=()=>"Kamu HRAI, asisten coding di HP. Jawab ringkas dalam bahasa Indonesia. Kamu punya penyimpanan file virtual di browser (tool list/read/write/edit/grep) DAN akses internet melalui tool web_search (cari info terkini/fakta berita), open_url (baca isi sebuah URL), serta show_image (tampilkan gambar/foto dari URL langsung ke file gambar di chat); TIDAK ada shell. KONTEN DEWASA: aplikasi menampilkan verifikasi 18+ saat permintaan terdeteksi dewasa — jika tool internet mengembalikan \"DITOLAK: verifikasi 18+ ditolak pengguna\", hormati dan jelaskan bahwa pengguna bisa mencoba lagi lalu menyelesaikan verifikasi; jika verifikasi lolos, lanjutkan konten dewasa sesuai kebijakan provider modelmu — jika provider menolak, sampaikan bahwa yang menolak adalah kebijakan provider, bukan aplikasi. BATAS MUTLAK: JANGAN PERNAH membuat, mencari, atau menampilkan konten seksual yang melibatkan anak di bawah umur / pelajar / minor, apa pun alasannya — tolak keras. JANGAN pernah mengatakan tidak punya akses internet — langsung pakai web_search untuk pertanyaan tentang hal terkini, lalu open_url pada hasil terrelevan untuk detail. Jika tool internet gagal dengan galat CORS/proxy, sarankan pengguna mengisi kolom Proxy CORS di menu Atur (Cloudflare Worker hrai-worker.js atau hrai-proxy.py). Pengguna bisa melihat pratinjau file .html yang kamu tulis (buat satu file mandiri; localStorage tidak tersedia di pratinjau). File yang dilampirkan pengguna otomatis ada di penyimpanan virtual; gunakan read. Untuk file besar, tulis bertahap (kerangka dulu, lalu tambah per bagian dengan edit). Tool read selalu mengembalikan isi file LENGKAP dalam satu panggilan: baca file utuh sekali saja, jangan membaca per potongan dan jangan menelusuri file dengan grep berulang jika bisa dibaca utuh.\n"+(C.mode==="PLAN"?"MODE AKTIF: PLAN. Hanya baca dan susun rencana bertahap; jangan menulis/mengedit file.":"MODE AKTIF: BUILD. Eksekusi penuh: tulis dan edit file sesuai kebutuhan, lalu ringkas hasilnya. Jika ada rencana dari mode PLAN di percakapan, jalankan tahap demi tahap.")+IMGN+ASN+fsNote();
 
 /* ---- render ---- */
-const esc=s=>s.replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]));
 /* ===== SVG: tampil di chat, unduh SVG/PNG (konversi di browser lewat canvas) ===== */
 const SVGS={};
 /* model kadang lupa xmlns; tanpa itu browser tidak mau menampilkan SVG sebagai gambar */
@@ -493,10 +626,27 @@ function imgCard(src,name){const id=hsh(src);IMGS[id]=src;const nm=esc(name||"fo
  return`<div class="svgc" data-im="${id}" data-name="${nm}"><img class="svgi" alt="gambar dari internet" src="${src}"><div class="svga"><button class="ib" data-iv="view">Perbesar</button><button class="ib" data-iv="dl">⬇ Unduh</button></div></div>`}
 const wrapSvg=t=>(t=fixSvg(t),'<!DOCTYPE html><meta name="viewport" content="width=device-width,initial-scale=1"><body style="margin:0;min-height:100vh;display:grid;place-items:center;background:#fff"><img alt="" style="max-width:100%;max-height:100vh" src="data:image/svg+xml;charset=utf-8,'+encodeURIComponent(t)+'">');
 function pvSvg(t,name){pv(wrapSvg(t),name||"gambar.svg",t)}
-const md=s=>{const P=s.split("```");return P.map((x,i)=>{if(i%2){const n=x.indexOf("\n"),c=n<0?x:x.slice(n+1),h=x.slice(0,n<0?0:n).trim().toLowerCase()==="html"||/^\s*<(!doctype|html)/i.test(c);const pre=`<pre>${h?'<button class="cp pb">▶ Pratinjau</button>':""}<button class="cp">salin</button><code>${hl(c,x.slice(0,n<0?0:n).trim().split(/\s/)[0]||(h?"html":""))}</code></pre>`;const lg=x.slice(0,n<0?0:n).trim().split(/\s/)[0].toLowerCase();if(i<P.length-1&&(lg==="svg"||/^(|xml|html)$/.test(lg))&&/^\s*(<\?xml[^>]*\?>\s*)?<svg[\s>]/i.test(c)&&/<\/svg>\s*$/i.test(c))return svgCard(c.trim(),"")+`<details class="svgd"><summary>Kode SVG</summary>${pre}</details>`;return pre}return esc(x).replace(/`([^`\n]+)`/g,"<code>$1</code>").replace(/\*\*([^*\n]+)\*\*/g,"<b>$1</b>")}).join("")};
+/* ---- markdown ringan: judul, daftar, kutipan, tabel, tautan (teks di luar blok kode) ---- */
+const LK=(u,t)=>'<a href="'+u+'" target="_blank" rel="noopener noreferrer">'+t+'</a>';
+const mdi=t=>t.split(/(`[^`\n]+`)/).map((p,i)=>i%2?"<code>"+p.slice(1,-1)+"</code>":p.replace(/\*\*([^*\n]+)\*\*/g,"<b>$1</b>").replace(/\[([^\]\n]+)\]\((https?:\/\/[^\s)]+)\)/g,(m,x,u)=>LK(u,x)).replace(/(^|[\s(])(https?:\/\/[^\s<>)]*[^\s<>).,;:!?])/g,(m,a,u)=>a+LK(u,u))).join("");
+function mdt(x){const L=x.split("\n"),out=[],E=t=>mdi(esc(t));let i=0,para=[];
+ const flush=()=>{if(para.length){out.push("<p>"+para.map(E).join("<br>")+"</p>");para=[]}};
+ const LI=/^(\s*)([-*•]|\d+[.)])\s+(.*)$/;
+ while(i<L.length){const l=L[i];let m;
+  if(!l.trim()){flush();i++;continue}
+  if((m=/^(#{1,4})\s+(.+?)\s*#*\s*$/.exec(l))){flush();out.push("<h"+m[1].length+">"+E(m[2])+"</h"+m[1].length+">");i++;continue}
+  if(/^\s*([-*_])(\s*\1){2,}\s*$/.test(l)){flush();out.push("<hr>");i++;continue}
+  if(/^\s*>/.test(l)){flush();const q=[];while(i<L.length&&/^\s*>/.test(L[i])){q.push(L[i].replace(/^\s*>\s?/,""));i++}out.push("<blockquote>"+q.map(E).join("<br>")+"</blockquote>");continue}
+  if(l.includes("|")&&i+1<L.length&&/^\s*\|?\s*:?-{2,}:?\s*(\|\s*:?-{2,}:?\s*)+\|?\s*$/.test(L[i+1])){flush();const cells=r=>r.trim().replace(/^\||\|$/g,"").split("|").map(c=>c.trim()),hd=cells(l),rows=[];i+=2;while(i<L.length&&L[i].trim()&&L[i].includes("|")){rows.push(cells(L[i]));i++}
+   out.push('<div class="tw"><table><thead><tr>'+hd.map(c=>"<th>"+E(c)+"</th>").join("")+"</tr></thead><tbody>"+rows.map(r=>"<tr>"+r.map(c=>"<td>"+E(c)+"</td>").join("")+"</tr>").join("")+"</tbody></table></div>");continue}
+  if((m=LI.exec(l))){flush();const ord=/\d/.test(m[2]),it=[];let q;while(i<L.length&&(q=LI.exec(L[i]))&&/\d/.test(q[2])===ord){it.push([q[1].length,q[3]]);i++}
+   out.push((ord?"<ol>":"<ul>")+it.map(([n,t])=>"<li"+(n>=2?' style="margin-left:'+Math.min(4,Math.floor(n/2))*1.2+'em"':"")+">"+E(t)+"</li>").join("")+(ord?"</ol>":"</ul>"));continue}
+  para.push(l);i++}
+ flush();return out.join("")}
+const md=s=>{const P=s.split("```");return P.map((x,i)=>{if(i%2){const n=x.indexOf("\n"),c=n<0?x:x.slice(n+1),h=x.slice(0,n<0?0:n).trim().toLowerCase()==="html"||/^\s*<(!doctype|html)/i.test(c);const pre=`<pre>${h?'<button class="cp pb">▶ Pratinjau</button>':""}<button class="cp">salin</button><code>${hl(c,x.slice(0,n<0?0:n).trim().split(/\s/)[0]||(h?"html":""))}</code></pre>`;const lg=x.slice(0,n<0?0:n).trim().split(/\s/)[0].toLowerCase();if(i<P.length-1&&(lg==="svg"||/^(|xml|html)$/.test(lg))&&/^\s*(<\?xml[^>]*\?>\s*)?<svg[\s>]/i.test(c)&&/<\/svg>\s*$/i.test(c))return svgCard(c.trim(),"")+`<details class="svgd"><summary>Kode SVG</summary>${pre}</details>`;return pre}return mdt(x)}).join("")};
 const log=$("#log"),add=(cls,html="")=>{const d=document.createElement("div");d.className=cls;d.innerHTML=html;log.append(d);log.scrollTop=cls==="hero"?0:log.scrollHeight;return d};
 log.addEventListener("error",e=>{const t=e.target;if(t&&t.classList&&t.classList.contains("svgi")){const p=document.createElement("p");p.className="sys";p.textContent="SVG tidak valid atau tidak bisa dirender.";const c=t.closest(".svgc"),a=c&&c.querySelector(".svga");if(a)a.remove();t.replaceWith(p)}},true);
-function draw(){modeUI();log.innerHTML="";if(!H.length)add("hero",`<div class="bn">${logoSvg()}<div class="bt"><b>CODEX</b> · v0.3.3 mobile<div>Mobile AI Coding Agent</div><div>HeavyRain HRAI Codex</div></div></div><div class="bi">provider <b>${esc(prov(C.provider).id)}</b> · model <b>${esc(prov(C.provider).model||"-")}</b></div><p>Tulis perintah, atau mulai dari saran:</p><div class="chips"><button data-q="Buatkan halaman HTML kalkulator sederhana dan simpan sebagai kalkulator.html">Kalkulator HTML</button><button data-q="Susun rencana bertahap untuk aplikasi catatan harian">Rencana aplikasi</button><button data-q="Jelaskan cara kerja async/await di JavaScript dengan contoh singkat">Belajar async/await</button><button data-q="Tulis skrip Python untuk merapikan data CSV">Skrip Python</button></div>`);
+function draw(){modeUI();log.innerHTML="";if(!H.length)add("hero",`<div class="bn">${logoSvg()}<div class="bt"><b>CODEX</b> · v0.4.0<div>AI Web Agent</div><div>HeavyRain HRAI Codex</div></div></div><div class="bi"><span>provider</span><b>${esc(prov(C.provider).id)}</b><span>model</span><b>${esc(prov(C.provider).model||"-")}</b></div><p>Mulai dari saran, atau tulis perintahmu sendiri:</p><div class="chips"><button data-q="Buatkan halaman HTML kalkulator sederhana dan simpan sebagai kalkulator.html"><b>Kalkulator HTML</b><span>Satu file, siap dipratinjau</span></button><button data-q="Susun rencana bertahap untuk aplikasi catatan harian"><b>Rencana aplikasi</b><span>Tahapan kerja yang jelas</span></button><button data-q="Buatkan game HTML5 sederhana yang memakai file audio .ogg yang saya lampirkan sebagai efek suara dan musik latar"><b>Game dengan audio OGG</b><span>Lampirkan aset .ogg lewat tombol +</span></button><button data-q="Audit kode pada file yang saya lampirkan, temukan bug, lalu perbaiki"><b>Audit &amp; perbaiki kode</b><span>Cari bug dari file lampiran</span></button><button data-q="Jelaskan cara kerja async/await di JavaScript dengan contoh singkat"><b>Belajar async/await</b><span>Penjelasan dengan contoh</span></button><button data-q="Tulis skrip Python untuk merapikan data CSV"><b>Skrip Python</b><span>Rapikan data CSV</span></button></div>`);
  const res={};H.forEach(m=>{if(m.role==="tool")res[m.tool_call_id]=m.content});
  for(const m of H){if(m.sum){add("thw",`<details class="thd"><summary>Ringkasan percakapan</summary><div class="thx">${esc(m.content)}</div></details>`);continue}if(m.sys||m.hid)continue;if(m.role==="user")add("u",uHtml(m));else if(m.role==="assistant"){if(m.content)add("a",md(m.content));for(const t of m.tool_calls||[]){const n=t.function.name;if(n==="show_image"){let a={};try{a=JSON.parse(t.function.arguments)}catch{}const rm=/^OK (\S+)/.exec(res[t.id]||"");let pth=rm?rm[1]:"";if(!pth&&a.name)pth="gambar/"+String(a.name).replace(/[\\/:*?"<>|]/g,"-");let src=pth&&FS()[pth];if(!src&&a.name)src=FS()["gambar/"+a.name];if(src)add("imgw",imgCard(src,(pth||"foto.png").split("/").pop()));continue}if(n!=="write"&&n!=="edit")continue;let a={};try{a=JSON.parse(t.function.arguments)}catch{}finCard(newCard(n),n,a,res[t.id]||"")}}}}
 const modeUI=()=>{document.querySelectorAll("#mode button").forEach(b=>b.classList.toggle("on",b.dataset.m===C.mode));$("#mode").dataset.m=C.mode;const p=prov(C.provider);$("#sub").textContent=p.id+" · "+p.model+" · ≈"+fk(est())+"/"+fk(C.ctx||128000);if(typeof tusUI==="function")tusUI()};
@@ -509,12 +659,12 @@ const tusUI=()=>{const b=$("#tus");if(!b)return;if(!H.length&&!TU.pin&&!TU.pout)
 async function sse(r,cb){const rd=r.body.getReader(),dc=new TextDecoder();let b="";for(;;){const{done,value}=await rd.read();if(done)break;LT=Date.now();b+=dc.decode(value,{stream:true});const L=b.split("\n");b=L.pop();for(const l of L)if(l.startsWith("data:")){const s=l.slice(5).trim();if(s&&s!=="[DONE]")try{cb(JSON.parse(s))}catch{}}}}
 const chk=async r=>{if(!r.ok)throw new Error("HTTP "+r.status+" "+(await r.text()).slice(0,300))};
 async function callOA(p,sys,onT,onR,onC){
- const r=await pf(p,p.url.replace(/\/$/,"")+"/chat/completions",{method:"POST",signal:SG.signal,headers:{"Content-Type":"application/json",Authorization:"Bearer "+p.key},body:JSON.stringify({model:p.model,stream:true,temperature:.7,max_tokens:MT(),messages:[{role:"system",content:sys},...H.map(oaClean)],tools:T_OA})});
+ const r=await pf(p,p.url.replace(/\/$/,"")+"/chat/completions",{method:"POST",signal:SG.signal,headers:Object.assign({"Content-Type":"application/json"},p.key?{Authorization:"Bearer "+p.key}:{}),body:JSON.stringify({model:p.model,stream:true,temperature:.7,max_tokens:MT(),messages:[{role:"system",content:sys},...H.map(oaClean)],tools:T_OA})});
  await chk(r);let text="",calls=[];let gpin=0,gpout=0;
  await sse(r,d=>{const c=d.choices?.[0]?.delta;if(d.choices?.[0]?.finish_reason)FR=d.choices[0].finish_reason;if(d.usage){gpin=d.usage.prompt_tokens||0;gpout=(d.usage.completion_tokens||0)+(d.usage.reasoning_tokens||0);TU.pin+=gpin-(OA.pin||0);TU.pout+=gpout-(OA.pout||0);OA.pin=gpin;OA.pout=gpout;tusUI()}if(!c)return;if(c.content){text+=c.content;onT(text)}const rs=c.reasoning_content||c.reasoning;if(rs)onR(rs);
   for(const t of c.tool_calls||[]){TC=1;const i=t.index??0,x=calls[i]||(calls[i]={id:"",name:"",args:""});if(t.id)x.id=t.id;if(t.function?.name)x.name+=t.function.name;if(t.function?.arguments)x.args+=t.function.arguments;onC&&onC(calls)}});
  return{text,calls:calls.filter(Boolean)}}
-function toAn(){const o=[];for(const m of H){if(m.role==="tool"){const b={type:"tool_result",tool_use_id:m.tool_call_id,content:m.content},l=o[o.length-1];if(l&&l.role==="user"&&Array.isArray(l.content))l.content.push(b);else o.push({role:"user",content:[b]})}else if(m.role==="assistant"){const c=[];if(m.content)c.push({type:"text",text:m.content});for(const t of m.tool_calls||[])c.push({type:"tool_use",id:t.id,name:t.function.name,input:JSON.parse(t.function.arguments||"{}")});o.push({role:"assistant",content:c})}else o.push({role:"user",content:m.images?.length?[...m.images.map(u=>({type:"image",source:{type:"base64",media_type:"image/jpeg",data:u.split(",")[1]}})),{type:"text",text:m.content}]:m.content})}return o}
+function toAn(){const o=[];for(const m of H){if(m.role==="tool"){const b={type:"tool_result",tool_use_id:m.tool_call_id,content:m.content},l=o[o.length-1];if(l&&l.role==="user"&&Array.isArray(l.content))l.content.push(b);else o.push({role:"user",content:[b]})}else if(m.role==="assistant"){const c=[];if(m.content)c.push({type:"text",text:m.content});for(const t of m.tool_calls||[])c.push({type:"tool_use",id:t.id,name:t.function.name,input:sj(t.function.arguments)});o.push({role:"assistant",content:c})}else o.push({role:"user",content:m.images?.length?[...m.images.map(u=>({type:"image",source:{type:"base64",media_type:"image/jpeg",data:u.split(",")[1]}})),{type:"text",text:m.content}]:m.content})}return o}
 async function callAN(p,sys,onT,onR,onC){
  const r=await pf(p,p.url.replace(/\/$/,"")+"/messages",{method:"POST",signal:SG.signal,headers:{"Content-Type":"application/json","x-api-key":p.key,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},body:JSON.stringify({model:p.model,max_tokens:MT(),stream:true,system:sys,messages:toAn(),tools:T_AN})});
  await chk(r);let text="",calls=[];const an={};let lpin=0,lpout=0;const upA=()=>{TU.pin+=lpin-(an.pin||0);TU.pout+=lpout-(an.pout||0);an.pin=lpin;an.pout=lpout;tusUI()};
@@ -522,7 +672,7 @@ async function callAN(p,sys,onT,onR,onC){
   else if(d.type==="content_block_delta"){const x=d.delta;if(x.type==="text_delta"){text+=x.text;onT(text)}else if(x.type==="input_json_delta"){calls[d.index].args+=x.partial_json;onC&&onC(calls)}else if(x.type==="thinking_delta")onR(x.thinking)}});
  return{text,calls:calls.filter(Boolean)}}
 async function callGM(p,sys,onT){
- const con=[];for(const m of H){if(m.role==="tool")con.push({role:"user",parts:[{functionResponse:{name:m.name,response:{result:m.content}}}]});else if(m.role==="assistant"){const pt=[];if(m.content)pt.push({text:m.content});for(const t of m.tool_calls||[])pt.push({functionCall:{name:t.function.name,args:JSON.parse(t.function.arguments||"{}")}});con.push({role:"model",parts:pt})}else con.push({role:"user",parts:[{text:m.content},...(m.images||[]).map(u=>({inlineData:{mimeType:"image/jpeg",data:u.split(",")[1]}}))]})}
+ const con=[];for(const m of H){if(m.role==="tool")con.push({role:"user",parts:[{functionResponse:{name:m.name,response:{result:m.content}}}]});else if(m.role==="assistant"){const pt=[];if(m.content)pt.push({text:m.content});for(const t of m.tool_calls||[])pt.push({functionCall:{name:t.function.name,args:sj(t.function.arguments)}});con.push({role:"model",parts:pt})}else con.push({role:"user",parts:[{text:m.content},...(m.images||[]).map(u=>({inlineData:{mimeType:"image/jpeg",data:u.split(",")[1]}}))]})}
  const r=await pf(p,`${p.url.replace(/\/$/,"")}/models/${p.model}:generateContent?key=${encodeURIComponent(p.key)}`,{method:"POST",signal:SG.signal,headers:{"Content-Type":"application/json"},body:JSON.stringify({systemInstruction:{parts:[{text:sys}]},contents:con,generationConfig:{maxOutputTokens:MT()},tools:[{functionDeclarations:T_GM}]})});
  await chk(r);const j=await r.json();FR=j.candidates?.[0]?.finishReason||"";if(j.usageMetadata){const gp=j.usageMetadata.promptTokenCount||0,go=(j.usageMetadata.candidatesTokenCount||0)+(j.usageMetadata.thoughtsTokenCount||0);TU.pin+=gp-(OA.pin||0);TU.pout+=go-(OA.pout||0);OA.pin=gp;OA.pout=go;tusUI()}let text="",calls=[];
  for(const x of j.candidates?.[0]?.content?.parts||[]){if(x.text)text+=x.text;if(x.functionCall)calls.push({id:"g"+Math.random().toString(36).slice(2,9),name:x.functionCall.name,args:JSON.stringify(x.functionCall.args||{})})}
@@ -535,7 +685,7 @@ const NUDGE={budget:"[sistem] Kamu berpikir terlalu lama tanpa menghasilkan hasi
 const MT=()=>C.maxTok||32000,BG=()=>C.budget??8000;
 const oaClean=m=>m.role==="assistant"?{role:"assistant",content:m.content,tool_calls:m.tool_calls}:m.role==="tool"?{role:"tool",tool_call_id:m.tool_call_id,content:m.content}:oaMsg(m);
 async function agent(){
- const p=prov(C.provider);if(!p.key&&p.id!=="ollama"){add("er","API key untuk "+p.id+" belum diisi. Buka Atur.");add("thw",`<button class="btn pvf" data-retry="1">↻ Kirim ulang pesan terakhir</button>`);return}if(!p.model){add("er","Model untuk "+p.id+" belum dipilih. Buka Atur lalu ketuk Ambil.");add("thw",`<button class="btn pvf" data-retry="1">↻ Kirim ulang pesan terakhir</button>`);return}
+ const p=prov(C.provider);if(!p.key&&!keyless(p)){add("er","API key untuk "+p.id+" belum diisi. Buka Atur.");add("thw",`<button class="btn pvf" data-retry="1">↻ Kirim ulang pesan terakhir</button>`);return}if(!p.model){add("er","Model untuk "+p.id+" belum dipilih. Buka Atur lalu ketuk Ambil.");add("thw",`<button class="btn pvf" data-retry="1">↻ Kirim ulang pesan terakhir</button>`);return}
  ctrl=new AbortController();$("#go").textContent="■";keep(true);let cont=0,done=false,acOK=true,fail=null;const wrote=new Set,wroteSvg=new Set,tg=mkG("Giliran AI");CG=tg;
  try{for(let step=0;step<40;step++){
   if(acOK&&C.ac!==false&&est()>.85*(C.ctx||128000)){const cr=await compact(true);if(cr===false)acOK=false}log.querySelectorAll(".ac").forEach(x=>{if(x.dataset.n!=="write"&&x.dataset.n!=="edit")x.remove()});let rt="",over=false,last="",text="",calls=[];TC=0;FR="";SG=new AbortController();ctrl.signal.addEventListener("abort",()=>SG.abort());
@@ -569,7 +719,7 @@ async function agent(){
    cont++;add("sys",esc((why==="budget"?"Berpikir terlalu lama (≈"+Math.round(rt.length/4)+" token) tanpa hasil; dihentikan.":why==="length"?"Output terpotong batas token ("+MT()+").":"Model berhenti tanpa menghasilkan jawaban.")+" Lanjut otomatis ("+cont+"/3)."));
    H.push({role:"user",content:NUDGE[why],sys:true});saveH();continue}
   const m={role:"assistant",content:text||null};
-  if(calls.length)m.tool_calls=calls.map((c,i)=>({id:c.id||"c"+Date.now()+i,type:"function",function:{name:c.name,arguments:c.args||"{}"}}));
+  if(calls.length)m.tool_calls=calls.map((c,i)=>({id:c.id||"c"+Date.now()+i,type:"function",function:{name:c.name,arguments:vj(c.args)}}));
   H.push(m);saveH();if(!calls.length){done=true;break}
   const ck=Object.keys(cards).map(Number).sort((x,y)=>x-y);
   for(let k=0;k<m.tool_calls.length;k++){const t=m.tool_calls[k];let a2={},res;try{a2=JSON.parse(t.function.arguments)}catch{}
@@ -591,31 +741,28 @@ async function agent(){
  log.querySelectorAll(".tk,.ac.run").forEach(x=>x.remove());CG=null;{const n=grpRecs(tg.id).length;if(n>=2)add("thw",`<button class="btn pvf" data-ug="${tg.id}">↩ Batalkan semua perubahan giliran ini (${n} file)</button>`)}keep(false);ctrl=null;$("#go").textContent="↑";if(fail)notify("HRAI berhenti",fail);else if(done){const lm=[...H].reverse().find(m=>m.role==="assistant"&&m.content);if(!notify("HRAI selesai",lm?lm.content:"Tugas selesai."))chime()}}
 
 /* kirim ulang: buang sisa giliran yang gagal/berhenti, lalu jalankan ulang pesan pengguna terakhir */
-function retryLast(){if(busy())return;let i=H.length-1;while(i>=0&&H[i].role!=="user")i--;
+function retryLast(){if(busy())return;let i=H.length-1;while(i>=0&&(H[i].role!=="user"||H[i].sys))i--;
  if(i<0)return note("Tidak ada pesan yang bisa dikirim ulang.");
  const m=H[i];if(m.sys||m.sum)return note("Percakapan sistem tidak bisa dikirim ulang.");
  H.length=i;saveH();draw();H.push(m);saveH();add("u",uHtml(m));agent()}
 
 /* ---- UI ---- */
-$("#go").onclick=async()=>{if(ctrl){ctrl.abort();return}let v=$("#in").value.trim();if(!v&&!PA.length&&!PF.length)return;const sm=v.match(/^\/(think|budget|tokens|theme|font|ctx|compact|undo|changes)(?:\s+(.*))?$/i);if(sm){$("#in").value="";$("#in").style.height="";cmdSlash(sm[1].toLowerCase(),(sm[2]||"").trim().toLowerCase());return}$("#in").value="";$("#in").style.height="";if(PF.length)v+=(v?"\n\n":"")+"[File dilampirkan di penyimpanan virtual: "+PF.join(", ")+"]";if(!v)v="Lihat gambar terlampir.";if(needAdult(v)&&!verified()){const okV=await gateAdult();if(!okV){note("Verifikasi 18+ ditolak — pesan tidak dikirim.");return}}if(H.length===0)log.innerHTML="";const m={role:"user",content:v};if(PA.length){m.images=PA;m.nimg=PA.length}PA=[];PF=[];attUI();H.push(m);saveH();add("u",uHtml(m));agent()};
+$("#go").onclick=async()=>{if(ctrl){ctrl.abort();return}let v=$("#in").value.trim();if(!v&&!PA.length&&!PF.length)return;const sm=v.match(/^\/(think|budget|tokens|theme|font|ctx|compact|undo|changes)(?:\s+(.*))?$/i);if(sm){$("#in").value="";$("#in").style.height="";cmdSlash(sm[1].toLowerCase(),(sm[2]||"").trim().toLowerCase());return}$("#in").value="";$("#in").style.height="";if(PF.length)v+=(v?"\n\n":"")+"[File dilampirkan di penyimpanan virtual: "+PF.map(n=>PD[n]?n+" ("+PD[n]+")":n).join(", ")+"]";if(!v)v="Lihat gambar terlampir.";if(needAdult(v)&&!verified()){const okV=await gateAdult();if(!okV){note("Verifikasi 18+ ditolak — pesan tidak dikirim.");return}}if(H.length===0)log.innerHTML="";const m={role:"user",content:v};if(PA.length){m.images=PA;m.nimg=PA.length}PA=[];PF=[];PD={};attUI();H.push(m);saveH();add("u",uHtml(m));agent()};
 $("#mode").onclick=e=>{const m=e.target.dataset.m;if(m){C.mode=m;saveC();modeUI()}};
 log.onclick=e=>{const T=e.target;if(T.dataset.retry){retryLast();return}if(T.dataset.sv||T.classList.contains("svgi")){const c=T.closest(".svgc"),src=c&&SVGS[c.dataset.id];if(!src)return;const nm=c.dataset.name||"gambar.svg",a=T.dataset.sv||"view";
  if(a==="view")pvSvg(src,nm);else if(a==="svg")saveBlob(new Blob([src],{type:"image/svg+xml"}),nm);else{const o=T.textContent;T.disabled=true;T.textContent="…";svgToPng(src,2).then(b=>saveBlob(b,nm.replace(/\.svg$/i,"")+".png")).catch(x=>alert("Gagal membuat PNG: "+(x.message||x))).finally(()=>{T.disabled=false;T.textContent=o})}return}
  if(T.dataset.iv){const c=T.closest(".svgc"),src=c&&IMGS[c.dataset.im];if(!src)return;const nm=c.dataset.name||"foto.png";
   if(T.dataset.iv==="view")pv('<img alt="" style="max-width:100%;max-height:100vh;display:block;margin:auto" src="'+src+'">',nm);
   else{const o=T.textContent;T.disabled=true;T.textContent="…";fetch(src).then(r=>r.blob()).then(b=>saveBlob(b,nm)).catch(x=>alert("Gagal mengunduh: "+(x.message||x))).finally(()=>{T.disabled=false;T.textContent=o})}return}
- if(T.dataset.ug){const g=T.dataset.ug;if(!grpRecs(g).length){alert("Riwayat perubahan giliran ini sudah dihapus.");return}const n=grpApply(g),rs=grpRecs(g);if(n)T.textContent=rs.every(r=>r.u)?"↻ Terapkan ulang perubahan giliran ini":"↩ Batalkan semua perubahan giliran ini ("+rs.length+" file)";return}if(T.dataset.df||T.dataset.ud){const r=UL.find(x=>x.id===T.closest(".ac").dataset.u);if(!r){alert("Catatan perubahan ini sudah dihapus dari riwayat.");return}if(T.dataset.ud){if(chApply(r))T.textContent=r.u?"Terapkan ulang":"Batalkan"}else{$("#dm").showModal();chDiff(r.id)}return}const q=e.target.dataset.q;if(q){$("#in").value=q;$("#in").focus();return}const pp=e.target.dataset.p;if(pp){pv(FS()[pp]??"<p>File tidak ditemukan</p>",pp);return}if(e.target.classList.contains("pb")){pv(e.target.parentElement.querySelector("code").textContent);return}if(e.target.classList.contains("cp")){navigator.clipboard?.writeText(e.target.parentElement.querySelector("code").textContent);e.target.textContent="✓"}};
+ if(T.dataset.ug){const g=T.dataset.ug;if(!grpRecs(g).length){alert("Riwayat perubahan giliran ini sudah dihapus.");return}const n=grpApply(g),rs=grpRecs(g);if(n)T.textContent=rs.every(r=>r.u)?"↻ Terapkan ulang perubahan giliran ini":"↩ Batalkan semua perubahan giliran ini ("+rs.length+" file)";return}if(T.dataset.df||T.dataset.ud){const r=UL.find(x=>x.id===T.closest(".ac").dataset.u);if(!r){alert("Catatan perubahan ini sudah dihapus dari riwayat.");return}if(T.dataset.ud){if(chApply(r))T.textContent=r.u?"Terapkan ulang":"Batalkan"}else{$("#dm").showModal();chDiff(r.id)}return}const qb=e.target.closest&&e.target.closest("[data-q]"),q=qb&&qb.dataset.q;if(q){$("#in").value=q;$("#in").dispatchEvent(new Event("input"));$("#in").focus();return}const pp=e.target.dataset.p;if(pp){pv(FS()[pp]??"<p>File tidak ditemukan</p>",pp);return}if(e.target.classList.contains("pb")){pv(e.target.parentElement.querySelector("code").textContent);return}if(e.target.classList.contains("cp")){navigator.clipboard?.writeText(e.target.parentElement.querySelector("code").textContent);e.target.textContent="✓"}};
 const sp=$("#sp");function fillSP(){sp.innerHTML="";PL().forEach(x=>sp.add(new Option(x[0]+((C.custom||{})[x[0]]?" (kustom)":""),x[0])))}fillSP();
 const loadP=()=>{const p=prov(sp.value);$("#su").value=p.url;$("#sm").value=p.model;$("#sk").value=p.key;$("#sy").value=p.proxy||"";$("#sd").style.display="";$("#sr").style.display=(C.hide||[]).length?"":"none";$("#mz").style.display="none";ML=[]};
 sp.onchange=loadP;
-$("#bs").onclick=()=>{sp.value=C.provider;loadP();$("#sa").checked=C.auto;$("#th").checked=C.think!==false;tm.value=C.theme||"hrai";$("#fz").value=C.font||"f4";$("#wk").checked=C.wake!==false;$("#nt").checked=!!C.notif;$("#snd").checked=C.snd!==false;pwaUI();$("#ds").showModal()};
+$("#bs").onclick=()=>{sp.value=C.provider;loadP();$("#sa").checked=C.auto;$("#th").checked=C.think!==false;tm.value=C.theme||"hrai";$("#fz").value=C.font||"sys";$("#wk").checked=C.wake!==false;$("#nt").checked=!!C.notif;$("#snd").checked=C.snd!==false;pwaUI();$("#ds").showModal()};
 /* Simpan juga preferensi wake lock; sebelumnya checkbox ini tidak pernah disimpan. */
 $("#ok").onclick=()=>{C.provider=sp.value;C.p[sp.value]={url:$("#su").value.trim(),model:$("#sm").value.trim(),key:$("#sk").value.trim(),proxy:$("#sy").value.trim()};C.auto=$("#sa").checked;C.think=$("#th").checked;C.wake=$("#wk").checked;C.notif=$("#nt").checked;C.snd=$("#snd").checked;saveC();modeUI();$("#ds").close()};
 $("#nc").onclick=()=>{newChat();$("#ds").close()};
 $("#cl").onclick=()=>$("#ds").close();
-$("#bf").onclick=()=>{$("#dh").close();const f=FS(),b=$("#fl");b.innerHTML="";const k=Object.keys(f);if(!k.length)b.innerHTML='<p class="sys">Belum ada file.</p>';k.forEach(n=>{const a=document.createElement("button");a.className="btn";a.style="display:block;width:100%;margin-top:8px;text-align:left";a.textContent="⬇ "+n;a.onclick=()=>{const u=URL.createObjectURL(new Blob([f[n]]));Object.assign(document.createElement("a"),{href:u,download:n.split("/").pop()}).click();setTimeout(()=>URL.revokeObjectURL(u),2000)};b.append(a);if(/\.gif$/i.test(n)){const g=document.createElement("button");g.className="btn";g.style="display:block;width:100%;margin-top:6px;text-align:left";g.textContent="🎬 GIF Viewer "+n;g.onclick=()=>{$("#df").close();$("#dm").close();openGif(n,f[n])};b.append(g)}if(/\.(html?|svg)$/i.test(n)){const v=document.createElement("button");v.className="btn";v.style="display:block;width:100%;margin-top:6px;text-align:left";v.textContent="▶ Pratinjau "+n;v.onclick=()=>{$("#df").close();/\.svg$/i.test(n)?pvSvg(f[n],n):pv(f[n],n)};b.append(v)}});$("#df").showModal()};
-$("#fx").onclick=()=>{if(confirm("Hapus semua file virtual?")){setFS({});$("#df").close()}};
-$("#fc").onclick=()=>$("#df").close();
 $("#in").addEventListener("input",e=>{e.target.style.height="auto";e.target.style.height=Math.min(e.target.scrollHeight,innerHeight*.3)+"px"});
 
 const busy=()=>ctrl&&(alert("Hentikan proses yang berjalan dulu."),1);
@@ -623,13 +770,21 @@ function newChat(){if(busy())return;cur=null;H=[];TU={pin:0,pout:0};OA={pin:0,po
 function openS(id){if(busy())return;cur=id;H=S[id].H;TU={pin:0,pout:0};OA={pin:0,pout:0};tusUI();LS["hrai.cur"]=id;draw();$("#dh").close()}
 function hist(){const b=$("#hl");b.innerHTML="";const k=Object.values(S).sort((a,c)=>c.ts-a.ts);if(!k.length)b.innerHTML='<p class="sys">Belum ada riwayat.</p>';
  k.forEach(x=>{const r=document.createElement("div");r.className="si"+(x.id===cur?" cur":"");
-  r.innerHTML=`<div class="st"><b>${esc(x.title)}</b><span>${new Date(x.ts).toLocaleString("id-ID",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"})} · ${x.H.filter(m=>m.role==="user").length} pesan</span></div><button class="ib" aria-label="Hapus">✕</button>`;
+  r.innerHTML=`<div class="st"><b>${esc(x.title)}</b><span>${new Date(x.ts).toLocaleString("id-ID",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"})} · ${x.H.filter(m=>m.role==="user"&&!m.sys&&!m.sum&&!m.hid).length} pesan</span></div><button class="ib" aria-label="Hapus">✕</button>`;
   r.querySelector(".st").onclick=()=>openS(x.id);
   r.querySelector("button").onclick=()=>{if(busy()||!confirm("Hapus percakapan ini?"))return;delete S[x.id];if(x.id===cur){cur=null;H=[];LS.removeItem("hrai.cur");draw()}delS(x.id);hist()};
   b.append(r)})}
 let PVs=null;
 const rp=(base,ref)=>{ref=String(ref||"").split("#")[0].split("?")[0];if(!ref)return"";try{ref=decodeURIComponent(ref)}catch{}const parts=ref[0]==="/"?[]:String(base||"").split("/").slice(0,-1);for(const q of ref.split("/")){if(q===""||q===".")continue;if(q==="..")parts.pop();else parts.push(q)}return parts.join("/")};
 const hasF=(f,p)=>Object.prototype.hasOwnProperty.call(f,p),EXTU=/^([a-z][a-z0-9+.-]*:|\/\/)/i;
+/* shim pratinjau: memetakan path aset virtual ke data biner (Audio, fetch, XHR, src) */
+const ASH=function(A,B){var C={},R=function(u){u=String(u);if(/^(data:|blob:|https?:|\/\/)/i.test(u))return null;var k=u.split("#")[0].split("?")[0];try{k=decodeURIComponent(k)}catch(e){}var ps=k.charAt(0)==="/"?[]:B.split("/").slice(0,-1);k.split("/").forEach(function(q){if(!q||q===".")return;if(q==="..")ps.pop();else ps.push(q)});var p=ps.join("/");if(A[p])return p;var b=k.split("/").pop();for(var n in A)if(n.split("/").pop()===b)return n;return null};
+ var U=function(u){var p=R(u);if(p===null)return u;if(!C[p]){var d=A[p];try{var m=/^data:([^;,]+)/.exec(d),s=atob(d.slice(d.indexOf(",")+1)),a=new Uint8Array(s.length);for(var i=0;i<s.length;i++)a[i]=s.charCodeAt(i);C[p]=URL.createObjectURL(new Blob([a],{type:m?m[1]:""}))}catch(e){C[p]=d}}return C[p]};
+ [HTMLMediaElement,HTMLImageElement,HTMLSourceElement].forEach(function(K){var d=Object.getOwnPropertyDescriptor(K.prototype,"src");if(d&&d.set)Object.defineProperty(K.prototype,"src",{configurable:true,enumerable:d.enumerable,get:d.get,set:function(v){d.set.call(this,U(v))}})});
+ var sa=Element.prototype.setAttribute;Element.prototype.setAttribute=function(n,v){if(String(n).toLowerCase()==="src"&&/^(AUDIO|VIDEO|SOURCE|IMG)$/.test(this.tagName))v=U(v);return sa.call(this,n,v)};
+ var OA=window.Audio;window.Audio=function(s){var a=new OA();if(s!==undefined)a.src=s;return a};window.Audio.prototype=OA.prototype;
+ var of=window.fetch;if(of)window.fetch=function(u,o){var t=typeof u==="string"?u:(u&&u.url)||"";return R(t)===null?of.apply(this,arguments):of.call(this,U(t),o)};
+ var ox=XMLHttpRequest.prototype.open;XMLHttpRequest.prototype.open=function(m,u){arguments[1]=U(u);return ox.apply(this,arguments)}};
 const NAV=function(F){document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[href]");if(!a)return;var h=a.getAttribute("href")||"";if(!h||h.charAt(0)==="#"||/^([a-z][a-z0-9+.-]*:|\/\/)/i.test(h))return;e.preventDefault();parent.postMessage({hrai:"nav",from:F,href:h},"*")},true)};
 /* gabungkan file virtual (CSS, JS, SVG) ke HTML agar pratinjau proyek multi-file jalan */
 function bundle(html,path){const fs=FS(),doc=new DOMParser().parseFromString(html,"text/html"),late=[];
@@ -637,6 +792,9 @@ function bundle(html,path){const fs=FS(),doc=new DOMParser().parseFromString(htm
  doc.querySelectorAll("script[src]").forEach(sc=>{const h=sc.getAttribute("src");if(EXTU.test(h))return;const p=rp(path,h);if(!hasF(fs,p))return;const n=doc.createElement("script"),ty=sc.getAttribute("type");if(ty)n.type=ty;n.textContent=fs[p].replace(/<\/script/gi,"<\\/script");if(sc.hasAttribute("defer")&&ty!=="module"){late.push(n);sc.remove()}else sc.replaceWith(n)});
  late.forEach(n=>doc.body.append(n));
  doc.querySelectorAll("img[src]").forEach(im=>{const h=im.getAttribute("src");if(EXTU.test(h))return;const p=rp(path,h);if(hasF(fs,p)&&/\.svg$/i.test(p))im.setAttribute("src","data:image/svg+xml;charset=utf-8,"+encodeURIComponent(fs[p]))});
+ doc.querySelectorAll("audio[src],video[src],source[src],img[src]").forEach(el=>{const h=el.getAttribute("src");if(!h||EXTU.test(h))return;const p=rp(path,h);if(hasF(fs,p)&&isBin(fs[p]))el.setAttribute("src",fs[p])});
+ {const keys=Object.keys(fs).filter(k=>isBin(fs[k])),hay=doc.documentElement.outerHTML,A={};keys.forEach(k=>{const b=k.split("/").pop();if(hay.includes(b)||hay.includes(encodeURIComponent(b)))A[k]=fs[k]});
+  if(Object.keys(A).length){const sh=doc.createElement("script");sh.textContent="("+ASH+")("+JSON.stringify(A).replace(/</g,"\\u003c")+","+JSON.stringify(path||"").replace(/</g,"\\u003c")+");";doc.head.insertBefore(sh,doc.head.firstChild)}}
  const ns=doc.createElement("script");ns.textContent="("+NAV+")("+JSON.stringify(path||"").replace(/</g,"\\u003c")+");";doc.body.append(ns);
  return(/^\s*<!doctype/i.test(html)?"<!DOCTYPE html>":"")+doc.documentElement.outerHTML}
 function pv(code,t,svg){PVs={code,t,svg};let h;try{h=bundle(code,t)}catch{h=code}$("#pf").srcdoc=h;$("#pt").textContent=t||"Pratinjau";$("#pdl").style.display=svg?"":"none";if(!$("#dp").open)$("#dp").showModal()}
@@ -647,7 +805,7 @@ $("#pc").onclick=()=>$("#dp").close();
 $("#pdl").onclick=async()=>{if(!PVs||!PVs.svg)return;const b=$("#pdl"),o=b.textContent;b.disabled=true;b.textContent="…";try{saveBlob(await svgToPng(PVs.svg,2),((PVs.t||"gambar").split("/").pop()).replace(/\.svg$/i,"")+".png")}catch(e){alert("Gagal membuat PNG: "+(e.message||e))}b.disabled=false;b.textContent=o};
 $("#pr").onclick=()=>{if(!PVs)return;const f=FS();if(PVs.svg){const t0=PVs.t,raw=t0&&hasF(f,t0)?f[t0]:PVs.svg;$("#pf").srcdoc="";setTimeout(()=>pvSvg(raw,t0),50);return}const c=PVs.t&&hasF(f,PVs.t)?f[PVs.t]:PVs.code;$("#pf").srcdoc="";setTimeout(()=>pv(c,PVs.t),50)};
 $("#dp").onclose=()=>$("#pf").srcdoc="";
-let PA=[],PF=[];
+let PA=[],PF=[],PD={};
 const jr=function(a,b){if(a==="images"&&Array.isArray(b))return;if(typeof b==="string"&&b.length>20000){if(a==="arguments")return JSON.stringify({catatan:"argumen besar dipotong dari riwayat tersimpan"});if(a==="content"&&this.role==="tool")return b.slice(0,2000)+"\n[…dipotong di riwayat tersimpan; baca ulang file bila perlu]"}return b};
 const oaMsg=m=>m.role==="user"?(m.images?.length?{role:"user",content:[{type:"text",text:m.content},...m.images.map(u=>({type:"image_url",image_url:{url:u}}))]}:{role:"user",content:m.content}):m;
 const uHtml=m=>(m.images||[]).map(u=>`<img src="${u}">`).join("")+(m.nimg&&!m.images?`<div class="sys">${m.nimg} gambar (tidak disimpan)</div>`:"")+esc(m.content);
@@ -655,13 +813,20 @@ const dl=(n,t,m)=>{const u=URL.createObjectURL(new Blob([t],{type:m||"text/plain
 const shrink=f=>new Promise((ok,no)=>{const u=URL.createObjectURL(f),i=new Image();i.onload=()=>{const k=Math.min(1,1280/Math.max(i.width,i.height)),c=document.createElement("canvas");c.width=Math.round(i.width*k);c.height=Math.round(i.height*k);const x=c.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,c.width,c.height);x.drawImage(i,0,0,c.width,c.height);URL.revokeObjectURL(u);ok(c.toDataURL("image/jpeg",.85))};i.onerror=()=>no(new Error("gambar tidak bisa dibaca"));i.src=u});
 function attUI(){const b=$("#att");b.innerHTML="";
  PA.forEach((u,i)=>{const d=document.createElement("div");d.className="ch";d.innerHTML=`<img src="${u}"><button aria-label="Hapus">✕</button>`;d.querySelector("button").onclick=()=>{PA.splice(i,1);attUI()};b.append(d)});
- PF.forEach((n,i)=>{const d=document.createElement("div");d.className="ch";d.innerHTML=`<span>${esc(n)}</span><button aria-label="Hapus">✕</button>`;d.querySelector("button").onclick=()=>{PF.splice(i,1);attUI()};b.append(d)});
+ PF.forEach((n,i)=>{const d=document.createElement("div");d.className="ch";d.innerHTML=`<span>${/\.(ogg|oga)$/i.test(n)?"♪ ":""}${esc(n)}</span><button aria-label="Hapus">✕</button>`;d.querySelector("button").onclick=()=>{PF.splice(i,1);attUI()};b.append(d)});
  b.style.display=PA.length||PF.length?"flex":"none"}
 $("#at").onclick=()=>$("#fi").click();
 /* Tempel gambar dari clipboard: Ctrl+V di desktop atau menu Tempel di HP. */
 document.addEventListener("paste",async e=>{const cd=e.clipboardData;if(!cd)return;let files=[...(cd.items||[])].filter(x=>x.kind==="file"&&x.type.startsWith("image/")).map(x=>x.getAsFile()).filter(Boolean);if(!files.length)files=[...(cd.files||[])].filter(x=>x.type.startsWith("image/"));if(!files.length)return;e.preventDefault();for(const f of files){try{PA.push(await shrink(f))}catch(x){note("Gambar dari clipboard gagal diproses: "+(x.message||x))}}attUI()});
 let LG=null;
-$("#fi").onchange=async e=>{LG=null;for(const f of e.target.files){try{if(f.type.startsWith("image/"))PA.push(await shrink(f));else{if(f.size>2e7){alert(f.name+" terlalu besar (maks 20 MB)");continue}const t=await f.text();if(t.includes("\u0000")){alert(f.name+" bukan file teks");continue}const fs=FS();if(hasF(fs,f.name)&&fs[f.name]!==t&&!confirm("File "+f.name+" sudah ada dan akan ditimpa.\nBisa dibatalkan lewat Perubahan (/changes). Lanjutkan?"))continue;rec(f.name,hasF(fs,f.name)?fs[f.name]:null,t,"lampir",LG||(LG=mkG("Lampiran")));fs[f.name]=t;setFS(fs);PF.push(f.name)}}catch(x){alert(f.name+": "+x.message)}}e.target.value="";attUI()};
+async function addOgg(f){if(f.size>2e7){alert(f.name+" terlalu besar (maks 20 MB)");return}
+ const b=new Uint8Array(await f.arrayBuffer());if(!isOgg(b)){alert(f.name+" bukan file OGG yang valid");return}
+ const fs=FS(),d="data:audio/ogg;base64,"+bs(b);
+ if(hasF(fs,f.name)&&fs[f.name]!==d&&!confirm("File "+f.name+" sudah ada dan akan ditimpa.\nBisa dibatalkan lewat Perubahan (/changes). Lanjutkan?"))return;
+ rec(f.name,hasF(fs,f.name)?fs[f.name]:null,d,"lampir",LG||(LG=mkG("Lampiran")));fs[f.name]=d;setFS(fs);
+ let du="";try{const t=await audDur(d);if(t)du=t.toFixed(1).replace(".",",")+" dtk, "}catch{}
+ PD[f.name]="audio OGG, "+du+fmtB(b.length);if(!PF.includes(f.name))PF.push(f.name)}
+$("#fi").onchange=async e=>{LG=null;for(const f of e.target.files){try{if(f.type.startsWith("image/"))PA.push(await shrink(f));else if(isOggFile(f))await addOgg(f);else{if(f.size>2e7){alert(f.name+" terlalu besar (maks 20 MB)");continue}const t=await f.text();if(t.includes("\u0000")){alert(f.name+" bukan file teks");continue}const fs=FS();if(hasF(fs,f.name)&&fs[f.name]!==t&&!confirm("File "+f.name+" sudah ada dan akan ditimpa.\nBisa dibatalkan lewat Perubahan (/changes). Lanjutkan?"))continue;rec(f.name,hasF(fs,f.name)?fs[f.name]:null,t,"lampir",LG||(LG=mkG("Lampiran")));fs[f.name]=t;setFS(fs);PF.push(f.name)}}catch(x){alert(f.name+": "+x.message)}}e.target.value="";attUI()};
 $("#bx").onclick=()=>{const k=confirm("Sertakan API key di file backup?\n\nOK = sertakan (simpan file dengan aman)\nBatal = tanpa API key");const cfg=JSON.parse(JSON.stringify(C));if(!k)for(const i in cfg.p)cfg.p[i].key="";const t=new Date(),z=n=>String(n).padStart(2,"0");
  dl(`hrai-backup-${t.getFullYear()}${z(t.getMonth()+1)}${z(t.getDate())}-${z(t.getHours())}${z(t.getMinutes())}.json`,JSON.stringify({app:"hrai-mobile",v:1,ts:t.toISOString(),cfg,sess:S,fs:FS()},jr,1),"application/json")};
 $("#bi").onclick=()=>$("#bj").click();
@@ -694,7 +859,6 @@ $("#na").onclick=()=>{const n=$("#nn").value.trim().toLowerCase(),u=$("#nu").val
  if(PL().concat(P0).some(x=>x[0]===n)){alert("Nama sudah dipakai.");return}
  if(!/^https?:\/\//.test(u)){alert("Base URL harus diawali http:// atau https://");return}
  (C.custom=C.custom||{})[n]=[$("#ntp").value,u,$("#nm").value.trim()];C.p[n]={key:$("#nk").value.trim()};saveC();fillSP();sp.value=n;loadP();$("#dn").close()};
-$("#sd").onclick=()=>{const n=sp.value;if(!(C.custom||{})[n]||busy())return;if(!confirm("Hapus provider '"+n+"' beserta API key-nya?"))return;delete C.custom[n];delete C.p[n];if(C.provider===n)C.provider=P0[0][0];saveC();fillSP();sp.value=C.provider;loadP();modeUI()};
 let THL="";
 const note=t=>add("sys",esc(t));
 function mkTk(){const d=add("tk",`${gvLoaderHtml()}<div class="tl"><div class="tr"><b class="shim"></b></div><div class="tt"></div></div>`),W=["Berpikir","Menganalisa","Menyusun","Memproses","Merangkai"],b=d.querySelector("b");let i=0;b.textContent=W[0]+"…";
@@ -738,7 +902,7 @@ function hl(code,lang){
  return code.replace(R,(m,c,s,n,f,v,w)=>{if(c)return sp("cm",m);if(s)return sp("st",m);if(n)return sp("nm",m);if(v)return sp("vr",m);w=f||w;if(!w)return esc(m);const k=L==="sql"?w.toLowerCase():w;
   return sp(KS[L]&&KS[L].has(k)?"kw":LV.has(w)?"cn":BS[L]&&BS[L].has(w)?"bi":f?"fn":/^[A-Z][A-Z0-9_]+$/.test(w)?"cn":/^[A-Z]/.test(w)?"ty":"",m)})}
 const THEMES={hrai:"HRAI (otomatis terang/gelap)",terminal:"Terminal (hijau)",powershell:"PowerShell",amber:"Amber CRT",dracula:"Dracula",nord:"Nord",gruvbox:"Gruvbox",terang:"Terang"};
-function applyTheme(){const r=document.documentElement;r.dataset.theme=THEMES[C.theme]?C.theme:"hrai";r.dataset.font=C.font==="sys"?"sys":"f4";const m=document.querySelector("meta[name=theme-color]");if(m)m.content=getComputedStyle(r).getPropertyValue("--bg").trim()||"#012456"}
+function applyTheme(){const r=document.documentElement;r.dataset.theme=THEMES[C.theme]?C.theme:"hrai";r.dataset.font=C.font==="f4"?"f4":"sys";const m=document.querySelector("meta[name=theme-color]");if(m)m.content=getComputedStyle(r).getPropertyValue("--bg").trim()||"#012456"}
 const tm=$("#tm");Object.entries(THEMES).forEach(([k,v])=>tm.add(new Option(v,k)));
 tm.onchange=()=>{C.theme=tm.value;saveC();applyTheme()};
 $("#fz").onchange=()=>{C.font=$("#fz").value;saveC();applyTheme()};
@@ -820,7 +984,7 @@ async function boot(){
  draw()}
 const CRC=(()=>{const t=new Uint32Array(256);for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[n]=c>>>0}return b=>{let c=~0;for(let i=0;i<b.length;i++)c=t[(c^b[i])&255]^(c>>>8);return ~c>>>0}})();
 function mkZip(files){const E=new TextEncoder(),parts=[],cd=[];let off=0;
- for(const [name,txt] of Object.entries(files)){const n=E.encode(name),d=E.encode(txt),c=CRC(d);
+ for(const [name,txt] of Object.entries(files)){const n=E.encode(name),d=isBin(txt)?u2b(txt):E.encode(txt),c=CRC(d);
   const h=new DataView(new ArrayBuffer(30));h.setUint32(0,0x04034b50,true);h.setUint16(4,20,true);h.setUint16(6,0x0800,true);h.setUint32(14,c,true);h.setUint32(18,d.length,true);h.setUint32(22,d.length,true);h.setUint16(26,n.length,true);
   parts.push(new Uint8Array(h.buffer),n,d);
   const g=new DataView(new ArrayBuffer(46));g.setUint32(0,0x02014b50,true);g.setUint16(4,20,true);g.setUint16(6,20,true);g.setUint16(8,0x0800,true);g.setUint32(16,c,true);g.setUint32(20,d.length,true);g.setUint32(24,d.length,true);g.setUint16(28,n.length,true);g.setUint32(42,off,true);
@@ -833,23 +997,31 @@ async function readZip(buf){const v=new DataView(buf),u=new Uint8Array(buf),D=ne
   if(name.endsWith("/")||/^__MACOSX|\.DS_Store$/.test(name))continue;
   const ln=v.getUint16(lo+26,true),le=v.getUint16(lo+28,true),raw=u.subarray(lo+30+ln+le,lo+30+ln+le+cs);let d;
   if(m===0)d=raw;else if(m===8)d=new Uint8Array(await new Response(new Blob([raw]).stream().pipeThrough(new DecompressionStream("deflate-raw"))).arrayBuffer());else continue;
-  if(d.length>2e7||d.includes(0))continue;try{out[name]=new TextDecoder("utf-8",{fatal:true}).decode(d)}catch{}}
+  const bm=bmOf(name);if(bm){if(d.length>2e7||(bm==="audio/ogg"&&!isOgg(d)))continue;out[name]="data:"+bm+";base64,"+bs(d);continue}if(d.length>2e7||d.includes(0))continue;try{out[name]=new TextDecoder("utf-8",{fatal:true}).decode(d)}catch{}}
  return out}
-let FMC=new Set(),FMP=null,FMD=false;
+let FMC=new Set(),FMP=null,FMD=false,FMU="";
 const ea=s=>esc(s).replace(/"/g,"&quot;");
 const fmHid=(p,n)=>{for(let i=1;i<=n;i++)if(FMC.has(p.slice(0,i).join("/")))return true;return false};
 const fmTop=()=>["fmn","fmi","fmz"].forEach(i=>$("#"+i).style.display=FMP?"none":"");
-function fmList(){FMP=null;FMD=false;fmTop();const f=FS(),ks=Object.keys(f).sort(),seen=new Set();let h=UL.length?`<div class="fr"><span class="fn" data-ch="1">Riwayat perubahan (${UL.length})</span><button class="ib" data-hc="1">Hapus</button></div>`:"";$("#dmt").textContent="File ("+ks.length+")";
+function fmList(){if(FMU){URL.revokeObjectURL(FMU);FMU=""}FMP=null;FMD=false;fmTop();const f=FS(),ks=Object.keys(f).sort(),seen=new Set();let h=UL.length?`<div class="fr"><span class="fn" data-ch="1">Riwayat perubahan (${UL.length})</span><button class="ib" data-hc="1">Hapus</button></div>`:"";$("#dmt").textContent="File ("+ks.length+")";
  for(const k of ks){const p=k.split("/");
   for(let i=0;i<p.length-1;i++){const d=p.slice(0,i+1).join("/");if(seen.has(d))continue;seen.add(d);if(!fmHid(p,i))h+=`<div class="fr" style="padding-left:${10+i*16}px"><span class="fn" data-d="${ea(d)}">${FMC.has(d)?"▸":"▾"} ${esc(p[i])}/</span><button class="ib" data-r="${ea(d)}">Ubah</button><button class="ib" data-x="${ea(d)}">✕</button></div>`}
-  if(!fmHid(p,p.length-1))h+=`<div class="fr" style="padding-left:${10+(p.length-1)*16}px"><span class="fn" data-o="${ea(k)}">${esc(p[p.length-1])}</span><span class="fs" data-o="${ea(k)}">${(f[k].length/1024).toFixed(1)} KB</span><button class="ib" data-r="${ea(k)}">Ubah</button><button class="ib" data-x="${ea(k)}">✕</button></div>`}
+  if(!fmHid(p,p.length-1))h+=`<div class="fr" style="padding-left:${10+(p.length-1)*16}px"><span class="fn" data-o="${ea(k)}">${fico(f[k])}${esc(p[p.length-1])}</span><span class="fs" data-o="${ea(k)}">${isBin(f[k])?fmtB(binSize(f[k])):(f[k].length/1024).toFixed(1)+" KB"}</span><button class="ib" data-r="${ea(k)}">Ubah</button><button class="ib" data-x="${ea(k)}">✕</button></div>`}
  $("#fmb").innerHTML=h||'<p class="sys" style="padding:14px">Belum ada file. Ketuk + Baru atau Impor, atau minta AI membuatnya.</p>'}
 function fmRen(p){const n=(prompt("Nama/path baru",p)||"").trim().replace(/^\/+/,"");if(!n||n===p)return;const f=FS(),mv={};
  for(const k in f){if(k===p)mv[k]=n;else if(k.startsWith(p+"/"))mv[k]=n+k.slice(p.length)}
  if(!Object.keys(mv).length)return;if(Object.values(mv).some(t=>t in f&&!(t in mv))&&!confirm("Ada file bernama sama. Timpa?"))return;
  const g={};for(const k in f)if(!(k in mv))g[k]=f[k];for(const k in mv)g[mv[k]]=f[k];setFS(g);fmList()}
 function fmDel(p){const f=FS(),ks=Object.keys(f).filter(k=>k===p||k.startsWith(p+"/"));if(!confirm("Hapus "+(ks.length>1?ks.length+" file di "+p:p)+"?\nBisa dibatalkan lewat Perubahan (/changes)."))return;const g=mkG("Hapus "+p);ks.forEach(k=>{rec(k,f[k],null,"hapus",g);delete f[k]});setFS(f);fmList()}
-function fmEdit(path){FMP=path;FMD=false;fmTop();$("#dmt").textContent=path;const t=FS()[path]??"",ext=path.split(".").pop(),b=$("#fmb");
+function fmView(path){FMP=path;FMD=false;fmTop();$("#dmt").textContent=path;const v=FS()[path]||"",mt=binMime(v),b=$("#fmb");
+ b.innerHTML='<div class="et"><button class="btn" id="eb">‹ Kembali</button><button class="btn" id="ed">Unduh</button></div><div class="bv"></div>';
+ const box=b.querySelector(".bv"),info=document.createElement("p");info.className="sys";info.textContent=(mt||"biner")+" · "+fmtB(binSize(v));
+ if(FMU){URL.revokeObjectURL(FMU);FMU=""}
+ if(/^audio\//.test(mt)){FMU=URL.createObjectURL(u2blob(v));const a=document.createElement("audio");a.controls=true;a.preload="metadata";a.src=FMU;box.append(a)}
+ else if(/^image\//.test(mt)){const im=new Image();im.alt=path;im.src=v;box.append(im);if(/gif$/.test(mt)){const g=document.createElement("button");g.className="btn";g.textContent="Buka GIF Viewer";g.onclick=()=>{$("#dm").close();openGif(path,v)};box.append(g)}}
+ box.append(info);
+ $("#eb").onclick=fmList;$("#ed").onclick=()=>saveBlob(u2blob(v),path.split("/").pop())}
+function fmEdit(path){if(isBin(FS()[path]))return fmView(path);FMP=path;FMD=false;fmTop();$("#dmt").textContent=path;const t=FS()[path]??"",ext=path.split(".").pop(),b=$("#fmb");
  b.innerHTML='<div class="et"><button class="btn" id="eb">‹ Kembali</button><button class="btn" id="es">Simpan</button><button class="btn" id="ep">Pratinjau</button><button class="btn" id="ed">Unduh</button></div><div class="ed"><pre class="gt"></pre><div class="ew"><pre class="eh"><code></code></pre><textarea class="ei" spellcheck="false" autocapitalize="off" autocomplete="off" wrap="off"></textarea></div></div>';
  const ta=b.querySelector(".ei"),gt=b.querySelector(".gt"),eh=b.querySelector(".eh"),code=eh.querySelector("code"),es=$("#es");ta.value=t;let raf=0;
  const upd=()=>{raf=0;const n=ta.value.split("\n").length;gt.textContent=Array.from({length:n},(_,i)=>i+1).join("\n");code.innerHTML=hl(ta.value+"\n",ext);es.textContent="Simpan"+(FMD?" •":"")};
@@ -862,11 +1034,11 @@ function fmEdit(path){FMP=path;FMD=false;fmTop();$("#dmt").textContent=path;cons
 $("#fmb").onclick=e=>{const d=e.target.dataset;if(d.hc!==undefined){if(histClear())fmList()}else if(d.rm!==undefined){histDel([d.rm]);chList()}else if(d.gx!==undefined){histDel(grpRecs(d.gx).map(r=>r.id));chList()}else if(d.ug!==undefined){grpApply(d.ug);chList()}else if(d.ch!==undefined)chList();else if(d.d!==undefined){FMC.has(d.d)?FMC.delete(d.d):FMC.add(d.d);fmList()}else if(d.c!==undefined)chDiff(d.c);else if(d.o!==undefined)fmEdit(d.o);else if(d.r!==undefined)fmRen(d.r);else if(d.x!==undefined)fmDel(d.x)};
 $("#bf").onclick=()=>{$("#dh").close();fmList();$("#dm").showModal()};
 $("#fmc").onclick=()=>{if(FMD&&!confirm("Perubahan belum disimpan. Tutup?"))return;$("#dm").close()};
-$("#dm").onclose=()=>{FMP=null;FMD=false};
+$("#dm").onclose=()=>{FMP=null;FMD=false;if(FMU){URL.revokeObjectURL(FMU);FMU=""}};
 $("#fmn").onclick=()=>{const n=(prompt("Nama file (boleh dengan folder, mis. src/app.js)")||"").trim().replace(/^\/+/,"");if(!n)return;const f=FS();if(n in f){alert("File sudah ada.");return}f[n]="";setFS(f);fmEdit(n)};
 $("#fmi").onclick=()=>$("#fmf").click();
 $("#fmf").onchange=async e=>{const fl=[...e.target.files];e.target.value="";const f=FS(),inc={};let sk=0;
- for(const x of fl){try{if(/\.zip$/i.test(x.name)){const o=await readZip(await x.arrayBuffer());for(const k in o)inc[k]=o[k]}else if(/\.gif$/i.test(x.name)){if(x.size>2e7){sk++;continue}const b=new Uint8Array(await x.arrayBuffer());inc[x.name]="data:image/gif;base64,"+bs(b)}else{if(x.size>2e7){sk++;continue}const t=await x.text();if(t.includes("\u0000")){sk++;continue}inc[x.name]=t}}catch{sk++}}
+ for(const x of fl){try{if(/\.zip$/i.test(x.name)){const o=await readZip(await x.arrayBuffer());for(const k in o)inc[k]=o[k]}else if(bmOf(x.name)){if(x.size>2e7){sk++;continue}inc[x.name]=await readBin(x)}else{if(x.size>2e7){sk++;continue}const t=await x.text();if(t.includes("\u0000")){sk++;continue}inc[x.name]=t}}catch{sk++}}
  const ow=Object.keys(inc).filter(k=>hasF(f,k)&&f[k]!==inc[k]);if(ow.length&&!confirm(ow.length+" file akan ditimpa: "+ow.slice(0,5).join(", ")+(ow.length>5?", …":"")+"\nBisa dibatalkan lewat Perubahan (/changes). Lanjutkan impor?"))return;
  const g=mkG("Impor"),n=Object.keys(inc).length;for(const k in inc){rec(k,hasF(f,k)?f[k]:null,inc[k],"impor",g);f[k]=inc[k]}
  setFS(f);fmList();alert("Diimpor: "+n+" file"+(sk?" · dilewati: "+sk+" (biner atau terlalu besar)":""))};
@@ -900,13 +1072,15 @@ function chList(){FMP="*";FMD=false;fmTop();$("#dmt").textContent="Perubahan";
  $("#fmb").innerHTML='<div class="et"><button class="btn" id="cb">‹ Kembali</button>'+(UL.length?'<button class="btn" id="cdel">🗑 Hapus semua</button>':"")+'</div>'+(UL.map(r=>{let h="";const grp=r.g&&cnt[r.g]>1;if(grp&&r.g!==lg)h=`<div class="fr" style="background:var(--panel)"><span class="fn"><b>${esc(r.gl||"Perubahan")}</b> · ${cnt[r.g]} file · ${new Date(r.t).toLocaleTimeString("id-ID",{hour:"2-digit",minute:"2-digit"})}</span><button class="ib" data-ug="${r.g}">${grpRecs(r.g).every(x=>x.u)?"Terapkan ulang semua":"Batalkan semua"}</button><button class="ib" data-gx="${r.g}" title="Hapus catatan kelompok ini">✕</button></div>`;lg=r.g||null;
   return h+`<div class="fr"${grp?' style="padding-left:24px"':""}><span class="fn" data-c="${r.id}">${esc(r.p)}</span><span class="fs" data-c="${r.id}">${esc(r.k)} · ${new Date(r.t).toLocaleTimeString("id-ID",{hour:"2-digit",minute:"2-digit"})}${r.u?" · dibatalkan":""}</span><button class="ib" data-rm="${r.id}" title="Hapus catatan ini">✕</button></div>`}).join("")||'<p class="sys" style="padding:14px">Belum ada perubahan.</p>');
  $("#cb").onclick=fmList;if($("#cdel"))$("#cdel").onclick=()=>{if(histClear())chList()}}
-function chDiff(id){const r=UL.find(x=>x.id===id);if(!r)return;FMP="*";fmTop();$("#dmt").textContent=r.p;const o=diffLines(r.b??"",r.a);
+function chDiff(id){const r=UL.find(x=>x.id===id);if(!r)return;FMP="*";fmTop();$("#dmt").textContent=r.p;
+ if(isBin(r.a)||isBin(r.b)){const sd=v=>v==null?"tidak ada":isBin(v)?binMime(v)+" · "+fmtB(binSize(v)):"teks";$("#fmb").innerHTML=`<div class="et"><button class="btn" id="cb">‹ Kembali</button><button class="btn" id="cu">${r.u?"Terapkan ulang":"Batalkan"}</button></div><p class="sys" style="padding:14px">File biner: tidak ada perbandingan teks.<br>Sebelum: ${esc(sd(r.b))}<br>Sesudah: ${esc(sd(r.a))}</p>`;$("#cb").onclick=chList;$("#cu").onclick=()=>{if(chApply(r))chDiff(id)};return}
+ const o=diffLines(r.b??"",r.a);
  $("#fmb").innerHTML=`<div class="et"><button class="btn" id="cb">‹ Kembali</button><button class="btn" id="cu">${r.u?"Terapkan ulang":"Batalkan"}</button><span class="sys" style="align-self:center">+${o.filter(x=>x[0]==="+").length} −${o.filter(x=>x[0]==="-").length}</span></div><div class="df">${dfHtml(o)}</div>`;
  $("#cb").onclick=chList;$("#cu").onclick=()=>{if(chApply(r))chDiff(id)}}
 async function oneShot(p,text){const u=p.url.replace(/\/$/,"");let r,j;
  if(p.type==="anthropic"){r=await pf(p,u+"/messages",{method:"POST",headers:{"Content-Type":"application/json","x-api-key":p.key,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},body:JSON.stringify({model:p.model,max_tokens:4000,messages:[{role:"user",content:text}]})});await chk(r);j=await r.json();return(j.content||[]).map(x=>x.text||"").join("")}
  if(p.type==="gemini"){r=await pf(p,u+"/models/"+p.model+":generateContent?key="+encodeURIComponent(p.key),{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({contents:[{role:"user",parts:[{text}]}],generationConfig:{maxOutputTokens:4000}})});await chk(r);j=await r.json();return(j.candidates?.[0]?.content?.parts||[]).map(x=>x.text||"").join("")}
- r=await pf(p,u+"/chat/completions",{method:"POST",headers:{"Content-Type":"application/json",Authorization:"Bearer "+p.key},body:JSON.stringify({model:p.model,max_tokens:4000,messages:[{role:"user",content:text}]})});await chk(r);j=await r.json();return j.choices?.[0]?.message?.content||""}
+ r=await pf(p,u+"/chat/completions",{method:"POST",headers:Object.assign({"Content-Type":"application/json"},p.key?{Authorization:"Bearer "+p.key}:{}),body:JSON.stringify({model:p.model,max_tokens:4000,messages:[{role:"user",content:text}]})});await chk(r);j=await r.json();return j.choices?.[0]?.message?.content||""}
 const STUB="[isi file ada di penyimpanan virtual; gunakan read untuk melihatnya]";
 /* Rampingkan riwayat lama TANPA model: isi file (argumen write/edit, hasil read) dilepas dari percakapan
    karena sudah tersimpan di penyimpanan virtual. Tidak ada informasi yang hilang. */
@@ -922,19 +1096,19 @@ function slim(keep){const end=Math.max(0,H.length-keep);let ch=0;
  if(ch)saveH();return ch}
 /* daftar file NYATA + aturan, dibuat kode (bukan model) dan selalu terkini; dipasang di prompt sistem setelah riwayat dipadatkan */
 function fsNote(){if(!H.some(m=>m.sum||m.slim))return"";let f;try{f=FS()}catch{return""}const ks=Object.keys(f).sort();
- const L=ks.slice(0,80).map(k=>{const t=f[k]||"";return"- "+k+" · "+(t.length<2e5?t.split("\n").length+" baris · ":"")+t.length+" karakter"}).join("\n");
+ const L=ks.slice(0,80).map(k=>{const t=f[k]||"";return"- "+k+" · "+(isBin(t)?"aset biner "+binMime(t)+" · "+fmtB(binSize(t)):(t.length<2e5?t.split("\n").length+" baris · ":"")+t.length+" karakter")}).join("\n");
  return"\n\nSTATUS PENYIMPANAN VIRTUAL (terkini). Sebagian riwayat lama sudah dipadatkan, jadi isi file lama TIDAK lagi ada di percakapan:\n"+(L||"(kosong)")+(ks.length>80?"\n… dan "+(ks.length-80)+" file lain (pakai list)":"")+"\nATURAN: file pada daftar ini SUDAH ADA. Jangan menulis ulang (write) file yang sudah selesai. Untuk melanjutkan atau mengubah: read dulu (baca utuh sekali), lalu edit bagian yang perlu. Gunakan write hanya untuk file baru atau bila pengguna meminta menulis ulang. Teks '[isi file ada di penyimpanan virtual…]' di riwayat hanya penanda; jangan pernah menulisnya ke dalam file."}
 /* hasil: true = berhasil, "short" = tidak ada yang bisa dipadatkan (BUKAN kegagalan), false = gagal */
 async function compact(auto){const lim=C.ctx||128000,before=est();let cut=H.length-8;while(cut>0&&H[cut]&&H[cut].role==="tool")cut--;
  if(!auto){if(cut<2){note("Riwayat masih pendek, belum perlu dipadatkan.");return"short"}
-  const p0=prov(C.provider);if(!p0.key||!p0.model){note("Isi API key dan model dulu.");return false}
+  const p0=prov(C.provider);if((!p0.key&&!keyless(p0))||!p0.model){note("Isi API key dan model dulu.");return false}
   if(!confirm("Padatkan "+cut+" pesan lama menjadi ringkasan?"))return false}
  let sl=slim(8);
  if(auto&&sl&&est()<=.7*lim){note("Konteks dirampingkan tanpa ringkasan: isi file lama dilepas dari riwayat (file tetap ada di penyimpanan). ≈"+fk(before)+" → ≈"+fk(est())+" token.");return true}
  if(cut<2){if(est()>.7*lim)sl+=slim(2);
   if(sl){note("Konteks dirampingkan: isi file lama dilepas dari riwayat (file tetap ada di penyimpanan). ≈"+fk(before)+" → ≈"+fk(est())+" token.");return true}
   return"short"}
- const p=prov(C.provider);if(!p.key||!p.model){if(!auto)note("Isi API key dan model dulu.");return false}
+ const p=prov(C.provider);if((!p.key&&!keyless(p))||!p.model){if(!auto)note("Isi API key dan model dulu.");return false}
  const fm=m=>{if(m.sum)return"RINGKASAN SEBELUMNYA: "+m.content;if(m.role==="user")return"USER: "+(m.content||"").slice(0,2500);
   if(m.role==="assistant")return"ASISTEN: "+(m.content||"").slice(0,1500)+(m.tool_calls||[]).map(t=>{let a={};try{a=JSON.parse(t.function.arguments)}catch{}const n=t.function.name;
    if(n==="write")return"\n[write "+(a.path||"?")+(typeof a.content==="string"&&a.content!==STUB?" ("+a.content.length+" karakter)":"")+"]";
@@ -1010,7 +1184,7 @@ async function openGif(name,data){$("#gvt").textContent=name||"GIF Viewer";$("#g
  if(/^data:image\/gif;base64,/i.test(data||"")){try{bytes=ub(String(data).split(",")[1])}catch(e){}}
  if(!bytes){try{bytes=new Uint8Array(await (await fetch(data)).arrayBuffer())}catch(e){}}
  if(!bytes){alert("Gagal membaca gif.");return}
- if(typeof ImageDecoder!=="undefined"&&ImageDecoder.isTypeSupported("image/gif").catch(()=>false)){
+ if(typeof ImageDecoder!=="undefined"&&await ImageDecoder.isTypeSupported("image/gif").catch(()=>false)){
   try{const dec=new ImageDecoder({data:bytes,type:"image/gif"});await dec.tracks.ready;await dec.completed;
    const tr=dec.tracks.selectedTrack,nf=tr.frameCount||1;GV.frames=[];
    for(let i=0;i<nf;i++){dec.reset();dec.trackSelected(tr);const{image}=await dec.decode({frameIndex:i});
@@ -1050,6 +1224,13 @@ function acx(){try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();
 ["pointerdown","keydown","touchstart"].forEach(ev=>addEventListener(ev,()=>acx(),{once:true,capture:true,passive:true}));
 function chime(){if(C.snd===false)return;const c=acx();if(!c)return;try{const t=c.currentTime;[[880,0],[1318.5,.15]].forEach(([f,d])=>{const o=c.createOscillator(),g=c.createGain();o.type="sine";o.frequency.value=f;g.gain.setValueAtTime(.0001,t+d);g.gain.linearRampToValueAtTime(.16,t+d+.03);g.gain.exponentialRampToValueAtTime(.0001,t+d+.6);o.connect(g);g.connect(c.destination);o.start(t+d);o.stop(t+d+.65)})}catch{}}
 const boot0=boot;boot=async()=>{await boot0();if(/[?&]new=1/.test(location.search)){newChat();history.replaceState(null,"",location.pathname)}pwaUI()};
+/* ---- v3: Enter untuk kirim (desktop) dan seret-lepas file ---- */
+$("#in").addEventListener("keydown",e=>{if(e.key!=="Enter"||e.isComposing||e.shiftKey)return;if(matchMedia("(pointer:coarse)").matches&&!(e.ctrlKey||e.metaKey))return;e.preventDefault();if(ctrl)return;$("#go").click()});
+let DZ=0;const hasFiles=e=>!!(e.dataTransfer&&[...e.dataTransfer.types].includes("Files"));
+addEventListener("dragenter",e=>{if(hasFiles(e)){DZ++;document.body.classList.add("dz")}});
+addEventListener("dragleave",()=>{DZ=Math.max(0,DZ-1);if(!DZ)document.body.classList.remove("dz")});
+addEventListener("dragover",e=>{if(hasFiles(e))e.preventDefault()});
+addEventListener("drop",e=>{DZ=0;document.body.classList.remove("dz");if(!hasFiles(e))return;e.preventDefault();if(document.querySelector("dialog[open]")||busy())return;$("#fi").files=e.dataTransfer.files;$("#fi").dispatchEvent(new Event("change"))});
 applyTheme();
 modeUI();boot();
 </script></body></html>
