@@ -2,7 +2,6 @@
 <html lang="id"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#012456"><meta name="mobile-web-app-capable" content="yes">
-<link rel="icon" type="image/png" sizes="65x65" href="icon-192.png">
 <title>HRAI — AI Web Agent</title>
 <style>
 :root{--bg:#011a3d;--bg2:#02306e;--panel:rgba(255,255,255,.06);--panel2:rgba(255,255,255,.11);--line:rgba(255,255,255,.13);--fg:#eaf0fc;--dim:#9db0d3;--acc:#4da3ff;--accfg:#04122b;--plan:#f5c542;--build:#4ade80;--err:#ff8a8a;--code:#00122c;--ub:#1f6fe0;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -398,6 +397,54 @@ dialog{background:var(--surf,var(--bg));border-radius:18px 18px 0 0;box-shadow:0
 @media(max-height:480px){header{min-height:48px}.hero{padding:8px 0}.hint{display:none!important}}
 @media(min-width:1100px){:root{--col:900px}body{font-size:15.5px}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+
+/* ===================== v4: tema baru, warna sintaks per tema, font ===================== */
+:root{--skw:#c792ea;--sst:#a5e075;--snm:#f78c6c;--sfn:#82aaff;--sty:#ffcb6b;--scn:#ff6e6e;--sbi:#7fdbca;--svr:#f07178;--scm:#8a99ba;--sat:#f9b572;--sjk:#89ddff;--fs:15px}
+@media(prefers-color-scheme:light){:root[data-theme=hrai]{--skw:#7c3aed;--sst:#147b3b;--snm:#c2410c;--sfn:#1d4ed8;--sty:#9b5e07;--scn:#d32424;--sbi:#0e7490;--svr:#be123c;--scm:#64748b;--sat:#ad5009;--sjk:#0369a1;}}
+:root[data-theme=terang]{--skw:#7c3aed;--sst:#147b3b;--snm:#c2410c;--sfn:#1d4ed8;--sty:#9b5e07;--scn:#d32424;--sbi:#0e7490;--svr:#be123c;--scm:#64748b;--sat:#ad5009;--sjk:#0369a1;--plan:#94600d;--acc:#1e6bd7;--surf:#ffffff;--sh:0 1px 2px rgba(15,27,51,.06),0 10px 28px rgba(15,27,51,.10)}
+@media(prefers-color-scheme:light){:root[data-theme=hrai]{--plan:#94600d}}
+:root[data-theme=dracula]{--skw:#ff79c6;--sst:#f1fa8c;--snm:#bd93f9;--sfn:#50fa7b;--sty:#8be9fd;--scn:#bd93f9;--sbi:#8be9fd;--svr:#ffb86c;--scm:#8f9bc7;--sat:#50fa7b;--sjk:#8be9fd;--err:#ff6666;--surf:#31333e}
+:root[data-theme=nord]{--skw:#81a1c1;--sst:#a3be8c;--snm:#b48ead;--sfn:#88c0d0;--sty:#ebcb8b;--scn:#b48ead;--sbi:#8fbcbb;--svr:#d08770;--scm:#8e9ab2;--sat:#8fbcbb;--sjk:#88c0d0;--err:#e58a93;--dim:#97a3bb;--surf:#363c48}
+:root[data-theme=gruvbox]{--skw:#fb6a55;--sst:#b8bb26;--snm:#d3869b;--sfn:#8ec07c;--sty:#fabd2f;--scn:#d3869b;--sbi:#8ec07c;--svr:#83a598;--scm:#a79a88;--sat:#fabd2f;--sjk:#83a598;--err:#fe6b57;--surf:#313131}
+:root[data-theme=terminal]{--surf:#0c0c0c}
+:root[data-theme=powershell]{--surf:#012456}
+:root[data-theme=amber]{--surf:#140d00}
+:root[data-theme=tokyo]{--bg:#1a1b26;--bg2:#1a1b26;--surf:#23242f;--panel:rgba(255,255,255,.05);--panel2:rgba(255,255,255,.09);--line:rgba(192,202,245,.16);--fg:#c0caf5;--dim:#8089b3;--acc:#7aa2f7;--accfg:#16161e;--code:#16161e;--ub:#3d59a1;--plan:#e0af68;--build:#9ece6a;--err:#f7768e;--sh:0 1px 2px rgba(0,0,0,.3),0 10px 28px rgba(0,0,0,.4);color-scheme:dark;--skw:#bb9af7;--sst:#9ece6a;--snm:#ff9e64;--sfn:#7aa2f7;--sty:#e0af68;--scn:#ff757f;--sbi:#7dcfff;--svr:#f7768e;--scm:#7e88b4;--sat:#e0af68;--sjk:#7dcfff;}
+:root[data-theme=mocha]{--bg:#1e1e2e;--bg2:#1e1e2e;--surf:#272736;--panel:rgba(255,255,255,.05);--panel2:rgba(255,255,255,.09);--line:rgba(205,214,244,.16);--fg:#cdd6f4;--dim:#9399b2;--acc:#cba6f7;--accfg:#1e1e2e;--code:#181825;--ub:#5f4bb6;--plan:#f9e2af;--build:#a6e3a1;--err:#f38ba8;--sh:0 1px 2px rgba(0,0,0,.3),0 10px 28px rgba(0,0,0,.4);color-scheme:dark;--skw:#cba6f7;--sst:#a6e3a1;--snm:#fab387;--sfn:#89b4fa;--sty:#f9e2af;--scn:#fab387;--sbi:#94e2d5;--svr:#f38ba8;--scm:#8d92ab;--sat:#f9e2af;--sjk:#89dceb;}
+:root[data-theme=onedark]{--bg:#282c34;--bg2:#282c34;--surf:#31343c;--panel:rgba(255,255,255,.05);--panel2:rgba(255,255,255,.09);--line:rgba(171,178,191,.16);--fg:#abb2bf;--dim:#8f98a8;--acc:#61afef;--accfg:#21252b;--code:#21252b;--ub:#3a6ea5;--plan:#e5c07b;--build:#98c379;--err:#e8808a;--sh:0 1px 2px rgba(0,0,0,.3),0 10px 28px rgba(0,0,0,.4);color-scheme:dark;--skw:#c678dd;--sst:#98c379;--snm:#d19a66;--sfn:#61afef;--sty:#e5c07b;--scn:#d19a66;--sbi:#56b6c2;--svr:#e06c75;--scm:#8089a0;--sat:#d19a66;--sjk:#56b6c2;}
+:root[data-theme=rosepine]{--bg:#191724;--bg2:#191724;--surf:#22202d;--panel:rgba(255,255,255,.05);--panel2:rgba(255,255,255,.09);--line:rgba(224,222,244,.16);--fg:#e0def4;--dim:#908caa;--acc:#ebbcba;--accfg:#191724;--code:#14121f;--ub:#4b3f72;--plan:#f6c177;--build:#9ccfd8;--err:#eb6f92;--sh:0 1px 2px rgba(0,0,0,.3),0 10px 28px rgba(0,0,0,.4);color-scheme:dark;--skw:#c4a7e7;--sst:#f6c177;--snm:#ebbcba;--sfn:#9ccfd8;--sty:#7bb5c8;--scn:#eb6f92;--sbi:#9ccfd8;--svr:#ebbcba;--scm:#8581a0;--sat:#c4a7e7;--sjk:#9ccfd8;}
+:root[data-theme=github]{--bg:#0d1117;--bg2:#0d1117;--surf:#171b20;--panel:rgba(255,255,255,.05);--panel2:rgba(255,255,255,.09);--line:rgba(230,237,243,.16);--fg:#e6edf3;--dim:#8b949e;--acc:#58a6ff;--accfg:#0d1117;--code:#010409;--ub:#1f6feb;--plan:#d29922;--build:#3fb950;--err:#ff7b72;--sh:0 1px 2px rgba(0,0,0,.3),0 10px 28px rgba(0,0,0,.4);color-scheme:dark;--skw:#ff7b72;--sst:#a5d6ff;--snm:#79c0ff;--sfn:#d2a8ff;--sty:#ffa657;--scn:#79c0ff;--sbi:#ffa657;--svr:#ffa657;--scm:#8b949e;--sat:#79c0ff;--sjk:#7ee787;}
+:root[data-theme=solarized]{--bg:#002b36;--bg2:#002b36;--surf:#0a333e;--panel:rgba(255,255,255,.05);--panel2:rgba(255,255,255,.09);--line:rgba(147,161,161,.16);--fg:#93a1a1;--dim:#80949b;--acc:#4aa3e0;--accfg:#002b36;--code:#00212b;--ub:#1d5f94;--plan:#b58900;--build:#859900;--err:#e5645f;--sh:0 1px 2px rgba(0,0,0,.3),0 10px 28px rgba(0,0,0,.4);color-scheme:dark;--skw:#9aab0d;--sst:#3bb8ae;--snm:#e0703f;--sfn:#4aa3e0;--sty:#d4a017;--scn:#e0703f;--sbi:#3bb8ae;--svr:#e5645f;--scm:#74909a;--sat:#d4a017;--sjk:#4aa3e0;}
+:root[data-theme=oled]{--bg:#000000;--bg2:#000000;--surf:#0a0a0a;--panel:rgba(255,255,255,.05);--panel2:rgba(255,255,255,.09);--line:rgba(232,232,234,.20);--fg:#e8e8ea;--dim:#9a9aa3;--acc:#6ea8fe;--accfg:#000000;--code:#0b0b0d;--ub:#1f5fd1;--plan:#f5c542;--build:#4ade80;--err:#ff8a8a;--sh:0 1px 2px rgba(0,0,0,.3),0 10px 28px rgba(0,0,0,.4);color-scheme:dark;--skw:#c792ea;--sst:#a5e075;--snm:#f78c6c;--sfn:#82aaff;--sty:#ffcb6b;--scn:#ff6e6e;--sbi:#7fdbca;--svr:#f07178;--scm:#8a99ba;--sat:#f9b572;--sjk:#89ddff;}
+:root[data-theme=latte]{--bg:#eff1f5;--bg2:#eff1f5;--surf:#f8f9fb;--panel:#fbfbfd;--panel2:#e6e9ef;--line:#ccd0da;--fg:#4c4f69;--dim:#636780;--acc:#8839ef;--accfg:#ffffff;--code:#e6e9ef;--ub:#8839ef;--plan:#9a5b00;--build:#2f7d1f;--err:#d20f39;--sh:0 1px 2px rgba(76,79,105,.08),0 10px 28px rgba(76,79,105,.14);color-scheme:light;--skw:#8337e5;--sst:#2b731d;--snm:#aa4407;--sfn:#1a5ae0;--sty:#945700;--scn:#aa4407;--sbi:#127078;--svr:#ca0e37;--scm:#636780;--sat:#8a5200;--sjk:#1a5ae0;}
+:root[data-theme=kertas]{--bg:#f4ecd8;--bg2:#f4ecd8;--surf:#faf3e0;--panel:#fbf5e6;--panel2:#ebe0c4;--line:#dccfb4;--fg:#3b3226;--dim:#74634d;--acc:#a8480f;--accfg:#ffffff;--code:#ece2c8;--ub:#a8480f;--plan:#8a5a00;--build:#2f6b2a;--err:#b3261e;--sh:0 1px 2px rgba(60,50,30,.08),0 10px 28px rgba(60,50,30,.14);color-scheme:light;--skw:#7a3b8f;--sst:#3f6b1f;--snm:#a64209;--sfn:#1d5fa8;--sty:#845600;--scn:#a64209;--sbi:#1a6b70;--svr:#a8283a;--scm:#74634d;--sat:#845600;--sjk:#1d5fa8;}
+:root .t-kw{color:var(--skw)}:root .t-st{color:var(--sst)}:root .t-nm{color:var(--snm)}:root .t-fn{color:var(--sfn)}:root .t-ty{color:var(--sty)}:root .t-cn{color:var(--scn)}:root .t-bi{color:var(--sbi)}:root .t-vr,:root .t-tg{color:var(--svr)}:root .t-cm{color:var(--scm)}:root .t-at{color:var(--sat)}:root .t-jk{color:var(--sjk)}
+:root[data-font=inter]{--ff:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;--fm:ui-monospace,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;--fs:15px}
+:root[data-font=jakarta]{--ff:"Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;--fm:ui-monospace,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;--fs:15px}
+:root[data-font=plex]{--ff:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;--fm:ui-monospace,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;--fs:15px}
+:root[data-font=serif]{--ff:"Source Serif 4",Georgia,"Times New Roman",serif;--fm:ui-monospace,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;--fs:16.5px}
+:root[data-font=jbmono]{--ff:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;--fm:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;--fs:14px}
+:root[data-font=firacode]{--ff:"Fira Code",ui-monospace,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;--fm:"Fira Code",ui-monospace,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;--fs:14px}
+:root[data-font=plexmono]{--ff:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;--fm:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;--fs:14px}
+:root[data-font=f4]{--fs:16px}
+body{font-size:var(--fs,15px)}
+.u,.a{font-size:var(--fs,15px)}
+:root[data-font=serif] .a{line-height:1.75}
+:root[data-font=jbmono] .a,:root[data-font=firacode] .a,:root[data-font=plexmono] .a{line-height:1.65}
+:root[data-font=firacode] body{font-variant-ligatures:common-ligatures}
+
+.tg{display:flex;flex-direction:column;gap:10px}
+.tgh{margin-top:2px;font-size:12px;font-weight:600;color:var(--dim)}
+.tgw{display:grid;grid-template-columns:repeat(auto-fill,minmax(98px,1fr));gap:8px}
+.tgb{display:flex;flex-direction:column;gap:6px;min-height:0;padding:7px;border:1px solid var(--line);border-radius:10px;background:var(--panel);text-align:left;font-size:12px;line-height:1.25;color:var(--fg);cursor:pointer}
+.tgb:hover{border-color:var(--dim)}
+.tgb.on{border-color:var(--acc);box-shadow:0 0 0 2px color-mix(in srgb,var(--acc) 30%,transparent)}
+.tgp{position:relative;display:block;height:40px;border-radius:6px;background:var(--b);border:1px solid rgba(128,128,128,.3);overflow:hidden}
+.tgp::before{content:"";position:absolute;left:6px;top:7px;width:56%;height:6px;border-radius:3px;background:var(--f);opacity:.8}
+.tgp::after{content:"";position:absolute;left:6px;bottom:6px;width:30px;height:9px;border-radius:3px;background:var(--a)}
+.tgp s{position:absolute;right:6px;bottom:6px;width:16px;height:9px;border-radius:3px;background:var(--p);border:1px solid rgba(128,128,128,.35);text-decoration:none}
+.tgn{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hintp{margin:6px 0 0;font-size:12px;line-height:1.45;color:var(--dim)}
 </style></head>
 <body>
 
@@ -423,7 +470,7 @@ dialog{background:var(--surf,var(--bg));border-radius:18px 18px 0 0;box-shadow:0
 <label class="sw"><input type="checkbox" id="nt"><span>Notifikasi saat AI selesai (saat aplikasi di latar)</span></label>
 </section>
 <section class="sec"><h4>Tampilan</h4>
-<div class="grid2"><div class="fld"><label>Tema (/theme)</label><select id="tm"></select></div><div class="fld"><label>Font (/font)</label><select id="fz"><option value="sys">Sistem (bawaan)</option><option value="f4">Terminal F4</option></select></div></div>
+<div class="fld"><label>Tema (/theme)</label><select id="tm" hidden></select><div class="tg" id="tg" role="radiogroup" aria-label="Tema"></div></div><div class="fld"><label for="fz">Font (/font)</label><select id="fz"></select><p class="hintp">Font selain Sistem dan Terminal F4 dimuat dari Google Fonts saat dipilih (perlu internet). Tanpa internet, tampilan otomatis memakai font sistem.</p></div>
 <details class="tokdrop" id="tokdrop"><summary>⚙️ Batas token (/tokens · /budget)</summary><div class="tdb">
 <div class="fld"><label>Batas output (/tokens, 1000–128000)</label><input type="text" id="dtok" inputmode="numeric" autocapitalize="off" placeholder="32000"></div>
 <div class="fld"><label>Budget berpikir (/budget, 500–200000, 0 = tanpa batas)</label><input type="text" id="dbud" inputmode="numeric" autocapitalize="off" placeholder="8000"></div>
@@ -657,13 +704,13 @@ const tusUI=()=>{const b=$("#tus");if(!b)return;if(!H.length&&!TU.pin&&!TU.pout)
  b.innerHTML=`<span>Token sesi: masuk <b>${fk(TU.pin)}</b><span class="tsep">·</span> keluar <b>${fk(TU.pout)}</b><span class="tsep">·</span> total <b>${fk(TU.pin+TU.pout)}</b></span><span class="tsep">·</span><span>konteks ≈<b>${fk(est())}</b>/${fk(C.ctx||128000)}</span><span class="tsep">·</span><span>output <b>${fk(MT())}</b> · budget berpikir <b>${BG()?fk(BG()):"∞"}</b></span>`};
 
 /* ---- jaringan ---- */
-async function sse(r,cb){const rd=r.body.getReader(),dc=new TextDecoder();let b="";for(;;){const{done,value}=await rd.read();if(done)break;LT=Date.now();b+=dc.decode(value,{stream:true});const L=b.split("\n");b=L.pop();for(const l of L)if(l.startsWith("data:")){const s=l.slice(5).trim();if(s&&s!=="[DONE]")try{cb(JSON.parse(s))}catch{}}}}
+async function sse(r,cb){const rd=r.body.getReader(),dc=new TextDecoder();let b="";const ln=l=>{if(!l.startsWith("data:"))return;const s=l.slice(5).trim();if(!s||s==="[DONE]")return;let o;try{o=JSON.parse(s)}catch{return}if(o&&typeof o==="object"&&((o.error&&typeof o.error==="object")||o.type==="error"))throw new Error(String((o.error&&o.error.message)||o.message||"Kesalahan dari server").slice(0,300));try{cb(o)}catch{}};for(;;){const{done,value}=await rd.read();if(done)break;LT=Date.now();b+=dc.decode(value,{stream:true});const L=b.split("\n");b=L.pop();for(const l of L)ln(l)}b+=dc.decode();ln(b.trim())}
 const chk=async r=>{if(!r.ok)throw new Error("HTTP "+r.status+" "+(await r.text()).slice(0,300))};
 async function callOA(p,sys,onT,onR,onC){
  const r=await pf(p,p.url.replace(/\/$/,"")+"/chat/completions",{method:"POST",signal:SG.signal,headers:Object.assign({"Content-Type":"application/json"},p.key?{Authorization:"Bearer "+p.key}:{}),body:JSON.stringify({model:p.model,stream:true,temperature:.7,max_tokens:MT(),messages:[{role:"system",content:sys},...H.map(oaClean)],tools:T_OA})});
  await chk(r);let text="",calls=[];let gpin=0,gpout=0;
  await sse(r,d=>{const c=d.choices?.[0]?.delta;if(d.choices?.[0]?.finish_reason)FR=d.choices[0].finish_reason;if(d.usage){gpin=d.usage.prompt_tokens||0;gpout=(d.usage.completion_tokens||0)+(d.usage.reasoning_tokens||0);TU.pin+=gpin-(OA.pin||0);TU.pout+=gpout-(OA.pout||0);OA.pin=gpin;OA.pout=gpout;tusUI()}if(!c)return;if(c.content){text+=c.content;onT(text)}const rs=c.reasoning_content||c.reasoning;if(rs)onR(rs);
-  for(const t of c.tool_calls||[]){TC=1;const i=t.index??0,x=calls[i]||(calls[i]={id:"",name:"",args:""});if(t.id)x.id=t.id;if(t.function?.name)x.name+=t.function.name;if(t.function?.arguments)x.args+=t.function.arguments;onC&&onC(calls)}});
+  for(const t of c.tool_calls||[]){TC=1;let i=t.index??0,x=calls[i];if(x&&t.id&&x.id&&t.id!==x.id){i=calls.length;x=null}x=x||(calls[i]={id:"",name:"",args:""});if(t.id)x.id=t.id;if(t.function?.name)x.name+=t.function.name;if(t.function?.arguments)x.args+=t.function.arguments;onC&&onC(calls)}});
  return{text,calls:calls.filter(Boolean)}}
 function toAn(){const o=[];for(const m of H){if(m.role==="tool"){const b={type:"tool_result",tool_use_id:m.tool_call_id,content:m.content},l=o[o.length-1];if(l&&l.role==="user"&&Array.isArray(l.content))l.content.push(b);else o.push({role:"user",content:[b]})}else if(m.role==="assistant"){const c=[];if(m.content)c.push({type:"text",text:m.content});for(const t of m.tool_calls||[])c.push({type:"tool_use",id:t.id,name:t.function.name,input:sj(t.function.arguments)});o.push({role:"assistant",content:c})}else o.push({role:"user",content:m.images?.length?[...m.images.map(u=>({type:"image",source:{type:"base64",media_type:"image/jpeg",data:u.split(",")[1]}})),{type:"text",text:m.content}]:m.content})}return o}
 async function callAN(p,sys,onT,onR,onC){
@@ -902,10 +949,18 @@ function hl(code,lang){
   R=CX[L]=new RegExp("("+cm.source+")|("+st.source+")|(\\b0x[0-9a-fA-F]+\\b|\\b\\d+(?:\\.\\d+)?(?:[eE][+-]?\\d+)?\\b)|([A-Za-z_$][\\w$]*)(?=\\()|("+(L==="sh"?"\\$\\{?\\w+\\}?":"(?!)")+")|([A-Za-z_$][\\w$]*)|[^\\w$\"'`\\/#-]+|[\\s\\S]","g")}
  return code.replace(R,(m,c,s,n,f,v,w)=>{if(c)return sp("cm",m);if(s)return sp("st",m);if(n)return sp("nm",m);if(v)return sp("vr",m);w=f||w;if(!w)return esc(m);const k=L==="sql"?w.toLowerCase():w;
   return sp(KS[L]&&KS[L].has(k)?"kw":LV.has(w)?"cn":BS[L]&&BS[L].has(w)?"bi":f?"fn":/^[A-Z][A-Z0-9_]+$/.test(w)?"cn":/^[A-Z]/.test(w)?"ty":"",m)})}
-const THEMES={hrai:"HRAI (otomatis terang/gelap)",terminal:"Terminal (hijau)",powershell:"PowerShell",amber:"Amber CRT",dracula:"Dracula",nord:"Nord",gruvbox:"Gruvbox",terang:"Terang"};
-function applyTheme(){const r=document.documentElement;r.dataset.theme=THEMES[C.theme]?C.theme:"hrai";r.dataset.font=C.font==="f4"?"f4":"sys";const m=document.querySelector("meta[name=theme-color]");if(m)m.content=getComputedStyle(r).getPropertyValue("--bg").trim()||"#012456"}
+const THEMES={hrai:"HRAI (otomatis terang/gelap)",oled:"Midnight OLED",tokyo:"Tokyo Night",mocha:"Catppuccin Mocha",onedark:"One Dark",rosepine:"Rosé Pine",github:"GitHub Dark",solarized:"Solarized Dark",dracula:"Dracula",nord:"Nord",gruvbox:"Gruvbox",terang:"Terang",latte:"Catppuccin Latte",kertas:"Kertas (sepia)",terminal:"Terminal (hijau)",powershell:"PowerShell",amber:"Amber CRT"};
+const TGRP=[["Otomatis",["hrai"]],["Gelap",["oled","tokyo","mocha","onedark","rosepine","github","solarized","dracula","nord","gruvbox"]],["Terang",["terang","latte","kertas"]],["Retro terminal",["terminal","powershell","amber"]]];
+const TPV={"hrai":["linear-gradient(135deg,#0a1222 50%,#f5f7fc 50%)","#5aa9ff","#e8eefb","#101a2e"],"terminal":["#0c0c0c","#33ff66","#33ff66","#1f1f1f"],"powershell":["#012456","#f9f1a5","#eeedf0","#153664"],"amber":["#140d00","#ffb000","#ffb000","#272014"],"dracula":["#282a36","#bd93f9","#f8f8f2","#393b46"],"nord":["#2e3440","#88c0d0","#d8dee9","#3f444f"],"gruvbox":["#282828","#fabd2f","#ebdbb2","#393939"],"terang":["#f7f8fb","#1e6bd7","#1a2233","#ffffff"],"tokyo":["#1a1b26","#7aa2f7","#c0caf5","#2c2d37"],"mocha":["#1e1e2e","#cba6f7","#cdd6f4","#30303f"],"onedark":["#282c34","#61afef","#abb2bf","#393d44"],"rosepine":["#191724","#ebbcba","#e0def4","#2b2a36"],"github":["#0d1117","#58a6ff","#e6edf3","#20242a"],"solarized":["#002b36","#4aa3e0","#93a1a1","#143c46"],"oled":["#000000","#6ea8fe","#e8e8ea","#141414"],"latte":["#eff1f5","#8839ef","#4c4f69","#fbfbfd"],"kertas":["#f4ecd8","#a8480f","#3b3226","#fbf5e6"]};
+const FONTS={sys:{n:"Sistem (bawaan)"},inter:{n:"Inter",q:"Inter:wght@400;500;600;700"},jakarta:{n:"Plus Jakarta Sans",q:"Plus+Jakarta+Sans:wght@400;500;600;700"},plex:{n:"IBM Plex Sans",q:"IBM+Plex+Sans:wght@400;500;600;700"},serif:{n:"Source Serif 4",q:"Source+Serif+4:wght@400;500;600;700"},jbmono:{n:"JetBrains Mono",q:"JetBrains+Mono:wght@400;500;600;700"},firacode:{n:"Fira Code",q:"Fira+Code:wght@400;500;600;700"},plexmono:{n:"IBM Plex Mono",q:"IBM+Plex+Mono:wght@400;500;600;700"},f4:{n:"Terminal F4"}};
+const FGRP=[["Sans-serif",["sys","inter","jakarta","plex"]],["Serif",["serif"]],["Monospace",["jbmono","firacode","plexmono"]],["Retro",["f4"]]],FLOAD=new Set();
+function loadFont(k){const f=FONTS[k];if(!f||!f.q||FLOAD.has(k))return;FLOAD.add(k);const l=document.createElement("link");l.rel="stylesheet";l.href="https://fonts.googleapis.com/css2?family="+f.q+"&display=swap";l.onerror=()=>{FLOAD.delete(k);l.remove()};document.head.append(l)}
+function syncTG(){const g=document.getElementById("tg");if(!g)return;const k=THEMES[C.theme]?C.theme:"hrai";g.querySelectorAll(".tgb").forEach(b=>{const on=b.dataset.k===k;b.classList.toggle("on",on);b.setAttribute("aria-checked",on?"true":"false")})}
+function buildTG(){const g=$("#tg");g.textContent="";TGRP.forEach(([t,ks])=>{const h=document.createElement("div");h.className="tgh";h.textContent=t;const w=document.createElement("div");w.className="tgw";ks.forEach(k=>{const p=TPV[k],b=document.createElement("button");b.type="button";b.className="tgb";b.dataset.k=k;b.setAttribute("role","radio");b.innerHTML='<span class="tgp" style="--b:'+p[0]+';--a:'+p[1]+';--f:'+p[2]+';--p:'+p[3]+'"><s></s></span><span class="tgn">'+esc(k==="hrai"?"HRAI Auto":THEMES[k].replace(/\s*\(.*\)$/,""))+"</span>";b.onclick=()=>{tm.value=k;tm.onchange()};w.append(b)});g.append(h,w)});syncTG()}
+function applyTheme(){const r=document.documentElement,fk=FONTS[C.font]?C.font:"sys";r.dataset.theme=THEMES[C.theme]?C.theme:"hrai";r.dataset.font=fk;loadFont(fk);const m=document.querySelector("meta[name=theme-color]");if(m)m.content=getComputedStyle(r).getPropertyValue("--bg").trim()||"#012456";syncTG()}
 const tm=$("#tm");Object.entries(THEMES).forEach(([k,v])=>tm.add(new Option(v,k)));
 tm.onchange=()=>{C.theme=tm.value;saveC();applyTheme()};
+const fzs=$("#fz");FGRP.forEach(([g,ks])=>{const og=document.createElement("optgroup");og.label=g;ks.forEach(k=>og.append(new Option(FONTS[k].n,k)));fzs.append(og)});buildTG();
 $("#fz").onchange=()=>{C.font=$("#fz").value;saveC();applyTheme()};
 /* dropdown /tokens & /budget di pengaturan — hanya membaca/menulis C.maxTok & C.budget, fungsi lain tidak disentuh */
 const dtokm=t=>{$("#dtokm").textContent=t};
@@ -915,11 +970,11 @@ $("#dtokr").onclick=()=>{const t=$("#dtok").value.trim(),b=$("#dbud").value.trim
  if(b!==""){const n=/^\d+$/.test(b)?+b:NaN;if(!(n===0||n>=500&&n<=200000))return dtokm("Error: /budget harus 500–200000, atau 0 untuk tanpa batas.");C.budget=n}
  saveC();modeUI();dtokm("Tersimpan. Output: "+fk(MT())+" · Budget berpikir: "+(BG()?fk(BG()):"tanpa batas"))};
 $("#dtokd").onclick=()=>{delete C.maxTok;delete C.budget;saveC();$("#dtok").value="";$("#dbud").value="";modeUI();dtokm("Direset ke bawaan. Output: "+fk(MT())+" · Budget berpikir: "+fk(BG()))};
-function cmdTheme(a){if(H.length===0)log.innerHTML="";const al={ps:"powershell",pwsh:"powershell",hijau:"terminal",green:"terminal",light:"terang",auto:"hrai",default:"hrai"};
+function cmdTheme(a){if(H.length===0)log.innerHTML="";const al={ps:"powershell",pwsh:"powershell",hijau:"terminal",green:"terminal",light:"terang",auto:"hrai",default:"hrai",tokyonight:"tokyo","tokyo-night":"tokyo",catppuccin:"mocha","one-dark":"onedark",rose:"rosepine","rose-pine":"rosepine","github-dark":"github",solar:"solarized",black:"oled",amoled:"oled",midnight:"oled","catppuccin-latte":"latte",sepia:"kertas",paper:"kertas"};
  if(!a)return note("Tema: "+Object.keys(THEMES).join(" · ")+" (aktif: "+(C.theme||"hrai")+"). Ubah: /theme powershell");
  const k=al[a]||a;if(!THEMES[k])return note("Tema tidak dikenal. Pilihan: "+Object.keys(THEMES).join(" · "));
  C.theme=k;saveC();applyTheme();tm.value=k;note("Tema: "+THEMES[k])}
-function cmdFont(a){if(H.length===0)log.innerHTML="";if(a!=="f4"&&a!=="sys")return note("Pakai: /font f4 · /font sys");C.font=a;saveC();applyTheme();$("#fz").value=a;note(a==="f4"?"Font: Terminal F4":"Font: Sistem")}
+function cmdFont(a){if(H.length===0)log.innerHTML="";if(!FONTS[a])return note("Font: "+Object.keys(FONTS).join(" · ")+" (aktif: "+(FONTS[C.font]?C.font:"sys")+"). Ubah: /font inter");C.font=a;saveC();applyTheme();$("#fz").value=a;note("Font: "+FONTS[a].n+(FONTS[a].q?" (dimuat dari Google Fonts, perlu internet)":""))}
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 const VB={list:["Memeriksa","Diperiksa"],read:["Membaca","Dibaca"],grep:["Menganalisa","Dianalisa"],write:["Membuat","Dibuat"],edit:["Mengedit","Diedit"],web_search:["Mencari di web","Hasil pencarian web"],open_url:["Membuka halaman web","Halaman web dibuka"],show_image:["Mengambil gambar dari web","Gambar ditampilkan"]};
 let SPARK='<svg class="sp px" viewBox="0 0 18 15" shape-rendering="crispEdges" aria-hidden="true"><g class="body" fill="#c96442"><rect x="3" y="2" width="12" height="9"/><rect x="0" y="6" width="3" height="3"/><rect x="15" y="6" width="3" height="3"/><rect x="6" y="11" width="2" height="2"/><rect x="10" y="11" width="2" height="2"/></g><rect fill="#000" x="5" y="4" width="2" height="2"/><rect fill="#000" x="11" y="4" width="2" height="2"/><g class="lA" fill="#c96442"><rect x="3" y="11" width="2" height="3"/><rect x="13" y="11" width="2" height="3"/></g><g class="lB" fill="#c96442"><rect x="6" y="13" width="2" height="1"/><rect x="10" y="13" width="2" height="1"/></g></svg>';
@@ -1232,6 +1287,7 @@ addEventListener("dragenter",e=>{if(hasFiles(e)){DZ++;document.body.classList.ad
 addEventListener("dragleave",()=>{DZ=Math.max(0,DZ-1);if(!DZ)document.body.classList.remove("dz")});
 addEventListener("dragover",e=>{if(hasFiles(e))e.preventDefault()});
 addEventListener("drop",e=>{DZ=0;document.body.classList.remove("dz");if(!hasFiles(e))return;e.preventDefault();if(document.querySelector("dialog[open]")||busy())return;$("#fi").files=e.dataTransfer.files;$("#fi").dispatchEvent(new Event("change"))});
+try{const mq=matchMedia("(prefers-color-scheme:dark)");mq.addEventListener&&mq.addEventListener("change",()=>applyTheme())}catch{}
 applyTheme();
 modeUI();boot();
 </script></body></html>
