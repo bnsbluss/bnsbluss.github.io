@@ -445,6 +445,21 @@ body{font-size:var(--fs,15px)}
 .tgp s{position:absolute;right:6px;bottom:6px;width:16px;height:9px;border-radius:3px;background:var(--p);border:1px solid rgba(128,128,128,.35);text-decoration:none}
 .tgn{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .hintp{margin:6px 0 0;font-size:12px;line-height:1.45;color:var(--dim)}
+
+/* ---- varian model ---- */
+.vrow{display:flex;padding:0 0 8px}
+.vpill{display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:0 12px;border:1px solid var(--line);border-radius:999px;background:var(--panel);color:var(--fg);font-size:12.5px;font-weight:600;line-height:1;cursor:pointer}
+.vpill:hover{border-color:var(--acc)}
+.vpill span{color:var(--dim);font-weight:500}
+.vpill b{color:var(--acc);font-weight:700}
+.vpill i{font-style:normal;color:var(--dim);font-size:11px}
+.vl{display:flex;flex-direction:column;gap:8px;margin:12px 0}
+.vo{display:flex;flex-direction:column;align-items:flex-start;gap:3px;width:100%;min-height:0;padding:12px 14px;border:1px solid var(--line);border-radius:var(--rm);background:var(--panel);text-align:left;color:var(--fg);cursor:pointer}
+.vo b{font-size:14px;font-weight:650}
+.vo span{font-size:12.5px;line-height:1.4;color:var(--dim);overflow-wrap:anywhere}
+.vo:hover{border-color:var(--dim)}
+.vo.on{border-color:var(--acc);box-shadow:0 0 0 2px color-mix(in srgb,var(--acc) 28%,transparent)}
+.vo.on b::after{content:" ✓";color:var(--acc)}
 </style></head>
 <body>
 
@@ -452,7 +467,8 @@ body{font-size:var(--fs,15px)}
 <div id="ibn" class="ibn" style="display:none"><span>Pasang HRAI di layar utama</span><button class="btn" id="ibi">Pasang</button><button class="ib" id="ibx" aria-label="Tutup">✕</button></div>
 <div id="log"></div>
 <div id="tus"></div>
-<footer><div id="att" class="att" style="display:none"></div><div class="composer"><button id="at" aria-label="Lampirkan">+</button><textarea id="in" rows="1" placeholder="Tulis perintah…" aria-label="Perintah untuk HRAI"></textarea><button id="go" aria-label="Kirim">↑</button></div><div class="hint">Enter kirim · Shift+Enter baris baru · seret file ke halaman untuk melampirkan</div><input type="file" id="fi" multiple hidden accept="audio/ogg,application/ogg,.ogg,.oga,image/*,text/*,.json,.js,.ts,.jsx,.tsx,.py,.html,.css,.md,.csv,.xml,.yml,.yaml,.sh,.java,.c,.cpp,.go,.rs,.sql,.log"></footer>
+<footer><div id="att" class="att" style="display:none"></div><div class="vrow"><button id="vp" class="vpill" type="button" style="display:none" aria-haspopup="dialog" title="Varian model"></button></div><div class="composer"><button id="at" aria-label="Lampirkan">+</button><textarea id="in" rows="1" placeholder="Tulis perintah…" aria-label="Perintah untuk HRAI"></textarea><button id="go" aria-label="Kirim">↑</button></div><div class="hint">Enter kirim · Shift+Enter baris baru · seret file ke halaman untuk melampirkan</div><input type="file" id="fi" multiple hidden accept="audio/ogg,application/ogg,.ogg,.oga,image/*,text/*,.json,.js,.ts,.jsx,.tsx,.py,.html,.css,.md,.csv,.xml,.yml,.yaml,.sh,.java,.c,.cpp,.go,.rs,.sql,.log"></footer>
+<dialog id="dv" class="hb"><div class="dhd"><h3>Varian model</h3></div><p class="hintp" id="dvi"></p><div id="dvl" class="vl" role="radiogroup" aria-label="Varian model"></div><div class="bar"><button class="btn" id="dvc" type="button">Tutup</button></div></dialog>
 
 <dialog id="ds" class="hb"><div class="dhd"><h3>Pengaturan</h3></div>
 <section class="sec"><h4>Provider &amp; model</h4>
@@ -460,7 +476,7 @@ body{font-size:var(--fs,15px)}
 <div class="fld"><label>Base URL</label><input type="text" id="su" autocapitalize="off" autocomplete="off" spellcheck="false" inputmode="url"></div>
 <div class="fld"><label>Model</label><div class="rowf"><input type="text" id="sm" autocapitalize="off"><button class="btn" id="sf" type="button">Ambil</button></div><div id="mz" style="display:none"><input type="text" id="mq" placeholder="Cari model…" autocapitalize="off"><div id="ms" class="sys"></div><div id="ml"></div></div></div>
 <div class="fld"><label>API key (disimpan di perangkat ini saja)</label><input type="password" id="sk" autocomplete="off"></div>
-<div class="fld"><label>Proxy CORS (opsional; isi jika muncul "Failed to fetch")</label><input type="text" id="sy" autocapitalize="off" autocomplete="off" spellcheck="false" inputmode="url" placeholder="http://127.0.0.1:8787 atau https://nama.akun.workers.dev/TOKEN"></div>
+<div class="fld"><label for="svr">Varian (untuk model ini)</label><select id="svr"></select><p class="hintp" id="svh"></p></div><div class="fld"><label for="vf">Format varian (lanjutan)</label><select id="vf"><option value="auto">Otomatis (deteksi dari nama model)</option><option value="effort">reasoning_effort (OpenAI, DeepSeek, gpt-oss)</option><option value="reasoning">reasoning.effort (OpenRouter)</option><option value="off">Nonaktifkan varian</option></select></div><div class="fld"><label>Proxy CORS (opsional; isi jika muncul "Failed to fetch")</label><input type="text" id="sy" autocapitalize="off" autocomplete="off" spellcheck="false" inputmode="url" placeholder="http://127.0.0.1:8787 atau https://nama.akun.workers.dev/TOKEN"></div>
 </section>
 <section class="sec"><h4>Perilaku agen</h4>
 <label class="sw"><input type="checkbox" id="sa"><span>Setujui otomatis tool tulis/edit (mode BUILD)</span></label>
@@ -697,7 +713,7 @@ log.addEventListener("error",e=>{const t=e.target;if(t&&t.classList&&t.classList
 function draw(){modeUI();log.innerHTML="";if(!H.length)add("hero",`<div class="bn">${logoSvg()}<div class="bt"><b>CODEX</b> · v0.4.0<div>AI Web Agent</div><div>HeavyRain HRAI Codex</div></div></div><div class="bi"><span>provider</span><b>${esc(prov(C.provider).id)}</b><span>model</span><b>${esc(prov(C.provider).model||"-")}</b></div><p>Mulai dari saran, atau tulis perintahmu sendiri:</p><div class="chips"><button data-q="Buatkan halaman HTML kalkulator sederhana dan simpan sebagai kalkulator.html"><b>Kalkulator HTML</b><span>Satu file, siap dipratinjau</span></button><button data-q="Susun rencana bertahap untuk aplikasi catatan harian"><b>Rencana aplikasi</b><span>Tahapan kerja yang jelas</span></button><button data-q="Buatkan game HTML5 sederhana yang memakai file audio .ogg yang saya lampirkan sebagai efek suara dan musik latar"><b>Game dengan audio OGG</b><span>Lampirkan aset .ogg lewat tombol +</span></button><button data-q="Audit kode pada file yang saya lampirkan, temukan bug, lalu perbaiki"><b>Audit &amp; perbaiki kode</b><span>Cari bug dari file lampiran</span></button><button data-q="Jelaskan cara kerja async/await di JavaScript dengan contoh singkat"><b>Belajar async/await</b><span>Penjelasan dengan contoh</span></button><button data-q="Tulis skrip Python untuk merapikan data CSV"><b>Skrip Python</b><span>Rapikan data CSV</span></button></div>`);
  const res={};H.forEach(m=>{if(m.role==="tool")res[m.tool_call_id]=m.content});
  for(const m of H){if(m.sum){add("thw",`<details class="thd"><summary>Ringkasan percakapan</summary><div class="thx">${esc(m.content)}</div></details>`);continue}if(m.sys||m.hid)continue;if(m.role==="user")add("u",uHtml(m));else if(m.role==="assistant"){if(m.content)add("a",md(m.content));for(const t of m.tool_calls||[]){const n=t.function.name;if(n==="show_image"){let a={};try{a=JSON.parse(t.function.arguments)}catch{}const rm=/^OK (\S+)/.exec(res[t.id]||"");let pth=rm?rm[1]:"";if(!pth&&a.name)pth="gambar/"+String(a.name).replace(/[\\/:*?"<>|]/g,"-");let src=pth&&FS()[pth];if(!src&&a.name)src=FS()["gambar/"+a.name];if(src)add("imgw",imgCard(src,(pth||"foto.png").split("/").pop()));continue}if(n!=="write"&&n!=="edit")continue;let a={};try{a=JSON.parse(t.function.arguments)}catch{}finCard(newCard(n),n,a,res[t.id]||"")}}}}
-const modeUI=()=>{document.querySelectorAll("#mode button").forEach(b=>b.classList.toggle("on",b.dataset.m===C.mode));$("#mode").dataset.m=C.mode;const p=prov(C.provider);$("#sub").textContent=p.id+" · "+p.model+" · ≈"+fk(est())+"/"+fk(C.ctx||128000);if(typeof tusUI==="function")tusUI()};
+const modeUI=()=>{document.querySelectorAll("#mode button").forEach(b=>b.classList.toggle("on",b.dataset.m===C.mode));$("#mode").dataset.m=C.mode;const p=prov(C.provider);$("#sub").textContent=p.id+" · "+p.model+(varCur(p)!=="default"?" · "+VLAB[varCur(p)]:"")+" · ≈"+fk(est())+"/"+fk(C.ctx||128000);if(typeof tusUI==="function")tusUI();if(typeof varUI==="function")varUI()};
 /* ---- statistik token sesi (usage asli dari API bila tersedia) ---- */
 let TU={pin:0,pout:0},OA={pin:0,pout:0};
 const tusUI=()=>{const b=$("#tus");if(!b)return;if(!H.length&&!TU.pin&&!TU.pout){b.innerHTML="";return}
@@ -706,24 +722,23 @@ const tusUI=()=>{const b=$("#tus");if(!b)return;if(!H.length&&!TU.pin&&!TU.pout)
 /* ---- jaringan ---- */
 async function sse(r,cb){const rd=r.body.getReader(),dc=new TextDecoder();let b="";const ln=l=>{if(!l.startsWith("data:"))return;const s=l.slice(5).trim();if(!s||s==="[DONE]")return;let o;try{o=JSON.parse(s)}catch{return}if(o&&typeof o==="object"&&((o.error&&typeof o.error==="object")||o.type==="error"))throw new Error(String((o.error&&o.error.message)||o.message||"Kesalahan dari server").slice(0,300));try{cb(o)}catch{}};for(;;){const{done,value}=await rd.read();if(done)break;LT=Date.now();b+=dc.decode(value,{stream:true});const L=b.split("\n");b=L.pop();for(const l of L)ln(l)}b+=dc.decode();ln(b.trim())}
 const chk=async r=>{if(!r.ok)throw new Error("HTTP "+r.status+" "+(await r.text()).slice(0,300))};
-async function callOA(p,sys,onT,onR,onC){
- const r=await pf(p,p.url.replace(/\/$/,"")+"/chat/completions",{method:"POST",signal:SG.signal,headers:Object.assign({"Content-Type":"application/json"},p.key?{Authorization:"Bearer "+p.key}:{}),body:JSON.stringify({model:p.model,stream:true,temperature:.7,max_tokens:MT(),messages:[{role:"system",content:sys},...H.map(oaClean)],tools:T_OA})});
- await chk(r);let text="",calls=[];let gpin=0,gpout=0;
- await sse(r,d=>{const c=d.choices?.[0]?.delta;if(d.choices?.[0]?.finish_reason)FR=d.choices[0].finish_reason;if(d.usage){gpin=d.usage.prompt_tokens||0;gpout=(d.usage.completion_tokens||0)+(d.usage.reasoning_tokens||0);TU.pin+=gpin-(OA.pin||0);TU.pout+=gpout-(OA.pout||0);OA.pin=gpin;OA.pout=gpout;tusUI()}if(!c)return;if(c.content){text+=c.content;onT(text)}const rs=c.reasoning_content||c.reasoning;if(rs)onR(rs);
+async function callOA(p,sys,onT,onR,onC){LRC="";
+ const lu=lastRealUser(),r=await vTry(p,async vp=>{const b={model:p.model,stream:true,messages:[{role:"system",content:sys},...H.map((m,i)=>oaClean(m,i>lu))],tools:T_OA};if(mctOf(p))b.max_completion_tokens=MT();else{b.temperature=.7;b.max_tokens=MT()}if(vp)Object.assign(b,vp);const r=await pf(p,p.url.replace(/\/$/,"")+"/chat/completions",{method:"POST",signal:SG.signal,headers:Object.assign({"Content-Type":"application/json"},p.key?{Authorization:"Bearer "+p.key}:{}),body:JSON.stringify(b)});await chk(r);return r});
+ let text="",calls=[],rcx="";let gpin=0,gpout=0;
+ await sse(r,d=>{const c=d.choices?.[0]?.delta;if(d.choices?.[0]?.finish_reason)FR=d.choices[0].finish_reason;if(d.usage){gpin=d.usage.prompt_tokens||0;gpout=(d.usage.completion_tokens||0)+(d.usage.reasoning_tokens||0);TU.pin+=gpin-(OA.pin||0);TU.pout+=gpout-(OA.pout||0);OA.pin=gpin;OA.pout=gpout;tusUI()}if(!c)return;if(c.content){text+=c.content;onT(text)}const rs=c.reasoning_content||c.reasoning;if(c.reasoning_content)rcx+=c.reasoning_content;if(rs)onR(rs);
   for(const t of c.tool_calls||[]){TC=1;let i=t.index??0,x=calls[i];if(x&&t.id&&x.id&&t.id!==x.id){i=calls.length;x=null}x=x||(calls[i]={id:"",name:"",args:""});if(t.id)x.id=t.id;if(t.function?.name)x.name+=t.function.name;if(t.function?.arguments)x.args+=t.function.arguments;onC&&onC(calls)}});
- return{text,calls:calls.filter(Boolean)}}
+ LRC=rcx;return{text,calls:calls.filter(Boolean)}}
 function toAn(){const o=[];for(const m of H){if(m.role==="tool"){const b={type:"tool_result",tool_use_id:m.tool_call_id,content:m.content},l=o[o.length-1];if(l&&l.role==="user"&&Array.isArray(l.content))l.content.push(b);else o.push({role:"user",content:[b]})}else if(m.role==="assistant"){const c=[];if(m.content)c.push({type:"text",text:m.content});for(const t of m.tool_calls||[])c.push({type:"tool_use",id:t.id,name:t.function.name,input:sj(t.function.arguments)});o.push({role:"assistant",content:c})}else o.push({role:"user",content:m.images?.length?[...m.images.map(u=>({type:"image",source:{type:"base64",media_type:"image/jpeg",data:u.split(",")[1]}})),{type:"text",text:m.content}]:m.content})}return o}
 async function callAN(p,sys,onT,onR,onC){
- const r=await pf(p,p.url.replace(/\/$/,"")+"/messages",{method:"POST",signal:SG.signal,headers:{"Content-Type":"application/json","x-api-key":p.key,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},body:JSON.stringify({model:p.model,max_tokens:MT(),stream:true,system:sys,messages:toAn(),tools:T_AN})});
- await chk(r);let text="",calls=[];const an={};let lpin=0,lpout=0;const upA=()=>{TU.pin+=lpin-(an.pin||0);TU.pout+=lpout-(an.pout||0);an.pin=lpin;an.pout=lpout;tusUI()};
+ const r=await vTry(p,async vp=>{const b={model:p.model,max_tokens:MT(),stream:true,system:sys,messages:toAn(),tools:T_AN};if(vp){Object.assign(b,vp);if(/^(xhigh|max)$/.test(vp.output_config.effort))b.max_tokens=Math.max(MT(),64000)}const r=await pf(p,p.url.replace(/\/$/,"")+"/messages",{method:"POST",signal:SG.signal,headers:{"Content-Type":"application/json","x-api-key":p.key,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},body:JSON.stringify(b)});await chk(r);return r});
+ let text="",calls=[];const an={};let lpin=0,lpout=0;const upA=()=>{TU.pin+=lpin-(an.pin||0);TU.pout+=lpout-(an.pout||0);an.pin=lpin;an.pout=lpout;tusUI()};
  await sse(r,d=>{if(d.type==="message_start"&&d.message?.usage){lpin=d.message.usage.input_tokens||0;lpout=d.message.usage.output_tokens||0;upA()}if(d.type==="message_delta"){if(d.usage){lpout=d.usage.output_tokens||0;upA()}if(d.delta?.stop_reason)FR=d.delta.stop_reason}if(d.type==="content_block_start"&&d.content_block.type==="tool_use")TC=1,calls[d.index]={id:d.content_block.id,name:d.content_block.name,args:""},onC&&onC(calls);
   else if(d.type==="content_block_delta"){const x=d.delta;if(x.type==="text_delta"){text+=x.text;onT(text)}else if(x.type==="input_json_delta"){calls[d.index].args+=x.partial_json;onC&&onC(calls)}else if(x.type==="thinking_delta")onR(x.thinking)}});
  return{text,calls:calls.filter(Boolean)}}
 async function callGM(p,sys,onT){
- const con=[];for(const m of H){if(m.role==="tool")con.push({role:"user",parts:[{functionResponse:{name:m.name,response:{result:m.content}}}]});else if(m.role==="assistant"){const pt=[];if(m.content)pt.push({text:m.content});for(const t of m.tool_calls||[])pt.push({functionCall:{name:t.function.name,args:sj(t.function.arguments)}});con.push({role:"model",parts:pt})}else con.push({role:"user",parts:[{text:m.content},...(m.images||[]).map(u=>({inlineData:{mimeType:"image/jpeg",data:u.split(",")[1]}}))]})}
- const r=await pf(p,`${p.url.replace(/\/$/,"")}/models/${p.model}:generateContent?key=${encodeURIComponent(p.key)}`,{method:"POST",signal:SG.signal,headers:{"Content-Type":"application/json"},body:JSON.stringify({systemInstruction:{parts:[{text:sys}]},contents:con,generationConfig:{maxOutputTokens:MT()},tools:[{functionDeclarations:T_GM}]})});
- await chk(r);const j=await r.json();FR=j.candidates?.[0]?.finishReason||"";if(j.usageMetadata){const gp=j.usageMetadata.promptTokenCount||0,go=(j.usageMetadata.candidatesTokenCount||0)+(j.usageMetadata.thoughtsTokenCount||0);TU.pin+=gp-(OA.pin||0);TU.pout+=go-(OA.pout||0);OA.pin=gp;OA.pout=go;tusUI()}let text="",calls=[];
- for(const x of j.candidates?.[0]?.content?.parts||[]){if(x.text)text+=x.text;if(x.functionCall)calls.push({id:"g"+Math.random().toString(36).slice(2,9),name:x.functionCall.name,args:JSON.stringify(x.functionCall.args||{})})}
+ const con=[];for(const m of H){if(m.role==="tool")con.push({role:"user",parts:[{functionResponse:{name:m.name,response:{result:m.content}}}]});else if(m.role==="assistant"){const pt=[];if(m.content)pt.push({text:m.content});for(const t of m.tool_calls||[])pt.push(Object.assign({functionCall:{name:t.function.name,args:sj(t.function.arguments)}},t.sig?{thoughtSignature:t.sig}:{}));con.push({role:"model",parts:pt})}else con.push({role:"user",parts:[{text:m.content},...(m.images||[]).map(u=>({inlineData:{mimeType:"image/jpeg",data:u.split(",")[1]}}))]})}
+ const r=await vTry(p,async vp=>{const gc={maxOutputTokens:MT()};if(vp&&vp.thinkingConfig){gc.thinkingConfig=vp.thinkingConfig;const bd=vp.thinkingConfig.thinkingBudget;if(bd)gc.maxOutputTokens=Math.min(65536,Math.max(MT(),bd+8192))}const r=await pf(p,`${p.url.replace(/\/$/,"")}/models/${p.model}:generateContent?key=${encodeURIComponent(p.key)}`,{method:"POST",signal:SG.signal,headers:{"Content-Type":"application/json"},body:JSON.stringify({systemInstruction:{parts:[{text:sys}]},contents:con,generationConfig:gc,tools:[{functionDeclarations:T_GM}]})});await chk(r);return r});const j=await r.json();FR=j.candidates?.[0]?.finishReason||"";if(j.usageMetadata){const gp=j.usageMetadata.promptTokenCount||0,go=(j.usageMetadata.candidatesTokenCount||0)+(j.usageMetadata.thoughtsTokenCount||0);TU.pin+=gp-(OA.pin||0);TU.pout+=go-(OA.pout||0);OA.pin=gp;OA.pout=go;tusUI()}let text="",calls=[];
+ for(const x of j.candidates?.[0]?.content?.parts||[]){if(x.text)text+=x.text;if(x.functionCall)calls.push({id:"g"+Math.random().toString(36).slice(2,9),name:x.functionCall.name,args:JSON.stringify(x.functionCall.args||{}),sig:x.thoughtSignature})}
  onT(text);return{text,calls}}
 
 /* ---- agen ---- */
@@ -731,7 +746,57 @@ let SG=null,TC=0,FR="";
 const TRUNC=/^(length|max_tokens|MAX_TOKENS|max_output_tokens)$/;
 const NUDGE={budget:"[sistem] Kamu berpikir terlalu lama tanpa menghasilkan hasil, jadi prosesnya dihentikan. Jangan berpikir panjang lagi: langsung ambil keputusan dan kerjakan (tulis file / panggil tool) memakai rencana di catatan pemikiranmu. Untuk file besar, tulis bertahap.",length:"[sistem] Jawabanmu terpotong karena batas token output, jadi tool call terakhir tidak dijalankan. Jangan ulangi pemikiran panjang: langsung lanjutkan tugas. Untuk file besar, tulis bertahap (kerangka dulu, lalu tambahkan per bagian dengan edit) agar tiap langkah pendek.",empty:"[sistem] Responsmu berhenti sebelum menghasilkan jawaban atau tool call. Langsung lanjutkan tugas memakai rencana di catatan pemikiranmu; jangan ulangi pemikiran panjang. Untuk file besar, tulis bertahap."};
 const MT=()=>C.maxTok||32000,BG=()=>C.budget??8000;
-const oaClean=m=>m.role==="assistant"?{role:"assistant",content:m.content,tool_calls:m.tool_calls}:m.role==="tool"?{role:"tool",tool_call_id:m.tool_call_id,content:m.content}:oaMsg(m);
+/* ---- varian model: default · low · mid · high · xhigh · max (menyesuaikan model/provider) ---- */
+const VLAB={default:"Default",low:"Low",mid:"Mid",high:"High",xhigh:"XHigh",max:"Max"};
+const VDES={default:"Pakai bawaan model. Tidak ada parameter tambahan yang dikirim.",low:"Paling hemat dan cepat. Cocok untuk tugas sederhana.",mid:"Seimbang antara kecepatan, biaya, dan kualitas.",high:"Penalaran lebih dalam untuk tugas sulit.",xhigh:"Lebih dalam dari High, untuk coding agentik yang panjang.",max:"Kemampuan tertinggi tanpa batas token. Paling lambat dan paling mahal."};
+const VORD=["low","mid","high","xhigh","max"],VNONE={fmt:"",levels:[],map:{}},EFF={low:"low",mid:"medium",high:"high",xhigh:"xhigh",max:"max"};
+let VBAD={},LRC="";
+const vbk=p=>p.id+"|"+p.model;
+const hostOf=u=>((String(u||"").match(/^https?:\/\/([^\/?#]+)/i)||[])[1]||"").toLowerCase();
+const mctOf=p=>hostOf(p.url)==="api.openai.com"&&/^(o\d|gpt-5)/i.test(String(p.model||"").split("/").pop());
+const lastRealUser=()=>{for(let i=H.length-1;i>=0;i--)if(H[i].role==="user"&&!H[i].sys&&!H[i].sum)return i;return-1};
+function claudeLv(id){if(/mythos-preview/.test(id))return["low","mid","high","max"];const m=/claude-(opus|sonnet|haiku|fable|mythos)-(\d{1,2})(?:[-.](\d{1,2})(?!\d))?/.exec(id);if(!m)return null;const f=m[1],a=+m[2],b=m[3]==null?0:+m[3];
+ if(a>=5)return["low","mid","high","xhigh","max"];
+ if(f==="opus"&&a===4)return b>=7?["low","mid","high","xhigh","max"]:b===6?["low","mid","high","max"]:b===5?["low","mid","high"]:null;
+ if(f==="sonnet"&&a===4&&b===6)return["low","mid","high","max"];
+ return null}
+function varSpec(p){const id=String(p.model||"").toLowerCase(),bare=id.split("/").pop(),host=hostOf(p.url),fm=p.vfmt||"auto",S=(fmt,levels,map,x)=>Object.assign({fmt,levels,map},x||{});
+ if(fm==="off"||!bare)return VNONE;
+ if(p.type==="anthropic"){const lv=claudeLv(bare);return lv?S("an",lv,EFF):VNONE}
+ if(p.type==="gemini"){if(/image|tts|embed|live|audio|veo|imagen|robotics/.test(bare))return VNONE;const g=/gemini-(\d+)(?:\.(\d+))?/.exec(bare);if(!g)return VNONE;if(+g[1]>=3)return S("g3",["low","mid","high"],{low:"low",mid:"medium",high:"high"});if(+g[1]===2&&g[2]==="5")return S("g25",["low","mid","high","max"],{low:1024,mid:8192,high:16384,max:/pro/.test(bare)?32768:24576});return VNONE}
+ if(fm==="effort")return S("ef",VORD,EFF);
+ if(fm==="reasoning")return S("or",VORD,EFF);
+ if(host==="openrouter.ai"){const cap=(C.vcap||{})[vbk(p)];if(cap===0)return VNONE;let lv=VORD;if(Array.isArray(cap)){lv=VORD.filter(k=>cap.includes(EFF[k]));if(!lv.length)return VNONE}else if(!/claude|gpt-5|gpt-oss|(^|[^a-z])o\d|gemini-(2\.5|[3-9])|deepseek|grok|qwen3|glm|kimi|minimax|nemotron|thinking|reason|r1/.test(bare))return VNONE;return S("or",lv,EFF)}
+ if(host==="api.openai.com"){if(!/^(o\d|gpt-5)/.test(bare)||/-pro|chat-latest/.test(bare))return VNONE;const g=/^gpt-5\.(\d+)/.exec(bare),x=g&&+g[1]>=4;return S("ef",x?["low","mid","high","max"]:["low","mid","high"],{low:"low",mid:"medium",high:"high",max:"xhigh"})}
+ if(/deepseek-(v4|reasoner|r1|v3\.[2-9])/.test(bare))return S("ef",["low","high","max"],{low:"low",high:"high",max:"max"},{ds:/(^|\.)deepseek\.com$/.test(host)});
+ if(/gpt-oss/.test(bare))return S("ef",["low","mid","high"],{low:"low",mid:"medium",high:"high"});
+ return VNONE}
+function varCur(p){const sp=varSpec(p),k=(C.vr||{})[vbk(p)]||"default";return sp.levels.includes(k)?k:"default"}
+function varApply(p,sp,k){const v=sp.map[k];if(!sp.fmt||k==="default"||v==null)return null;
+ if(sp.fmt==="an")return{output_config:{effort:v}};
+ if(sp.fmt==="or")return{reasoning:{effort:v}};
+ if(sp.fmt==="ef")return Object.assign({reasoning_effort:v},sp.ds?{thinking:{type:"enabled"}}:{});
+ if(sp.fmt==="g3")return{thinkingConfig:{thinkingLevel:v}};
+ if(sp.fmt==="g25")return{thinkingConfig:{thinkingBudget:v}};
+ return null}
+const varShow=(sp,x)=>({an:"effort=",or:"reasoning.effort=",ef:"reasoning_effort=",g3:"thinkingLevel=",g25:"thinkingBudget="}[sp.fmt]||"")+sp.map[x];
+async function vTry(p,run){const sp=varSpec(p),k=varCur(p),on=!!sp.fmt&&k!=="default"&&!VBAD[vbk(p)];
+ try{return await run(on?varApply(p,sp,k):null)}
+ catch(e){const m=String(e&&e.message||"");if(!on||!/^HTTP (400|422)/.test(m)||!/reasoning|effort|thinking|budget|output_config|unsupported (parameter|value)|unknown (parameter|field)|unrecognized|not permitted|not supported/i.test(m))throw e;
+  VBAD[vbk(p)]=1;note("Varian "+VLAB[k]+" ditolak oleh "+p.id+" / "+p.model+" ("+m.slice(0,100)+"). Dilanjutkan tanpa varian.");varUI();return await run(null)}}
+function varUI(){const b=document.getElementById("vp");if(!b)return;const p=prov(C.provider),sp=varSpec(p);if(!sp.levels.length){b.style.display="none";return}const k=varCur(p);b.style.display="";b.innerHTML="<span>Varian</span><b>"+esc(VLAB[k])+"</b>"+(VBAD[vbk(p)]?"<i>ditolak</i>":"<i>▾</i>");b.title="Varian model: "+VLAB[k]}
+function varSet(p,x){C.vr=C.vr||{};if(x==="default")delete C.vr[vbk(p)];else C.vr[vbk(p)]=x;delete VBAD[vbk(p)];saveC();modeUI()}
+function varSheet(){const p=prov(C.provider),sp=varSpec(p),k=varCur(p),l=$("#dvl");l.textContent="";$("#dvi").textContent=p.id+" · "+p.model+(sp.levels.length?"":" — model ini tidak punya varian.");
+ ["default",...sp.levels].forEach(x=>{const b=document.createElement("button");b.type="button";b.className="vo"+(x===k?" on":"");b.setAttribute("role","radio");b.setAttribute("aria-checked",x===k?"true":"false");b.innerHTML="<b>"+esc(VLAB[x])+"</b><span>"+esc(VDES[x])+(x!=="default"&&sp.map[x]!=null?" ("+esc(varShow(sp,x))+")":"")+"</span>";b.onclick=()=>{varSet(p,x);$("#dv").close()};l.append(b)});$("#dv").showModal()}
+function varSettings(){const p=Object.assign({},prov(sp.value),{model:$("#sm").value.trim(),url:$("#su").value.trim(),vfmt:$("#vf").value}),s=varSpec(p),sel=$("#svr"),cur=(C.vr||{})[vbk(p)]||"default";sel.textContent="";["default",...s.levels].forEach(x=>sel.add(new Option(VLAB[x]+(x!=="default"&&s.map[x]!=null?" — "+varShow(s,x):""),x)));sel.value=s.levels.includes(cur)?cur:"default";sel.disabled=!s.levels.length;$("#svh").textContent=s.levels.length?"Pilihan berbeda tiap model dan disimpan per model. Bisa juga lewat /variant.":"Model ini tidak punya varian atau belum terdeteksi. Untuk gateway kustom, pilih Format varian di bawah."}
+function varSave(){const p=prov(sp.value),x=$("#svr").value;C.vr=C.vr||{};if(!x||x==="default")delete C.vr[vbk(p)];else C.vr[vbk(p)]=x;delete VBAD[vbk(p)]}
+function cmdVariant(a){if(H.length===0)log.innerHTML="";const p=prov(C.provider),sp=varSpec(p),k=varCur(p);
+ if(!sp.levels.length)return note("Model "+p.model+" ("+p.id+") tidak punya varian. Untuk gateway kustom, atur Format varian di Pengaturan.");
+ if(!a){varSheet();return}
+ const al={medium:"mid",med:"mid",normal:"default",auto:"default",x:"xhigh",extra:"xhigh",maximum:"max"},x=al[a]||a;
+ if(x!=="default"&&!sp.levels.includes(x))return note("Varian \""+a+"\" tidak tersedia untuk "+p.model+". Pilih: default · "+sp.levels.join(" · "));
+ varSet(p,x);note("Varian: "+VLAB[x]+(x==="default"?" (bawaan model).":" ("+varShow(sp,x)+")."))}
+const oaClean=(m,cur)=>m.role==="assistant"?Object.assign({role:"assistant",content:m.content},m.tool_calls?{tool_calls:m.tool_calls.map(t=>({id:t.id,type:t.type,function:t.function}))}:{},cur&&m.rc?{reasoning_content:m.rc}:{}):m.role==="tool"?{role:"tool",tool_call_id:m.tool_call_id,content:m.content}:oaMsg(m);
 async function agent(){
  const p=prov(C.provider);if(!p.key&&!keyless(p)){add("er","API key untuk "+p.id+" belum diisi. Buka Atur.");add("thw",`<button class="btn pvf" data-retry="1">↻ Kirim ulang pesan terakhir</button>`);return}if(!p.model){add("er","Model untuk "+p.id+" belum dipilih. Buka Atur lalu ketuk Ambil.");add("thw",`<button class="btn pvf" data-retry="1">↻ Kirim ulang pesan terakhir</button>`);return}
  ctrl=new AbortController();$("#go").textContent="■";keep(true);let cont=0,done=false,acOK=true,fail=null;const wrote=new Set,wroteSvg=new Set,tg=mkG("Giliran AI");CG=tg;
@@ -767,8 +832,8 @@ async function agent(){
    cont++;add("sys",esc((why==="budget"?"Berpikir terlalu lama (≈"+Math.round(rt.length/4)+" token) tanpa hasil; dihentikan.":why==="length"?"Output terpotong batas token ("+MT()+").":"Model berhenti tanpa menghasilkan jawaban.")+" Lanjut otomatis ("+cont+"/3)."));
    H.push({role:"user",content:NUDGE[why],sys:true});saveH();continue}
   const m={role:"assistant",content:text||null};
-  if(calls.length)m.tool_calls=calls.map((c,i)=>({id:c.id||"c"+Date.now()+i,type:"function",function:{name:c.name,arguments:vj(c.args)}}));
-  H.push(m);saveH();if(!calls.length){done=true;break}
+  if(calls.length)m.tool_calls=calls.map((c,i)=>({id:c.id||"c"+Date.now()+i,type:"function",function:{name:c.name,arguments:vj(c.args)},...(c.sig?{sig:c.sig}:{})}));
+  if(calls.length&&LRC&&p.type==="openai")m.rc=LRC;H.push(m);saveH();if(!calls.length){done=true;break}
   const ck=Object.keys(cards).map(Number).sort((x,y)=>x-y);
   for(let k=0;k<m.tool_calls.length;k++){const t=m.tool_calls[k];let a2={},res;try{a2=JSON.parse(t.function.arguments)}catch{}
    const n=t.function.name,wr=n==="write"||n==="edit",d=cards[ck[k]]||newCard(n);
@@ -795,7 +860,7 @@ function retryLast(){if(busy())return;let i=H.length-1;while(i>=0&&(H[i].role!==
  H.length=i;saveH();draw();H.push(m);saveH();add("u",uHtml(m));agent()}
 
 /* ---- UI ---- */
-$("#go").onclick=async()=>{if(ctrl){ctrl.abort();return}let v=$("#in").value.trim();if(!v&&!PA.length&&!PF.length)return;const sm=v.match(/^\/(think|budget|tokens|theme|font|ctx|compact|undo|changes)(?:\s+(.*))?$/i);if(sm){$("#in").value="";$("#in").style.height="";cmdSlash(sm[1].toLowerCase(),(sm[2]||"").trim().toLowerCase());return}$("#in").value="";$("#in").style.height="";if(PF.length)v+=(v?"\n\n":"")+"[File dilampirkan di penyimpanan virtual: "+PF.map(n=>PD[n]?n+" ("+PD[n]+")":n).join(", ")+"]";if(!v)v="Lihat gambar terlampir.";if(needAdult(v)&&!verified()){const okV=await gateAdult();if(!okV){note("Verifikasi 18+ ditolak — pesan tidak dikirim.");return}}if(H.length===0)log.innerHTML="";const m={role:"user",content:v};if(PA.length){m.images=PA;m.nimg=PA.length}PA=[];PF=[];PD={};attUI();H.push(m);saveH();add("u",uHtml(m));agent()};
+$("#go").onclick=async()=>{if(ctrl){ctrl.abort();return}let v=$("#in").value.trim();if(!v&&!PA.length&&!PF.length)return;const sm=v.match(/^\/(think|budget|tokens|theme|font|ctx|compact|undo|changes|variant|varian|effort)(?:\s+(.*))?$/i);if(sm){$("#in").value="";$("#in").style.height="";cmdSlash(sm[1].toLowerCase(),(sm[2]||"").trim().toLowerCase());return}$("#in").value="";$("#in").style.height="";if(PF.length)v+=(v?"\n\n":"")+"[File dilampirkan di penyimpanan virtual: "+PF.map(n=>PD[n]?n+" ("+PD[n]+")":n).join(", ")+"]";if(!v)v="Lihat gambar terlampir.";if(needAdult(v)&&!verified()){const okV=await gateAdult();if(!okV){note("Verifikasi 18+ ditolak — pesan tidak dikirim.");return}}if(H.length===0)log.innerHTML="";const m={role:"user",content:v};if(PA.length){m.images=PA;m.nimg=PA.length}PA=[];PF=[];PD={};attUI();H.push(m);saveH();add("u",uHtml(m));agent()};
 $("#mode").onclick=e=>{const m=e.target.dataset.m;if(m){C.mode=m;saveC();modeUI()}};
 log.onclick=e=>{const T=e.target;if(T.dataset.retry){retryLast();return}if(T.dataset.sv||T.classList.contains("svgi")){const c=T.closest(".svgc"),src=c&&SVGS[c.dataset.id];if(!src)return;const nm=c.dataset.name||"gambar.svg",a=T.dataset.sv||"view";
  if(a==="view")pvSvg(src,nm);else if(a==="svg")saveBlob(new Blob([src],{type:"image/svg+xml"}),nm);else{const o=T.textContent;T.disabled=true;T.textContent="…";svgToPng(src,2).then(b=>saveBlob(b,nm.replace(/\.svg$/i,"")+".png")).catch(x=>alert("Gagal membuat PNG: "+(x.message||x))).finally(()=>{T.disabled=false;T.textContent=o})}return}
@@ -804,11 +869,11 @@ log.onclick=e=>{const T=e.target;if(T.dataset.retry){retryLast();return}if(T.dat
   else{const o=T.textContent;T.disabled=true;T.textContent="…";fetch(src).then(r=>r.blob()).then(b=>saveBlob(b,nm)).catch(x=>alert("Gagal mengunduh: "+(x.message||x))).finally(()=>{T.disabled=false;T.textContent=o})}return}
  if(T.dataset.ug){const g=T.dataset.ug;if(!grpRecs(g).length){alert("Riwayat perubahan giliran ini sudah dihapus.");return}const n=grpApply(g),rs=grpRecs(g);if(n)T.textContent=rs.every(r=>r.u)?"↻ Terapkan ulang perubahan giliran ini":"↩ Batalkan semua perubahan giliran ini ("+rs.length+" file)";return}if(T.dataset.df||T.dataset.ud){const r=UL.find(x=>x.id===T.closest(".ac").dataset.u);if(!r){alert("Catatan perubahan ini sudah dihapus dari riwayat.");return}if(T.dataset.ud){if(chApply(r))T.textContent=r.u?"Terapkan ulang":"Batalkan"}else{$("#dm").showModal();chDiff(r.id)}return}const qb=e.target.closest&&e.target.closest("[data-q]"),q=qb&&qb.dataset.q;if(q){$("#in").value=q;$("#in").dispatchEvent(new Event("input"));$("#in").focus();return}const pp=e.target.dataset.p;if(pp){pv(FS()[pp]??"<p>File tidak ditemukan</p>",pp);return}if(e.target.classList.contains("pb")){pv(e.target.parentElement.querySelector("code").textContent);return}if(e.target.classList.contains("cp")){navigator.clipboard?.writeText(e.target.parentElement.querySelector("code").textContent);e.target.textContent="✓"}};
 const sp=$("#sp");function fillSP(){sp.innerHTML="";PL().forEach(x=>sp.add(new Option(x[0]+((C.custom||{})[x[0]]?" (kustom)":""),x[0])))}fillSP();
-const loadP=()=>{const p=prov(sp.value);$("#su").value=p.url;$("#sm").value=p.model;$("#sk").value=p.key;$("#sy").value=p.proxy||"";$("#sd").style.display="";$("#sr").style.display=(C.hide||[]).length?"":"none";$("#mz").style.display="none";ML=[]};
+const loadP=()=>{const p=prov(sp.value);$("#su").value=p.url;$("#sm").value=p.model;$("#sk").value=p.key;$("#sy").value=p.proxy||"";$("#sd").style.display="";$("#sr").style.display=(C.hide||[]).length?"":"none";$("#mz").style.display="none";ML=[];$("#vf").value=p.vfmt||"auto";varSettings()};
 sp.onchange=loadP;
 $("#bs").onclick=()=>{sp.value=C.provider;loadP();$("#sa").checked=C.auto;$("#th").checked=C.think!==false;tm.value=C.theme||"hrai";$("#fz").value=C.font||"sys";$("#wk").checked=C.wake!==false;$("#nt").checked=!!C.notif;$("#snd").checked=C.snd!==false;pwaUI();$("#ds").showModal()};
 /* Simpan juga preferensi wake lock; sebelumnya checkbox ini tidak pernah disimpan. */
-$("#ok").onclick=()=>{C.provider=sp.value;C.p[sp.value]={url:$("#su").value.trim(),model:$("#sm").value.trim(),key:$("#sk").value.trim(),proxy:$("#sy").value.trim()};C.auto=$("#sa").checked;C.think=$("#th").checked;C.wake=$("#wk").checked;C.notif=$("#nt").checked;C.snd=$("#snd").checked;saveC();modeUI();$("#ds").close()};
+$("#ok").onclick=()=>{C.provider=sp.value;C.p[sp.value]={url:$("#su").value.trim(),model:$("#sm").value.trim(),key:$("#sk").value.trim(),proxy:$("#sy").value.trim(),vfmt:$("#vf").value};varSave();C.auto=$("#sa").checked;C.think=$("#th").checked;C.wake=$("#wk").checked;C.notif=$("#nt").checked;C.snd=$("#snd").checked;saveC();modeUI();$("#ds").close()};
 $("#nc").onclick=()=>{newChat();$("#ds").close()};
 $("#cl").onclick=()=>$("#ds").close();
 $("#in").addEventListener("input",e=>{e.target.style.height="auto";e.target.style.height=Math.min(e.target.scrollHeight,innerHeight*.3)+"px"});
@@ -886,7 +951,7 @@ $("#bj").onchange=async e=>{const f=e.target.files[0];e.target.value="";if(!f||b
   if(cur&&S[cur])H=S[cur].H;draw();modeUI();hist();alert("Impor selesai.")}catch(x){alert("Gagal impor: "+x.message)}};
 let ML=[];
 function showML(){const q=$("#mq").value.trim().toLowerCase(),b=$("#ml"),c=$("#sm").value.trim(),v=ML.filter(x=>x.toLowerCase().includes(q));b.innerHTML="";$("#ms").textContent=v.length+" dari "+ML.length+" model";
- v.slice(0,200).forEach(id=>{const e=document.createElement("button");e.type="button";e.className="mi"+(id===c?" on":"");e.textContent=id;e.onclick=()=>{$("#sm").value=id;showML()};b.append(e)})}
+ v.slice(0,200).forEach(id=>{const e=document.createElement("button");e.type="button";e.className="mi"+(id===c?" on":"");e.textContent=id;e.onclick=()=>{$("#sm").value=id;showML();varSettings()};b.append(e)})}
 async function fetchModels(){const P=Object.assign({},prov(sp.value),{proxy:$("#sy").value.trim()}),t=P.type,u=$("#su").value.trim().replace(/\/$/,""),k=$("#sk").value.trim();if(!u){alert("Isi Base URL dulu.");return}
  const b=$("#sf");b.disabled=true;b.textContent="…";$("#mz").style.display="block";$("#ms").textContent="Mengambil daftar model…";$("#ml").innerHTML="";
  try{let url=u+"/models",h={};
@@ -895,6 +960,7 @@ async function fetchModels(){const P=Object.assign({},prov(sp.value),{proxy:$("#
   else if(k)h.Authorization="Bearer "+k;
   const r=await pf(P,url,{headers:h});if(!r.ok)throw new Error("HTTP "+r.status+" "+(await r.text()).slice(0,200));
   const j=await r.json(),a=Array.isArray(j)?j:j.data||j.models;if(!Array.isArray(a))throw new Error("Format /models tidak dikenal");
+  if(hostOf(u)==="openrouter.ai"){C.vcap=C.vcap||{};a.forEach(x=>{if(!x||typeof x!=="object"||!x.id)return;const rs=x.reasoning,sg=x.supported_parameters,key=sp.value+"|"+x.id;if(rs&&Array.isArray(rs.supported_efforts))C.vcap[key]=rs.supported_efforts;else if(Array.isArray(sg)&&!sg.includes("reasoning")&&!sg.includes("include_reasoning"))C.vcap[key]=0;else delete C.vcap[key]});saveC();varSettings()}
   ML=a.filter(x=>t!=="gemini"||!x.supportedGenerationMethods||x.supportedGenerationMethods.includes("generateContent")).map(x=>typeof x==="string"?x:t==="gemini"?String(x.name||"").replace(/^models\//,""):x.id).filter(Boolean).sort((x,y)=>x.toLowerCase()<y.toLowerCase()?-1:1);
   $("#mq").value="";showML();if(!ML.length)$("#ms").textContent="Server tidak mengembalikan model."}
  catch(e){$("#ms").textContent=e instanceof TypeError?await netWhy(P):"Gagal: "+e.message}
@@ -918,7 +984,7 @@ function cmdThink(a){if(H.length===0)log.innerHTML="";
  if(["show","last","lihat"].includes(a)){if(!THL)return note("Belum ada pemikiran yang tersimpan.");const d=add("thw",`<details open class="thd"><summary>Pemikiran terakhir</summary><div class="thx"></div></details>`);typeInto(d.querySelector(".thx"),THL);return}
  let v;if(a==="")v=C.think===false;else if(["on","live","full","aktif","nyala"].includes(a))v=true;else if(["off","mati"].includes(a))v=false;else return note("Pakai: /think on · /think off · /think show");
  C.think=v;saveC();$("#th").checked=v;note(v?"Thinking ON: proses berpikir ditampilkan (animasi logo + teks).":"Thinking OFF: proses berpikir disembunyikan.")}
-function cmdSlash(c,a){if(c==="think")return cmdThink(a);if(c==="theme")return cmdTheme(a);if(c==="font")return cmdFont(a);if(c==="ctx")return cmdCtx(a);if(c==="changes"){$("#dm").showModal();return chList()}if(c==="undo"){const r=UL.find(x=>!x.u);if(!r)return note("Tidak ada perubahan untuk dibatalkan.");if(r.g&&/^(giliran|turn|semua)$/.test(a)){const n=grpApply(r.g);return note(n?"Dibatalkan: "+n+" perubahan ("+(r.gl||"kelompok terakhir")+").":"Tidak ada yang dibatalkan.")}if(chApply(r))note("Dibatalkan: "+r.p+" ("+r.k+")");return}if(c==="compact"){if(a==="auto"){C.ac=C.ac===false;saveC();return note("Padatkan otomatis: "+(C.ac===false?"mati":"hidup"))}return compact(false)}if(H.length===0)log.innerHTML="";const b=c==="budget";
+function cmdSlash(c,a){if(c==="variant"||c==="varian"||c==="effort")return cmdVariant(a);if(c==="think")return cmdThink(a);if(c==="theme")return cmdTheme(a);if(c==="font")return cmdFont(a);if(c==="ctx")return cmdCtx(a);if(c==="changes"){$("#dm").showModal();return chList()}if(c==="undo"){const r=UL.find(x=>!x.u);if(!r)return note("Tidak ada perubahan untuk dibatalkan.");if(r.g&&/^(giliran|turn|semua)$/.test(a)){const n=grpApply(r.g);return note(n?"Dibatalkan: "+n+" perubahan ("+(r.gl||"kelompok terakhir")+").":"Tidak ada yang dibatalkan.")}if(chApply(r))note("Dibatalkan: "+r.p+" ("+r.k+")");return}if(c==="compact"){if(a==="auto"){C.ac=C.ac===false;saveC();return note("Padatkan otomatis: "+(C.ac===false?"mati":"hidup"))}return compact(false)}if(H.length===0)log.innerHTML="";const b=c==="budget";
  if(a==="")return note(b?"Batas berpikir: "+(BG()||"tanpa batas")+" token. Ubah: /budget 12000 (0 = tanpa batas)":"Batas output: "+MT()+" token. Ubah: /tokens 32000");
  const n=/^\d+$/.test(a)?+a:NaN;if(!(b?(n===0||n>=500&&n<=200000):(n>=1000&&n<=128000)))return note("Format: /"+c+" ANGKA ("+(b?"500-200000, atau 0 untuk tanpa batas":"1000-128000")+")");
  C[b?"budget":"maxTok"]=n;saveC();note(b?"Batas berpikir: "+(n||"tanpa batas")+" token.":"Batas output: "+n+" token.")}
@@ -1280,6 +1346,7 @@ function acx(){try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();
 ["pointerdown","keydown","touchstart"].forEach(ev=>addEventListener(ev,()=>acx(),{once:true,capture:true,passive:true}));
 function chime(){if(C.snd===false)return;const c=acx();if(!c)return;try{const t=c.currentTime;[[880,0],[1318.5,.15]].forEach(([f,d])=>{const o=c.createOscillator(),g=c.createGain();o.type="sine";o.frequency.value=f;g.gain.setValueAtTime(.0001,t+d);g.gain.linearRampToValueAtTime(.16,t+d+.03);g.gain.exponentialRampToValueAtTime(.0001,t+d+.6);o.connect(g);g.connect(c.destination);o.start(t+d);o.stop(t+d+.65)})}catch{}}
 const boot0=boot;boot=async()=>{await boot0();if(/[?&]new=1/.test(location.search)){newChat();history.replaceState(null,"",location.pathname)}pwaUI()};
+$("#vp").onclick=varSheet;$("#dvc").onclick=()=>$("#dv").close();$("#vf").onchange=varSettings;$("#sm").addEventListener("input",varSettings);$("#su").addEventListener("input",varSettings);
 /* ---- v3: Enter untuk kirim (desktop) dan seret-lepas file ---- */
 $("#in").addEventListener("keydown",e=>{if(e.key!=="Enter"||e.isComposing||e.shiftKey)return;if(matchMedia("(pointer:coarse)").matches&&!(e.ctrlKey||e.metaKey))return;e.preventDefault();if(ctrl)return;$("#go").click()});
 let DZ=0;const hasFiles=e=>!!(e.dataTransfer&&[...e.dataTransfer.types].includes("Files"));
