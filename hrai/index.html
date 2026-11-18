@@ -460,6 +460,8 @@ body{font-size:var(--fs,15px)}
 .vo:hover{border-color:var(--dim)}
 .vo.on{border-color:var(--acc);box-shadow:0 0 0 2px color-mix(in srgb,var(--acc) 28%,transparent)}
 .vo.on b::after{content:" ✓";color:var(--acc)}
+.vpill.off{opacity:.75;border-style:dashed}
+.vpill.off i{font-size:12px}
 </style></head>
 <body>
 
@@ -746,12 +748,15 @@ let SG=null,TC=0,FR="";
 const TRUNC=/^(length|max_tokens|MAX_TOKENS|max_output_tokens)$/;
 const NUDGE={budget:"[sistem] Kamu berpikir terlalu lama tanpa menghasilkan hasil, jadi prosesnya dihentikan. Jangan berpikir panjang lagi: langsung ambil keputusan dan kerjakan (tulis file / panggil tool) memakai rencana di catatan pemikiranmu. Untuk file besar, tulis bertahap.",length:"[sistem] Jawabanmu terpotong karena batas token output, jadi tool call terakhir tidak dijalankan. Jangan ulangi pemikiran panjang: langsung lanjutkan tugas. Untuk file besar, tulis bertahap (kerangka dulu, lalu tambahkan per bagian dengan edit) agar tiap langkah pendek.",empty:"[sistem] Responsmu berhenti sebelum menghasilkan jawaban atau tool call. Langsung lanjutkan tugas memakai rencana di catatan pemikiranmu; jangan ulangi pemikiran panjang. Untuk file besar, tulis bertahap."};
 const MT=()=>C.maxTok||32000,BG=()=>C.budget??8000;
-/* ---- varian model: default · low · mid · high · xhigh · max (menyesuaikan model/provider) ---- */
+/* ---- varian model: default · low · mid · high · xhigh · max (terdeteksi otomatis per model) ---- */
 const VLAB={default:"Default",low:"Low",mid:"Mid",high:"High",xhigh:"XHigh",max:"Max"};
 const VDES={default:"Pakai bawaan model. Tidak ada parameter tambahan yang dikirim.",low:"Paling hemat dan cepat. Cocok untuk tugas sederhana.",mid:"Seimbang antara kecepatan, biaya, dan kualitas.",high:"Penalaran lebih dalam untuk tugas sulit.",xhigh:"Lebih dalam dari High, untuk coding agentik yang panjang.",max:"Kemampuan tertinggi tanpa batas token. Paling lambat dan paling mahal."};
-const VORD=["low","mid","high","xhigh","max"],VNONE={fmt:"",levels:[],map:{}},EFF={low:"low",mid:"medium",high:"high",xhigh:"xhigh",max:"max"};
-let VBAD={},LRC="";
-const vbk=p=>p.id+"|"+p.model;
+const VSRC={server:"Terdeteksi dari daftar model milik server",nama:"Terdeteksi dari nama model",manual:"Dipaksa manual"};
+const VORD=["low","mid","high","xhigh","max"],VNONE={fmt:"",levels:[],map:{},src:""},EFF={low:"low",mid:"medium",high:"high",xhigh:"xhigh",max:"max"};
+let VBAD={},LRC="",VCAP={},VPT={};
+try{VCAP=JSON.parse(LS.getItem("hrai.vcap")||"{}")||{};VPT=JSON.parse(LS.getItem("hrai.vcapT")||"{}")||{}}catch{VCAP={};VPT={}}
+const vcapSave=()=>{try{LS.setItem("hrai.vcap",JSON.stringify(VCAP));LS.setItem("hrai.vcapT",JSON.stringify(VPT))}catch{}};
+const vbk=p=>p.id+"|"+p.model,vbl=(p,k)=>vbk(p)+"|"+k;
 const hostOf=u=>((String(u||"").match(/^https?:\/\/([^\/?#]+)/i)||[])[1]||"").toLowerCase();
 const mctOf=p=>hostOf(p.url)==="api.openai.com"&&/^(o\d|gpt-5)/i.test(String(p.model||"").split("/").pop());
 const lastRealUser=()=>{for(let i=H.length-1;i>=0;i--)if(H[i].role==="user"&&!H[i].sys&&!H[i].sum)return i;return-1};
@@ -760,16 +765,36 @@ function claudeLv(id){if(/mythos-preview/.test(id))return["low","mid","high","ma
  if(f==="opus"&&a===4)return b>=7?["low","mid","high","xhigh","max"]:b===6?["low","mid","high","max"]:b===5?["low","mid","high"]:null;
  if(f==="sonnet"&&a===4&&b===6)return["low","mid","high","max"];
  return null}
-function varSpec(p){const id=String(p.model||"").toLowerCase(),bare=id.split("/").pop(),host=hostOf(p.url),fm=p.vfmt||"auto",S=(fmt,levels,map,x)=>Object.assign({fmt,levels,map},x||{});
- if(fm==="off"||!bare)return VNONE;
- if(p.type==="anthropic"){const lv=claudeLv(bare);return lv?S("an",lv,EFF):VNONE}
- if(p.type==="gemini"){if(/image|tts|embed|live|audio|veo|imagen|robotics/.test(bare))return VNONE;const g=/gemini-(\d+)(?:\.(\d+))?/.exec(bare);if(!g)return VNONE;if(+g[1]>=3)return S("g3",["low","mid","high"],{low:"low",mid:"medium",high:"high"});if(+g[1]===2&&g[2]==="5")return S("g25",["low","mid","high","max"],{low:1024,mid:8192,high:16384,max:/pro/.test(bare)?32768:24576});return VNONE}
- if(fm==="effort")return S("ef",VORD,EFF);
- if(fm==="reasoning")return S("or",VORD,EFF);
- if(host==="openrouter.ai"){const cap=(C.vcap||{})[vbk(p)];if(cap===0)return VNONE;let lv=VORD;if(Array.isArray(cap)){lv=VORD.filter(k=>cap.includes(EFF[k]));if(!lv.length)return VNONE}else if(!/claude|gpt-5|gpt-oss|(^|[^a-z])o\d|gemini-(2\.5|[3-9])|deepseek|grok|qwen3|glm|kimi|minimax|nemotron|thinking|reason|r1/.test(bare))return VNONE;return S("or",lv,EFF)}
- if(host==="api.openai.com"){if(!/^(o\d|gpt-5)/.test(bare)||/-pro|chat-latest/.test(bare))return VNONE;const g=/^gpt-5\.(\d+)/.exec(bare),x=g&&+g[1]>=4;return S("ef",x?["low","mid","high","max"]:["low","mid","high"],{low:"low",mid:"medium",high:"high",max:"xhigh"})}
- if(/deepseek-(v4|reasoner|r1|v3\.[2-9])/.test(bare))return S("ef",["low","high","max"],{low:"low",high:"high",max:"max"},{ds:/(^|\.)deepseek\.com$/.test(host)});
- if(/gpt-oss/.test(bare))return S("ef",["low","mid","high"],{low:"low",mid:"medium",high:"high"});
+/* kemampuan reasoning dari objek model milik server: array tingkat | 1 (mampu, tingkat tak diketahui) | 0 (tidak mampu) | undefined (tak ada info) */
+function parseCap(x,trust){if(!x||typeof x!=="object")return;
+ const lv=v=>Array.isArray(v)?v.map(e=>String(e&&typeof e==="object"?(e.effort||e.level||e.id||e.value||e.name):e).toLowerCase()).filter(e=>/^(low|medium|high|xhigh|max)$/.test(e)):null;
+ for(const v of[x.reasoning&&x.reasoning.supported_efforts,x.supported_reasoning_efforts,x.supported_reasoning_levels,x.reasoning_efforts,x.reasoning_levels,x.capabilities&&x.capabilities.reasoning_efforts]){const a=lv(v);if(a&&a.length)return a}
+ const sg=x.supported_parameters;if(Array.isArray(sg)){if(sg.some(e=>/^(reasoning|reasoning_effort|include_reasoning)$/.test(e)))return 1;if(trust)return 0}
+ const cp=x.capabilities;if(cp&&typeof cp==="object"&&("reasoning" in cp||"thinking" in cp))return(cp.reasoning||cp.thinking)?1:0;
+ if(x.supports_reasoning===true||x.reasoning===true)return 1;
+ if(x.supports_reasoning===false)return 0}
+function capMap(a){const has=e=>a.includes(e),lv=[],map={low:"low",mid:"medium",high:"high"};if(has("low"))lv.push("low");if(has("medium"))lv.push("mid");if(has("high"))lv.push("high");
+ if(has("xhigh")&&has("max")){lv.push("xhigh","max");map.xhigh="xhigh";map.max="max"}else if(has("xhigh")){lv.push("max");map.max="xhigh"}else if(has("max")){lv.push("max");map.max="max"}
+ return lv.length?{levels:lv,map}:null}
+/* pengenalan dari nama model, berlaku di gateway mana pun */
+function nameLv(bare){const cl=claudeLv(bare);if(cl)return{levels:cl,map:EFF};
+ if(/gpt-oss/.test(bare))return{levels:["low","mid","high"],map:EFF};
+ if(/deepseek-(v4|reasoner|r1|v3\.[2-9])/.test(bare))return{levels:["low","high","max"],map:{low:"low",high:"high",max:"max"}};
+ if(/^(gpt-5|o[1-9](-|$|:))|codex/.test(bare)&&!/chat-latest|gpt-5-chat|image|audio|realtime|tts|transcribe|search|embed|-pro/.test(bare)){const x=/gpt-5\.(?:[4-9]|\d\d)|codex-max/.test(bare);return{levels:x?["low","mid","high","max"]:["low","mid","high"],map:{low:"low",mid:"medium",high:"high",max:"xhigh"}}}
+ if(/gemini-(2\.5|[3-9])/.test(bare)&&!/image|tts|embed|live|audio|veo|imagen|robotics/.test(bare))return{levels:["low","mid","high"],map:EFF};
+ return null}
+function varSpec(p){const id=String(p.model||"").toLowerCase(),bare=id.split("/").pop(),host=hostOf(p.url),fm=(C.vforce||{})[vbk(p)]||p.vfmt||"auto",S=(fmt,levels,map,src,x)=>Object.assign({fmt,levels,map,src},x||{}),ds=/(^|\.)deepseek\.com$/.test(host)&&/deepseek-(v4|reasoner|r1|v3\.[2-9])/.test(bare);
+ if(p.vfmt==="off"||!bare)return VNONE;
+ if(p.type==="anthropic"){const lv=claudeLv(bare);return lv?S("an",lv,EFF,"nama"):VNONE}
+ if(p.type==="gemini"){if(/image|tts|embed|live|audio|veo|imagen|robotics/.test(bare))return VNONE;const g=/gemini-(\d+)(?:\.(\d+))?/.exec(bare);if(!g)return VNONE;if(+g[1]>=3)return S("g3",["low","mid","high"],{low:"low",mid:"medium",high:"high"},"nama");if(+g[1]===2&&g[2]==="5")return S("g25",["low","mid","high","max"],{low:1024,mid:8192,high:16384,max:/pro/.test(bare)?32768:24576},"nama");return VNONE}
+ if(fm==="effort")return S("ef",VORD,EFF,"manual",{ds});
+ if(fm==="reasoning")return S("or",VORD,EFF,"manual");
+ const or=host==="openrouter.ai",cap=VCAP[vbk(p)],nm=nameLv(bare);
+ if(cap===0)return VNONE;
+ if(Array.isArray(cap)){const m=capMap(cap);if(m)return S(or?"or":"ef",m.levels,m.map,"server",{ds})}
+ if(or){if(cap===1||/claude|gpt-5|gpt-oss|(^|[^a-z])o\d|gemini-(2\.5|[3-9])|deepseek|grok|qwen3|glm|kimi|minimax|nemotron|thinking|reason|r1/.test(bare))return S("or",VORD,EFF,cap===1?"server":"nama");return VNONE}
+ if(nm)return S("ef",nm.levels,nm.map,"nama",{ds});
+ if(cap===1)return S("ef",["low","mid","high"],EFF,"server",{ds});
  return VNONE}
 function varCur(p){const sp=varSpec(p),k=(C.vr||{})[vbk(p)]||"default";return sp.levels.includes(k)?k:"default"}
 function varApply(p,sp,k){const v=sp.map[k];if(!sp.fmt||k==="default"||v==null)return null;
@@ -780,18 +805,30 @@ function varApply(p,sp,k){const v=sp.map[k];if(!sp.fmt||k==="default"||v==null)r
  if(sp.fmt==="g25")return{thinkingConfig:{thinkingBudget:v}};
  return null}
 const varShow=(sp,x)=>({an:"effort=",or:"reasoning.effort=",ef:"reasoning_effort=",g3:"thinkingLevel=",g25:"thinkingBudget="}[sp.fmt]||"")+sp.map[x];
-async function vTry(p,run){const sp=varSpec(p),k=varCur(p),on=!!sp.fmt&&k!=="default"&&!VBAD[vbk(p)];
+async function vTry(p,run){const sp=varSpec(p),k=varCur(p),bk=vbl(p,k),on=!!sp.fmt&&k!=="default"&&!VBAD[bk];
  try{return await run(on?varApply(p,sp,k):null)}
  catch(e){const m=String(e&&e.message||"");if(!on||!/^HTTP (400|422)/.test(m)||!/reasoning|effort|thinking|budget|output_config|unsupported (parameter|value)|unknown (parameter|field)|unrecognized|not permitted|not supported/i.test(m))throw e;
-  VBAD[vbk(p)]=1;note("Varian "+VLAB[k]+" ditolak oleh "+p.id+" / "+p.model+" ("+m.slice(0,100)+"). Dilanjutkan tanpa varian.");varUI();return await run(null)}}
-function varUI(){const b=document.getElementById("vp");if(!b)return;const p=prov(C.provider),sp=varSpec(p);if(!sp.levels.length){b.style.display="none";return}const k=varCur(p);b.style.display="";b.innerHTML="<span>Varian</span><b>"+esc(VLAB[k])+"</b>"+(VBAD[vbk(p)]?"<i>ditolak</i>":"<i>▾</i>");b.title="Varian model: "+VLAB[k]}
-function varSet(p,x){C.vr=C.vr||{};if(x==="default")delete C.vr[vbk(p)];else C.vr[vbk(p)]=x;delete VBAD[vbk(p)];saveC();modeUI()}
-function varSheet(){const p=prov(C.provider),sp=varSpec(p),k=varCur(p),l=$("#dvl");l.textContent="";$("#dvi").textContent=p.id+" · "+p.model+(sp.levels.length?"":" — model ini tidak punya varian.");
- ["default",...sp.levels].forEach(x=>{const b=document.createElement("button");b.type="button";b.className="vo"+(x===k?" on":"");b.setAttribute("role","radio");b.setAttribute("aria-checked",x===k?"true":"false");b.innerHTML="<b>"+esc(VLAB[x])+"</b><span>"+esc(VDES[x])+(x!=="default"&&sp.map[x]!=null?" ("+esc(varShow(sp,x))+")":"")+"</span>";b.onclick=()=>{varSet(p,x);$("#dv").close()};l.append(b)});$("#dv").showModal()}
-function varSettings(){const p=Object.assign({},prov(sp.value),{model:$("#sm").value.trim(),url:$("#su").value.trim(),vfmt:$("#vf").value}),s=varSpec(p),sel=$("#svr"),cur=(C.vr||{})[vbk(p)]||"default";sel.textContent="";["default",...s.levels].forEach(x=>sel.add(new Option(VLAB[x]+(x!=="default"&&s.map[x]!=null?" — "+varShow(s,x):""),x)));sel.value=s.levels.includes(cur)?cur:"default";sel.disabled=!s.levels.length;$("#svh").textContent=s.levels.length?"Pilihan berbeda tiap model dan disimpan per model. Bisa juga lewat /variant.":"Model ini tidak punya varian atau belum terdeteksi. Untuk gateway kustom, pilih Format varian di bawah."}
-function varSave(){const p=prov(sp.value),x=$("#svr").value;C.vr=C.vr||{};if(!x||x==="default")delete C.vr[vbk(p)];else C.vr[vbk(p)]=x;delete VBAD[vbk(p)]}
+  VBAD[bk]=1;note("Varian "+VLAB[k]+" ditolak oleh "+p.id+" / "+p.model+" ("+m.slice(0,100)+"). Dilanjutkan tanpa varian. Coba level lain atau /variant default.");varUI();return await run(null)}}
+/* deteksi otomatis: ambil /models di latar belakang (maks. sekali per 12 jam per provider) dan simpan kemampuan reasoning */
+const PROBE={};
+function applyCaps(p,a){const or=hostOf(p.url)==="openrouter.ai";let ch=0;a.forEach(x=>{if(!x||typeof x!=="object"||!x.id)return;const key=p.id+"|"+x.id,c=parseCap(x,or);if(c===undefined){if(key in VCAP){delete VCAP[key];ch++}return}if(JSON.stringify(VCAP[key])!==JSON.stringify(c)){VCAP[key]=c;ch++}});VPT[p.id+"|"+p.url]=Date.now();vcapSave();return ch}
+async function probeCaps(p){if(!p||p.type!=="openai"||!p.url||p.vfmt==="off"||(!p.key&&!keyless(p)))return;const k=p.id+"|"+p.url,now=Date.now();if(PROBE[k]&&now-PROBE[k]<3e5)return;if(VPT[k]&&now-VPT[k]<432e5)return;PROBE[k]=now;
+ try{const r=await pf(p,p.url.replace(/\/$/,"")+"/models",{headers:p.key?{Authorization:"Bearer "+p.key}:{}});if(!r.ok)return;const j=await r.json(),a=Array.isArray(j)?j:j.data||j.models;if(!Array.isArray(a))return;applyCaps(p,a);modeUI();const d=document.getElementById("ds");if(d&&d.open)varSettings()}catch{}}
+function varUI(){const b=document.getElementById("vp");if(!b)return;const p=prov(C.provider);probeCaps(p);const sp=varSpec(p);
+ if(!sp.levels.length){if(p.type==="openai"&&p.vfmt!=="off"&&p.model&&VCAP[vbk(p)]!==0){b.style.display="";b.className="vpill off";b.innerHTML="<span>Varian</span><i>—</i>";b.title="Varian belum terdeteksi untuk model ini"}else b.style.display="none";return}
+ const k=varCur(p);b.style.display="";b.className="vpill";b.innerHTML="<span>Varian</span><b>"+esc(VLAB[k])+"</b>"+(VBAD[vbl(p,k)]?"<i>ditolak</i>":"<i>▾</i>");b.title="Varian model: "+VLAB[k]}
+function varSet(p,x){C.vr=C.vr||{};if(x==="default")delete C.vr[vbk(p)];else C.vr[vbk(p)]=x;delete VBAD[vbl(p,x)];saveC();modeUI()}
+function varForce(p,on){C.vforce=C.vforce||{};if(on)C.vforce[vbk(p)]="effort";else{delete C.vforce[vbk(p)];if(C.vr)delete C.vr[vbk(p)]}saveC();modeUI()}
+function varSheet(){const p=prov(C.provider),sp=varSpec(p),k=varCur(p),l=$("#dvl"),forced=!!(C.vforce||{})[vbk(p)],mk=(t,d,on,fn)=>{const b=document.createElement("button");b.type="button";b.className="vo"+(on?" on":"");b.setAttribute("role","radio");b.setAttribute("aria-checked",on?"true":"false");b.innerHTML="<b>"+esc(t)+"</b><span>"+esc(d)+"</span>";b.onclick=fn;l.append(b)};
+ l.textContent="";$("#dvi").textContent=p.id+" · "+p.model+(sp.levels.length?". "+(VSRC[sp.src]||"")+". Server bisa mengabaikan parameter ini bila modelnya tidak mendukung.":". Varian belum terdeteksi untuk model ini.");
+ if(sp.levels.length){["default",...sp.levels].forEach(x=>mk(VLAB[x],VDES[x]+(x!=="default"&&sp.map[x]!=null?" ("+varShow(sp,x)+")":"")+(VBAD[vbl(p,x)]?" Ditolak server pada sesi ini; pilih lagi untuk mencoba ulang.":""),x===k,()=>{varSet(p,x);$("#dv").close()}));
+  if(forced)mk("Batalkan paksa","Kembali ke deteksi otomatis untuk model ini.",false,()=>{varForce(p,false);varSheet()})}
+ else if(p.type==="openai"&&p.vfmt!=="off")mk("Coba paksa varian","Kirim reasoning_effort ke model ini meski belum terdeteksi. Jika server menolak, HRAI kembali ke default dan memberi tahu.",false,()=>{varForce(p,true);varSheet()});
+ const d=$("#dv");if(!d.open)d.showModal()}
+function varSettings(){const p=Object.assign({},prov(sp.value),{model:$("#sm").value.trim(),url:$("#su").value.trim(),vfmt:$("#vf").value}),s=varSpec(p),sel=$("#svr"),cur=(C.vr||{})[vbk(p)]||"default";sel.textContent="";["default",...s.levels].forEach(x=>sel.add(new Option(VLAB[x]+(x!=="default"&&s.map[x]!=null?" — "+varShow(s,x):""),x)));sel.value=s.levels.includes(cur)?cur:"default";sel.disabled=!s.levels.length;$("#svh").textContent=s.levels.length?(VSRC[s.src]||"")+". Pilihan berbeda tiap model dan disimpan per model. Bisa juga lewat /variant.":"Varian belum terdeteksi untuk model ini. Ketuk tombol Varian di layar chat lalu pilih Coba paksa, atau atur Format varian di bawah."}
+function varSave(){const p=prov(sp.value),x=$("#svr").value;C.vr=C.vr||{};if(!x||x==="default")delete C.vr[vbk(p)];else{C.vr[vbk(p)]=x;delete VBAD[vbl(p,x)]}}
 function cmdVariant(a){if(H.length===0)log.innerHTML="";const p=prov(C.provider),sp=varSpec(p),k=varCur(p);
- if(!sp.levels.length)return note("Model "+p.model+" ("+p.id+") tidak punya varian. Untuk gateway kustom, atur Format varian di Pengaturan.");
+ if(!sp.levels.length){if(!a&&p.type==="openai"&&p.vfmt!=="off"){varSheet();return}return note("Varian belum terdeteksi untuk "+p.model+" ("+p.id+"). Ketuk tombol Varian lalu pilih Coba paksa, atau atur Format varian di Pengaturan.")}
  if(!a){varSheet();return}
  const al={medium:"mid",med:"mid",normal:"default",auto:"default",x:"xhigh",extra:"xhigh",maximum:"max"},x=al[a]||a;
  if(x!=="default"&&!sp.levels.includes(x))return note("Varian \""+a+"\" tidak tersedia untuk "+p.model+". Pilih: default · "+sp.levels.join(" · "));
@@ -960,7 +997,7 @@ async function fetchModels(){const P=Object.assign({},prov(sp.value),{proxy:$("#
   else if(k)h.Authorization="Bearer "+k;
   const r=await pf(P,url,{headers:h});if(!r.ok)throw new Error("HTTP "+r.status+" "+(await r.text()).slice(0,200));
   const j=await r.json(),a=Array.isArray(j)?j:j.data||j.models;if(!Array.isArray(a))throw new Error("Format /models tidak dikenal");
-  if(hostOf(u)==="openrouter.ai"){C.vcap=C.vcap||{};a.forEach(x=>{if(!x||typeof x!=="object"||!x.id)return;const rs=x.reasoning,sg=x.supported_parameters,key=sp.value+"|"+x.id;if(rs&&Array.isArray(rs.supported_efforts))C.vcap[key]=rs.supported_efforts;else if(Array.isArray(sg)&&!sg.includes("reasoning")&&!sg.includes("include_reasoning"))C.vcap[key]=0;else delete C.vcap[key]});saveC();varSettings()}
+  if(t==="openai"){applyCaps(Object.assign({},P,{url:u}),a);varSettings()}
   ML=a.filter(x=>t!=="gemini"||!x.supportedGenerationMethods||x.supportedGenerationMethods.includes("generateContent")).map(x=>typeof x==="string"?x:t==="gemini"?String(x.name||"").replace(/^models\//,""):x.id).filter(Boolean).sort((x,y)=>x.toLowerCase()<y.toLowerCase()?-1:1);
   $("#mq").value="";showML();if(!ML.length)$("#ms").textContent="Server tidak mengembalikan model."}
  catch(e){$("#ms").textContent=e instanceof TypeError?await netWhy(P):"Gagal: "+e.message}
