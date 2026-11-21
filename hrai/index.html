@@ -498,9 +498,11 @@ div.pyo{margin:6px 0 10px}
 </section>
 <section class="sec"><h4>Tampilan</h4>
 <div class="fld"><label>Tema (/theme)</label><select id="tm" hidden></select><div class="tg" id="tg" role="radiogroup" aria-label="Tema"></div></div><div class="fld"><label for="fz">Font (/font)</label><select id="fz"></select><p class="hintp">Font selain Sistem dan Terminal F4 dimuat dari Google Fonts saat dipilih (perlu internet). Tanpa internet, tampilan otomatis memakai font sistem.</p></div>
-<details class="tokdrop" id="tokdrop"><summary>⚙️ Batas token (/tokens · /budget)</summary><div class="tdb">
+<details class="tokdrop" id="tokdrop"><summary>⚙️ Batas token &amp; langkah (/tokens · /budget · /steps)</summary><div class="tdb">
 <div class="fld"><label>Batas output (/tokens, 1000–128000)</label><input type="text" id="dtok" inputmode="numeric" autocapitalize="off" placeholder="32000"></div>
 <div class="fld"><label>Budget berpikir (/budget, 500–200000, 0 = tanpa batas)</label><input type="text" id="dbud" inputmode="numeric" autocapitalize="off" placeholder="8000"></div>
+<div class="fld"><label>Batas langkah per permintaan (/steps, 10–200)</label><input type="text" id="dstep" inputmode="numeric" autocapitalize="off" placeholder="40"></div>
+<p class="hintp">1 langkah = 1 putaran model beserta tool-nya. Kosongkan kolom lalu ketuk Terapkan untuk kembali ke nilai bawaan (output 32000 · budget 8000 · langkah 40).</p>
 <div class="rowb"><button class="btn" id="dtokr" type="button">Terapkan</button><button class="btn" id="dtokd" type="button">Reset bawaan</button></div>
 <p class="sys" id="dtokm"></p>
 </div></details>
@@ -772,7 +774,7 @@ const tusUI=()=>{const b=$("#tus");if(!b)return;if(!H.length&&!TU.pin&&!TU.pout)
  b.innerHTML=`<span>Token sesi: masuk <b>${fk(TU.pin)}</b><span class="tsep">·</span> keluar <b>${fk(TU.pout)}</b><span class="tsep">·</span> total <b>${fk(TU.pin+TU.pout)}</b></span><span class="tsep">·</span><span>konteks ≈<b>${fk(est())}</b>/${fk(C.ctx||128000)}</span><span class="tsep">·</span><span>output <b>${fk(MT())}</b> · budget berpikir <b>${BG()?fk(BG()):"∞"}</b></span>`};
 
 /* ---- jaringan ---- */
-async function sse(r,cb){const rd=r.body.getReader(),dc=new TextDecoder();let b="";const ln=l=>{if(!l.startsWith("data:"))return;const s=l.slice(5).trim();if(!s||s==="[DONE]")return;let o;try{o=JSON.parse(s)}catch{return}if(o&&typeof o==="object"&&((o.error&&typeof o.error==="object")||o.type==="error"))throw new Error(String((o.error&&o.error.message)||o.message||"Kesalahan dari server").slice(0,300));try{cb(o)}catch{}};for(;;){const{done,value}=await rd.read();if(done)break;LT=Date.now();b+=dc.decode(value,{stream:true});const L=b.split("\n");b=L.pop();for(const l of L)ln(l)}b+=dc.decode();ln(b.trim())}
+async function sse(r,cb){const rd=r.body.getReader(),dc=new TextDecoder();let b="";const ln=l=>{if(!l.startsWith("data:"))return;const s=l.slice(5).trim();if(!s||s==="[DONE]")return;let o;try{o=JSON.parse(s)}catch{return}if(o&&typeof o==="object"&&((o.error&&typeof o.error==="object")||o.type==="error"))throw new Error(String((o.error&&o.error.message)||o.message||"Kesalahan dari server").slice(0,300));try{cb(o)}catch{}};for(;;){const{done,value}=await rd.read();if(done)break;LT=LD=Date.now();b+=dc.decode(value,{stream:true});const L=b.split("\n");b=L.pop();for(const l of L)ln(l)}b+=dc.decode();ln(b.trim())}
 const chk=async r=>{if(!r.ok)throw new Error("HTTP "+r.status+" "+(await r.text()).slice(0,300))};
 async function callOA(p,sys,onT,onR,onC){LRC="";
  const lu=lastRealUser(),r=await vTry(p,async vp=>{const b={model:p.model,stream:true,messages:[{role:"system",content:sys},...H.map((m,i)=>oaClean(m,i>lu))],tools:T_OA};if(mctOf(p))b.max_completion_tokens=MT();else{b.temperature=.7;b.max_tokens=MT()}if(vp)Object.assign(b,vp);const r=await pf(p,p.url.replace(/\/$/,"")+"/chat/completions",{method:"POST",signal:SG.signal,headers:Object.assign({"Content-Type":"application/json"},p.key?{Authorization:"Bearer "+p.key}:{}),body:JSON.stringify(b)});await chk(r);return r});
@@ -797,7 +799,7 @@ async function callGM(p,sys,onT){
 let SG=null,TC=0,FR="";
 const TRUNC=/^(length|max_tokens|MAX_TOKENS|max_output_tokens)$/;
 const NUDGE={budget:"[sistem] Kamu berpikir terlalu lama tanpa menghasilkan hasil, jadi prosesnya dihentikan. Jangan berpikir panjang lagi: langsung ambil keputusan dan kerjakan (tulis file / panggil tool) memakai rencana di catatan pemikiranmu. Untuk file besar, tulis bertahap.",length:"[sistem] Jawabanmu terpotong karena batas token output, jadi tool call terakhir tidak dijalankan. Jangan ulangi pemikiran panjang: langsung lanjutkan tugas. Untuk file besar, tulis bertahap (kerangka dulu, lalu tambahkan per bagian dengan edit) agar tiap langkah pendek.",empty:"[sistem] Responsmu berhenti sebelum menghasilkan jawaban atau tool call. Langsung lanjutkan tugas memakai rencana di catatan pemikiranmu; jangan ulangi pemikiran panjang. Untuk file besar, tulis bertahap."};
-const MT=()=>C.maxTok||32000,BG=()=>C.budget??8000;
+const MT=()=>C.maxTok||32000,BG=()=>C.budget??8000,SMAX=()=>Math.max(10,Math.min(200,Math.round(+C.maxSteps)||40));
 /* ---- varian model: default · low · mid · high · xhigh · max (terdeteksi otomatis per model) ---- */
 const VLAB={default:"Default",low:"Low",mid:"Mid",high:"High",xhigh:"XHigh",max:"Max"};
 const VDES={default:"Pakai bawaan model. Tidak ada parameter tambahan yang dikirim.",low:"Paling hemat dan cepat. Cocok untuk tugas sederhana.",mid:"Seimbang antara kecepatan, biaya, dan kualitas.",high:"Penalaran lebih dalam untuk tugas sulit.",xhigh:"Lebih dalam dari High, untuk coding agentik yang panjang.",max:"Kemampuan tertinggi tanpa batas token. Paling lambat dan paling mahal."};
@@ -887,27 +889,32 @@ const oaClean=(m,cur)=>m.role==="assistant"?Object.assign({role:"assistant",cont
 async function agent(){
  const p=prov(C.provider);if(!p.key&&!keyless(p)){add("er","API key untuk "+p.id+" belum diisi. Buka Atur.");add("thw",`<button class="btn pvf" data-retry="1">↻ Kirim ulang pesan terakhir</button>`);return}if(!p.model){add("er","Model untuk "+p.id+" belum dipilih. Buka Atur lalu ketuk Ambil.");add("thw",`<button class="btn pvf" data-retry="1">↻ Kirim ulang pesan terakhir</button>`);return}
  ctrl=new AbortController();$("#go").textContent="■";keep(true);let cont=0,done=false,acOK=true,fail=null;const wrote=new Set,wroteSvg=new Set,tg=mkG("Giliran AI");CG=tg;
- try{for(let step=0;step<40;step++){
+ const MS=SMAX();try{for(let step=0;step<MS;step++){
   if(acOK&&C.ac!==false&&est()>.85*(C.ctx||128000)){const cr=await compact(true);if(cr===false)acOK=false}log.querySelectorAll(".ac").forEach(x=>{if(x.dataset.n!=="write"&&x.dataset.n!=="edit")x.remove()});let rt="",over=false,last="",text="",calls=[];TC=0;FR="";SG=new AbortController();ctrl.signal.addEventListener("abort",()=>SG.abort());
   const t0=Date.now(),tk=mkTk(),a=add("a");let raf=0;
   const onT=t=>{got=true;last=t;endTk(tk,rt,t0);if(!raf)raf=requestAnimationFrame(()=>{raf=0;a.innerHTML=md(last);log.scrollTop=log.scrollHeight})};
   const onR=t=>{got=true;rt+=t;if(C.think!==false)tk.querySelector(".tt").textContent=rt.slice(-260);log.scrollTop=log.scrollHeight;if(BG()&&!last&&!TC&&rt.length/4>=BG()){over=true;SG.abort()}};
   const cards={};let rafC=0,pc=null;const onC=cs=>{got=true;pc=cs;endTk(tk,rt,t0);if(!rafC)rafC=requestAnimationFrame(()=>{rafC=0;pc.forEach((c,k)=>{if(!c||!c.name)return;const d=cards[k]||(cards[k]=newCard(c.name));d.dataset.live=1;fillCard(d,c.name,pj(c.args||""),true)})})};
   const f=p.type==="anthropic"?callAN:p.type==="gemini"?callGM:callOA;
-  let stall=false,got=false;const wd=setInterval(()=>{if(p.type!=="gemini"&&document.visibilityState==="visible"&&Date.now()-LT>120000&&!over){stall=true;SG.abort()}},5000);
+  let stall=false,got=false;/* macet: 120 dtk tanpa data; atau baru kembali dari latar dan 25 dtk tak ada satu byte pun (soket kemungkinan sudah dimatikan sistem) */
+  const wd=setInterval(()=>{if(p.type==="gemini"||over||document.visibilityState!=="visible")return;const n=Date.now();if(n-LT>120000||(VIS_AT>RQ0&&LD<VIS_AT&&n-VIS_AT>25000&&VIS_AT-HID_AT>15000)){stall=true;SG.abort()}},5000);
   const resetSt=()=>{rt="";last="";text="";calls=[];got=false;Object.values(cards).forEach(x=>x.remove());for(const k in cards)delete cards[k];a.innerHTML="";tk.style.display="";tk.querySelector(".tt").textContent=""};
   let ib=0;
   try{for(let tr=0;;tr++){try{LT=Date.now();RQ0=LT;({text,calls}=await f(p,SYS(),onT,onR,onC));break}catch(e){
    if(over){text=last;calls=[];break}if(ctrl.signal.aborted)throw e;if(!(stall||isNet(e)))throw e;
    const intr=document.visibilityState!=="visible"||HID_AT>=RQ0;
-   if(intr&&ib<60){ib++;tr--;stall=false;
-    if(document.visibilityState!=="visible")notify("HRAI menunggu","Koneksi terputus saat layar dikunci atau aplikasi di latar. Buka HRAI untuk melanjutkan.");
-    add("sys",esc("Koneksi terputus karena layar dikunci atau aplikasi di latar. Dilanjutkan otomatis saat HRAI aktif lagi…"));
-    resetSt();await waitVisible(ctrl.signal);if(ctrl.signal.aborted)throw e;await sleep(800)}
+   if(intr&&ib<60){ib++;tr--;stall=false;const hid=document.visibilityState!=="visible";
+    /* menyambung ulang SENDIRI walau di latar (keep-alive audio menjaga halaman tetap hidup); baru menunggu layar aktif jika berkali-kali gagal */
+    if(ib===1)add("sys",esc(hid?"Koneksi terputus saat layar dikunci atau aplikasi di latar. Menyambung ulang otomatis…":"Koneksi terputus setelah aplikasi di latar. Menyambung ulang otomatis…"));
+    resetSt();
+    if(hid&&ib>8){notify("HRAI menunggu","Koneksi belum pulih. Buka HRAI untuk melanjutkan.");await waitVisible(ctrl.signal)}
+    else if(navigator.onLine===false)await waitOnline(ctrl.signal,60000);
+    else await sleep(Math.min(8000,700*ib));
+    if(ctrl.signal.aborted)throw e;if(!hid)await sleep(300)}
    else{if(tr>=6||(e instanceof TypeError&&!got&&tr>=1&&!OKU[okKey(p)]))throw e;stall=false;
     add("sys",esc("Koneksi terputus ("+String(e.message||e.name).slice(0,60)+"). Menyambung ulang ("+(tr+1)+"/6)…"));
     resetSt();
-    if(navigator.onLine===false)await new Promise(r=>{addEventListener("online",r,{once:true});setTimeout(r,60000)});
+    await waitOnline(ctrl.signal,60000);
     await sleep(Math.min(20000,1500*2**tr))}
    if(ctrl.signal.aborted)throw e;TC=0;FR="";SG=new AbortController();ctrl.signal.addEventListener("abort",()=>SG.abort())}}}finally{clearInterval(wd)}
   a.innerHTML=md(text);if(!text)a.remove();
@@ -927,17 +934,17 @@ async function agent(){
    if(!d.dataset.live&&wr)await typeCard(d,n,a2);fillCard(d,n,a2,false);
    const u0=UL[0]&&UL[0].id;if(!EXE[n])res="ERROR: tool tidak dikenal";
    else if((wr||n==="run_python"||n==="download_video")&&C.mode==="PLAN")res="DITOLAK: mode PLAN hanya boleh membaca.";
-   else if(n==="run_python"&&!C.auto&&!confirm("Izinkan menjalankan kode Python di browser?\n\n"+String(a2.code||"").slice(0,400)))res="DITOLAK oleh pengguna.";
-   else if(n==="download_video"&&!C.auto&&!confirm("Izinkan mengunduh file dari URL ini ke penyimpanan virtual?\n\n"+String(a2.url||"").slice(0,300)+"\n→ "+String(a2.name||"")))res="DITOLAK oleh pengguna.";
-   else if(wr&&!C.auto&&!confirm("Izinkan "+n+" → "+a2.path+" ?"))res="DITOLAK oleh pengguna.";
+   else if(n==="run_python"&&!C.auto&&!await askOK("Izinkan menjalankan kode Python di browser?\n\n"+String(a2.code||"").slice(0,400)))res="DITOLAK oleh pengguna.";
+   else if(n==="download_video"&&!C.auto&&!await askOK("Izinkan mengunduh file dari URL ini ke penyimpanan virtual?\n\n"+String(a2.url||"").slice(0,300)+"\n→ "+String(a2.name||"")))res="DITOLAK oleh pengguna.";
+   else if(wr&&!C.auto&&!await askOK("Izinkan "+n+" → "+a2.path+" ?"))res="DITOLAK oleh pengguna.";
    else if((n==="web_search"||n==="open_url"||n==="show_image")&&!verified()&&needAdult(a2.url||a2.query||"")){const okA=await gateAdult();if(!okA)res="DITOLAK: verifikasi 18+ ditolak pengguna.";else{WTSIG=ctrl.signal;try{res=EXE[n](a2);if(res&&typeof res.then==="function")res=await res}catch(e){res="ERROR: "+e.message}WTSIG=null}}
    else{WTSIG=ctrl.signal;try{res=EXE[n](a2);if(res&&typeof res.then==="function")res=await res}catch(e){res="ERROR: "+e.message}WTSIG=null}
    if(UL[0]&&UL[0].id!==u0)d.dataset.u=UL[0].id;if(wr&&/^OK/.test(res)&&/\.html?$/i.test(a2.path||""))wrote.add(a2.path);if(wr&&/^OK/.test(res)&&/\.svg$/i.test(a2.path||""))wroteSvg.add(a2.path);
-   await sleep(wr?250:650);finCard(d,n,a2,String(res));
+   if(document.visibilityState==="visible")await sleep(wr?250:650);finCard(d,n,a2,String(res));
    if(n==="show_image"&&/^OK/.test(String(res))){const pp=String(res).split(" ")[1];if(pp&&FS()[pp])add("imgw",imgCard(FS()[pp],pp.split("/").pop()))}
    H.push({role:"tool",tool_call_id:t.id,name:n,content:String(res)});saveH()}
  }
- if(!done){add("sys","Batas 40 langkah tercapai. Ketik \"lanjut\" untuk meneruskan.");add("thw",`<button class="btn pvf" data-retry="1">↻ Kirim ulang pesan terakhir</button>`)}
+ if(!done){add("sys","Batas "+MS+" langkah tercapai. Ketik \"lanjut\" untuk meneruskan, atau naikkan batas di Atur › Batas token dan langkah (atau ketik /steps 80).");add("thw",`<button class="btn pvf" data-retry="1">↻ Kirim ulang pesan terakhir</button>`)}
  wrote.forEach(q=>add("thw",`<button class="btn pvf" data-p="${esc(q).replace(/"/g,"&quot;")}">▶ Pratinjau ${esc(q)}</button>`));wroteSvg.forEach(q=>{const f=FS();if(hasF(f,q))add("svgw",svgCard(f[q],q.split("/").pop()))});
  }catch(e){const nm=e.name!=="AbortError"&&e instanceof TypeError?await netWhy(p):null;fail=e.name==="AbortError"?null:(nm||e.message||"error");add("er",esc(e.name==="AbortError"?"Dihentikan.":nm||e.message));if(H.some(x=>x.role==="user"))add("thw",`<button class="btn pvf" data-retry="1">↻ Kirim ulang pesan terakhir</button>`)}
  log.querySelectorAll(".tk,.ac.run").forEach(x=>x.remove());CG=null;{const n=grpRecs(tg.id).length;if(n>=2)add("thw",`<button class="btn pvf" data-ug="${tg.id}">↩ Batalkan semua perubahan giliran ini (${n} file)</button>`)}keep(false);ctrl=null;$("#go").textContent="↑";if(fail)notify("HRAI berhenti",fail);else if(done){const lm=[...H].reverse().find(m=>m.role==="assistant"&&m.content);if(!notify("HRAI selesai",lm?lm.content:"Tugas selesai."))chime()}}
@@ -949,7 +956,7 @@ function retryLast(){if(busy())return;let i=H.length-1;while(i>=0&&(H[i].role!==
  H.length=i;saveH();draw();H.push(m);saveH();add("u",uHtml(m));agent()}
 
 /* ---- UI ---- */
-$("#go").onclick=async()=>{if(ctrl){ctrl.abort();return}let v=$("#in").value.trim();if(!v&&!PA.length&&!PF.length)return;const sm=v.match(/^\/(think|budget|tokens|theme|font|ctx|compact|undo|changes|variant|varian|effort)(?:\s+(.*))?$/i);if(sm){$("#in").value="";$("#in").style.height="";cmdSlash(sm[1].toLowerCase(),(sm[2]||"").trim().toLowerCase());return}$("#in").value="";$("#in").style.height="";if(PF.length)v+=(v?"\n\n":"")+"[File dilampirkan di penyimpanan virtual: "+PF.map(n=>PD[n]?n+" ("+PD[n]+")":n).join(", ")+"]";if(!v)v="Lihat gambar terlampir.";if(needAdult(v)&&!verified()){const okV=await gateAdult();if(!okV){note("Verifikasi 18+ ditolak — pesan tidak dikirim.");return}}if(H.length===0)log.innerHTML="";const m={role:"user",content:v};if(PA.length){m.images=PA;m.nimg=PA.length}PA=[];PF=[];PD={};attUI();H.push(m);saveH();add("u",uHtml(m));agent()};
+$("#go").onclick=async()=>{if(ctrl){ctrl.abort();return}let v=$("#in").value.trim();if(!v&&!PA.length&&!PF.length)return;const sm=v.match(/^\/(think|budget|tokens|theme|font|ctx|compact|undo|changes|variant|varian|effort|steps|langkah)(?:\s+(.*))?$/i);if(sm){$("#in").value="";$("#in").style.height="";cmdSlash(sm[1].toLowerCase(),(sm[2]||"").trim().toLowerCase());return}$("#in").value="";$("#in").style.height="";if(PF.length)v+=(v?"\n\n":"")+"[File dilampirkan di penyimpanan virtual: "+PF.map(n=>PD[n]?n+" ("+PD[n]+")":n).join(", ")+"]";if(!v)v="Lihat gambar terlampir.";if(needAdult(v)&&!verified()){const okV=await gateAdult();if(!okV){note("Verifikasi 18+ ditolak — pesan tidak dikirim.");return}}if(H.length===0)log.innerHTML="";const m={role:"user",content:v};if(PA.length){m.images=PA;m.nimg=PA.length}PA=[];PF=[];PD={};attUI();H.push(m);saveH();add("u",uHtml(m));agent()};
 $("#mode").onclick=e=>{const m=e.target.dataset.m;if(m){C.mode=m;saveC();modeUI()}};
 log.onclick=e=>{const T=e.target;if(T.dataset.retry){retryLast();return}if(T.dataset.sv||T.classList.contains("svgi")){const c=T.closest(".svgc"),src=c&&SVGS[c.dataset.id];if(!src)return;const nm=c.dataset.name||"gambar.svg",a=T.dataset.sv||"view";
  if(a==="view")pvSvg(src,nm);else if(a==="svg")saveBlob(new Blob([src],{type:"image/svg+xml"}),nm);else{const o=T.textContent;T.disabled=true;T.textContent="…";svgToPng(src,2).then(b=>saveBlob(b,nm.replace(/\.svg$/i,"")+".png")).catch(x=>alert("Gagal membuat PNG: "+(x.message||x))).finally(()=>{T.disabled=false;T.textContent=o})}return}
@@ -960,9 +967,9 @@ log.onclick=e=>{const T=e.target;if(T.dataset.retry){retryLast();return}if(T.dat
 const sp=$("#sp");function fillSP(){sp.innerHTML="";PL().forEach(x=>sp.add(new Option(x[0]+((C.custom||{})[x[0]]?" (kustom)":""),x[0])))}fillSP();
 const loadP=()=>{const p=prov(sp.value);$("#su").value=p.url;$("#sm").value=p.model;$("#sk").value=p.key;$("#sy").value=p.proxy||"";$("#sd").style.display="";$("#sr").style.display=(C.hide||[]).length?"":"none";$("#mz").style.display="none";ML=[];$("#vf").value=p.vfmt||"auto";varSettings()};
 sp.onchange=loadP;
-$("#bs").onclick=()=>{sp.value=C.provider;loadP();$("#sa").checked=C.auto;$("#th").checked=C.think!==false;tm.value=C.theme||"hrai";$("#fz").value=C.font||"sys";$("#wk").checked=C.wake!==false;$("#nt").checked=!!C.notif;$("#snd").checked=C.snd!==false;pwaUI();$("#ds").showModal()};
+$("#bs").onclick=()=>{sp.value=C.provider;loadP();$("#sa").checked=C.auto;$("#th").checked=C.think!==false;tm.value=C.theme||"hrai";$("#fz").value=C.font||"sys";$("#wk").checked=C.wake!==false;$("#nt").checked=!!C.notif;$("#snd").checked=C.snd!==false;pwaUI();dfill();dtokm(dtoks());$("#ds").showModal()};
 /* Simpan juga preferensi wake lock; sebelumnya checkbox ini tidak pernah disimpan. */
-$("#ok").onclick=()=>{C.provider=sp.value;C.p[sp.value]={url:$("#su").value.trim(),model:$("#sm").value.trim(),key:$("#sk").value.trim(),proxy:$("#sy").value.trim(),vfmt:$("#vf").value};varSave();C.auto=$("#sa").checked;C.think=$("#th").checked;C.wake=$("#wk").checked;C.notif=$("#nt").checked;C.snd=$("#snd").checked;saveC();modeUI();$("#ds").close()};
+$("#ok").onclick=()=>{if($("#tokdrop").open&&!dApply())return;C.provider=sp.value;C.p[sp.value]={url:$("#su").value.trim(),model:$("#sm").value.trim(),key:$("#sk").value.trim(),proxy:$("#sy").value.trim(),vfmt:$("#vf").value};varSave();C.auto=$("#sa").checked;C.think=$("#th").checked;C.wake=$("#wk").checked;C.notif=$("#nt").checked;C.snd=$("#snd").checked;saveC();modeUI();$("#ds").close()};
 $("#nc").onclick=()=>{newChat();$("#ds").close()};
 $("#cl").onclick=()=>$("#ds").close();
 $("#in").addEventListener("input",e=>{e.target.style.height="auto";e.target.style.height=Math.min(e.target.scrollHeight,innerHeight*.3)+"px"});
@@ -1156,7 +1163,11 @@ function cmdThink(a){if(H.length===0)log.innerHTML="";
  if(["show","last","lihat"].includes(a)){if(!THL)return note("Belum ada pemikiran yang tersimpan.");const d=add("thw",`<details open class="thd"><summary>Pemikiran terakhir</summary><div class="thx"></div></details>`);typeInto(d.querySelector(".thx"),THL);return}
  let v;if(a==="")v=C.think===false;else if(["on","live","full","aktif","nyala"].includes(a))v=true;else if(["off","mati"].includes(a))v=false;else return note("Pakai: /think on · /think off · /think show");
  C.think=v;saveC();$("#th").checked=v;note(v?"Thinking ON: proses berpikir ditampilkan (animasi logo + teks).":"Thinking OFF: proses berpikir disembunyikan.")}
-function cmdSlash(c,a){if(c==="variant"||c==="varian"||c==="effort")return cmdVariant(a);if(c==="think")return cmdThink(a);if(c==="theme")return cmdTheme(a);if(c==="font")return cmdFont(a);if(c==="ctx")return cmdCtx(a);if(c==="changes"){$("#dm").showModal();return chList()}if(c==="undo"){const r=UL.find(x=>!x.u);if(!r)return note("Tidak ada perubahan untuk dibatalkan.");if(r.g&&/^(giliran|turn|semua)$/.test(a)){const n=grpApply(r.g);return note(n?"Dibatalkan: "+n+" perubahan ("+(r.gl||"kelompok terakhir")+").":"Tidak ada yang dibatalkan.")}if(chApply(r))note("Dibatalkan: "+r.p+" ("+r.k+")");return}if(c==="compact"){if(a==="auto"){C.ac=C.ac===false;saveC();return note("Padatkan otomatis: "+(C.ac===false?"mati":"hidup"))}return compact(false)}if(H.length===0)log.innerHTML="";const b=c==="budget";
+function cmdSteps(a){if(H.length===0)log.innerHTML="";const cur=SMAX();
+ if(!a)return note("Batas langkah per permintaan: "+cur+" (1 langkah = 1 putaran model beserta tool-nya). Ubah: /steps 80 (10–200) atau /steps default.");
+ if(/^(default|reset|normal)$/i.test(a)){delete C.maxSteps;saveC();return note("Batas langkah dikembalikan ke 40.")}
+ const n=Math.round(+a);if(!(n>=10&&n<=200))return note("Pakai angka 10–200, mis. /steps 80.");C.maxSteps=n;saveC();note("Batas langkah per permintaan: "+n+".")}
+function cmdSlash(c,a){if(c==="steps"||c==="langkah")return cmdSteps(a);if(c==="variant"||c==="varian"||c==="effort")return cmdVariant(a);if(c==="think")return cmdThink(a);if(c==="theme")return cmdTheme(a);if(c==="font")return cmdFont(a);if(c==="ctx")return cmdCtx(a);if(c==="changes"){$("#dm").showModal();return chList()}if(c==="undo"){const r=UL.find(x=>!x.u);if(!r)return note("Tidak ada perubahan untuk dibatalkan.");if(r.g&&/^(giliran|turn|semua)$/.test(a)){const n=grpApply(r.g);return note(n?"Dibatalkan: "+n+" perubahan ("+(r.gl||"kelompok terakhir")+").":"Tidak ada yang dibatalkan.")}if(chApply(r))note("Dibatalkan: "+r.p+" ("+r.k+")");return}if(c==="compact"){if(a==="auto"){C.ac=C.ac===false;saveC();return note("Padatkan otomatis: "+(C.ac===false?"mati":"hidup"))}return compact(false)}if(H.length===0)log.innerHTML="";const b=c==="budget";
  if(a==="")return note(b?"Batas berpikir: "+(BG()||"tanpa batas")+" token. Ubah: /budget 12000 (0 = tanpa batas)":"Batas output: "+MT()+" token. Ubah: /tokens 32000");
  const n=/^\d+$/.test(a)?+a:NaN;if(!(b?(n===0||n>=500&&n<=200000):(n>=1000&&n<=128000)))return note("Format: /"+c+" ANGKA ("+(b?"500-200000, atau 0 untuk tanpa batas":"1000-128000")+")");
  C[b?"budget":"maxTok"]=n;saveC();note(b?"Batas berpikir: "+(n||"tanpa batas")+" token.":"Batas output: "+n+" token.")}
@@ -1200,14 +1211,23 @@ const tm=$("#tm");Object.entries(THEMES).forEach(([k,v])=>tm.add(new Option(v,k)
 tm.onchange=()=>{C.theme=tm.value;saveC();applyTheme()};
 const fzs=$("#fz");FGRP.forEach(([g,ks])=>{const og=document.createElement("optgroup");og.label=g;ks.forEach(k=>og.append(new Option(FONTS[k].n,k)));fzs.append(og)});buildTG();
 $("#fz").onchange=()=>{C.font=$("#fz").value;saveC();applyTheme()};
-/* dropdown /tokens & /budget di pengaturan — hanya membaca/menulis C.maxTok & C.budget, fungsi lain tidak disentuh */
+/* dropdown /tokens, /budget & /steps di pengaturan — membaca/menulis C.maxTok, C.budget & C.maxSteps */
 const dtokm=t=>{$("#dtokm").textContent=t};
-$("#tokdrop").addEventListener("toggle",()=>{if($("#tokdrop").open){$("#dtok").value=C.maxTok||"";$("#dbud").value=C.budget??"";dtokm("Output: "+fk(MT())+" · Budget berpikir: "+(BG()?fk(BG()):"tanpa batas"))}});
-$("#dtokr").onclick=()=>{const t=$("#dtok").value.trim(),b=$("#dbud").value.trim();
- if(t!==""){const n=/^\d+$/.test(t)?+t:NaN;if(!(n>=1000&&n<=128000))return dtokm("Error: /tokens harus 1000–128000.");C.maxTok=n}
- if(b!==""){const n=/^\d+$/.test(b)?+b:NaN;if(!(n===0||n>=500&&n<=200000))return dtokm("Error: /budget harus 500–200000, atau 0 untuk tanpa batas.");C.budget=n}
- saveC();modeUI();dtokm("Tersimpan. Output: "+fk(MT())+" · Budget berpikir: "+(BG()?fk(BG()):"tanpa batas"))};
-$("#dtokd").onclick=()=>{delete C.maxTok;delete C.budget;saveC();$("#dtok").value="";$("#dbud").value="";modeUI();dtokm("Direset ke bawaan. Output: "+fk(MT())+" · Budget berpikir: "+fk(BG()))};
+const dtoks=()=>"Output: "+fk(MT())+" · Budget berpikir: "+(BG()?fk(BG()):"tanpa batas")+" · Langkah: "+SMAX();
+const dfill=()=>{$("#dtok").value=C.maxTok||"";$("#dbud").value=C.budget??"";$("#dstep").value=C.maxSteps||""};
+$("#tokdrop").addEventListener("toggle",()=>{if($("#tokdrop").open){dfill();dtokm(dtoks())}});
+/* dipakai tombol Terapkan dan tombol Simpan (jika dropdown terbuka), agar nilai yang diketik tidak hilang */
+function dApply(){const t=$("#dtok").value.trim(),b=$("#dbud").value.trim(),st=$("#dstep").value.trim(),pn=x=>/^\d+$/.test(x)?+x:NaN;let nt=null,nb=null,ns=null;
+ /* validasi semua kolom dulu; tidak ada yang disimpan jika salah satu tidak valid */
+ if(t!==""){nt=pn(t);if(!(nt>=1000&&nt<=128000))return dtokm("Error: /tokens harus 1000–128000."),false}
+ if(b!==""){nb=pn(b);if(!(nb===0||nb>=500&&nb<=200000))return dtokm("Error: /budget harus 500–200000, atau 0 untuk tanpa batas."),false}
+ if(st!==""){ns=pn(st);if(!(ns>=10&&ns<=200))return dtokm("Error: /steps harus 10–200."),false}
+ if(nt===null)delete C.maxTok;else C.maxTok=nt;
+ if(nb===null)delete C.budget;else C.budget=nb;
+ if(ns===null)delete C.maxSteps;else C.maxSteps=ns;
+ saveC();modeUI();dtokm("Tersimpan. "+dtoks());return true}
+$("#dtokr").onclick=()=>{dApply()};
+$("#dtokd").onclick=()=>{delete C.maxTok;delete C.budget;delete C.maxSteps;saveC();dfill();modeUI();dtokm("Direset ke bawaan. "+dtoks())};
 function cmdTheme(a){if(H.length===0)log.innerHTML="";const al={ps:"powershell",pwsh:"powershell",hijau:"terminal",green:"terminal",light:"terang",auto:"hrai",default:"hrai",tokyonight:"tokyo","tokyo-night":"tokyo",catppuccin:"mocha","one-dark":"onedark",rose:"rosepine","rose-pine":"rosepine","github-dark":"github",solar:"solarized",black:"oled",amoled:"oled",midnight:"oled","catppuccin-latte":"latte",sepia:"kertas",paper:"kertas"};
  if(!a)return note("Tema: "+Object.keys(THEMES).join(" · ")+" (aktif: "+(C.theme||"hrai")+"). Ubah: /theme powershell");
  const k=al[a]||a;if(!THEMES[k])return note("Tema tidak dikenal. Pilihan: "+Object.keys(THEMES).join(" · "));
@@ -1234,22 +1254,25 @@ function fillCard(d,n,a,live){const v=VB[n]||["Memproses","Diproses"],run=d.clas
 function finCard(d,n,a,res){const ok=/^OK/.test(res),sp=d.querySelector(".sp");d.classList.remove("run");d.classList.add(ok?"ok":"bad");if(sp)sp.outerHTML=ICON(ok);
  fillCard(d,n,a,false);if(!ok)d.querySelector(".av").textContent=/^DITOLAK/.test(res)?"Ditolak":"Gagal";
  if(n==="run_python"||n==="download_video"){let o=d.querySelector(".pyo");if(!o){o=document.createElement("pre");o.className="pyo";d.insertBefore(o,d.querySelector(".ar"))}o.dataset.ok=ok?"1":"0";o.textContent=String(res).replace(/^[^\n]*\n?/,"")||String(res)}else if(n!=="write"&&n!=="edit")setTimeout(()=>d.remove(),450)}
-async function typeCard(d,n,a){const k=n==="write"?"content":"new",b=a[k]||"",st=Math.max(4,Math.ceil(b.length/70));for(let i=st;i<b.length;i+=st){fillCard(d,n,Object.assign({},a,{[k]:b.slice(0,i)}),true);await sleep(16)}}
-let LT=Date.now(),WL=null,KA=null,WLK=null,WLKR=null,HID_AT=0,RQ0=0;
+async function typeCard(d,n,a){const k=n==="write"?"content":"new",b=a[k]||"",st=Math.max(4,Math.ceil(b.length/70));for(let i=st;i<b.length;i+=st){if(document.visibilityState!=="visible")return;fillCard(d,n,Object.assign({},a,{[k]:b.slice(0,i)}),true);await sleep(16)}}
+let LT=Date.now(),LD=0,VIS_AT=0,KON=false,KAH=0,WL=null,KA=null,WLK=null,WLKR=null,HID_AT=0,RQ0=0;
 document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="hidden")HID_AT=Date.now()});
 const isNet=e=>e instanceof TypeError||/network|fetch|terminated|load failed|connection|socket|timeout/i.test(e.message||"")||/^HTTP (429|5\d\d)/.test(e.message||"");
-function keep(on){if(C.wake===false)on=false;
+function keep(on){if(C.wake===false)on=false;KON=on;
  try{if(on){
    if(!KA){const HZ=8000,n=HZ*2,b=new Uint8Array(44+n*2),v=new DataView(b.buffer),w=(o,s)=>[...s].forEach((c,i)=>v.setUint8(o+i,c.charCodeAt(0)));
     /* 25 Hz sangat pelan (~-50 dBFS): tak terdengar di speaker HP, tetapi Chrome tetap menganggap ada audio yang diputar sehingga halaman tidak dibekukan */
-    w(0,"RIFF");v.setUint32(4,36+n*2,true);w(8,"WAVEfmt ");v.setUint32(16,16,true);v.setUint16(20,1,true);v.setUint16(22,1,true);v.setUint32(24,HZ,true);v.setUint32(28,HZ*2,true);v.setUint16(32,2,true);v.setUint16(34,16,true);w(36,"data");v.setUint32(40,n*2,true);for(let i=0;i<n;i++)v.setInt16(44+i*2,Math.round(110*Math.sin(2*Math.PI*25*i/HZ)),true)
-    KA=new Audio(URL.createObjectURL(new Blob([b],{type:"audio/wav"})));KA.loop=true;
-    if(navigator.mediaSession&&typeof MediaMetadata!=="undefined")navigator.mediaSession.metadata=new MediaMetadata({title:"HRAI sedang bekerja",artist:"HRAI CODEX"})}
-   KA.play().catch(()=>{});
+    w(0,"RIFF");v.setUint32(4,36+n*2,true);w(8,"WAVEfmt ");v.setUint32(16,16,true);v.setUint16(20,1,true);v.setUint16(22,1,true);v.setUint32(24,HZ,true);v.setUint32(28,HZ*2,true);v.setUint16(32,2,true);v.setUint16(34,16,true);w(36,"data");v.setUint32(40,n*2,true);for(let i=0;i<n;i++)v.setInt16(44+i*2,Math.round(110*Math.sin(2*Math.PI*25*i/HZ)),true);
+    KA=new Audio(URL.createObjectURL(new Blob([b],{type:"audio/wav"})));KA.loop=true}
+   if(navigator.mediaSession){try{if(typeof MediaMetadata!=="undefined")navigator.mediaSession.metadata=new MediaMetadata({title:"HRAI sedang bekerja",artist:"HRAI CODEX"});navigator.mediaSession.playbackState="playing";navigator.mediaSession.setActionHandler("play",()=>{if(KON&&KA)KA.play().catch(()=>{})})}catch{}}
+   /* jika pemutaran ditolak (kebijakan autoplay), ulangi pada sentuhan berikutnya */
+   const pr=KA.play();if(pr&&pr.catch)pr.catch(()=>{if(KAH)return;KAH=1;const f=()=>{KAH=0;removeEventListener("pointerdown",f,true);removeEventListener("keydown",f,true);if(KON&&KA)KA.play().catch(()=>{})};addEventListener("pointerdown",f,true);addEventListener("keydown",f,true)});
    if(navigator.locks&&!WLK){WLK=new Promise(res=>{WLKR=res});navigator.locks.request("hrai-kerja",()=>WLK).catch(()=>{})}
-   if(navigator.wakeLock&&!WL)navigator.wakeLock.request("screen").then(l=>{WL=l;l.addEventListener("release",()=>{if(WL===l)WL=null})}).catch(()=>{})
-  }else{if(KA)KA.pause();if(WL){WL.release().catch(()=>{});WL=null}if(WLKR){WLKR();WLK=null;WLKR=null}}}catch{}}
-document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"){LT=Date.now();if(ctrl)keep(true)}});
+   /* jika tugas sudah selesai sebelum izin wake lock turun, langsung dilepas (dulu bocor: layar tetap menyala) */
+   if(navigator.wakeLock&&!WL)navigator.wakeLock.request("screen").then(l=>{if(!KON||WL){l.release().catch(()=>{});return}WL=l;l.addEventListener("release",()=>{if(WL===l)WL=null})}).catch(()=>{})
+  }else{if(KA)KA.pause();if(navigator.mediaSession){try{navigator.mediaSession.playbackState="none";navigator.mediaSession.metadata=null}catch{}}if(WL){WL.release().catch(()=>{});WL=null}if(WLKR){WLKR();WLK=null;WLKR=null}}}catch{}}
+document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"){VIS_AT=LT=Date.now();if(ctrl)keep(true)}});
+document.addEventListener("resume",()=>{LT=Date.now();if(ctrl)keep(true)});
 const DB=(()=>{try{return new Promise((ok,no)=>{const r=indexedDB.open("hrai",3);r.onupgradeneeded=()=>{for(const n of["files","sess","undo","blobs"])if(!r.result.objectStoreNames.contains(n))r.result.createObjectStore(n)};r.onsuccess=()=>ok(r.result);r.onerror=()=>no(r.error);r.onblocked=()=>no(new Error("blocked"))})}catch(e){return Promise.reject(e)}})();DB.catch(()=>{});
 let warned=false;const idbErr=e=>{if(!warned){warned=true;alert("Gagal menyimpan ke penyimpanan browser: "+((e&&e.name)||"error")+". Ekspor backup lebih dulu.")}};
 const idbAll=async st=>{const d=await DB;return new Promise((ok,no)=>{const t=d.transaction(st),s=t.objectStore(st),k=s.getAllKeys(),v=s.getAll();t.oncomplete=()=>{const o={};k.result.forEach((x,i)=>o[x]=v.result[i]);ok(o)};t.onerror=()=>no(t.error)})};
@@ -1433,6 +1456,9 @@ async function netWhy(p){if(navigator.onLine===false)return"Tidak ada koneksi in
  return reach?"Server terjangkau tetapi memblokir akses dari browser (CORS). Isi Proxy CORS di Atur (lihat hrai-worker.js atau hrai-proxy.py).":"Tidak bisa menjangkau server (offline, DNS gagal, atau jaringan memblokir)."}
 /* tunggu sampai aplikasi tampil lagi (atau proses dihentikan) */
 const waitVisible=sig=>new Promise(r=>{if(document.visibilityState==="visible")return r();let f,ab;f=()=>{if(document.visibilityState==="visible"){document.removeEventListener("visibilitychange",f);if(sig)sig.removeEventListener("abort",ab);r()}};ab=()=>{document.removeEventListener("visibilitychange",f);r()};document.addEventListener("visibilitychange",f);if(sig)sig.addEventListener("abort",ab,{once:true})});
+const waitOnline=(sig,ms)=>new Promise(r=>{if(navigator.onLine!==false)return r();let t;const f=()=>{clearTimeout(t);removeEventListener("online",f);if(sig)sig.removeEventListener("abort",f);r()};addEventListener("online",f);if(sig)sig.addEventListener("abort",f,{once:true});t=setTimeout(f,ms||60000)});
+/* konfirmasi tool: confirm() tidak bisa tampil saat aplikasi di latar, jadi tunggu sampai layar aktif (dan beri notifikasi) */
+async function askOK(msg){if(document.visibilityState!=="visible"){notify("HRAI butuh persetujuan",String(msg).split("\n")[0]);add("sys","Menunggu persetujuan Anda. Buka kembali HRAI untuk melanjutkan.");await waitVisible(ctrl&&ctrl.signal);if(!ctrl||ctrl.signal.aborted)throw new DOMException("Dihentikan","AbortError")}return confirm(msg)}
 const netMsg=()=>navigator.onLine===false?"Tidak ada koneksi internet.":"Server tidak bisa dijangkau atau memblokir akses dari browser (CORS). Isi Proxy CORS di Atur (lihat hrai-proxy.py atau hrai-worker.js).";
 $("#sd").onclick=()=>{const n=sp.value;if(busy())return;if(PL().length<2){alert("Minimal harus ada satu provider.");return}
  if(!confirm("Hapus provider "+n+" beserta API key-nya?"))return;
@@ -1452,7 +1478,7 @@ async function doBackup(){const a=$("#bk1").checked,b=$("#bk2").checked,c=$("#bk
  dl("hrai-cadangan-"+d.getFullYear()+z(d.getMonth()+1)+z(d.getDate())+"-"+z(d.getHours())+z(d.getMinutes())+(pw?"-terenkripsi":"")+".json",t,"application/json");
  $("#bkm").textContent="Tersimpan di folder Unduhan perangkat"+(pw?" (terenkripsi).":". Simpan dengan aman karena berisi API key.")+(o.bigSkip?" "+o.bigSkip+" file besar (>10 MB) tidak ikut; ekspor lewat ZIP di File manager.":"")}
 let RB=null;
-function mergeCfg(c,rep){if(rep)C=Object.assign({p:{}},c);else{Object.assign(C.custom=C.custom||{},c.custom||{});for(const k in c.p||{}){const n=Object.assign({},c.p[k]);if(!n.key)n.key=(C.p[k]||{}).key||"";C.p[k]=n}for(const k of["provider","mode","auto","think","wake","theme","font","budget","maxTok","ctx","ac","hide","notif"])if(c[k]!==undefined)C[k]=c[k]}
+function mergeCfg(c,rep){if(rep)C=Object.assign({p:{}},c);else{Object.assign(C.custom=C.custom||{},c.custom||{});for(const k in c.p||{}){const n=Object.assign({},c.p[k]);if(!n.key)n.key=(C.p[k]||{}).key||"";C.p[k]=n}for(const k of["provider","mode","auto","think","wake","theme","font","budget","maxTok","maxSteps","ctx","ac","hide","notif","snd"])if(c[k]!==undefined)C[k]=c[k]}
  C.p=C.p||{};if(!PL().some(x=>x[0]===C.provider))C.provider=PL()[0][0];saveC();fillSP();applyTheme();modeUI()}
 $("#bkb").onclick=()=>{$("#ds").close();$("#bkm").textContent="";$("#rsx").style.display="none";$("#db").showModal()};
 $("#bkc").onclick=()=>$("#db").close();$("#bkg").onclick=doBackup;$("#rsb").onclick=()=>$("#rsf").click();
