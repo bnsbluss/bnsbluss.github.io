@@ -1260,7 +1260,7 @@ function pj(a){const o={},re=/"(path|content|old|new|pattern)"\s*:\s*"/g;let m;
  return o}
 function newCard(n){const d=add("ac run",`<div class="ah">${gvLoaderHtml()}<b class="av"></b><span class="ap"></span><span class="am"></span></div><pre class="ab"><code></code></pre><div class="ar"><button class="ib" data-df="1">Diff</button><button class="ib" data-ud="1">Batalkan</button></div>`);d.dataset.n=n;d.querySelector(".ah").onclick=()=>d.classList.toggle("open");return d}
 function fillCard(d,n,a,live){const v=VB[n]||["Memproses","Diproses"],run=d.classList.contains("run");
- d.querySelector(".av").textContent=run?v[0]:v[1];d.querySelector(".ap").textContent=a.path||(a.pattern?"“"+a.pattern+"”":"")||(a.url?String(a.url).slice(0,70):"")||(n==="run_python"?"Pyodide · WebAssembly":"");
+ d.querySelector(".av").textContent=run?v[0]:v[1];d.querySelector(".ap").textContent=a.path||(n==="project"?a.name:"")||(a.pattern?"“"+a.pattern+"”":"")||(a.url?String(a.url).slice(0,70):"")||(n==="run_python"?"Pyodide · WebAssembly":"");
  const b=n==="write"?a.content:n==="edit"?a.new:n==="run_python"?a.code:null,pre=d.querySelector(".ab");
  if(b==null){pre.style.display="none";return}
  pre.style.display="";pre.querySelector("code").innerHTML=hl(live&&b.length>2500?b.slice(-2500):b,n==="run_python"?"py":(a.path||"").split(".").pop());
