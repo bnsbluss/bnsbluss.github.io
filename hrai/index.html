@@ -2,12 +2,13 @@
 <html lang="id"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#012456"><meta name="mobile-web-app-capable" content="yes">
+<link rel="icon" href="icon-192.png" type="image/png"><link rel="apple-touch-icon" href="icon-192.png">
 <title>HRAI — AI Web Agent</title>
 <style>
 :root{--bg:#011a3d;--bg2:#02306e;--panel:rgba(255,255,255,.06);--panel2:rgba(255,255,255,.11);--line:rgba(255,255,255,.13);--fg:#eaf0fc;--dim:#9db0d3;--acc:#4da3ff;--accfg:#04122b;--plan:#f5c542;--build:#4ade80;--err:#ff8a8a;--code:#00122c;--ub:#1f6fe0;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media(prefers-color-scheme:light){:root{--bg:#f3f6fc;--bg2:#e2ebfa;--panel:#fff;--panel2:#eaf0fb;--line:#d3deef;--fg:#0f1b33;--dim:#5a6b8c;--acc:#1f6fe0;--accfg:#fff;--plan:#b7791f;--build:#15803d;--err:#c53030;--code:#f1f5fc;color-scheme:light}}
 *{box-sizing:inherit}
-html,body{height:100%;margin:0;background:var(--bg);color:var(--fg)}
+html,body{height:100%;margin:0;background:var(--bg);color:var(--fg);overscroll-behavior-y:none}
 body{display:flex;flex-direction:column;background:linear-gradient(180deg,var(--bg2),var(--bg) 55%);font:15px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",sans-serif}
 button,select,input,textarea{font:inherit;color:inherit}
 button{cursor:pointer}
@@ -112,7 +113,7 @@ code,pre,.bt,.bi{font-family:var(--fm)}pre{font-size:13.5px}
 :root[data-theme=terang]{--bg:#f7f8fb;--bg2:#f7f8fb;--fg:#1a2233;--dim:#5d6b85;--acc:#1f6fe0;--accfg:#ffffff;--plan:#b7791f;--build:#15803d;--err:#c53030;--code:#eef2f9;--line:#d3dbe9;--panel:#ffffff;--panel2:#e9eef8;--ub:#1f6fe0;color-scheme:light}
 [data-theme=terminal] *,[data-theme=powershell] *,[data-theme=amber] *{border-radius:0!important}
 [data-theme=terminal] .composer,[data-theme=powershell] .composer,[data-theme=amber] .composer{box-shadow:none}
-:root:not([data-theme=hrai]) .logo{background:var(--acc);color:var(--accfg)}
+:root:not([data-theme=hrai]) .logo{background:transparent;color:var(--fg)}
 [data-theme=terang] .t-kw{color:#7c3aed}[data-theme=terang] .t-st{color:#15803d}[data-theme=terang] .t-nm{color:#c2410c}[data-theme=terang] .t-fn{color:#1d4ed8}[data-theme=terang] .t-ty{color:#a16207}[data-theme=terang] .t-cn{color:#dc2626}[data-theme=terang] .t-bi{color:#0e7490}[data-theme=terang] .t-vr,[data-theme=terang] .t-tg{color:#be123c}[data-theme=terang] .t-cm{color:#64748b}[data-theme=terang] .t-at{color:#b45309}[data-theme=terang] .t-jk{color:#0369a1}
 .ac{align-self:stretch;border:1px solid var(--line);background:var(--panel);border-radius:12px;overflow:hidden;font-size:13px}
 .ah{display:flex;align-items:center;gap:8px;padding:8px 12px}
@@ -296,7 +297,8 @@ header{position:relative;z-index:3;display:flex;align-items:center;gap:8px;min-h
 header .ib{width:40px;height:40px;border-radius:10px;border:1px solid transparent;background:transparent}
 header .ib:hover{background:var(--panel2);border-color:var(--line)}
 .brand{gap:10px}
-.logo{width:34px;height:34px;border-radius:9px;box-shadow:none;font-size:12px;letter-spacing:.03em;background:var(--acc);color:var(--accfg)}
+.logo{width:34px;height:34px;border-radius:9px;box-shadow:none;font-size:12px;letter-spacing:.03em;background:transparent;color:var(--fg);overflow:hidden}
+.logo img{width:100%;height:100%;object-fit:contain;display:block}
 .ttl b{font-size:15px;font-weight:650;letter-spacing:.02em}
 .ttl span{font-size:12px;color:var(--dim)}
 .seg{border-radius:10px;padding:3px;background:var(--panel);border:1px solid var(--line)}
@@ -483,7 +485,7 @@ div.pyo{margin:6px 0 10px}
 </style></head>
 <body>
 
-<header><button class="ib" id="bh" aria-label="Riwayat" title="Riwayat"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"/></svg></button><div class="brand"><div class="logo">HR</div><div class="ttl"><b>HRAI</b><span id="sub"></span></div></div><div class="seg" id="mode" role="group" aria-label="Mode kerja"><button data-m="PLAN">Plan</button><button data-m="BUILD">Build</button></div><button class="ib" id="bs" aria-label="Atur" title="Atur"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h8M18 6h2M4 12h2M12 12h8M4 18h10M20 18h0"/><circle cx="15" cy="6" r="2.2"/><circle cx="9" cy="12" r="2.2"/><circle cx="17" cy="18" r="2.2"/></svg></button></header>
+<header><button class="ib" id="bh" aria-label="Riwayat" title="Riwayat"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"/></svg></button><div class="brand"><div class="logo"><img src="icon-192.png" alt="HRAI" onerror="this.remove();this.parentElement.textContent='HR'"></div><div class="ttl"><b>HRAI</b><span id="sub"></span></div></div><div class="seg" id="mode" role="group" aria-label="Mode kerja"><button data-m="PLAN">Plan</button><button data-m="BUILD">Build</button></div><button class="ib" id="bs" aria-label="Atur" title="Atur"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h8M18 6h2M4 12h2M12 12h8M4 18h10M20 18h0"/><circle cx="15" cy="6" r="2.2"/><circle cx="9" cy="12" r="2.2"/><circle cx="17" cy="18" r="2.2"/></svg></button></header>
 <div id="ibn" class="ibn" style="display:none"><span>Pasang HRAI di layar utama</span><button class="btn" id="ibi">Pasang</button><button class="ib" id="ibx" aria-label="Tutup">✕</button></div>
 <div id="log"></div>
 <div id="tus"></div>
@@ -722,9 +724,9 @@ const EXE={
 };
 const IMGN="\n\nGAMBAR: aplikasi ini tidak dapat MENGHASILKAN gambar raster/foto. Jika pengguna meminta gambar, ilustrasi, ikon, logo, atau diagram, buat sebagai SVG yang valid (selalu sertakan xmlns=\"http://www.w3.org/2000/svg\" dan viewBox; tanpa gambar atau font eksternal; tanpa <script>). Simpan sebagai file .svg dengan write, atau tulis dalam blok ```svg. Aplikasi menampilkan SVG langsung di chat dan pengguna dapat mengunduhnya sebagai PNG atau SVG. Jika pengguna meminta FOTO/gambar dari internet, jangan mengarang SVG palsu — cari dengan web_search bila perlu, ambil URL yang menunjuk LANGSUNG ke file gambarnya (berakhiran .jpg/.png/.webp/.gif, bukan halaman HTML), lalu panggil show_image(url) agar foto tampil di chat dengan tombol unduh.";
 const ASN="\n\nASET BINER: pengguna dapat melampirkan file audio .ogg (juga gambar/gif) sebagai aset game. File itu tersimpan di penyimpanan virtual sebagai aset biner: muncul di list, tetapi read tidak membaca isinya dan write/edit tidak boleh menimpanya. Rujuk lewat path persisnya di kode, mis. new Audio('jump.ogg') atau <audio src='bgm.ogg'> (path relatif terhadap file HTML); pratinjau HRAI memuat aset itu otomatis. Putar audio hanya setelah interaksi pengguna (klik/ketuk) agar tidak diblokir browser, dan sediakan tombol mute serta kendali volume. Jangan mengarang aset yang tidak ada di list.";
-const DEVN=`\n\nPROYEK WEB/GAME: pratinjau berjalan di iframe sandbox dan mendukung HTML5, CSS3, WebGL, ES Modules, dan importmap. Proyek boleh banyak file: tulis index.html + main.js + modul lain, impor dengan path relatif (import {Player} from './player.js'; import() dinamis juga bisa), lalu pratinjau index.html. fetch/XHR/Image/Audio ke file virtual (json, gltf, glb, png, ogg, mp3, shader, dll.) dan url() di CSS ikut dimuat otomatis. Pointer Lock dan Fullscreen diizinkan; audio dan pointer lock harus dimulai dari klik/ketuk pengguna (sediakan tombol Mulai). localStorage/sessionStorage hanya di memori (hilang saat dimuat ulang). Library lewat CDN dengan versi dipin, bukan latest. Three.js (r187): pakai importmap, bukan three.min.js (sudah dihapus): <\x73cript type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.187.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.187.0/examples/jsm/"}}<\/script> lalu <\x73cript type="module">import * as THREE from 'three'; import {OrbitControls} from 'three/addons/controls/OrbitControls.js'; ...<\/script>. Tips game 3D di HP: renderer.setPixelRatio(Math.min(devicePixelRatio,2)), tangani resize, renderer.setAnimationLoop dengan delta waktu, sediakan kontrol sentuh (joystick/tombol virtual) selain keyboard, dan hindari API yang sudah deprecated. PYTHON: tool run_python menjalankan kode Python (Pyodide/WebAssembly) di browser. Pakai untuk menghitung, menguji logika, mengolah data/CSV/gambar, atau membuat grafik (matplotlib.use('Agg'); plt.savefig('grafik.png') lalu show_image). File virtual ada di direktori kerja (open('data.csv')); file baru/berubah disimpan balik. Tidak ada input(), soket, atau subprocess; paket bawaan Pyodide dimuat otomatis dari import. NODE.JS: tool run_node menjalankan kode Node.js / JavaScript di browser (Web Worker dengan emulasi modul bawaan: fs, fs/promises, path, buffer, process, crypto, events, url, util, os, assert, querystring, timers). Mendukung require() (termasuk file .js/.json di penyimpanan virtual), top-level await, serta import paket npm ESM via CDN (esm.sh, butuh internet). File virtual ada di direktori kerja (fs.readFileSync('data.json','utf8')); file baru/berubah disimpan balik. Tidak ada child_process, soket server, atau paket native C++.`;
+const DEVN=`\n\nPROYEK WEB/GAME: pratinjau berjalan di iframe sandbox dan mendukung HTML5, CSS3, WebGL, ES Modules, dan importmap. Proyek boleh banyak file: tulis index.html + main.js + modul lain, impor dengan path relatif (import {Player} from './player.js'; import() dinamis juga bisa), lalu pratinjau index.html. fetch/XHR/Image/Audio ke file virtual (json, gltf, glb, png, ogg, mp3, shader, dll.) dan url() di CSS ikut dimuat otomatis. Pointer Lock dan Fullscreen diizinkan; audio dan pointer lock harus dimulai dari klik/ketuk pengguna (sediakan tombol Mulai). localStorage/sessionStorage hanya di memori (hilang saat dimuat ulang). Library lewat CDN dengan versi dipin, bukan latest. Three.js (r187): pakai importmap, bukan three.min.js (sudah dihapus): <\x73cript type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.187.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.187.0/examples/jsm/"}}<\/script> lalu <\x73cript type="module">import * as THREE from 'three'; import {OrbitControls} from 'three/addons/controls/OrbitControls.js'; ...<\/script>. Tips game 3D di HP: renderer.setPixelRatio(Math.min(devicePixelRatio,2)), tangani resize, renderer.setAnimationLoop dengan delta waktu, sediakan kontrol sentuh (joystick/tombol virtual) selain keyboard, dan hindari API yang sudah deprecated. PYTHON: (1) tool run_python menjalankan kode Python headless di Web Worker (Pyodide/WebAssembly; tanpa input(), soket, atau subprocess) untuk menghitung, mengolah data/CSV/gambar, atau membuat grafik (matplotlib.use('Agg'); plt.savefig('grafik.png') lalu show_image). (2) PRATINJAU PYTHON INTERAKTIF DI WEB: setiap file .py yang kamu tulis dengan write/edit otomatis memunculkan tombol "▶ Jalankan <file>.py (Web)" dan juga dapat dijalankan langsung oleh pengguna lewat perintah "python <file>.py" atau dari pengelola file. Pratinjau web mendukung terminal interaktif (print() realtime + input() langsung dari kotak input web), game 2D dengan shim bawaan pygame (display, draw, Rect, Surface, event, key, mouse, time.Clock, font, image, transform, mixer, sprite, math.Vector2 + tombol kontrol sentuh di HP), dan grafik turtle. File virtual (gambar/audio/data) ikut dimuat dan perubahan file disimpan balik. NODE.JS: tool run_node menjalankan kode Node.js / JavaScript di browser (Web Worker dengan emulasi modul bawaan: fs, fs/promises, path, buffer, process, crypto, events, url, util, os, assert, querystring, timers). Mendukung require() (termasuk file .js/.json di penyimpanan virtual), top-level await, serta import paket npm ESM via CDN (esm.sh, butuh internet). File virtual ada di direktori kerja (fs.readFileSync('data.json','utf8')); file baru/berubah disimpan balik. Tidak ada child_process, soket server, atau paket native C++.`;
 const VIDN=`\n\nVIDEO: tool download_video mengunduh video dari URL langsung ke penyimpanan virtual (maks 100 MB; hanya tautan langsung ke file .mp4/.webm, bukan halaman YouTube/TikTok; server harus mengizinkan CORS atau pengguna mengisi Proxy CORS). File video/audio >10 MB disimpan terpisah: tidak bisa dibaca atau diedit dan tidak dimuat otomatis di pratinjau (batas pratinjau 10 MB). Rujuk lewat path-nya, mis. <video src="clip.mp4" controls playsinline>.`;
-const SYS=()=>"Kamu HRAI, asisten coding di HP. Jawab ringkas dalam bahasa Indonesia. Kamu punya penyimpanan file virtual di browser (tool list/read/write/edit/grep) DAN akses internet melalui tool web_search (cari info terkini/fakta berita), open_url (baca isi sebuah URL), serta show_image (tampilkan gambar/foto dari URL langsung ke file gambar di chat); TIDAK ada shell, tetapi ada tool run_python dan run_node untuk menjalankan Python dan Node.js/JavaScript di browser. KONTEN DEWASA: aplikasi menampilkan verifikasi 18+ saat permintaan terdeteksi dewasa — jika tool internet mengembalikan \"DITOLAK: verifikasi 18+ ditolak pengguna\", hormati dan jelaskan bahwa pengguna bisa mencoba lagi lalu menyelesaikan verifikasi; jika verifikasi lolos, lanjutkan konten dewasa sesuai kebijakan provider modelmu — jika provider menolak, sampaikan bahwa yang menolak adalah kebijakan provider, bukan aplikasi. BATAS MUTLAK: JANGAN PERNAH membuat, mencari, atau menampilkan konten seksual yang melibatkan anak di bawah umur / pelajar / minor, apa pun alasannya — tolak keras. JANGAN pernah mengatakan tidak punya akses internet — langsung pakai web_search untuk pertanyaan tentang hal terkini, lalu open_url pada hasil terrelevan untuk detail. Jika tool internet gagal dengan galat CORS/proxy, sarankan pengguna mengisi kolom Proxy CORS di menu Atur (Cloudflare Worker hrai-worker.js atau hrai-proxy.py). Pengguna bisa melihat pratinjau file .html yang kamu tulis (satu file mandiri atau proyek beberapa file; lihat PROYEK WEB/GAME di bawah). File yang dilampirkan pengguna otomatis ada di penyimpanan virtual; gunakan read. Untuk file besar, tulis bertahap (kerangka dulu, lalu tambah per bagian dengan edit). Tool read selalu mengembalikan isi file LENGKAP dalam satu panggilan: baca file utuh sekali saja, jangan membaca per potongan dan jangan menelusuri file dengan grep berulang jika bisa dibaca utuh.\n"+(C.mode==="PLAN"?"MODE AKTIF: PLAN. Hanya baca dan susun rencana bertahap; jangan menulis/mengedit file.":"MODE AKTIF: BUILD. Eksekusi penuh: tulis dan edit file sesuai kebutuhan, lalu ringkas hasilnya. Jika ada rencana dari mode PLAN di percakapan, jalankan tahap demi tahap.")+IMGN+ASN+VIDN+DEVN+fsNote();
+const SYS=()=>"Kamu HRAI, asisten coding di HP. Jawab ringkas dalam bahasa Indonesia. Kamu punya penyimpanan file virtual di browser (tool list/read/write/edit/grep) DAN akses internet melalui tool web_search (cari info terkini/fakta berita), open_url (baca isi sebuah URL), serta show_image (tampilkan gambar/foto dari URL langsung ke file gambar di chat); TIDAK ada shell, tetapi ada tool run_python dan run_node untuk menjalankan Python dan Node.js/JavaScript di browser, serta pratinjau Python interaktif di web (terminal input()/print(), pygame 2D, turtle) untuk file .py yang disimpan. KONTEN DEWASA: aplikasi menampilkan verifikasi 18+ saat permintaan terdeteksi dewasa — jika tool internet mengembalikan \"DITOLAK: verifikasi 18+ ditolak pengguna\", hormati dan jelaskan bahwa pengguna bisa mencoba lagi lalu menyelesaikan verifikasi; jika verifikasi lolos, lanjutkan konten dewasa sesuai kebijakan provider modelmu — jika provider menolak, sampaikan bahwa yang menolak adalah kebijakan provider, bukan aplikasi. BATAS MUTLAK: JANGAN PERNAH membuat, mencari, atau menampilkan konten seksual yang melibatkan anak di bawah umur / pelajar / minor, apa pun alasannya — tolak keras. JANGAN pernah mengatakan tidak punya akses internet — langsung pakai web_search untuk pertanyaan tentang hal terkini, lalu open_url pada hasil terrelevan untuk detail. Jika tool internet gagal dengan galat CORS/proxy, sarankan pengguna mengisi kolom Proxy CORS di menu Atur (Cloudflare Worker hrai-worker.js atau hrai-proxy.py). Pengguna bisa melihat pratinjau file .html dan menjalankan langsung file .py yang kamu tulis (satu file mandiri atau proyek beberapa file; lihat PROYEK WEB/GAME di bawah). File yang dilampirkan pengguna otomatis ada di penyimpanan virtual; gunakan read. Untuk file besar, tulis bertahap (kerangka dulu, lalu tambah per bagian dengan edit). Tool read selalu mengembalikan isi file LENGKAP dalam satu panggilan: baca file utuh sekali saja, jangan membaca per potongan dan jangan menelusuri file dengan grep berulang jika bisa dibaca utuh.\n"+(C.mode==="PLAN"?"MODE AKTIF: PLAN. Hanya baca dan susun rencana bertahap; jangan menulis/mengedit file.":"MODE AKTIF: BUILD. Eksekusi penuh: tulis dan edit file sesuai kebutuhan, lalu ringkas hasilnya. Jika ada rencana dari mode PLAN di percakapan, jalankan tahap demi tahap.")+IMGN+ASN+VIDN+DEVN+fsNote();
 
 /* ---- render ---- */
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]));
@@ -897,7 +899,7 @@ function cmdVariant(a){if(H.length===0)log.innerHTML="";const p=prov(C.provider)
 const oaClean=(m,cur)=>m.role==="assistant"?Object.assign({role:"assistant",content:m.content},m.tool_calls?{tool_calls:m.tool_calls.map(t=>({id:t.id,type:t.type,function:t.function}))}:{},cur&&m.rc?{reasoning_content:m.rc}:{}):m.role==="tool"?{role:"tool",tool_call_id:m.tool_call_id,content:m.content}:oaMsg(m);
 async function agent(){
  const p=prov(C.provider);if(!p.key&&!keyless(p)){add("er","API key untuk "+p.id+" belum diisi. Buka Atur.");add("thw",`<button class="btn pvf" data-retry="1">↻ Kirim ulang pesan terakhir</button>`);return}if(!p.model){add("er","Model untuk "+p.id+" belum dipilih. Buka Atur lalu ketuk Ambil.");add("thw",`<button class="btn pvf" data-retry="1">↻ Kirim ulang pesan terakhir</button>`);return}
- ctrl=new AbortController();$("#go").textContent="■";keep(true);let cont=0,done=false,acOK=true,fail=null;const wrote=new Set,wroteSvg=new Set,tg=mkG("Giliran AI");CG=tg;
+ ctrl=new AbortController();$("#go").textContent="■";keep(true);try{if(cur)LS["hrai.run"]=JSON.stringify({id:cur,ts:Date.now()})}catch{}flushS();let cont=0,done=false,acOK=true,fail=null;const wrote=new Set,wroteSvg=new Set,wrotePy=new Set,tg=mkG("Giliran AI");CG=tg;
  const MS=Math.max(10,Math.min(200,Math.round(+C.maxSteps)||40));try{for(let step=0;step<MS;step++){
   if(acOK&&C.ac!==false&&est()>.85*(C.ctx||128000)){const cr=await compact(true);if(cr===false)acOK=false}log.querySelectorAll(".ac").forEach(x=>{if(x.dataset.n!=="write"&&x.dataset.n!=="edit")x.remove()});let rt="",over=false,last="",text="",calls=[];TC=0;FR="";SG=new AbortController();ctrl.signal.addEventListener("abort",()=>SG.abort());
   const t0=Date.now(),tk=mkTk(),a=add("a");let raf=0;
@@ -931,7 +933,7 @@ async function agent(){
    H.push({role:"user",content:NUDGE[why],sys:true});saveH();continue}
   const m={role:"assistant",content:text||null};
   if(calls.length)m.tool_calls=calls.map((c,i)=>({id:c.id||"c"+Date.now()+i,type:"function",function:{name:c.name,arguments:vj(c.args)},...(c.sig?{sig:c.sig}:{})}));
-  if(calls.length&&LRC&&p.type==="openai")m.rc=LRC;H.push(m);saveH();if(!calls.length){done=true;break}
+  if(calls.length&&LRC&&p.type==="openai")m.rc=LRC;H.push(m);saveH();flushS();if(!calls.length){done=true;break}
   const ck=Object.keys(cards).map(Number).sort((x,y)=>x-y);
   for(let k=0;k<m.tool_calls.length;k++){const t=m.tool_calls[k];let a2={},res;try{a2=JSON.parse(t.function.arguments)}catch{}
    const n=t.function.name,wr=n==="write"||n==="edit",d=cards[ck[k]]||newCard(n);
@@ -944,15 +946,15 @@ async function agent(){
    else if(wr&&!C.auto&&!confirm("Izinkan "+n+" → "+a2.path+" ?"))res="DITOLAK oleh pengguna.";
    else if((n==="web_search"||n==="open_url"||n==="show_image")&&!verified()&&needAdult(a2.url||a2.query||"")){const okA=await gateAdult();if(!okA)res="DITOLAK: verifikasi 18+ ditolak pengguna.";else{WTSIG=ctrl.signal;try{res=EXE[n](a2);if(res&&typeof res.then==="function")res=await res}catch(e){res="ERROR: "+e.message}WTSIG=null}}
    else{WTSIG=ctrl.signal;try{res=EXE[n](a2);if(res&&typeof res.then==="function")res=await res}catch(e){res="ERROR: "+e.message}WTSIG=null}
-   if(UL[0]&&UL[0].id!==u0)d.dataset.u=UL[0].id;if(wr&&/^OK/.test(res)&&/\.html?$/i.test(a2.path||""))wrote.add(a2.path);if(wr&&/^OK/.test(res)&&/\.svg$/i.test(a2.path||""))wroteSvg.add(a2.path);
+   if(UL[0]&&UL[0].id!==u0)d.dataset.u=UL[0].id;if(wr&&/^OK/.test(res)&&/\.html?$/i.test(a2.path||""))wrote.add(a2.path);if(wr&&/^OK/.test(res)&&/\.svg$/i.test(a2.path||""))wroteSvg.add(a2.path);if(wr&&/^OK/.test(res)&&/\.py$/i.test(a2.path||""))wrotePy.add(a2.path);
    await sleep(wr?250:650);finCard(d,n,a2,String(res));
    if(n==="show_image"&&/^OK/.test(String(res))){const pp=String(res).split(" ")[1];if(pp&&FS()[pp])add("imgw",imgCard(FS()[pp],pp.split("/").pop()))}
-   H.push({role:"tool",tool_call_id:t.id,name:n,content:String(res)});saveH()}
+   H.push({role:"tool",tool_call_id:t.id,name:n,content:String(res)});saveH();flushS()}
  }
  if(!done){add("sys","Batas "+MS+" langkah tercapai. Ketik \"lanjut\" untuk meneruskan, atau naikkan batas dengan /steps 80.");add("thw",`<button class="btn pvf" data-retry="1">↻ Kirim ulang pesan terakhir</button>`)}
- wrote.forEach(q=>add("thw",`<button class="btn pvf" data-p="${esc(q).replace(/"/g,"&quot;")}">▶ Pratinjau ${esc(q)}</button>`));wroteSvg.forEach(q=>{const f=FS();if(hasF(f,q))add("svgw",svgCard(f[q],q.split("/").pop()))});
+ wrote.forEach(q=>add("thw",`<button class="btn pvf" data-p="${esc(q).replace(/"/g,"&quot;")}">▶ Pratinjau ${esc(q)}</button>`));wroteSvg.forEach(q=>{const f=FS();if(hasF(f,q))add("svgw",svgCard(f[q],q.split("/").pop()))});wrotePy.forEach(q=>add("thw",`<button class="btn pvf" data-py="${esc(q).replace(/"/g,"&quot;")}">▶ Jalankan ${esc(q)} (Web)</button>`));
  }catch(e){const nm=e.name!=="AbortError"&&e instanceof TypeError?await netWhy(p):null;fail=e.name==="AbortError"?null:(nm||e.message||"error");add("er",esc(e.name==="AbortError"?"Dihentikan.":nm||e.message));if(H.some(x=>x.role==="user"))add("thw",`<button class="btn pvf" data-retry="1">↻ Kirim ulang pesan terakhir</button>`)}
- log.querySelectorAll(".tk,.ac.run").forEach(x=>x.remove());CG=null;{const n=grpRecs(tg.id).length;if(n>=2)add("thw",`<button class="btn pvf" data-ug="${tg.id}">↩ Batalkan semua perubahan giliran ini (${n} file)</button>`)}keep(false);ctrl=null;$("#go").textContent="↑";if(fail)notify("HRAI berhenti",fail);else if(done){const lm=[...H].reverse().find(m=>m.role==="assistant"&&m.content);if(!notify("HRAI selesai",lm?lm.content:"Tugas selesai."))chime()}}
+ log.querySelectorAll(".tk,.ac.run").forEach(x=>x.remove());CG=null;{const n=grpRecs(tg.id).length;if(n>=2)add("thw",`<button class="btn pvf" data-ug="${tg.id}">↩ Batalkan semua perubahan giliran ini (${n} file)</button>`)}keep(false);ctrl=null;if(!UNLOADING){try{LS.removeItem("hrai.run")}catch{}}$("#go").textContent="↑";if(fail)notify("HRAI berhenti",fail);else if(done){const lm=[...H].reverse().find(m=>m.role==="assistant"&&m.content);if(!notify("HRAI selesai",lm?lm.content:"Tugas selesai."))chime()}}
 
 /* kirim ulang: buang sisa giliran yang gagal/berhenti, lalu jalankan ulang pesan pengguna terakhir */
 function retryLast(){if(busy())return;let i=H.length-1;while(i>=0&&(H[i].role!=="user"||H[i].sys))i--;
@@ -961,14 +963,14 @@ function retryLast(){if(busy())return;let i=H.length-1;while(i>=0&&(H[i].role!==
  H.length=i;saveH();draw();H.push(m);saveH();add("u",uHtml(m));agent()}
 
 /* ---- UI ---- */
-$("#go").onclick=async()=>{if(ctrl){ctrl.abort();return}let v=$("#in").value.trim();if(!v&&!PA.length&&!PF.length)return;const sm=v.match(/^\/(think|budget|tokens|theme|font|ctx|compact|undo|changes|variant|varian|effort|steps|langkah)(?:\s+(.*))?$/i);if(sm){$("#in").value="";$("#in").style.height="";cmdSlash(sm[1].toLowerCase(),(sm[2]||"").trim().toLowerCase());return}$("#in").value="";$("#in").style.height="";if(PF.length)v+=(v?"\n\n":"")+"[File dilampirkan di penyimpanan virtual: "+PF.map(n=>PD[n]?n+" ("+PD[n]+")":n).join(", ")+"]";if(!v)v="Lihat gambar terlampir.";if(needAdult(v)&&!verified()){const okV=await gateAdult();if(!okV){note("Verifikasi 18+ ditolak — pesan tidak dikirim.");return}}if(H.length===0)log.innerHTML="";const m={role:"user",content:v};if(PA.length){m.images=PA;m.nimg=PA.length}PA=[];PF=[];PD={};attUI();H.forEach(x=>{if(x.rc)delete x.rc});H.push(m);saveH();add("u",uHtml(m));agent()};
+$("#go").onclick=async()=>{if(ctrl){ctrl.abort();return}let v=$("#in").value.trim();if(!v&&!PA.length&&!PF.length)return;if(!PA.length&&!PF.length){const pm=v.match(/^(?:python3?|py)\s+([^\s]+\.py)\s*$/i);if(pm){$("#in").value="";$("#in").style.height="";cmdPy(pm[1]);return}}const sm=v.match(/^\/(think|budget|tokens|theme|font|ctx|compact|undo|changes|variant|varian|effort|steps|langkah|py|python|python3)(?:\s+(.*))?$/i);if(sm){$("#in").value="";$("#in").style.height="";const sc=sm[1].toLowerCase(),sa=(sm[2]||"").trim();cmdSlash(sc,/^(py|python|python3)$/.test(sc)?sa:sa.toLowerCase());return}$("#in").value="";$("#in").style.height="";if(PF.length)v+=(v?"\n\n":"")+"[File dilampirkan di penyimpanan virtual: "+PF.map(n=>PD[n]?n+" ("+PD[n]+")":n).join(", ")+"]";if(!v)v="Lihat gambar terlampir.";if(needAdult(v)&&!verified()){const okV=await gateAdult();if(!okV){note("Verifikasi 18+ ditolak — pesan tidak dikirim.");return}}if(H.length===0)log.innerHTML="";const m={role:"user",content:v};if(PA.length){m.images=PA;m.nimg=PA.length}PA=[];PF=[];PD={};attUI();H.forEach(x=>{if(x.rc)delete x.rc});H.push(m);saveH();add("u",uHtml(m));agent()};
 $("#mode").onclick=e=>{const m=e.target.dataset.m;if(m){C.mode=m;saveC();modeUI()}};
 log.onclick=e=>{const T=e.target;if(T.dataset.retry){retryLast();return}if(T.dataset.sv||T.classList.contains("svgi")){const c=T.closest(".svgc"),src=c&&SVGS[c.dataset.id];if(!src)return;const nm=c.dataset.name||"gambar.svg",a=T.dataset.sv||"view";
  if(a==="view")pvSvg(src,nm);else if(a==="svg")saveBlob(new Blob([src],{type:"image/svg+xml"}),nm);else{const o=T.textContent;T.disabled=true;T.textContent="…";svgToPng(src,2).then(b=>saveBlob(b,nm.replace(/\.svg$/i,"")+".png")).catch(x=>alert("Gagal membuat PNG: "+(x.message||x))).finally(()=>{T.disabled=false;T.textContent=o})}return}
  if(T.dataset.iv){const c=T.closest(".svgc"),src=c&&IMGS[c.dataset.im];if(!src)return;const nm=c.dataset.name||"foto.png";
   if(T.dataset.iv==="view")pv('<img alt="" style="max-width:100%;max-height:100vh;display:block;margin:auto" src="'+src+'">',nm);
   else{const o=T.textContent;T.disabled=true;T.textContent="…";fetch(src).then(r=>r.blob()).then(b=>saveBlob(b,nm)).catch(x=>alert("Gagal mengunduh: "+(x.message||x))).finally(()=>{T.disabled=false;T.textContent=o})}return}
- if(T.dataset.ug){const g=T.dataset.ug;if(!grpRecs(g).length){alert("Riwayat perubahan giliran ini sudah dihapus.");return}const n=grpApply(g),rs=grpRecs(g);if(n)T.textContent=rs.every(r=>r.u)?"↻ Terapkan ulang perubahan giliran ini":"↩ Batalkan semua perubahan giliran ini ("+rs.length+" file)";return}if(T.dataset.df||T.dataset.ud){const r=UL.find(x=>x.id===T.closest(".ac").dataset.u);if(!r){alert("Catatan perubahan ini sudah dihapus dari riwayat.");return}if(T.dataset.ud){if(chApply(r))T.textContent=r.u?"Terapkan ulang":"Batalkan"}else{$("#dm").showModal();chDiff(r.id)}return}const qb=e.target.closest&&e.target.closest("[data-q]"),q=qb&&qb.dataset.q;if(q){$("#in").value=q;$("#in").dispatchEvent(new Event("input"));$("#in").focus();return}const pp=e.target.dataset.p;if(pp){pv(FS()[pp]??"<p>File tidak ditemukan</p>",pp);return}if(e.target.classList.contains("rb")){pyBlock(e.target);return}if(e.target.classList.contains("rbn")){ndBlock(e.target);return}if(e.target.classList.contains("pb")){pv(e.target.parentElement.querySelector("code").textContent);return}if(e.target.classList.contains("cp")){navigator.clipboard?.writeText(e.target.parentElement.querySelector("code").textContent);e.target.textContent="✓"}};
+ if(T.dataset.ug){const g=T.dataset.ug;if(!grpRecs(g).length){alert("Riwayat perubahan giliran ini sudah dihapus.");return}const n=grpApply(g),rs=grpRecs(g);if(n)T.textContent=rs.every(r=>r.u)?"↻ Terapkan ulang perubahan giliran ini":"↩ Batalkan semua perubahan giliran ini ("+rs.length+" file)";return}if(T.dataset.df||T.dataset.ud){const r=UL.find(x=>x.id===T.closest(".ac").dataset.u);if(!r){alert("Catatan perubahan ini sudah dihapus dari riwayat.");return}if(T.dataset.ud){if(chApply(r))T.textContent=r.u?"Terapkan ulang":"Batalkan"}else{$("#dm").showModal();chDiff(r.id)}return}const qb=e.target.closest&&e.target.closest("[data-q]"),q=qb&&qb.dataset.q;if(q){$("#in").value=q;$("#in").dispatchEvent(new Event("input"));$("#in").focus();return}const pp=e.target.dataset.p;if(pp){pv(FS()[pp]??"<p>File tidak ditemukan</p>",pp);return}const pyp=e.target.dataset.py;if(pyp){const f=FS();if(!hasF(f,pyp))return note("File tidak ditemukan: "+pyp);pvPy(f[pyp],pyp);return}if(e.target.classList.contains("rb")){pyBlock(e.target);return}if(e.target.classList.contains("rbn")){ndBlock(e.target);return}if(e.target.classList.contains("pb")){pv(e.target.parentElement.querySelector("code").textContent);return}if(e.target.classList.contains("cp")){navigator.clipboard?.writeText(e.target.parentElement.querySelector("code").textContent);e.target.textContent="✓"}};
 const sp=$("#sp");function fillSP(){sp.innerHTML="";PL().forEach(x=>sp.add(new Option(x[0]+((C.custom||{})[x[0]]?" (kustom)":""),x[0])))}fillSP();
 const loadP=()=>{const p=prov(sp.value);$("#su").value=p.url;$("#sm").value=p.model;$("#sk").value=p.key;$("#sy").value=p.proxy||"";$("#sd").style.display="";$("#sr").style.display=(C.hide||[]).length?"":"none";$("#mz").style.display="none";ML=[];$("#vf").value=p.vfmt||"auto";varSettings()};
 sp.onchange=loadP;
@@ -1075,11 +1077,1786 @@ function pyFmt(r,ch,forModel,lang){const L=lang||"Python",cap=(s,n)=>s.length>n?
  if(ch.length)t+="\n[file disimpan: "+ch.join(", ")+(forModel?" — pakai show_image untuk menampilkan gambar":"")+"]";
  if(r.skipped&&r.skipped.length)t+="\n[dilewati (biner tak dikenal/terlalu besar): "+r.skipped.join(", ")+"]";
  if(r.deleted&&r.deleted.length)t+="\n[dihapus di "+L+" tapi dibiarkan di penyimpanan: "+r.deleted.join(", ")+"]";return t}
-async function pyBlock(b){const pre=b.parentElement,code=pre.querySelector("code").textContent;if(b.dataset.run){pyStop("Dihentikan pengguna");return}
+async function pyBlock(b){const pre=b.parentElement,code=pre.querySelector("code").textContent;if(!b.dataset.run&&/\b(?:input\s*\(|import\s+(?:pygame|turtle)|from\s+(?:pygame|turtle)\b)/.test(code)){pvPy(code,"python.py");return}if(b.dataset.run){pyStop("Dihentikan pengguna");return}
  let o=pre.nextElementSibling;if(!o||!o.classList.contains("pyo")){o=document.createElement("div");o.className="pyo";pre.after(o)}
  const t0=b.textContent;b.dataset.run="1";b.textContent="■ Hentikan";o.dataset.ok="";o.textContent="Menyiapkan Python…";
  try{const r=await pyRun(code,{onStatus:m=>{o.textContent=m}}),ch=pyApply(r,"python");o.dataset.ok=r.ok?"1":"0";o.textContent=pyFmt(r,ch,false,"Python")}catch(e){o.dataset.ok="0";o.textContent="Gagal: "+(e.message||e)}
  delete b.dataset.run;b.textContent=t0}
+/* ---- Python Web Runner: Canvas (pygame / turtle / DOM) + Terminal Interaktif (input/print) ---- */
+const PY_WEB_BOOT=String.raw`
+import sys, os, types, math, time, base64, asyncio, inspect, ast, builtins, traceback
+
+_hrai_js = sys.modules.get("js")
+if _hrai_js is None:
+    try:
+        import js as _hrai_js
+    except Exception:
+        _hrai_js = None
+
+def _hrai_bridge():
+    return getattr(_hrai_js, "__hraiPy", None) if _hrai_js is not None else None
+
+def _hrai_check_stop():
+    br = _hrai_bridge()
+    if br is not None and getattr(br, "stopReq", False):
+        raise KeyboardInterrupt("Dihentikan oleh pengguna")
+
+_hrai_last_yield = time.monotonic()
+
+async def _hrai_sleep(sec=0):
+    _hrai_check_stop()
+    global _hrai_last_yield
+    sec = float(sec or 0)
+    br = _hrai_bridge()
+    if br is not None:
+        try:
+            await br.sleep(max(0.0, sec * 1000.0))
+        except Exception as e:
+            if "HRAI_STOP" in str(e) or getattr(br, "stopReq", False):
+                raise KeyboardInterrupt("Dihentikan oleh pengguna")
+            raise
+    else:
+        await asyncio.sleep(max(0.0, sec))
+    _hrai_last_yield = time.monotonic()
+    _hrai_check_stop()
+
+async def _hrai_yield_frame(min_interval=0.0):
+    _hrai_check_stop()
+    global _hrai_last_yield
+    now = time.monotonic()
+    if min_interval <= 0 or (now - _hrai_last_yield) >= min_interval:
+        br = _hrai_bridge()
+        if br is not None:
+            try:
+                await br.nextFrame()
+            except Exception as e:
+                if "HRAI_STOP" in str(e) or getattr(br, "stopReq", False):
+                    raise KeyboardInterrupt("Dihentikan oleh pengguna")
+                raise
+        else:
+            await asyncio.sleep(0)
+        _hrai_last_yield = time.monotonic()
+        _hrai_check_stop()
+
+async def _hrai_input(prompt=""):
+    _hrai_check_stop()
+    global _hrai_last_yield
+    p = "" if prompt is None else str(prompt)
+    br = _hrai_bridge()
+    if br is not None:
+        try:
+            val = await br.askInput(p)
+        except Exception as e:
+            if "HRAI_STOP" in str(e) or getattr(br, "stopReq", False):
+                raise KeyboardInterrupt("Dihentikan oleh pengguna")
+            raise
+        _hrai_last_yield = time.monotonic()
+        _hrai_check_stop()
+        return "" if val is None else str(val)
+    return _orig_input(p)
+
+def _hrai_sync_input(prompt=""):
+    _hrai_check_stop()
+    p = "" if prompt is None else str(prompt)
+    if _hrai_js is not None and hasattr(_hrai_js, "prompt"):
+        br = _hrai_bridge()
+        if br is not None and hasattr(br, "echoInput"):
+            val = _hrai_js.prompt(p)
+            if val is None:
+                raise KeyboardInterrupt("Input dibatalkan")
+            br.echoInput(p, str(val))
+            return str(val)
+    return _orig_input(p)
+
+_orig_input = builtins.input
+builtins.input = _hrai_sync_input
+
+async def _hrai_aw(v):
+    if inspect.isawaitable(v):
+        return await v
+    return v
+
+async def _hrai_after_tick(ret, clk=None):
+    fps = 0
+    if clk is not None and hasattr(clk, "_last_req_fps"):
+        fps = clk._last_req_fps
+    ms = (1000.0 / fps) if fps and fps > 0 else 0.0
+    if ms > 0:
+        await _hrai_sleep(ms / 1000.0)
+    else:
+        await _hrai_yield_frame(0.0)
+    return ret
+
+async def _hrai_after_flip(ret=None):
+    await _hrai_yield_frame(0.012)
+    return ret
+
+async def _hrai_after_poll(ret):
+    await _hrai_yield_frame(0.024)
+    return ret
+
+async def _hrai_after_turtle(ret=None):
+    await _hrai_yield_frame(0.008)
+    return ret
+
+# ---- AST Auto-Async Transformer ----
+def _has_yield_in_scope(fn_node):
+    for child in fn_node.body:
+        for node in ast.walk(child):
+            if node is not child and isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef, ast.Lambda)):
+                continue
+            if isinstance(node, (ast.Yield, ast.YieldFrom)):
+                return True
+    return False
+
+def _walk_scope_nodes(stmts):
+    stack = list(stmts)
+    while stack:
+        n = stack.pop()
+        yield n
+        if isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef, ast.Lambda)):
+            continue
+        stack.extend(ast.iter_child_nodes(n))
+
+def _scan_imports(tree):
+    info = {
+        "time_mods": set(),
+        "sleep_fns": set(),
+        "pygame": False,
+        "display_aliases": set(),
+        "event_aliases": set(),
+        "pg_time_aliases": set(),
+        "pg_wait_fns": set(),
+        "pg_flip_fns": set(),
+        "pg_event_fns": set(),
+        "turtle": False,
+        "turtle_mods": set(),
+        "turtle_done_fns": set(),
+        "turtle_upd_fns": set(),
+        "screen_vars": set(),
+    }
+    for n in ast.walk(tree):
+        if isinstance(n, ast.Import):
+            for a in n.names:
+                nm = a.name
+                asnm = a.asname or nm.split(".")[0]
+                if nm == "time":
+                    info["time_mods"].add(asnm)
+                elif nm == "pygame" or nm.startswith("pygame."):
+                    info["pygame"] = True
+                    if nm == "pygame.display":
+                        info["display_aliases"].add(a.asname or "display")
+                    elif nm == "pygame.event":
+                        info["event_aliases"].add(a.asname or "event")
+                    elif nm == "pygame.time":
+                        info["pg_time_aliases"].add(a.asname or "time")
+                elif nm == "turtle":
+                    info["turtle"] = True
+                    info["turtle_mods"].add(asnm)
+        elif isinstance(n, ast.ImportFrom):
+            mod = n.module or ""
+            if mod == "time":
+                for a in n.names:
+                    if a.name == "sleep":
+                        info["sleep_fns"].add(a.asname or "sleep")
+                    elif a.name == "*":
+                        info["sleep_fns"].add("sleep")
+            elif mod == "pygame" or mod.startswith("pygame."):
+                info["pygame"] = True
+                for a in n.names:
+                    asnm = a.asname or a.name
+                    if mod == "pygame":
+                        if a.name == "display":
+                            info["display_aliases"].add(asnm)
+                        elif a.name == "event":
+                            info["event_aliases"].add(asnm)
+                        elif a.name == "time":
+                            info["pg_time_aliases"].add(asnm)
+                    elif mod == "pygame.display" and a.name in ("flip", "update"):
+                        info["pg_flip_fns"].add(asnm)
+                    elif mod == "pygame.event" and a.name in ("get", "wait"):
+                        info["pg_event_fns"].add(asnm)
+                    elif mod == "pygame.time" and a.name in ("wait", "delay"):
+                        info["pg_wait_fns"].add(asnm)
+            elif mod == "turtle":
+                info["turtle"] = True
+                for a in n.names:
+                    if a.name == "*":
+                        info["turtle_done_fns"].update(["done", "mainloop", "exitonclick"])
+                        info["turtle_upd_fns"].add("update")
+                    elif a.name in ("done", "mainloop", "exitonclick"):
+                        info["turtle_done_fns"].add(a.asname or a.name)
+                    elif a.name == "update":
+                        info["turtle_upd_fns"].add(a.asname or a.name)
+        elif isinstance(n, ast.Assign) and isinstance(n.value, ast.Call):
+            fn = n.value.func
+            is_scr = (isinstance(fn, ast.Name) and fn.id == "Screen") or (isinstance(fn, ast.Attribute) and fn.attr == "Screen")
+            if is_scr:
+                for tgt in n.targets:
+                    if isinstance(tgt, ast.Name):
+                        info["screen_vars"].add(tgt.id)
+    return info
+
+def _is_submod_chain(val, subname, aliases):
+    if isinstance(val, ast.Name) and val.id in aliases:
+        return True
+    if isinstance(val, ast.Attribute) and val.attr == subname:
+        return True
+    return False
+
+def _classify_call(call, info):
+    fn = call.func
+    if isinstance(fn, ast.Name):
+        if fn.id == "input":
+            return "input"
+        if fn.id in info["sleep_fns"]:
+            return "sleep"
+        if fn.id in info["pg_wait_fns"]:
+            return "pg_wait"
+        if fn.id in info["pg_flip_fns"]:
+            return "pg_flip"
+        if fn.id in info["pg_event_fns"]:
+            return "pg_poll"
+        if fn.id in info["turtle_done_fns"] or fn.id in info["turtle_upd_fns"]:
+            return "turtle"
+    elif isinstance(fn, ast.Attribute):
+        attr = fn.attr
+        val = fn.value
+        if attr == "input" and isinstance(val, ast.Name) and val.id == "builtins":
+            return "input"
+        if attr == "sleep" and isinstance(val, ast.Name) and val.id in info["time_mods"]:
+            return "sleep"
+        if info["pygame"]:
+            if attr in ("wait", "delay") and _is_submod_chain(val, "time", info["pg_time_aliases"]):
+                return "pg_wait"
+            if attr in ("tick", "tick_busy_loop"):
+                return "pg_tick"
+            if attr in ("flip", "update") and _is_submod_chain(val, "display", info["display_aliases"]):
+                return "pg_flip"
+            if attr in ("get", "wait") and _is_submod_chain(val, "event", info["event_aliases"]):
+                return "pg_poll"
+        if info["turtle"]:
+            if attr in ("done", "mainloop", "exitonclick"):
+                return "turtle"
+            if attr == "update" and isinstance(val, ast.Name) and (val.id in info["turtle_mods"] or val.id in info["screen_vars"]):
+                return "turtle"
+    return None
+
+def _is_promotable_fn(fn):
+    if fn.name.startswith("__") and fn.name.endswith("__"):
+        return False
+    for dec in fn.decorator_list:
+        if (isinstance(dec, ast.Name) and dec.id == "property") or (isinstance(dec, ast.Attribute) and dec.attr == "property"):
+            return False
+    if _has_yield_in_scope(fn):
+        return False
+    return True
+
+class _HraiAsyncify(ast.NodeTransformer):
+    def __init__(self, info, promoted):
+        self.info = info
+        self.promoted = promoted
+        self.in_async = True
+        self.in_await = False
+
+    def _visit_call_args(self, node):
+        node.args = [self.visit(a) for a in node.args]
+        node.keywords = [self.visit(k) for k in node.keywords]
+
+    def visit_Module(self, node):
+        self.in_async = True
+        node.body = [self.visit(s) for s in node.body]
+        return node
+
+    def visit_FunctionDef(self, node):
+        prev_async = self.in_async
+        promote = _is_promotable_fn(node) and node.name in self.promoted
+        self.in_async = promote
+        node.decorator_list = [self.visit(d) for d in node.decorator_list]
+        node.args = self.visit(node.args)
+        node.body = [self.visit(s) for s in node.body]
+        self.in_async = prev_async
+        if promote:
+            an = ast.AsyncFunctionDef(
+                name=node.name, args=node.args, body=node.body,
+                decorator_list=node.decorator_list, returns=node.returns,
+                type_comment=getattr(node, "type_comment", None),
+                lineno=node.lineno, col_offset=node.col_offset
+            )
+            return ast.copy_location(an, node)
+        return node
+
+    def visit_AsyncFunctionDef(self, node):
+        prev_async = self.in_async
+        self.in_async = True
+        node.decorator_list = [self.visit(d) for d in node.decorator_list]
+        node.args = self.visit(node.args)
+        node.body = [self.visit(s) for s in node.body]
+        self.in_async = prev_async
+        return node
+
+    def visit_Lambda(self, node):
+        prev_async = self.in_async
+        self.in_async = False
+        node.args = self.visit(node.args)
+        node.body = self.visit(node.body)
+        self.in_async = prev_async
+        return node
+
+    def visit_Await(self, node):
+        prev = self.in_await
+        self.in_await = True
+        node.value = self.visit(node.value)
+        self.in_await = prev
+        return node
+
+    def visit_Call(self, node):
+        if not self.in_async:
+            self._visit_call_args(node)
+            node.func = self.visit(node.func)
+            return node
+        kind = _classify_call(node, self.info)
+        if kind and not self.in_await:
+            self._visit_call_args(node)
+            if kind == "input":
+                call = ast.Call(func=ast.Name(id="_hrai_input", ctx=ast.Load()), args=node.args, keywords=node.keywords)
+                return ast.copy_location(ast.Await(value=call), node)
+            if kind == "sleep":
+                call = ast.Call(func=ast.Name(id="_hrai_sleep", ctx=ast.Load()), args=node.args, keywords=node.keywords)
+                return ast.copy_location(ast.Await(value=call), node)
+            if kind == "pg_wait":
+                ms_arg = node.args[0] if node.args else ast.Constant(value=0)
+                sec_expr = ast.BinOp(left=ms_arg, op=ast.Div(), right=ast.Constant(value=1000.0))
+                call = ast.Call(func=ast.Name(id="_hrai_sleep", ctx=ast.Load()), args=[sec_expr], keywords=[])
+                return ast.copy_location(ast.Await(value=call), node)
+            node.func = self.visit(node.func)
+            if kind == "pg_tick":
+                obj = node.func.value if isinstance(node.func, ast.Attribute) else ast.Constant(value=None)
+                wrap = ast.Call(func=ast.Name(id="_hrai_after_tick", ctx=ast.Load()), args=[node, obj], keywords=[])
+                return ast.copy_location(ast.Await(value=wrap), node)
+            if kind == "pg_flip":
+                wrap = ast.Call(func=ast.Name(id="_hrai_after_flip", ctx=ast.Load()), args=[node], keywords=[])
+                return ast.copy_location(ast.Await(value=wrap), node)
+            if kind == "pg_poll":
+                wrap = ast.Call(func=ast.Name(id="_hrai_after_poll", ctx=ast.Load()), args=[node], keywords=[])
+                return ast.copy_location(ast.Await(value=wrap), node)
+            if kind == "turtle":
+                wrap = ast.Call(func=ast.Name(id="_hrai_after_turtle", ctx=ast.Load()), args=[node], keywords=[])
+                return ast.copy_location(ast.Await(value=wrap), node)
+        # Check calls to promoted user functions
+        node.func = self.visit(node.func)
+        self._visit_call_args(node)
+        if not self.in_await:
+            is_user_call = False
+            if isinstance(node.func, ast.Name) and node.func.id in self.promoted:
+                is_user_call = True
+            elif isinstance(node.func, ast.Attribute) and node.func.attr in self.promoted:
+                val = node.func.value
+                if isinstance(val, ast.Name) and val.id in ("self", "cls", "game", "app"):
+                    is_user_call = True
+                elif node.func.attr not in ("update", "get", "pop", "clear", "copy", "items", "keys", "values", "add", "remove"):
+                    is_user_call = True
+            if is_user_call:
+                wrap = ast.Call(func=ast.Name(id="_hrai_aw", ctx=ast.Load()), args=[node], keywords=[])
+                return ast.copy_location(ast.Await(value=wrap), node)
+        return node
+
+def _transform_user_code(src, filename="<script.py>"):
+    tree = ast.parse(src, filename=filename)
+    info = _scan_imports(tree)
+    all_fns = [n for n in ast.walk(tree) if isinstance(n, ast.FunctionDef) and _is_promotable_fn(n)]
+    promoted = set()
+    changed = True
+    while changed:
+        changed = False
+        for fn in all_fns:
+            if fn.name in promoted:
+                continue
+            hit = False
+            for n in _walk_scope_nodes(fn.body):
+                if isinstance(n, ast.Call):
+                    if _classify_call(n, info) is not None:
+                        hit = True
+                        break
+                    if isinstance(n.func, ast.Name) and n.func.id in promoted:
+                        hit = True
+                        break
+                    if isinstance(n.func, ast.Attribute) and n.func.attr in promoted:
+                        val = n.func.value
+                        if (isinstance(val, ast.Name) and val.id in ("self", "cls", "game", "app")) or n.func.attr not in ("update", "get", "pop", "clear", "copy", "items", "keys", "values", "add", "remove"):
+                            hit = True
+                            break
+            if hit:
+                promoted.add(fn.name)
+                changed = True
+    tree = _HraiAsyncify(info, promoted).visit(tree)
+    ast.fix_missing_locations(tree)
+    return tree
+
+# ---- Built-in Pygame 2D Compatibility Module ----
+def _install_pygame():
+    if "pygame" in sys.modules:
+        return
+    pg = types.ModuleType("pygame")
+    pg_locals = types.ModuleType("pygame.locals")
+    pg_display = types.ModuleType("pygame.display")
+    pg_draw = types.ModuleType("pygame.draw")
+    pg_event = types.ModuleType("pygame.event")
+    pg_key = types.ModuleType("pygame.key")
+    pg_mouse = types.ModuleType("pygame.mouse")
+    pg_time = types.ModuleType("pygame.time")
+    pg_font = types.ModuleType("pygame.font")
+    pg_image = types.ModuleType("pygame.image")
+    pg_transform = types.ModuleType("pygame.transform")
+    pg_mixer = types.ModuleType("pygame.mixer")
+    pg_sprite = types.ModuleType("pygame.sprite")
+    pg_math = types.ModuleType("pygame.math")
+
+    # Constants
+    NOEVENT = 0
+    QUIT = 256
+    KEYDOWN = 768
+    KEYUP = 769
+    MOUSEMOTION = 1024
+    MOUSEBUTTONDOWN = 1025
+    MOUSEBUTTONUP = 1026
+    SRCALPHA = 65536
+    RESIZABLE = 16
+    FULLSCREEN = 1
+
+    K_BACKSPACE = 8
+    K_TAB = 9
+    K_RETURN = 13
+    K_ESCAPE = 27
+    K_SPACE = 32
+    K_PLUS = 43
+    K_COMMA = 44
+    K_MINUS = 45
+    K_PERIOD = 46
+    K_SLASH = 47
+    K_UP = 273
+    K_DOWN = 274
+    K_RIGHT = 275
+    K_LEFT = 276
+    K_LSHIFT = 304
+    K_RSHIFT = 303
+    K_LCTRL = 306
+    K_RCTRL = 305
+    K_LALT = 308
+    K_RALT = 307
+
+    _const_map = {
+        "NOEVENT": NOEVENT, "QUIT": QUIT, "KEYDOWN": KEYDOWN, "KEYUP": KEYUP,
+        "MOUSEMOTION": MOUSEMOTION, "MOUSEBUTTONDOWN": MOUSEBUTTONDOWN, "MOUSEBUTTONUP": MOUSEBUTTONUP,
+        "SRCALPHA": SRCALPHA, "RESIZABLE": RESIZABLE, "FULLSCREEN": FULLSCREEN,
+        "K_BACKSPACE": K_BACKSPACE, "K_TAB": K_TAB, "K_RETURN": K_RETURN, "K_ESCAPE": K_ESCAPE,
+        "K_SPACE": K_SPACE, "K_PLUS": K_PLUS, "K_COMMA": K_COMMA, "K_MINUS": K_MINUS,
+        "K_PERIOD": K_PERIOD, "K_SLASH": K_SLASH,
+        "K_UP": K_UP, "K_DOWN": K_DOWN, "K_RIGHT": K_RIGHT, "K_LEFT": K_LEFT,
+        "K_LSHIFT": K_LSHIFT, "K_RSHIFT": K_RSHIFT, "K_LCTRL": K_LCTRL, "K_RCTRL": K_RCTRL,
+        "K_LALT": K_LALT, "K_RALT": K_RALT,
+    }
+    for _ch in range(ord("0"), ord("9") + 1):
+        _const_map["K_" + chr(_ch)] = _ch
+    for _ch in range(ord("a"), ord("z") + 1):
+        _const_map["K_" + chr(_ch)] = _ch
+    for _fn in range(1, 13):
+        _const_map["K_F" + str(_fn)] = 281 + _fn
+
+    for _k, _v in _const_map.items():
+        setattr(pg, _k, _v)
+        setattr(pg_locals, _k, _v)
+
+    class error(RuntimeError):
+        pass
+    pg.error = error
+
+    class Color:
+        def __init__(self, r, g=None, b=None, a=255):
+            if isinstance(r, Color):
+                self.r, self.g, self.b, self.a = r.r, r.g, r.b, r.a
+            elif isinstance(r, str):
+                s = r.strip().lstrip("#")
+                if len(s) == 3:
+                    s = "".join(c * 2 for c in s)
+                if len(s) in (6, 8):
+                    self.r = int(s[0:2], 16)
+                    self.g = int(s[2:4], 16)
+                    self.b = int(s[4:6], 16)
+                    self.a = int(s[6:8], 16) if len(s) == 8 else 255
+                else:
+                    self.r, self.g, self.b, self.a = 255, 255, 255, 255
+            elif isinstance(r, (tuple, list)):
+                self.r = int(r[0])
+                self.g = int(r[1])
+                self.b = int(r[2])
+                self.a = int(r[3]) if len(r) > 3 else 255
+            else:
+                self.r = int(r)
+                self.g = int(g or 0)
+                self.b = int(b or 0)
+                self.a = int(a if a is not None else 255)
+        def __iter__(self):
+            return iter((self.r, self.g, self.b, self.a))
+        def __len__(self):
+            return 4
+        def __getitem__(self, i):
+            return (self.r, self.g, self.b, self.a)[i]
+
+    def _css_color(c):
+        if isinstance(c, str):
+            return c
+        if isinstance(c, Color):
+            if c.a >= 255:
+                return f"rgb({c.r},{c.g},{c.b})"
+            return f"rgba({c.r},{c.g},{c.b},{c.a/255.0:.3f})"
+        if isinstance(c, (tuple, list)):
+            if len(c) >= 4:
+                return f"rgba({int(c[0])},{int(c[1])},{int(c[2])},{float(c[3])/255.0:.3f})"
+            if len(c) == 3:
+                return f"rgb({int(c[0])},{int(c[1])},{int(c[2])})"
+        if isinstance(c, int):
+            r = (c >> 16) & 255
+            g = (c >> 8) & 255
+            b = c & 255
+            return f"rgb({r},{g},{b})"
+        return "rgb(0,0,0)"
+
+    class Rect:
+        def __init__(self, left, top=0, width=0, height=0):
+            if isinstance(left, Rect):
+                self.x, self.y, self.w, self.h = left.x, left.y, left.w, left.h
+            elif isinstance(left, (tuple, list)):
+                if len(left) == 4:
+                    self.x, self.y, self.w, self.h = int(left[0]), int(left[1]), int(left[2]), int(left[3])
+                elif len(left) == 2 and isinstance(top, (tuple, list)):
+                    self.x, self.y = int(left[0]), int(left[1])
+                    self.w, self.h = int(top[0]), int(top[1])
+                else:
+                    raise TypeError("Invalid Rect arguments")
+            else:
+                self.x, self.y, self.w, self.h = int(left), int(top), int(width), int(height)
+        @property
+        def width(self): return self.w
+        @width.setter
+        def width(self, v): self.w = int(v)
+        @property
+        def height(self): return self.h
+        @height.setter
+        def height(self, v): self.h = int(v)
+        @property
+        def left(self): return self.x
+        @left.setter
+        def left(self, v): self.x = int(v)
+        @property
+        def right(self): return self.x + self.w
+        @right.setter
+        def right(self, v): self.x = int(v) - self.w
+        @property
+        def top(self): return self.y
+        @top.setter
+        def top(self, v): self.y = int(v)
+        @property
+        def bottom(self): return self.y + self.h
+        @bottom.setter
+        def bottom(self, v): self.y = int(v) - self.h
+        @property
+        def centerx(self): return self.x + self.w // 2
+        @centerx.setter
+        def centerx(self, v): self.x = int(v) - self.w // 2
+        @property
+        def centery(self): return self.y + self.h // 2
+        @centery.setter
+        def centery(self, v): self.y = int(v) - self.h // 2
+        @property
+        def center(self): return (self.centerx, self.centery)
+        @center.setter
+        def center(self, v): self.centerx, self.centery = int(v[0]), int(v[1])
+        @property
+        def topleft(self): return (self.x, self.y)
+        @topleft.setter
+        def topleft(self, v): self.x, self.y = int(v[0]), int(v[1])
+        @property
+        def topright(self): return (self.right, self.y)
+        @topright.setter
+        def topright(self, v): self.right, self.y = int(v[0]), int(v[1])
+        @property
+        def bottomleft(self): return (self.x, self.bottom)
+        @bottomleft.setter
+        def bottomleft(self, v): self.x, self.bottom = int(v[0]), int(v[1])
+        @property
+        def bottomright(self): return (self.right, self.bottom)
+        @bottomright.setter
+        def bottomright(self, v): self.right, self.bottom = int(v[0]), int(v[1])
+        @property
+        def midtop(self): return (self.centerx, self.y)
+        @midtop.setter
+        def midtop(self, v): self.centerx, self.y = int(v[0]), int(v[1])
+        @property
+        def midbottom(self): return (self.centerx, self.bottom)
+        @midbottom.setter
+        def midbottom(self, v): self.centerx, self.bottom = int(v[0]), int(v[1])
+        @property
+        def midleft(self): return (self.x, self.centery)
+        @midleft.setter
+        def midleft(self, v): self.x, self.centery = int(v[0]), int(v[1])
+        @property
+        def midright(self): return (self.right, self.centery)
+        @midright.setter
+        def midright(self, v): self.right, self.centery = int(v[0]), int(v[1])
+        @property
+        def size(self): return (self.w, self.h)
+        @size.setter
+        def size(self, v): self.w, self.h = int(v[0]), int(v[1])
+        def __iter__(self): return iter((self.x, self.y, self.w, self.h))
+        def __len__(self): return 4
+        def __getitem__(self, i): return (self.x, self.y, self.w, self.h)[i]
+        def __repr__(self): return f"<rect({self.x}, {self.y}, {self.w}, {self.h})>"
+        def copy(self): return Rect(self.x, self.y, self.w, self.h)
+        def move(self, dx, dy): return Rect(self.x + int(dx), self.y + int(dy), self.w, self.h)
+        def move_ip(self, dx, dy): self.x += int(dx); self.y += int(dy)
+        def inflate(self, dx, dy): return Rect(self.x - int(dx) // 2, self.y - int(dy) // 2, self.w + int(dx), self.h + int(dy))
+        def inflate_ip(self, dx, dy): self.x -= int(dx) // 2; self.y -= int(dy) // 2; self.w += int(dx); self.h += int(dy)
+        def clamp(self, other):
+            r = self.copy(); r.clamp_ip(other); return r
+        def clamp_ip(self, other):
+            o = other if isinstance(other, Rect) else Rect(other)
+            if self.w >= o.w: self.x = o.centerx - self.w // 2
+            else: self.x = max(o.left, min(self.x, o.right - self.w))
+            if self.h >= o.h: self.y = o.centery - self.h // 2
+            else: self.y = max(o.top, min(self.y, o.bottom - self.h))
+        def colliderect(self, other):
+            o = other if isinstance(other, Rect) else Rect(other)
+            return self.x < o.right and self.right > o.x and self.y < o.bottom and self.bottom > o.y
+        def collidepoint(self, x, y=None):
+            if y is None: x, y = x[0], x[1]
+            return self.x <= x < self.right and self.y <= y < self.bottom
+        def collidelist(self, rects):
+            for i, r in enumerate(rects):
+                if self.colliderect(r): return i
+            return -1
+        def collidelistall(self, rects):
+            return [i for i, r in enumerate(rects) if self.colliderect(r)]
+        def union(self, other):
+            o = other if isinstance(other, Rect) else Rect(other)
+            x1, y1 = min(self.x, o.x), min(self.y, o.y)
+            x2, y2 = max(self.right, o.right), max(self.bottom, o.bottom)
+            return Rect(x1, y1, x2 - x1, y2 - y1)
+        def union_ip(self, other):
+            u = self.union(other)
+            self.x, self.y, self.w, self.h = u.x, u.y, u.w, u.h
+        def contains(self, other):
+            o = other if isinstance(other, Rect) else Rect(other)
+            return self.x <= o.x and self.y <= o.y and self.right >= o.right and self.bottom >= o.bottom
+
+    def _to_rect(r):
+        return r if isinstance(r, Rect) else Rect(r)
+
+    def _mk_canvas(w, h):
+        doc = getattr(_hrai_js, "document", None) if _hrai_js is not None else None
+        if doc is not None:
+            cv = doc.createElement("canvas")
+            cv.width = max(1, int(w))
+            cv.height = max(1, int(h))
+            return cv, cv.getContext("2d")
+        return None, None
+
+    class Surface:
+        def __init__(self, size, flags=0, depth=32, _canvas=None):
+            self._w = max(1, int(size[0]))
+            self._h = max(1, int(size[1]))
+            self._flags = flags
+            self._alpha = None
+            self._colorkey = None
+            if _canvas is not None:
+                self._canvas = _canvas
+                self._ctx = _canvas.getContext("2d")
+            else:
+                self._canvas, self._ctx = _mk_canvas(self._w, self._h)
+        def get_size(self): return (self._w, self._h)
+        def get_width(self): return self._w
+        def get_height(self): return self._h
+        def get_rect(self, **kw):
+            r = Rect(0, 0, self._w, self._h)
+            for k, v in kw.items():
+                setattr(r, k, v)
+            return r
+        def convert(self): return self
+        def convert_alpha(self): return self
+        def set_alpha(self, a): self._alpha = None if a is None else max(0, min(255, int(a)))
+        def get_alpha(self): return self._alpha
+        def set_colorkey(self, c, flags=0): self._colorkey = c
+        def copy(self):
+            s = Surface((self._w, self._h), self._flags)
+            if s._ctx is not None and self._canvas is not None:
+                s._ctx.drawImage(self._canvas, 0, 0)
+            s._alpha = self._alpha
+            return s
+        def subsurface(self, rect):
+            r = _to_rect(rect)
+            s = Surface((r.w, r.h), self._flags)
+            if s._ctx is not None and self._canvas is not None:
+                s._ctx.drawImage(self._canvas, r.x, r.y, r.w, r.h, 0, 0, r.w, r.h)
+            return s
+        def fill(self, color, rect=None):
+            if self._ctx is None: return Rect(0, 0, self._w, self._h)
+            r = _to_rect(rect) if rect is not None else Rect(0, 0, self._w, self._h)
+            c = Color(color)
+            self._ctx.save()
+            if c.a < 255:
+                self._ctx.clearRect(r.x, r.y, r.w, r.h)
+            self._ctx.fillStyle = _css_color(c)
+            self._ctx.fillRect(r.x, r.y, r.w, r.h)
+            self._ctx.restore()
+            return r
+        def blit(self, source, dest, area=None):
+            if self._ctx is None or source._canvas is None:
+                return Rect(0, 0, source._w, source._h)
+            if isinstance(dest, Rect):
+                dx, dy = dest.x, dest.y
+            else:
+                dx, dy = int(dest[0]), int(dest[1])
+            self._ctx.save()
+            if source._alpha is not None:
+                self._ctx.globalAlpha = source._alpha / 255.0
+            if area is not None:
+                ar = _to_rect(area)
+                self._ctx.drawImage(source._canvas, ar.x, ar.y, ar.w, ar.h, dx, dy, ar.w, ar.h)
+                res = Rect(dx, dy, ar.w, ar.h)
+            else:
+                self._ctx.drawImage(source._canvas, dx, dy)
+                res = Rect(dx, dy, source._w, source._h)
+            self._ctx.restore()
+            return res
+        def get_at(self, pos):
+            if self._ctx is None: return Color(0, 0, 0, 255)
+            d = self._ctx.getImageData(int(pos[0]), int(pos[1]), 1, 1).data
+            return Color(int(d[0]), int(d[1]), int(d[2]), int(d[3]))
+        def set_at(self, pos, color):
+            if self._ctx is None: return
+            self._ctx.fillStyle = _css_color(color)
+            self._ctx.fillRect(int(pos[0]), int(pos[1]), 1, 1)
+
+    _screen = None
+    _caption = "HRAI Python Game"
+
+    def _d_init(): pass
+    def _d_quit(): pass
+    def _d_set_mode(size=(800, 600), flags=0, depth=0):
+        nonlocal _screen
+        w, h = max(1, int(size[0])), max(1, int(size[1]))
+        br = _hrai_bridge()
+        cv = None
+        if br is not None:
+            cv = br.showCanvas(w, h, _caption)
+        _screen = Surface((w, h), flags, _canvas=cv)
+        _screen.fill((0, 0, 0))
+        return _screen
+    def _d_get_surface(): return _screen
+    def _d_set_caption(title, icontitle=""):
+        nonlocal _caption
+        _caption = str(title)
+        br = _hrai_bridge()
+        if br is not None and hasattr(br, "setCaption"):
+            br.setCaption(_caption)
+    def _d_get_caption(): return (_caption, _caption)
+    def _d_flip(): _hrai_check_stop()
+    def _d_update(rect=None): _hrai_check_stop()
+
+    pg_display.init = _d_init
+    pg_display.quit = _d_quit
+    pg_display.set_mode = _d_set_mode
+    pg_display.get_surface = _d_get_surface
+    pg_display.set_caption = _d_set_caption
+    pg_display.get_caption = _d_get_caption
+    pg_display.flip = _d_flip
+    pg_display.update = _d_update
+
+    # Draw
+    def _draw_rect(surf, color, rect, width=0, border_radius=0):
+        ctx = surf._ctx
+        r = _to_rect(rect)
+        if ctx is None: return r
+        ctx.save()
+        col = _css_color(color)
+        rad = max(0, int(border_radius or 0))
+        if rad > 0 and hasattr(ctx, "roundRect"):
+            ctx.beginPath()
+            ctx.roundRect(r.x, r.y, r.w, r.h, min(rad, r.w / 2, r.h / 2))
+            if width and width > 0:
+                ctx.strokeStyle = col; ctx.lineWidth = width; ctx.stroke()
+            else:
+                ctx.fillStyle = col; ctx.fill()
+        else:
+            if width and width > 0:
+                ctx.strokeStyle = col; ctx.lineWidth = width
+                ctx.strokeRect(r.x + width / 2, r.y + width / 2, max(0, r.w - width), max(0, r.h - width))
+            else:
+                ctx.fillStyle = col; ctx.fillRect(r.x, r.y, r.w, r.h)
+        ctx.restore()
+        return r
+
+    def _draw_circle(surf, color, center, radius, width=0):
+        ctx = surf._ctx
+        cx, cy = float(center[0]), float(center[1])
+        rad = max(0.0, float(radius))
+        r = Rect(int(cx - rad), int(cy - rad), int(rad * 2), int(rad * 2))
+        if ctx is None: return r
+        ctx.save()
+        ctx.beginPath()
+        ctx.arc(cx, cy, rad, 0, math.tau)
+        col = _css_color(color)
+        if width and width > 0:
+            ctx.strokeStyle = col; ctx.lineWidth = width; ctx.stroke()
+        else:
+            ctx.fillStyle = col; ctx.fill()
+        ctx.restore()
+        return r
+
+    def _draw_line(surf, color, start_pos, end_pos, width=1):
+        ctx = surf._ctx
+        x1, y1 = float(start_pos[0]), float(start_pos[1])
+        x2, y2 = float(end_pos[0]), float(end_pos[1])
+        if ctx is not None:
+            ctx.save()
+            ctx.strokeStyle = _css_color(color)
+            ctx.lineWidth = max(1, float(width or 1))
+            ctx.lineCap = "round"
+            ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke()
+            ctx.restore()
+        lx, rx = min(x1, x2), max(x1, x2)
+        ty, by = min(y1, y2), max(y1, y2)
+        return Rect(int(lx), int(ty), max(1, int(rx - lx)), max(1, int(by - ty)))
+
+    def _draw_lines(surf, color, closed, points, width=1):
+        pts = list(points)
+        if len(pts) < 2: return Rect(0, 0, 0, 0)
+        ctx = surf._ctx
+        if ctx is not None:
+            ctx.save()
+            ctx.strokeStyle = _css_color(color)
+            ctx.lineWidth = max(1, float(width or 1))
+            ctx.beginPath()
+            ctx.moveTo(float(pts[0][0]), float(pts[0][1]))
+            for p in pts[1:]:
+                ctx.lineTo(float(p[0]), float(p[1]))
+            if closed: ctx.closePath()
+            ctx.stroke()
+            ctx.restore()
+        xs = [p[0] for p in pts]; ys = [p[1] for p in pts]
+        return Rect(int(min(xs)), int(min(ys)), max(1, int(max(xs) - min(xs))), max(1, int(max(ys) - min(ys))))
+
+    def _draw_polygon(surf, color, points, width=0):
+        pts = list(points)
+        if len(pts) < 3: return Rect(0, 0, 0, 0)
+        ctx = surf._ctx
+        if ctx is not None:
+            ctx.save()
+            ctx.beginPath()
+            ctx.moveTo(float(pts[0][0]), float(pts[0][1]))
+            for p in pts[1:]:
+                ctx.lineTo(float(p[0]), float(p[1]))
+            ctx.closePath()
+            col = _css_color(color)
+            if width and width > 0:
+                ctx.strokeStyle = col; ctx.lineWidth = width; ctx.stroke()
+            else:
+                ctx.fillStyle = col; ctx.fill()
+            ctx.restore()
+        xs = [p[0] for p in pts]; ys = [p[1] for p in pts]
+        return Rect(int(min(xs)), int(min(ys)), max(1, int(max(xs) - min(xs))), max(1, int(max(ys) - min(ys))))
+
+    def _draw_ellipse(surf, color, rect, width=0):
+        r = _to_rect(rect)
+        ctx = surf._ctx
+        if ctx is not None and r.w > 0 and r.h > 0:
+            ctx.save()
+            ctx.beginPath()
+            ctx.ellipse(r.x + r.w / 2.0, r.y + r.h / 2.0, r.w / 2.0, r.h / 2.0, 0, 0, math.tau)
+            col = _css_color(color)
+            if width and width > 0:
+                ctx.strokeStyle = col; ctx.lineWidth = width; ctx.stroke()
+            else:
+                ctx.fillStyle = col; ctx.fill()
+            ctx.restore()
+        return r
+
+    def _draw_arc(surf, color, rect, start_angle, stop_angle, width=1):
+        r = _to_rect(rect)
+        ctx = surf._ctx
+        if ctx is not None and r.w > 0 and r.h > 0:
+            ctx.save()
+            ctx.beginPath()
+            ctx.ellipse(r.x + r.w / 2.0, r.y + r.h / 2.0, r.w / 2.0, r.h / 2.0, 0, -float(stop_angle), -float(start_angle))
+            ctx.strokeStyle = _css_color(color)
+            ctx.lineWidth = max(1, float(width or 1))
+            ctx.stroke()
+            ctx.restore()
+        return r
+
+    pg_draw.rect = _draw_rect
+    pg_draw.circle = _draw_circle
+    pg_draw.line = _draw_line
+    pg_draw.aaline = lambda s, c, a, b, blend=1: _draw_line(s, c, a, b, 1)
+    pg_draw.lines = _draw_lines
+    pg_draw.aalines = lambda s, c, cl, pts, blend=1: _draw_lines(s, c, cl, pts, 1)
+    pg_draw.polygon = _draw_polygon
+    pg_draw.ellipse = _draw_ellipse
+    pg_draw.arc = _draw_arc
+
+    # Events
+    class Event:
+        def __init__(self, etype, _dict=None, **kw):
+            self.type = int(etype)
+            d = dict(_dict) if _dict else {}
+            d.update(kw)
+            self.__dict__.update(d)
+        @property
+        def dict(self):
+            return {k: v for k, v in self.__dict__.items() if k != "type"}
+
+    _extra_events = []
+    def _pull_js_events():
+        br = _hrai_bridge()
+        if br is None:
+            return []
+        raw = br.pollEvents()
+        out = []
+        for item in raw:
+            t = int(item.type)
+            kw = {}
+            if hasattr(item, "key") and item.key is not None: kw["key"] = int(item.key)
+            if hasattr(item, "unicode") and item.unicode is not None: kw["unicode"] = str(item.unicode)
+            if hasattr(item, "mod") and item.mod is not None: kw["mod"] = int(item.mod)
+            if hasattr(item, "pos") and item.pos is not None: kw["pos"] = (int(item.pos[0]), int(item.pos[1]))
+            if hasattr(item, "rel") and item.rel is not None: kw["rel"] = (int(item.rel[0]), int(item.rel[1]))
+            if hasattr(item, "button") and item.button is not None: kw["button"] = int(item.button)
+            if hasattr(item, "buttons") and item.buttons is not None: kw["buttons"] = tuple(int(x) for x in item.buttons)
+            out.append(Event(t, **kw))
+        return out
+
+    def _ev_get(eventtype=None):
+        _hrai_check_stop()
+        evs = _pull_js_events()
+        if _extra_events:
+            evs.extend(_extra_events)
+            _extra_events.clear()
+        if eventtype is not None:
+            types_set = set(eventtype) if isinstance(eventtype, (list, tuple, set)) else {int(eventtype)}
+            keep = [e for e in evs if e.type in types_set]
+            rest = [e for e in evs if e.type not in types_set]
+            _extra_events.extend(rest)
+            return keep
+        return evs
+    def _ev_pump():
+        _hrai_check_stop()
+    def _ev_clear(eventtype=None):
+        _ev_get(eventtype)
+    def _ev_post(ev):
+        _extra_events.append(ev)
+    def _ev_poll():
+        evs = _ev_get()
+        if evs:
+            first = evs[0]
+            _extra_events.extend(evs[1:])
+            return first
+        return Event(NOEVENT)
+
+    pg_event.Event = Event
+    pg_event.get = _ev_get
+    pg_event.pump = _ev_pump
+    pg_event.clear = _ev_clear
+    pg_event.post = _ev_post
+    pg_event.poll = _ev_poll
+    pg_event.wait = lambda timeout=0: _ev_poll()
+
+    # Key
+    class _KeyState:
+        def __init__(self, down):
+            self._down = down
+        def __getitem__(self, k):
+            return int(k) in self._down
+        def __len__(self):
+            return 512
+
+    def _key_pressed():
+        br = _hrai_bridge()
+        if br is None:
+            return _KeyState(set())
+        return _KeyState({int(x) for x in br.getKeys()})
+    def _key_name(k):
+        k = int(k)
+        for nm, val in _const_map.items():
+            if nm.startswith("K_") and val == k:
+                return nm[2:].lower()
+        return chr(k) if 32 <= k <= 126 else str(k)
+
+    pg_key.get_pressed = _key_pressed
+    pg_key.name = _key_name
+    pg_key.get_mods = lambda: 0
+
+    # Mouse
+    def _mouse_pos():
+        br = _hrai_bridge()
+        if br is None: return (0, 0)
+        p = br.getMousePos()
+        return (int(p[0]), int(p[1]))
+    def _mouse_pressed():
+        br = _hrai_bridge()
+        if br is None: return (False, False, False)
+        b = br.getMouseButtons()
+        return (bool(b[0]), bool(b[1]), bool(b[2]))
+    pg_mouse.get_pos = _mouse_pos
+    pg_mouse.get_pressed = _mouse_pressed
+    pg_mouse.get_rel = lambda: (0, 0)
+    pg_mouse.set_visible = lambda v: True
+    pg_mouse.get_visible = lambda: True
+
+    # Time
+    _t_start = time.monotonic()
+    def _get_ticks(): return int((time.monotonic() - _t_start) * 1000.0)
+    class Clock:
+        def __init__(self):
+            self._last = time.monotonic()
+            self._dt_ms = 16
+            self._fps = 60.0
+            self._last_req_fps = 0
+        def tick(self, framerate=0):
+            self._last_req_fps = float(framerate or 0)
+            now = time.monotonic()
+            dt = max(1, int((now - self._last) * 1000.0))
+            if self._last_req_fps > 0:
+                target = int(1000.0 / self._last_req_fps)
+                dt = max(dt, target)
+            self._last = now
+            self._dt_ms = dt
+            self._fps = 1000.0 / max(1, dt)
+            return dt
+        def tick_busy_loop(self, framerate=0):
+            return self.tick(framerate)
+        def get_time(self): return self._dt_ms
+        def get_rawtime(self): return self._dt_ms
+        def get_fps(self): return self._fps
+
+    pg_time.Clock = Clock
+    pg_time.get_ticks = _get_ticks
+    pg_time.wait = lambda ms: 0
+    pg_time.delay = lambda ms: 0
+
+    # Font
+    class Font:
+        def __init__(self, name=None, size=24, bold=False, italic=False):
+            self._sz = max(6, int(size or 24))
+            fam = "ui-monospace, Menlo, Consolas, monospace" if not name else f"{name}, sans-serif"
+            self._css = f"{'italic ' if italic else ''}{'bold ' if bold else ''}{self._sz}px {fam}"
+        def size(self, text):
+            _, ctx = _mk_canvas(16, 16)
+            if ctx is None: return (len(str(text)) * (self._sz // 2), self._sz)
+            ctx.font = self._css
+            m = ctx.measureText(str(text))
+            return (max(1, int(math.ceil(m.width))), int(math.ceil(self._sz * 1.25)))
+        def get_height(self): return int(math.ceil(self._sz * 1.25))
+        def get_linesize(self): return int(math.ceil(self._sz * 1.3))
+        def render(self, text, antialias, color, background=None):
+            s = str(text)
+            w, h = self.size(s)
+            surf = Surface((max(1, w + 4), max(1, h)), SRCALPHA)
+            if background is not None:
+                surf.fill(background)
+            if surf._ctx is not None:
+                ctx = surf._ctx
+                ctx.save()
+                ctx.font = self._css
+                ctx.textBaseline = "top"
+                ctx.fillStyle = _css_color(color)
+                ctx.fillText(s, 2, int(self._sz * 0.12))
+                ctx.restore()
+            return surf
+
+    pg_font.init = lambda: None
+    pg_font.quit = lambda: None
+    pg_font.get_init = lambda: True
+    pg_font.get_fonts = lambda: ["sans-serif", "monospace"]
+    pg_font.match_font = lambda name: str(name)
+    pg_font.Font = Font
+    pg_font.SysFont = lambda name, size, bold=False, italic=False: Font(name, size, bold, italic)
+
+    # Image & Transform
+    def _img_load(path):
+        p = str(path).replace("\\", "/").lstrip("./")
+        br = _hrai_bridge()
+        if br is not None and hasattr(br, "getPreloadedImage"):
+            cv = br.getPreloadedImage(p)
+            if cv is not None:
+                return Surface((cv.width, cv.height), SRCALPHA, _canvas=cv)
+        if os.path.exists(p):
+            try:
+                from PIL import Image as _PI
+                im = _PI.open(p).convert("RGBA")
+                w, h = im.size
+                surf = Surface((w, h), SRCALPHA)
+                if surf._ctx is not None:
+                    raw = im.tobytes()
+                    imgd = surf._ctx.createImageData(w, h)
+                    imgd.data.assign(raw)
+                    surf._ctx.putImageData(imgd, 0, 0)
+                return surf
+            except Exception:
+                pass
+        raise FileNotFoundError(f"Gambar tidak ditemukan atau belum dimuat: {path}")
+
+    def _img_save(surf, path):
+        if surf._canvas is None: return
+        du = surf._canvas.toDataURL("image/png")
+        b64 = du.split(",", 1)[1]
+        with open(str(path), "wb") as f:
+            f.write(base64.b64decode(b64))
+
+    pg_image.load = _img_load
+    pg_image.save = _img_save
+
+    def _tr_scale(surf, size):
+        nw, nh = max(1, int(size[0])), max(1, int(size[1]))
+        out = Surface((nw, nh), SRCALPHA)
+        if out._ctx is not None and surf._canvas is not None:
+            out._ctx.drawImage(surf._canvas, 0, 0, nw, nh)
+        return out
+    def _tr_rotate(surf, angle):
+        rad = -math.radians(float(angle))
+        w, h = surf._w, surf._h
+        c, s = abs(math.cos(rad)), abs(math.sin(rad))
+        nw, nh = max(1, int(math.ceil(w * c + h * s))), max(1, int(math.ceil(w * s + h * c)))
+        out = Surface((nw, nh), SRCALPHA)
+        if out._ctx is not None and surf._canvas is not None:
+            ctx = out._ctx
+            ctx.save()
+            ctx.translate(nw / 2.0, nh / 2.0)
+            ctx.rotate(rad)
+            ctx.drawImage(surf._canvas, -w / 2.0, -h / 2.0)
+            ctx.restore()
+        return out
+    def _tr_flip(surf, fx, fy):
+        out = Surface((surf._w, surf._h), SRCALPHA)
+        if out._ctx is not None and surf._canvas is not None:
+            ctx = out._ctx
+            ctx.save()
+            ctx.translate(surf._w if fx else 0, surf._h if fy else 0)
+            ctx.scale(-1 if fx else 1, -1 if fy else 1)
+            ctx.drawImage(surf._canvas, 0, 0)
+            ctx.restore()
+        return out
+
+    pg_transform.scale = _tr_scale
+    pg_transform.smoothscale = _tr_scale
+    pg_transform.rotate = _tr_rotate
+    pg_transform.flip = _tr_flip
+    pg_transform.rotozoom = lambda s, a, sc: _tr_rotate(_tr_scale(s, (s._w * sc, s._h * sc)), a)
+
+    # Mixer
+    def _guess_audio_mime(path):
+        ext = os.path.splitext(str(path))[1].lower()
+        return {".ogg": "audio/ogg", ".oga": "audio/ogg", ".mp3": "audio/mpeg", ".wav": "audio/wav"}.get(ext, "audio/mpeg")
+
+    class Sound:
+        def __init__(self, file):
+            self._vol = 1.0
+            self._b64 = None
+            self._mime = "audio/wav"
+            self._aid = None
+            if isinstance(file, str) and os.path.exists(file):
+                with open(file, "rb") as f:
+                    self._b64 = base64.b64encode(f.read()).decode("ascii")
+                self._mime = _guess_audio_mime(file)
+        def play(self, loops=0):
+            br = _hrai_bridge()
+            if br is not None and self._b64:
+                self._aid = br.playAudio(self._b64, self._mime, self._vol, int(loops) == -1)
+        def stop(self):
+            br = _hrai_bridge()
+            if br is not None and self._aid is not None:
+                br.stopAudio(self._aid)
+        def set_volume(self, v): self._vol = max(0.0, min(1.0, float(v)))
+        def get_volume(self): return self._vol
+
+    class _Music:
+        def __init__(self):
+            self._b64 = None; self._mime = "audio/mpeg"; self._vol = 1.0; self._aid = None
+        def load(self, f):
+            if os.path.exists(f):
+                with open(f, "rb") as fp:
+                    self._b64 = base64.b64encode(fp.read()).decode("ascii")
+                self._mime = _guess_audio_mime(f)
+        def play(self, loops=0):
+            self.stop()
+            br = _hrai_bridge()
+            if br is not None and self._b64:
+                self._aid = br.playAudio(self._b64, self._mime, self._vol, int(loops) == -1)
+        def stop(self):
+            br = _hrai_bridge()
+            if br is not None and self._aid is not None:
+                br.stopAudio(self._aid); self._aid = None
+        def pause(self): pass
+        def unpause(self): pass
+        def set_volume(self, v): self._vol = max(0.0, min(1.0, float(v)))
+        def get_busy(self): return self._aid is not None
+
+    pg_mixer.init = lambda *a, **kw: None
+    pg_mixer.pre_init = lambda *a, **kw: None
+    pg_mixer.quit = lambda: None
+    pg_mixer.get_init = lambda: (44100, -16, 2)
+    pg_mixer.Sound = Sound
+    pg_mixer.music = _Music()
+
+    # Sprite
+    class Sprite:
+        def __init__(self, *groups):
+            self.__g = {}
+            self.image = None
+            self.rect = None
+            if groups:
+                self.add(*groups)
+        def add(self, *groups):
+            for g in groups:
+                if hasattr(g, "add_internal"):
+                    g.add_internal(self)
+                    self.__g[g] = 1
+        def remove(self, *groups):
+            for g in groups:
+                if hasattr(g, "remove_internal"):
+                    g.remove_internal(self)
+                    self.__g.pop(g, None)
+        def kill(self):
+            for g in list(self.__g):
+                g.remove_internal(self)
+            self.__g.clear()
+        def alive(self): return bool(self.__g)
+        def groups(self): return list(self.__g.keys())
+        def update(self, *args, **kwargs): pass
+
+    class Group:
+        def __init__(self, *sprites):
+            self._spr = []
+            self.add(*sprites)
+        def sprites(self): return list(self._spr)
+        def add_internal(self, s):
+            if s not in self._spr: self._spr.append(s)
+        def remove_internal(self, s):
+            if s in self._spr: self._spr.remove(s)
+        def add(self, *sprites):
+            for s in sprites:
+                if isinstance(s, (list, tuple)): self.add(*s)
+                elif s is not None: s.add(self)
+        def remove(self, *sprites):
+            for s in sprites:
+                if isinstance(s, (list, tuple)): self.remove(*s)
+                elif s is not None: s.remove(self)
+        def empty(self):
+            for s in list(self._spr): s.remove(self)
+        def update(self, *args, **kwargs):
+            for s in list(self._spr): s.update(*args, **kwargs)
+        def draw(self, surface):
+            dirty = []
+            for s in self._spr:
+                if s.image is not None and s.rect is not None:
+                    dirty.append(surface.blit(s.image, s.rect))
+            return dirty
+        def __len__(self): return len(self._spr)
+        def __iter__(self): return iter(self._spr)
+        def __bool__(self): return bool(self._spr)
+
+    class GroupSingle(Group):
+        def add_internal(self, s):
+            self._spr = [s]
+
+    def _collide_rect(left, right):
+        return left.rect.colliderect(right.rect)
+    def _spritecollide(sprite, group, dokill, collided=None):
+        fn = collided or _collide_rect
+        hits = [s for s in list(group) if fn(sprite, s)]
+        if dokill:
+            for s in hits: s.kill()
+        return hits
+    def _groupcollide(g1, g2, dk1, dk2, collided=None):
+        fn = collided or _collide_rect
+        out = {}
+        for s1 in list(g1):
+            hits = [s2 for s2 in list(g2) if fn(s1, s2)]
+            if hits:
+                out[s1] = hits
+                if dk1: s1.kill()
+                if dk2:
+                    for s2 in hits: s2.kill()
+        return out
+
+    pg_sprite.Sprite = Sprite
+    pg_sprite.Group = Group
+    pg_sprite.GroupSingle = GroupSingle
+    pg_sprite.RenderPlain = Group
+    pg_sprite.OrderedUpdates = Group
+    pg_sprite.LayeredUpdates = Group
+    pg_sprite.collide_rect = _collide_rect
+    pg_sprite.spritecollide = _spritecollide
+    pg_sprite.spritecollideany = lambda s, g, c=None: next(iter(_spritecollide(s, g, False, c)), None)
+    pg_sprite.groupcollide = _groupcollide
+
+    # Vector2
+    class Vector2:
+        def __init__(self, x=0.0, y=None):
+            if isinstance(x, Vector2): self.x, self.y = float(x.x), float(x.y)
+            elif isinstance(x, (tuple, list)): self.x, self.y = float(x[0]), float(x[1])
+            elif y is None: self.x = self.y = float(x)
+            else: self.x, self.y = float(x), float(y)
+        def __iter__(self): return iter((self.x, self.y))
+        def __len__(self): return 2
+        def __getitem__(self, i): return (self.x, self.y)[i]
+        def __repr__(self): return f"<Vector2({self.x}, {self.y})>"
+        def __add__(self, o): o = Vector2(o); return Vector2(self.x + o.x, self.y + o.y)
+        def __sub__(self, o): o = Vector2(o); return Vector2(self.x - o.x, self.y - o.y)
+        def __neg__(self): return Vector2(-self.x, -self.y)
+        def __mul__(self, k): return Vector2(self.x * k, self.y * k)
+        def __rmul__(self, k): return Vector2(self.x * k, self.y * k)
+        def __truediv__(self, k): return Vector2(self.x / k, self.y / k)
+        def copy(self): return Vector2(self.x, self.y)
+        def update(self, x=0.0, y=None):
+            v = Vector2(x, y); self.x, self.y = v.x, v.y
+        def length_squared(self): return self.x * self.x + self.y * self.y
+        def length(self): return math.hypot(self.x, self.y)
+        def normalize(self):
+            l = self.length()
+            if l == 0: raise ValueError("Cannot normalize Vector2 of length 0")
+            return Vector2(self.x / l, self.y / l)
+        def normalize_ip(self):
+            n = self.normalize(); self.x, self.y = n.x, n.y
+        def distance_to(self, o):
+            o = Vector2(o); return math.hypot(self.x - o.x, self.y - o.y)
+        def dot(self, o):
+            o = Vector2(o); return self.x * o.x + self.y * o.y
+        def rotate(self, angle):
+            r = math.radians(float(angle)); c, s = math.cos(r), math.sin(r)
+            return Vector2(self.x * c - self.y * s, self.x * s + self.y * c)
+
+    pg_math.Vector2 = Vector2
+
+    pg.Color = Color
+    pg.Rect = Rect
+    pg.Surface = Surface
+    pg.display = pg_display
+    pg.draw = pg_draw
+    pg.event = pg_event
+    pg.key = pg_key
+    pg.mouse = pg_mouse
+    pg.time = pg_time
+    pg.font = pg_font
+    pg.image = pg_image
+    pg.transform = pg_transform
+    pg.mixer = pg_mixer
+    pg.sprite = pg_sprite
+    pg.math = pg_math
+    pg.locals = pg_locals
+    pg.init = lambda: (6, 0)
+    pg.quit = _d_quit
+    pg.version = types.SimpleNamespace(ver="2.5.0-hrai")
+
+    for name, mod in [
+        ("pygame", pg), ("pygame.locals", pg_locals), ("pygame.display", pg_display),
+        ("pygame.draw", pg_draw), ("pygame.event", pg_event), ("pygame.key", pg_key),
+        ("pygame.mouse", pg_mouse), ("pygame.time", pg_time), ("pygame.font", pg_font),
+        ("pygame.image", pg_image), ("pygame.transform", pg_transform), ("pygame.mixer", pg_mixer),
+        ("pygame.sprite", pg_sprite), ("pygame.math", pg_math)
+    ]:
+        sys.modules[name] = mod
+
+# ---- Built-in Turtle Compatibility Module ----
+def _install_turtle():
+    if "turtle" in sys.modules:
+        return
+    tm = types.ModuleType("turtle")
+
+    class _TurtleScreen:
+        _inst = None
+        def __init__(self):
+            self._w = 600
+            self._h = 500
+            self._bg = "#ffffff"
+            self._title = "HRAI Turtle Graphics"
+            self._cv = None
+            self._ctx = None
+            self._layer = None
+            self._lctx = None
+            self._turtles = []
+            self._key_cb = {}
+            self._ensure()
+        def _ensure(self):
+            br = _hrai_bridge()
+            doc = getattr(_hrai_js, "document", None) if _hrai_js is not None else None
+            if br is not None and self._cv is None:
+                self._cv = br.showCanvas(self._w, self._h, self._title)
+                self._ctx = self._cv.getContext("2d")
+            if doc is not None and self._layer is None:
+                self._layer = doc.createElement("canvas")
+                self._layer.width = self._w
+                self._layer.height = self._h
+                self._lctx = self._layer.getContext("2d")
+                self._lctx.fillStyle = self._bg
+                self._lctx.fillRect(0, 0, self._w, self._h)
+            self._render()
+        def setup(self, width=600, height=500, startx=None, starty=None):
+            self._w = max(100, int(width)); self._h = max(100, int(height))
+            br = _hrai_bridge()
+            if br is not None:
+                self._cv = br.showCanvas(self._w, self._h, self._title)
+                self._ctx = self._cv.getContext("2d")
+            if self._layer is not None:
+                self._layer.width = self._w; self._layer.height = self._h
+            self.clear()
+        def window_width(self): return self._w
+        def window_height(self): return self._h
+        def title(self, t):
+            self._title = str(t)
+            br = _hrai_bridge()
+            if br is not None and hasattr(br, "setCaption"): br.setCaption(self._title)
+        def bgcolor(self, *args):
+            if not args: return self._bg
+            self._bg = str(args[0]) if len(args) == 1 else f"rgb({int(args[0])},{int(args[1])},{int(args[2])})"
+            if self._lctx is not None:
+                self._lctx.fillStyle = self._bg
+                self._lctx.fillRect(0, 0, self._w, self._h)
+            self._render()
+        def clear(self):
+            if self._lctx is not None:
+                self._lctx.fillStyle = self._bg
+                self._lctx.fillRect(0, 0, self._w, self._h)
+            self._render()
+        def reset(self): self.clear()
+        def tracer(self, n=1, delay=None): pass
+        def _to_px(self, x, y): return (self._w / 2.0 + float(x), self._h / 2.0 - float(y))
+        def _render(self):
+            if self._ctx is None: return
+            ctx = self._ctx
+            if self._layer is not None:
+                ctx.drawImage(self._layer, 0, 0)
+            for t in self._turtles:
+                if not t._vis: continue
+                px, py = self._to_px(t._x, t._y)
+                ctx.save()
+                ctx.translate(px, py)
+                ctx.rotate(-math.radians(t._ang))
+                ctx.beginPath()
+                ctx.moveTo(10, 0); ctx.lineTo(-7, -6); ctx.lineTo(-4, 0); ctx.lineTo(-7, 6); ctx.closePath()
+                ctx.fillStyle = t._fc
+                ctx.strokeStyle = t._pc
+                ctx.lineWidth = 1.5
+                ctx.fill(); ctx.stroke()
+                ctx.restore()
+        def update(self):
+            self._poll_keys()
+            self._render()
+        def _poll_keys(self):
+            br = _hrai_bridge()
+            if br is None or not self._key_cb: return
+            for ev in br.pollEvents():
+                if int(ev.type) == 768 and hasattr(ev, "unicode"):
+                    u = str(ev.unicode or "")
+                    k = int(getattr(ev, "key", 0) or 0)
+                    names = {273: "Up", 274: "Down", 275: "Right", 276: "Left", 32: "space", 13: "Return"}
+                    cand = [names.get(k), u, u.lower()]
+                    for c in cand:
+                        if c and c in self._key_cb:
+                            fn = self._key_cb[c]
+                            res = fn()
+                            if inspect.isawaitable(res):
+                                asyncio.ensure_future(res)
+                            break
+        def listen(self, *a): pass
+        def onkey(self, fun, key): self._key_cb[str(key)] = fun
+        def onkeypress(self, fun, key): self._key_cb[str(key)] = fun
+        def mainloop(self): self.update()
+        def done(self): self.update()
+        def exitonclick(self): self.update()
+
+    def Screen():
+        if _TurtleScreen._inst is None:
+            _TurtleScreen._inst = _TurtleScreen()
+        return _TurtleScreen._inst
+
+    class Turtle:
+        def __init__(self, shape="classic"):
+            self._scr = Screen()
+            if self not in self._scr._turtles:
+                self._scr._turtles.append(self)
+            self._x = 0.0; self._y = 0.0; self._ang = 0.0
+            self._down = True; self._vis = True
+            self._pc = "#000000"; self._fc = "#000000"; self._pw = 2
+            self._filling = False; self._fill_pts = []
+        def _col(self, args):
+            if len(args) == 1:
+                c = args[0]
+                if isinstance(c, tuple):
+                    return f"rgb({int(c[0])},{int(c[1])},{int(c[2])})"
+                return str(c)
+            if len(args) >= 3:
+                return f"rgb({int(args[0])},{int(args[1])},{int(args[2])})"
+            return "#000000"
+        def goto(self, x, y=None):
+            if y is None: x, y = x[0], x[1]
+            nx, ny = float(x), float(y)
+            if self._down and self._scr._lctx is not None:
+                x1, y1 = self._scr._to_px(self._x, self._y)
+                x2, y2 = self._scr._to_px(nx, ny)
+                c = self._scr._lctx
+                c.save(); c.strokeStyle = self._pc; c.lineWidth = self._pw; c.lineCap = "round"
+                c.beginPath(); c.moveTo(x1, y1); c.lineTo(x2, y2); c.stroke(); c.restore()
+            self._x, self._y = nx, ny
+            if self._filling: self._fill_pts.append((nx, ny))
+            self._scr._render()
+        setpos = goto; setposition = goto
+        def setx(self, x): self.goto(x, self._y)
+        def sety(self, y): self.goto(self._x, y)
+        def forward(self, d):
+            r = math.radians(self._ang)
+            self.goto(self._x + float(d) * math.cos(r), self._y + float(d) * math.sin(r))
+        fd = forward
+        def backward(self, d): self.forward(-float(d))
+        bk = backward; back = backward
+        def left(self, a): self._ang = (self._ang + float(a)) % 360.0; self._scr._render()
+        lt = left
+        def right(self, a): self._ang = (self._ang - float(a)) % 360.0; self._scr._render()
+        rt = right
+        def setheading(self, a): self._ang = float(a) % 360.0; self._scr._render()
+        seth = setheading
+        def heading(self): return self._ang
+        def pos(self): return (self._x, self._y)
+        position = pos
+        def xcor(self): return self._x
+        def ycor(self): return self._y
+        def home(self): self.goto(0, 0); self.setheading(0)
+        def penup(self): self._down = False
+        pu = penup; up = penup
+        def pendown(self): self._down = True
+        pd = pendown; down = pendown
+        def isdown(self): return self._down
+        def pencolor(self, *a):
+            if not a: return self._pc
+            self._pc = self._col(a)
+        def fillcolor(self, *a):
+            if not a: return self._fc
+            self._fc = self._col(a)
+        def color(self, *a):
+            if not a: return (self._pc, self._fc)
+            if len(a) == 2 and isinstance(a[0], str) and isinstance(a[1], str):
+                self._pc, self._fc = a[0], a[1]
+            else:
+                c = self._col(a); self._pc = self._fc = c
+        def pensize(self, w=None):
+            if w is None: return self._pw
+            self._pw = max(1, float(w))
+        width = pensize
+        def speed(self, s=None): return 0
+        def shape(self, s=None): return "classic"
+        def hideturtle(self): self._vis = False; self._scr._render()
+        ht = hideturtle
+        def showturtle(self): self._vis = True; self._scr._render()
+        st = showturtle
+        def isvisible(self): return self._vis
+        def begin_fill(self): self._filling = True; self._fill_pts = [(self._x, self._y)]
+        def end_fill(self):
+            if self._filling and len(self._fill_pts) >= 3 and self._scr._lctx is not None:
+                c = self._scr._lctx
+                c.save(); c.beginPath()
+                p0 = self._scr._to_px(*self._fill_pts[0])
+                c.moveTo(p0[0], p0[1])
+                for pt in self._fill_pts[1:]:
+                    px, py = self._scr._to_px(*pt)
+                    c.lineTo(px, py)
+                c.closePath(); c.fillStyle = self._fc; c.fill(); c.restore()
+            self._filling = False; self._fill_pts = []; self._scr._render()
+        def dot(self, size=None, *color):
+            sz = float(size) if size is not None else max(self._pw + 4, self._pw * 2)
+            col = self._col(color) if color else self._pc
+            if self._scr._lctx is not None:
+                px, py = self._scr._to_px(self._x, self._y)
+                c = self._scr._lctx; c.save(); c.fillStyle = col
+                c.beginPath(); c.arc(px, py, sz / 2.0, 0, math.tau); c.fill(); c.restore()
+            self._scr._render()
+        def circle(self, radius, extent=360, steps=None):
+            r = float(radius); ex = float(extent); st = int(steps or max(12, abs(int(ex / 8))))
+            da = ex / st; ds = 2.0 * abs(r) * math.sin(math.radians(abs(da) / 2.0))
+            sign = 1 if r >= 0 else -1
+            for _ in range(st):
+                self.left(sign * da / 2.0)
+                self.forward(ds)
+                self.left(sign * da / 2.0)
+        def write(self, arg, move=False, align="left", font=("Arial", 12, "normal")):
+            if self._scr._lctx is None: return
+            c = self._scr._lctx
+            px, py = self._scr._to_px(self._x, self._y)
+            fn = font[0] if len(font) > 0 else "Arial"
+            fsz = int(font[1]) if len(font) > 1 else 12
+            fst = str(font[2]) if len(font) > 2 else "normal"
+            c.save()
+            c.font = f"{'italic ' if 'italic' in fst else ''}{'bold ' if 'bold' in fst else ''}{fsz}px {fn}, sans-serif"
+            c.fillStyle = self._pc
+            c.textAlign = align if align in ("left", "center", "right") else "left"
+            c.fillText(str(arg), px, py)
+            c.restore()
+            self._scr._render()
+        def clear(self): self._scr.clear()
+        def reset(self): self._x = self._y = self._ang = 0.0; self._down = True; self._scr.clear()
+
+    _def_t = [None]
+    def _dt():
+        if _def_t[0] is None: _def_t[0] = Turtle()
+        return _def_t[0]
+    for _fn in [
+        "forward", "fd", "backward", "bk", "back", "right", "rt", "left", "lt",
+        "goto", "setpos", "setposition", "setx", "sety", "setheading", "seth",
+        "heading", "pos", "position", "xcor", "ycor", "home", "circle", "dot",
+        "penup", "pu", "up", "pendown", "pd", "down", "isdown", "pencolor",
+        "fillcolor", "color", "pensize", "width", "begin_fill", "end_fill",
+        "speed", "shape", "hideturtle", "ht", "showturtle", "st", "isvisible", "write"
+    ]:
+        setattr(tm, _fn, (lambda name: (lambda *a, **kw: getattr(_dt(), name)(*a, **kw)))(_fn))
+    for _sfn in ["bgcolor", "title", "setup", "clear", "reset", "tracer", "update", "done", "mainloop", "exitonclick", "listen", "onkey", "onkeypress", "window_width", "window_height"]:
+        setattr(tm, _sfn, (lambda name: (lambda *a, **kw: getattr(Screen(), name)(*a, **kw)))(_sfn))
+    tm.Screen = Screen
+    tm.Turtle = Turtle
+    tm.Pen = Turtle
+    sys.modules["turtle"] = tm
+
+_install_pygame()
+_install_turtle()
+
+async def _hrai_run_user(src, filename="<script.py>"):
+    ns = {
+        "__name__": "__main__",
+        "__file__": filename,
+        "_hrai_input": _hrai_input,
+        "_hrai_sleep": _hrai_sleep,
+        "_hrai_aw": _hrai_aw,
+        "_hrai_after_tick": _hrai_after_tick,
+        "_hrai_after_flip": _hrai_after_flip,
+        "_hrai_after_poll": _hrai_after_poll,
+        "_hrai_after_turtle": _hrai_after_turtle,
+    }
+    tree = _transform_user_code(src, filename)
+    flags = getattr(ast, "PyCF_ALLOW_TOP_LEVEL_AWAIT", 0)
+    code_obj = compile(tree, filename, "exec", flags=flags)
+    res = eval(code_obj, ns, ns)
+    if inspect.isawaitable(res):
+        await res
+`;
+function buildPyHtml(code,title,files){
+ const payload=JSON.stringify({code:String(code||""),title:String(title||"script.py"),files:files||{},base:PYBASE,boot:PY_WEB_BOOT}).replace(/</g,"\\u003c");
+ return '<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>'
+ +'*{box-sizing:border-box}html,body{height:100%;margin:0;background:#0a1222;color:#e8eefb;font:13.5px/1.5 ui-monospace,Menlo,Consolas,monospace;overflow:hidden}'
+ +'body{display:flex;flex-direction:column}'
+ +'#bar{display:flex;align-items:center;gap:6px;padding:8px 10px;background:#0e182c;border-bottom:1px solid rgba(158,184,232,.18);flex:none;flex-wrap:wrap}'
+ +'#st{flex:1;min-width:120px;font-size:12px;color:#93a4c6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}'
+ +'#st.ok{color:#4ade80}#st.er{color:#ff8a8a}'
+ +'.pb2{border:1px solid rgba(158,184,232,.25);background:rgba(255,255,255,.07);color:#e8eefb;border-radius:8px;padding:5px 10px;font:12px/1.2 system-ui,sans-serif;font-weight:600;cursor:pointer}'
+ +'.pb2:hover{background:rgba(255,255,255,.14)}.pb2.on{border-color:#5aa9ff;color:#5aa9ff}.pb2.stp{border-color:rgba(255,138,138,.45);color:#ff8a8a}'
+ +'#main{flex:1;min-height:0;display:flex;flex-direction:column}'
+ +'#stage{display:none;flex:1;min-height:0;flex-direction:column;align-items:center;justify-content:center;background:#050a14;padding:8px;gap:8px;position:relative;overflow:auto}'
+ +'#stage.on{display:flex}'
+ +'#pycv{max-width:100%;max-height:100%;background:#000;border:1px solid rgba(158,184,232,.22);border-radius:8px;outline:0;touch-action:none;object-fit:contain}'
+ +'#pydom{width:100%}'
+ +'#pad{display:none;width:100%;max-width:440px;align-items:center;justify-content:space-between;gap:10px;padding:4px 0;user-select:none;-webkit-user-select:none}'
+ +'#pad.on{display:flex}'
+ +'.dpad{display:grid;grid-template-columns:repeat(3,44px);grid-template-rows:repeat(2,40px);gap:4px}'
+ +'.dpad button,.abtn button{border:1px solid rgba(158,184,232,.3);background:#15233d;color:#e8eefb;border-radius:9px;font-weight:700;touch-action:none;user-select:none}'
+ +'.dpad button:active,.abtn button:active{background:#5aa9ff;color:#04122b}'
+ +'.abtn{display:flex;gap:8px}.abtn button{min-width:68px;height:44px;padding:0 10px;font-size:12px}'
+ +'#term{flex:1;min-height:120px;display:flex;flex-direction:column;background:#060d1b}'
+ +'#stage.on+#term{flex:0 0 155px;border-top:1px solid rgba(158,184,232,.18)}'
+ +'#stage.on+#term.hide{display:none}'
+ +'#out{flex:1;margin:0;padding:10px 12px;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px}'
+ +'.o-err{color:#ff8a8a}.o-sys{color:#8fa4cc}.o-in{color:#5aa9ff;font-weight:600}'
+ +'#inbar{display:none;align-items:center;gap:6px;padding:8px 10px;background:#0e182c;border-top:1px solid rgba(158,184,232,.22)}'
+ +'#inbar.on{display:flex}'
+ +'#inprompt{color:#5aa9ff;max-width:42%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}'
+ +'#inval{flex:1;min-width:0;background:#060d1b;color:#e8eefb;border:1px solid rgba(158,184,232,.3);border-radius:8px;padding:7px 10px;font:inherit;outline:0}'
+ +'#inval:focus{border-color:#5aa9ff}'
+ +'#ingo{border:0;background:#5aa9ff;color:#04122b;border-radius:8px;padding:7px 12px;font-weight:700;cursor:pointer}'
+ +'</style></head><body>'
+ +'<div id="bar"><span id="st">Memuat Python (Pyodide)…</span><button type="button" class="pb2" id="bpad" style="display:none">🎮 Kontrol</button><button type="button" class="pb2" id="bterm" style="display:none">Terminal</button><button type="button" class="pb2 stp" id="bstp">■ Hentikan</button></div>'
+ +'<div id="main"><div id="stage"><canvas id="pycv" width="600" height="400" tabindex="0"></canvas><div id="pydom"></div>'
+ +'<div id="pad"><div class="dpad"><span></span><button data-k="ArrowUp">▲</button><span></span><button data-k="ArrowLeft">◀</button><button data-k="ArrowDown">▼</button><button data-k="ArrowRight">▶</button></div><div class="abtn"><button data-k=" ">SPACE</button><button data-k="Enter">ENTER</button></div></div>'
+ +'</div><div id="term"><pre id="out"></pre><form id="inbar"><span id="inprompt"></span><input id="inval" autocomplete="off" placeholder="Ketik jawaban lalu Enter…"><button id="ingo" type="submit">Kirim</button></form></div></div>'
+ +'<scr'+'ipt type="application/json" id="hrai-py-data">'+payload+'</scr'+'ipt>'
+ +'<scr'+'ipt>'
+ +'const D=JSON.parse(document.getElementById("hrai-py-data").textContent);'
+ +'const stEl=document.getElementById("st"),outEl=document.getElementById("out"),stageEl=document.getElementById("stage"),termEl=document.getElementById("term"),cv=document.getElementById("pycv"),inbar=document.getElementById("inbar"),inprompt=document.getElementById("inprompt"),inval=document.getElementById("inval"),bpad=document.getElementById("bpad"),bterm=document.getElementById("bterm"),pad=document.getElementById("pad"),bstp=document.getElementById("bstp");'
+ +'function setSt(t,cls){stEl.textContent=t;stEl.className=cls||""}'
+ +'function appendOut(txt,cls){if(!txt)return;const s=document.createElement("span");if(cls)s.className=cls;s.textContent=txt;outEl.append(s);outEl.scrollTop=outEl.scrollHeight}'
+ +'const KEYMAP={ArrowUp:273,ArrowDown:274,ArrowRight:275,ArrowLeft:276," ":32,Spacebar:32,Enter:13,Escape:27,Tab:9,Backspace:8,Shift:304,Control:306,Alt:308,"+":43,",":44,"-":45,".":46,"/":47};'
+ +'for(let c=48;c<=57;c++)KEYMAP[String.fromCharCode(c)]=c;'
+ +'for(let c=65;c<=90;c++){KEYMAP[String.fromCharCode(c)]=c+32;KEYMAP[String.fromCharCode(c+32)]=c+32;}'
+ +'for(let f=1;f<=12;f++)KEYMAP["F"+f]=281+f;'
+ +'const evQ=[],keysDown=new Set(),preloaded={};let mousePos=[0,0],mouseBtns=[0,0,0],pendingInp=null,stopWait=null;'
+ +'function mapKey(e){let k=KEYMAP[e.key];if(k==null&&e.code){if(/^Key([A-Z])$/.test(e.code))k=e.code.charCodeAt(3)+32;else if(/^Digit([0-9])$/.test(e.code))k=e.code.charCodeAt(5)}return k||0}'
+ +'function pushKey(down,keyStr){const k=KEYMAP[keyStr]||(keyStr.length===1?keyStr.toLowerCase().charCodeAt(0):0);if(!k)return;if(down)keysDown.add(k);else keysDown.delete(k);evQ.push({type:down?768:769,key:k,unicode:keyStr.length===1?keyStr:"",mod:0})}'
+ +'window.addEventListener("keydown",e=>{if(document.activeElement===inval)return;const k=mapKey(e);if(k){if([32,37,38,39,40].includes(e.keyCode)||e.key.startsWith("Arrow")||e.key===" ")e.preventDefault();keysDown.add(k);evQ.push({type:768,key:k,unicode:e.key&&e.key.length===1?e.key:"",mod:0})}});'
+ +'window.addEventListener("keyup",e=>{if(document.activeElement===inval)return;const k=mapKey(e);if(k){keysDown.delete(k);evQ.push({type:769,key:k,unicode:e.key&&e.key.length===1?e.key:"",mod:0})}});'
+ +'function cvCoords(e){const r=cv.getBoundingClientRect();return[Math.max(0,Math.min(cv.width-1,Math.round((e.clientX-r.left)*cv.width/Math.max(1,r.width)))),Math.max(0,Math.min(cv.height-1,Math.round((e.clientY-r.top)*cv.height/Math.max(1,r.height))))]}'
+ +'cv.addEventListener("pointerdown",e=>{cv.focus();const p=cvCoords(e),dx=p[0]-mousePos[0],dy=p[1]-mousePos[1];mousePos=p;mouseBtns[0]=1;evQ.push({type:1025,pos:p,rel:[dx,dy],button:(e.button||0)+1,buttons:[1,0,0]})});'
+ +'cv.addEventListener("pointermove",e=>{const p=cvCoords(e),dx=p[0]-mousePos[0],dy=p[1]-mousePos[1];mousePos=p;evQ.push({type:1024,pos:p,rel:[dx,dy],buttons:[mouseBtns[0],mouseBtns[1],mouseBtns[2]]})});'
+ +'window.addEventListener("pointerup",e=>{if(!mouseBtns[0])return;const p=cvCoords(e);mousePos=p;mouseBtns[0]=0;evQ.push({type:1026,pos:p,button:(e.button||0)+1,buttons:[0,0,0]})});'
+ +'pad.querySelectorAll("button[data-k]").forEach(btn=>{const k=btn.dataset.k;btn.addEventListener("pointerdown",e=>{e.preventDefault();pushKey(true,k)});const up=()=>pushKey(false,k);btn.addEventListener("pointerup",up);btn.addEventListener("pointercancel",up);btn.addEventListener("pointerleave",up)});'
+ +'bpad.onclick=()=>{pad.classList.toggle("on");bpad.classList.toggle("on",pad.classList.contains("on"))};'
+ +'bterm.onclick=()=>{termEl.classList.toggle("hide");bterm.classList.toggle("on",!termEl.classList.contains("hide"))};'
+ +'inbar.onsubmit=e=>{e.preventDefault();if(!pendingInp)return;const r=pendingInp,v=inval.value;pendingInp=null;inbar.classList.remove("on");inval.value="";appendOut(v+"\\n","o-in");r.ok(v)};'
+ +'const audios={};let audSeq=0;'
+ +'window.__hraiPy={stopReq:false,'
+ +'showCanvas(w,h,title){cv.width=Math.max(1,w|0);cv.height=Math.max(1,h|0);stageEl.classList.add("on");bpad.style.display="";bterm.style.display="";bterm.classList.toggle("on",!termEl.classList.contains("hide"));if(window.matchMedia("(pointer:coarse)").matches&&!pad.classList.contains("on")){pad.classList.add("on");bpad.classList.add("on")}cv.focus();if(title)setSt(title);return cv},'
+ +'setCaption(t){if(!window.__hraiPy.stopReq)setSt(String(t||D.title))},'
+ +'pollEvents(){return evQ.splice(0,evQ.length)},'
+ +'getKeys(){return Array.from(keysDown)},'
+ +'getMousePos(){return mousePos},'
+ +'getMouseButtons(){return mouseBtns},'
+ +'getPreloadedImage(p){return preloaded[p]||preloaded[p.replace(/^\\.\\//,"")]||null},'
+ +'playAudio(b64,mime,vol,loop){try{const a=new Audio("data:"+mime+";base64,"+b64);a.volume=Math.max(0,Math.min(1,vol??1));a.loop=!!loop;const id=++audSeq;audios[id]=a;a.onended=()=>{delete audios[id]};a.play().catch(()=>{});return id}catch{return 0}},'
+ +'stopAudio(id){if(audios[id]){try{audios[id].pause()}catch{}delete audios[id]}},'
+ +'echoInput(p,v){if(p)appendOut(p);appendOut(v+"\\n","o-in")},'
+ +'askInput(p){if(window.__hraiPy.stopReq)return Promise.reject(new Error("HRAI_STOP"));if(p)appendOut(p);inprompt.textContent=p||"input>";inbar.classList.add("on");inval.focus();return new Promise((ok,no)=>{pendingInp={ok,no}})},'
+ +'sleep(ms){if(window.__hraiPy.stopReq)return Promise.reject(new Error("HRAI_STOP"));return new Promise((ok,no)=>{const done=()=>{stopWait=null;ok()};const id=ms<=18?requestAnimationFrame(done):setTimeout(done,ms);stopWait=()=>{if(ms<=18)cancelAnimationFrame(id);else clearTimeout(id);no(new Error("HRAI_STOP"))}})},'
+ +'nextFrame(){if(window.__hraiPy.stopReq)return Promise.reject(new Error("HRAI_STOP"));return new Promise((ok,no)=>{const id=requestAnimationFrame(()=>{stopWait=null;ok()});stopWait=()=>{cancelAnimationFrame(id);no(new Error("HRAI_STOP"))}})}'
+ +'};'
+ +'bstp.onclick=()=>{window.__hraiPy.stopReq=true;evQ.push({type:256});Object.keys(audios).forEach(k=>window.__hraiPy.stopAudio(k));if(pendingInp){const r=pendingInp;pendingInp=null;inbar.classList.remove("on");r.no(new Error("HRAI_STOP"))}if(stopWait){const sw=stopWait;stopWait=null;sw()}setSt("Menghentikan…")};'
+ +'function sumBytes(u){let h=2166136261;for(let i=0;i<u.length;i++){h^=u[i];h=Math.imul(h,16777619)}return u.length+":"+(h>>>0)}'
+ +'function b64d(s){const b=atob(s),u=new Uint8Array(b.length);for(let i=0;i<b.length;i++)u[i]=b.charCodeAt(i);return u}'
+ +'function b64e(u){let s="";for(let i=0;i<u.length;i+=8192)s+=String.fromCharCode.apply(null,u.subarray(i,i+8192));return btoa(s)}'
+ +'function walkFS(F,dir,rel,out){F.readdir(dir).forEach(n=>{if(n==="."||n===".."||n==="__pycache__")return;const full=dir+"/"+n,r=rel?rel+"/"+n:n,st=F.stat(full);if(F.isDir(st.mode))walkFS(F,full,r,out);else if(!/\\.pyc$/.test(n))out.push([r,full])})}'
+ +'async function preloadImgs(files){for(const [k,f] of Object.entries(files)){if(!f||f.b==null)continue;const ext=(k.split(".").pop()||"").toLowerCase();const mm={png:"image/png",jpg:"image/jpeg",jpeg:"image/jpeg",gif:"image/gif",webp:"image/webp"}[ext];if(!mm)continue;try{const u=b64d(f.b),bl=new Blob([u],{type:mm}),bmp=await createImageBitmap(bl),c=document.createElement("canvas");c.width=bmp.width;c.height=bmp.height;c.getContext("2d").drawImage(bmp,0,0);bmp.close();preloaded[k]=c}catch{}}}'
+ +'(async()=>{try{'
+ +'await preloadImgs(D.files||{});'
+ +'const sc=document.createElement("script");sc.src=D.base+"pyodide.js";await new Promise((ok,no)=>{sc.onload=ok;sc.onerror=()=>no(new Error("Gagal memuat pyodide.js (periksa koneksi internet)."));document.head.append(sc)});'
+ +'const P=await loadPyodide({indexURL:D.base});'
+ +'const F=P.FS,W="/home/pyodide/work";F.mkdirTree(W);F.chdir(W);'
+ +'const orig={};for(const [nm,f] of Object.entries(D.files||{})){const u=f.b!=null?b64d(f.b):new TextEncoder().encode(f.t||""),dir=nm.split("/").slice(0,-1).join("/");if(dir)F.mkdirTree(W+"/"+dir);F.writeFile(W+"/"+nm,u);orig[nm]=sumBytes(u)}'
+ +'P.setStdout({batched:s=>appendOut(s+"\\n")});P.setStderr({batched:s=>appendOut(s+"\\n","o-err")});'
+ +'setSt("Memuat paket…");'
+ +'await P.runPythonAsync(D.boot);'
+ +'P.globals.set("_hrai_user_code",D.code);P.globals.set("_hrai_user_file",D.title||"script.py");'
+ +'try{await P.loadPackagesFromImports(D.code)}catch{}'
+ +'setSt("Berjalan · "+(D.title||"script.py"),"ok");'
+ +'try{await P.runPythonAsync("import sys\\nif \\"/home/pyodide/work\\" not in sys.path: sys.path.insert(0, \\"/home/pyodide/work\\")\\nawait _hrai_run_user(_hrai_user_code, _hrai_user_file)");'
+ +'if(window.__hraiPy.stopReq){setSt("Dihentikan");appendOut("\\n[Dihentikan oleh pengguna]\\n","o-sys")}else{setSt("Selesai · "+(D.title||"script.py"),"ok");appendOut("\\n[Program selesai]\\n","o-sys")}'
+ +'}catch(e){const msg=String(e&&e.message||e);if(window.__hraiPy.stopReq||/KeyboardInterrupt|HRAI_STOP/.test(msg)){setSt("Dihentikan");appendOut("\\n[Program dihentikan]\\n","o-sys")}else{setSt("Error","er");appendOut("\\n"+msg+"\\n","o-err")}}'
+ +'try{const cur=[],changed={};let tot=0,cnt=0;walkFS(F,W,"",cur);const td=new TextDecoder("utf-8",{fatal:true});for(const [rel,full] of cur){const bytes=F.readFile(full);if(orig[rel]===sumBytes(bytes))continue;if(cnt>=40||tot+bytes.length>2e7||bytes.length>8e6)continue;tot+=bytes.length;cnt++;let txt=null;try{txt=td.decode(bytes)}catch{}changed[rel]=txt!==null?{t:txt}:{b:b64e(bytes)}}if(Object.keys(changed).length)parent.postMessage({hrai:"pyfs",files:changed},"*")}catch{}'
+ +'bstp.style.display="none";'
+ +'}catch(e){setSt("Gagal memuat","er");appendOut(String(e&&e.message||e)+"\\n","o-err");bstp.style.display="none"}'
+ +'})();'
+ +'</scr'+'ipt></body></html>';
+}
+function pvPy(code,t){
+ PVs={code,t:t||"script.py",py:true};
+ let h;
+ try{h=buildPyHtml(code,PVs.t,pyFiles())}catch(e){h="<pre>"+esc(e&&e.message||e)+"</pre>"}
+ $("#pf").srcdoc=h;
+ $("#pt").textContent="Python · "+PVs.t;
+ $("#pdl").style.display="none";
+ if(!$("#dp").open)$("#dp").showModal();
+}
 /* ---- Node.js / JavaScript: Web Worker dengan emulasi modul Node + VFS ---- */
 const NDW=function(){
  const te=new TextEncoder(),td=new TextDecoder(),tdStrict=new TextDecoder("utf-8",{fatal:true});
@@ -1331,12 +3108,12 @@ function bundle(html,path){LASTSKIP=[];const fs=FS(),doc=new DOMParser().parseFr
  const ns=doc.createElement("script");ns.textContent="("+NAV+")("+JSON.stringify(path||"").replace(/</g,"\\u003c")+");";doc.body.append(ns);
  return(/^\s*<!doctype/i.test(html)?"<!DOCTYPE html>":"")+doc.documentElement.outerHTML}
 function pv(code,t,svg){PVs={code,t,svg};let h;try{h=bundle(code,t)}catch{h=code}$("#pf").srcdoc=h;if(LASTSKIP.length)note("Pratinjau: file besar tidak dimuat otomatis ("+LASTSKIP.join(", ")+"). Pakai file ≤ 10 MB untuk pratinjau, atau buka lewat File manager.");$("#pt").textContent=t||"Pratinjau";$("#pdl").style.display=svg?"":"none";if(!$("#dp").open)$("#dp").showModal()}
-addEventListener("message",e=>{const d=e.data;if(e.source!==$("#pf").contentWindow||!d||d.hrai!=="nav"||typeof d.href!=="string")return;const fs=FS();let p=rp(String(d.from||""),d.href);if(!hasF(fs,p)){const q=(p?p+"/":"")+"index.html";if(hasF(fs,q))p=q;else{$("#pt").textContent="Tidak ditemukan: "+(p||"/");return}}pv(fs[p],p)});
+addEventListener("message",e=>{const d=e.data;if(e.source!==$("#pf").contentWindow||!d)return;if(d.hrai==="pyfs"&&d.files&&typeof d.files==="object"){pyApply({files:d.files},"python");return}if(d.hrai!=="nav"||typeof d.href!=="string")return;const fs=FS();let p=rp(String(d.from||""),d.href);if(!hasF(fs,p)){const q=(p?p+"/":"")+"index.html";if(hasF(fs,q))p=q;else{$("#pt").textContent="Tidak ditemukan: "+(p||"/");return}}pv(fs[p],p)});
 $("#bh").onclick=()=>{hist();$("#dh").showModal()};
 $("#hn").onclick=newChat;$("#hc").onclick=()=>$("#dh").close();
 $("#pc").onclick=()=>$("#dp").close();
 $("#pdl").onclick=async()=>{if(!PVs||!PVs.svg)return;const b=$("#pdl"),o=b.textContent;b.disabled=true;b.textContent="…";try{saveBlob(await svgToPng(PVs.svg,2),((PVs.t||"gambar").split("/").pop()).replace(/\.svg$/i,"")+".png")}catch(e){alert("Gagal membuat PNG: "+(e.message||e))}b.disabled=false;b.textContent=o};
-$("#pr").onclick=()=>{if(!PVs)return;const f=FS();if(PVs.svg){const t0=PVs.t,raw=t0&&hasF(f,t0)?f[t0]:PVs.svg;$("#pf").srcdoc="";setTimeout(()=>pvSvg(raw,t0),50);return}const c=PVs.t&&hasF(f,PVs.t)?f[PVs.t]:PVs.code;$("#pf").srcdoc="";setTimeout(()=>pv(c,PVs.t),50)};
+$("#pr").onclick=()=>{if(!PVs)return;const f=FS();if(PVs.py){const t0=PVs.t,raw=t0&&hasF(f,t0)?f[t0]:PVs.code;$("#pf").srcdoc="";setTimeout(()=>pvPy(raw,t0),50);return}if(PVs.svg){const t0=PVs.t,raw=t0&&hasF(f,t0)?f[t0]:PVs.svg;$("#pf").srcdoc="";setTimeout(()=>pvSvg(raw,t0),50);return}const c=PVs.t&&hasF(f,PVs.t)?f[PVs.t]:PVs.code;$("#pf").srcdoc="";setTimeout(()=>pv(c,PVs.t),50)};
 $("#dp").onclose=()=>$("#pf").srcdoc="";
 let PA=[],PF=[],PD={};
 const jr=function(a,b){if(a==="images"&&Array.isArray(b))return;if(typeof b==="string"&&b.length>20000){if(a==="arguments")return JSON.stringify({catatan:"argumen besar dipotong dari riwayat tersimpan"});if(a==="content"&&this.role==="tool")return b.slice(0,2000)+"\n[…dipotong di riwayat tersimpan; baca ulang file bila perlu]"}return b};
@@ -1408,7 +3185,8 @@ function cmdSteps(a){if(H.length===0)log.innerHTML="";const cur=Math.max(10,Math
  if(!a)return note("Batas langkah per permintaan: "+cur+" (1 langkah = 1 putaran model beserta tool-nya). Ubah: /steps 80 (10–200) atau /steps default.");
  if(/^(default|reset|normal)$/i.test(a)){delete C.maxSteps;saveC();return note("Batas langkah dikembalikan ke 40.")}
  const n=Math.round(+a);if(!(n>=10&&n<=200))return note("Pakai angka 10–200, mis. /steps 80.");C.maxSteps=n;saveC();note("Batas langkah per permintaan: "+n+".")}
-function cmdSlash(c,a){if(c==="steps"||c==="langkah")return cmdSteps(a);if(c==="variant"||c==="varian"||c==="effort")return cmdVariant(a);if(c==="think")return cmdThink(a);if(c==="theme")return cmdTheme(a);if(c==="font")return cmdFont(a);if(c==="ctx")return cmdCtx(a);if(c==="changes"){$("#dm").showModal();return chList()}if(c==="undo"){const r=UL.find(x=>!x.u);if(!r)return note("Tidak ada perubahan untuk dibatalkan.");if(r.g&&/^(giliran|turn|semua)$/.test(a)){const n=grpApply(r.g);return note(n?"Dibatalkan: "+n+" perubahan ("+(r.gl||"kelompok terakhir")+").":"Tidak ada yang dibatalkan.")}if(chApply(r))note("Dibatalkan: "+r.p+" ("+r.k+")");return}if(c==="compact"){if(a==="auto"){C.ac=C.ac===false;saveC();return note("Padatkan otomatis: "+(C.ac===false?"mati":"hidup"))}return compact(false)}if(H.length===0)log.innerHTML="";const b=c==="budget";
+function cmdPy(a){if(H.length===0)log.innerHTML="";const f=FS(),pys=Object.keys(f).filter(k=>/\.py$/i.test(k)&&!isBin(f[k])).sort();let q=String(a||"").trim().replace(/^["']|["']$/g,"").replace(/^\.\//,"");if(!q){if(pys.length===1){pvPy(f[pys[0]],pys[0]);return}return note(pys.length?"File Python tersedia: "+pys.join(", ")+". Jalankan: python "+pys[0]:"Belum ada file .py di penyimpanan virtual.")}const hit=[q,q+".py"].find(c=>hasF(f,c)&&!isBin(f[c]))||pys.find(k=>k.toLowerCase()===q.toLowerCase()||k.toLowerCase()===(q+".py").toLowerCase());if(!hit)return note("File Python tidak ditemukan: "+q+(pys.length?". Tersedia: "+pys.join(", "):""));pvPy(f[hit],hit)}
+function cmdSlash(c,a){if(c==="py"||c==="python"||c==="python3")return cmdPy(a);if(c==="steps"||c==="langkah")return cmdSteps(a);if(c==="variant"||c==="varian"||c==="effort")return cmdVariant(a);if(c==="think")return cmdThink(a);if(c==="theme")return cmdTheme(a);if(c==="font")return cmdFont(a);if(c==="ctx")return cmdCtx(a);if(c==="changes"){$("#dm").showModal();return chList()}if(c==="undo"){const r=UL.find(x=>!x.u);if(!r)return note("Tidak ada perubahan untuk dibatalkan.");if(r.g&&/^(giliran|turn|semua)$/.test(a)){const n=grpApply(r.g);return note(n?"Dibatalkan: "+n+" perubahan ("+(r.gl||"kelompok terakhir")+").":"Tidak ada yang dibatalkan.")}if(chApply(r))note("Dibatalkan: "+r.p+" ("+r.k+")");return}if(c==="compact"){if(a==="auto"){C.ac=C.ac===false;saveC();return note("Padatkan otomatis: "+(C.ac===false?"mati":"hidup"))}return compact(false)}if(H.length===0)log.innerHTML="";const b=c==="budget";
  if(a==="")return note(b?"Batas berpikir: "+(BG()||"tanpa batas")+" token. Ubah: /budget 12000 (0 = tanpa batas)":"Batas output: "+MT()+" token. Ubah: /tokens 32000");
  const n=/^\d+$/.test(a)?+a:NaN;if(!(b?(n===0||n>=500&&n<=200000):(n>=1000&&n<=128000)))return note("Format: /"+c+" ANGKA ("+(b?"500-200000, atau 0 untuk tanpa batas":"1000-128000")+")");
  C[b?"budget":"maxTok"]=n;saveC();note(b?"Batas berpikir: "+(n||"tanpa batas")+" token.":"Batas output: "+n+" token.")}
@@ -1575,7 +3353,7 @@ function fmEdit(path){if(isBin(FS()[path]))return fmView(path);FMP=path;FMD=fals
  ta.onscroll=()=>{eh.scrollTop=gt.scrollTop=ta.scrollTop;eh.scrollLeft=ta.scrollLeft};
  $("#eb").onclick=()=>{if(FMD&&!confirm("Perubahan belum disimpan. Buang?"))return;fmList()};
  es.onclick=()=>{const f=FS();rec(path,f[path]??null,ta.value,"manual",null);f[path]=ta.value;setFS(f);FMD=false;upd()};
- $("#ep").style.display=/\.(html?|svg)$/i.test(path)?"":"none";$("#ep").onclick=()=>/\.svg$/i.test(path)?pvSvg(ta.value,path):pv(ta.value,path);
+ $("#ep").style.display=/\.(html?|svg|py)$/i.test(path)?"":"none";$("#ep").textContent=/\.py$/i.test(path)?"▶ Jalankan":"Pratinjau";$("#ep").onclick=()=>/\.svg$/i.test(path)?pvSvg(ta.value,path):/\.py$/i.test(path)?pvPy(ta.value,path):pv(ta.value,path);
  $("#ed").onclick=()=>dl(path.split("/").pop(),ta.value);upd()}
 $("#fmb").onclick=e=>{const d=e.target.dataset;if(d.hc!==undefined){if(histClear())fmList()}else if(d.rm!==undefined){histDel([d.rm]);chList()}else if(d.gx!==undefined){histDel(grpRecs(d.gx).map(r=>r.id));chList()}else if(d.ug!==undefined){grpApply(d.ug);chList()}else if(d.ch!==undefined)chList();else if(d.d!==undefined){FMC.has(d.d)?FMC.delete(d.d):FMC.add(d.d);fmList()}else if(d.c!==undefined)chDiff(d.c);else if(d.o!==undefined)fmEdit(d.o);else if(d.r!==undefined)fmRen(d.r);else if(d.x!==undefined)fmDel(d.x)};
 $("#bf").onclick=()=>{$("#dh").close();fmList();$("#dm").showModal()};
@@ -1771,7 +3549,16 @@ let AC=null;
 function acx(){try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();if(AC.state==="suspended")AC.resume().catch(()=>{});return AC}catch{return null}}
 ["pointerdown","keydown","touchstart"].forEach(ev=>addEventListener(ev,()=>acx(),{once:true,capture:true,passive:true}));
 function chime(){if(C.snd===false)return;const c=acx();if(!c)return;try{const t=c.currentTime;[[880,0],[1318.5,.15]].forEach(([f,d])=>{const o=c.createOscillator(),g=c.createGain();o.type="sine";o.frequency.value=f;g.gain.setValueAtTime(.0001,t+d);g.gain.linearRampToValueAtTime(.16,t+d+.03);g.gain.exponentialRampToValueAtTime(.0001,t+d+.6);o.connect(g);g.connect(c.destination);o.start(t+d);o.stop(t+d+.65)})}catch{}}
-const boot0=boot;boot=async()=>{await boot0();if(/[?&]new=1/.test(location.search)){newChat();history.replaceState(null,"",location.pathname)}pwaUI()};
+let UNLOADING=false;
+addEventListener("beforeunload",e=>{if(ctrl){flushS();e.preventDefault();e.returnValue=""}});
+addEventListener("pagehide",()=>{if(ctrl){UNLOADING=true;try{if(cur)LS["hrai.run"]=JSON.stringify({id:cur,ts:Date.now()})}catch{}}flushS()});
+function resumeInterrupted(){let r=null;try{r=JSON.parse(LS["hrai.run"]||"null");LS.removeItem("hrai.run")}catch{return}
+ if(!r||!r.id||r.id!==cur||Date.now()-(r.ts||0)>18e5||!H.length)return;
+ /* lengkapi tool_call yang terputus di tengah eksekusi agar riwayat tetap valid bagi API */
+ for(let i=H.length-1;i>=0;i--){const m=H[i];if(m.role==="tool")continue;if(m.role==="assistant"&&m.tool_calls&&m.tool_calls.length){const doneIds=new Set(H.slice(i+1).filter(x=>x.role==="tool").map(x=>x.tool_call_id));let fixed=0;for(const tc of m.tool_calls){if(!doneIds.has(tc.id)){H.push({role:"tool",tool_call_id:tc.id,name:tc.function.name,content:"[sistem] Eksekusi tool terhenti karena halaman dimuat ulang; ulangi langkah ini bila masih diperlukan."});fixed++}}if(fixed){saveH();flushS()}}break}
+ const last=H[H.length-1];
+ if(last&&(last.role==="user"||last.role==="tool")){note("Halaman sempat dimuat ulang saat HRAI sedang bekerja — melanjutkan otomatis…");agent()}}
+const boot0=boot;boot=async()=>{await boot0();if(/[?&]new=1/.test(location.search)){try{LS.removeItem("hrai.run")}catch{}newChat();history.replaceState(null,"",location.pathname)}else resumeInterrupted();pwaUI()};
 $("#vp").onclick=varSheet;$("#dvc").onclick=()=>$("#dv").close();$("#vf").onchange=varSettings;$("#sm").addEventListener("input",varSettings);$("#su").addEventListener("input",varSettings);
 $("#fmd").onclick=async()=>{if(DLB||DLAC){alert("Unduhan lain masih berjalan.");return}
  const u=prompt("URL langsung ke file video (mp4/webm). Maks 100 MB.\nHalaman seperti YouTube tidak bisa diunduh.","https://");if(!u||/^https?:\/\/$/i.test(u.trim()))return;
